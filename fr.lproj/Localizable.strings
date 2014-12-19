@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  Challfie
+
+  Created by fcheng on 11/30/14.
+  Copyright (c) 2014 Fabrice Cheng. All rights reserved.
+*/
+
+// Account Creation
+
+Account_creation_failed = "Echec lors de la création de compte";
+Username = "Identifiant";
+Firstname = "Prénom";
+Lastname = "Nom";
+Password = "Mot de passe";
+
+// Login Page
+Authentication_failed = "Connexion échouée";
+
+// General
+Pull_to_refresh = "Tirer vers le bas pour rafraichir";
+Refreshing_data = "Chargement des données..";
+
+// Forgot Password Page
+Email_sent = "Email envoyé";
+
+// Popcup
+Close = "Fermer";
+Error = "Erreur";
+Generic_error = "Veuillez vérifier votre connexion Internet. \nSi le problème persiste, merci de le notifier sur le site web www.challfie.com, section 'Contact'";
+
+// Selfie
+Comment = " commentaire";
+Comments = " commentaires";
+Approve = " approuvent";
+Approves = " approuve";
+Rejects = " rejette";
+Reject = " rejettent";
+first_comment = "Soyez le premier a commenté..";
+no_selfie = "Bienvenue sur Challfie!\n\nDémarre dès à présent en ajoutant tes amis et prends ton premier Selfie Challenge.";
+
+// Comment
+Write_Comment = "Ajouter un commentaire..";
+
+// Alert
+Alert_tab = "Alerte";
+
+// Friends
+Friends_tab = "Amis";
+Suggestions = "Suggestions";
+Following = "Abonnements";
+Followers = "Abonnés";
+Mutual_friends = " amis en commun";
+Mutual_friend = " ami en commun";

@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  Challfie
+
+  Created by fcheng on 11/30/14.
+  Copyright (c) 2014 Fabrice Cheng. All rights reserved.
+*/
+
+// Account Creation
+Account_creation_failed = "Account creation failed";
+Username = "Username";
+Firstname = "Firstname";
+Lastname = "Lastname";
+Password = "Password";
+
+// Login Page
+Authentication_failed = "Authentication Failed";
+
+// Forgot Password Page
+Email_sent = "Email sent";
+
+// General
+Pull_to_refresh = "Pull down to refreh";
+Refreshing_data = "Refreshing Data..";
+
+// Popcup
+Close = "Close";
+Error = "Error";
+Generic_error = "Please check your network connection. \nIf this doesn't resolve the problem, please report it to us on the website at www.challfie.com - Section 'Contact Us'";
+
+// Selfie
+Comment = " comment";
+Comments = " comments";
+Approve = " approved";
+Approves = " approved";
+Rejects = " rejected";
+Reject = " rejected";
+first_comment = "Be the first one to write a comment..";
+no_selfie = "Welcome to Challfie!\n\nGet started by adding your friends and take your first Selfie Challenge.";
+
+// Comment
+Write_Comment = "Write a comment..";
+
+// Alert
+Alert_tab = "Alert";
+
+// Friends
+Friends_tab = "Friends";
+Suggestions = "Suggestions";
+Following = "Following";
+Followers = "Followers";
+Mutual_friends = " mutual friends";
+Mutual_friend = " mutual friend";
