@@ -22,6 +22,7 @@ Email_sent = "Email sent";
 // General
 Pull_to_refresh = "Pull down to refreh";
 Refreshing_data = "Refreshing Data..";
+cancel = "Cancel";
 
 // Popcup
 Close = "Close";
@@ -43,11 +44,55 @@ Write_Comment = "Write a comment..";
 
 // Alert
 Alert_tab = "Alert";
+no_alert = "No alerts found..";
 
 // Friends
 Friends_tab = "Friends";
 Suggestions = "Suggestions";
 Following = "Following";
 Followers = "Followers";
+Follow = "Follow";
+Pending = "Pending";
 Mutual_friends = " mutual friends";
 Mutual_friend = " mutual friend";
+Number_followers = " followers";
+Number_follower = " follower";
+Friend_request = "Friend Request";
+Friends_suggestions = "Friends Suggestions";
+Friends_no_results = "No results found.. Link your Facebook account if you haven't done it already to look for your Facebook's friends on Challfie.";
+Search_facebook_friends = "Search for your Facebook's Friends";
+
+// Profil Page
+no_selfies = "This user doesn't have any selfies yet..";
+is_not_friend = "Follow this user to see his/her selfie challenges..";
+is_pending_request = "Your following request have been sent. Waiting for approval..";
+Log_out = "Log out";
+Books = "books";
+change_profil_pic = "Change Your Profile Picture";
+choose_from_gallery = "Choose From Your Gallery";
+take_picture = "Take a Picture";
+
+
+// Challenge Page
+book_of_challenges = "Book of Challenges";
+book_is_locked = "Unlock this book by getting your selfie challenges approved by your friends. Check your progress in the \"Level Progression\" tab";
+book_locked = "Book Locked";
+difficulty = "Difficulty";
+next_level = "Next Level";
+current_level = "Current Level";
+
+// Search User
+no_users_found = "No results found";
+
+// Take A Picture Page
+add_message = "Add a message..";
+post_a_challfie = "Post a Challfie";
+pick_a_challenge = "Pick a Challenge";
+settings = "Settings";
+privacy_text = "Only visible to your followers";
+shareFacebook_text = "Share on Facebook";
+search_a_challenge = "Search a Challenge";
+add_a_new_selfie = "Add a new Challfie";
+create_selfie_missing_image = "Please select a picture.";
+
+

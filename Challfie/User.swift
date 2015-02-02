@@ -19,7 +19,11 @@ class User {
     var book_tier: Int!
     var book_level: String!
     var is_facebook_picture: Bool!
-        
+    // Variable to check if the current_user has a following relationship (pending or not) with self.user
+    var is_following: Bool!
+    // Variable to check if the current_user has a following request pending for self.user
+    var is_pending: Bool!
+    
     init(json: JSON) {
         self.id = json["id"].intValue
         self.created_at = json["created_at"].stringValue
@@ -31,6 +35,8 @@ class User {
         self.book_tier = json["book_tier"].intValue
         self.book_level = json["book_level"].stringValue
         self.is_facebook_picture = json["is_facebook_picture"].boolValue
+        self.is_following = json["is_following"].boolValue
+        self.is_pending = json["is_pending"].boolValue        
     }
     
     func show_profile_pic() -> String {

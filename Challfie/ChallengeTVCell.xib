@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChallengeCell" rowHeight="37" id="mWg-jV-RFk" customClass="ChallengeTVCell" customModule="Challfie" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="321" height="37"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mWg-jV-RFk" id="IeN-eJ-vPA">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a Selfie" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cP6-u6-IhB" userLabel="challengeLabel">
+                        <rect key="frame" x="15" y="10" width="75.5" height="16.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star_intermediate" translatesAutoresizingMaskIntoConstraints="NO" id="U9W-WG-e8X" userLabel="difficultyImageView">
+                        <rect key="frame" x="206" y="8" width="100" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="M8t-R9-cd0"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="WS5-ik-bRX"/>
+                            <constraint firstAttribute="width" constant="100" id="Xfc-9p-tfd"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="sGc-ZM-vbH"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="WS5-ik-bRX"/>
+                                <exclude reference="sGc-ZM-vbH"/>
+                            </mask>
+                        </variation>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cP6-u6-IhB" firstAttribute="top" secondItem="IeN-eJ-vPA" secondAttribute="top" constant="10" id="5S6-WX-O6l"/>
+                    <constraint firstItem="U9W-WG-e8X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cP6-u6-IhB" secondAttribute="trailing" constant="10" id="8nF-XX-HOv"/>
+                    <constraint firstItem="cP6-u6-IhB" firstAttribute="leading" secondItem="IeN-eJ-vPA" secondAttribute="leading" constant="15" id="Ijn-FA-oS0"/>
+                    <constraint firstItem="U9W-WG-e8X" firstAttribute="top" secondItem="IeN-eJ-vPA" secondAttribute="topMargin" constant="5" id="USA-lT-QlE"/>
+                    <constraint firstAttribute="trailing" secondItem="U9W-WG-e8X" secondAttribute="trailing" constant="15" id="VXE-4P-FBw"/>
+                    <constraint firstAttribute="centerY" secondItem="U9W-WG-e8X" secondAttribute="centerY" id="awG-g0-DfN"/>
+                    <constraint firstItem="U9W-WG-e8X" firstAttribute="trailing" secondItem="IeN-eJ-vPA" secondAttribute="trailingMargin" constant="15" id="fYG-fe-JhS"/>
+                    <constraint firstAttribute="bottom" secondItem="cP6-u6-IhB" secondAttribute="bottom" constant="10" id="ja5-aj-Bn4"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="U9W-WG-e8X" secondAttribute="bottom" constant="5" id="mVI-jJ-P2l"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="USA-lT-QlE"/>
+                        <exclude reference="fYG-fe-JhS"/>
+                        <exclude reference="mVI-jJ-P2l"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="challengeLabel" destination="cP6-u6-IhB" id="SK3-KW-Z5v"/>
+                <outlet property="difficultyImageView" destination="U9W-WG-e8X" id="41C-p9-qwx"/>
+            </connections>
+            <point key="canvasLocation" x="-32.5" y="226.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="star_intermediate" width="90" height="16"/>
+    </resources>
+</document>

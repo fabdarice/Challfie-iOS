@@ -20,6 +20,7 @@ Authentication_failed = "Connexion échouée";
 // General
 Pull_to_refresh = "Tirer vers le bas pour rafraichir";
 Refreshing_data = "Chargement des données..";
+cancel = "Annuler";
 
 // Forgot Password Page
 Email_sent = "Email envoyé";
@@ -44,11 +45,55 @@ Write_Comment = "Ajouter un commentaire..";
 
 // Alert
 Alert_tab = "Alerte";
+no_alert = "Aucune alerte trouvée..";
 
 // Friends
 Friends_tab = "Amis";
 Suggestions = "Suggestions";
 Following = "Abonnements";
 Followers = "Abonnés";
+Follow = "S'abonner";
+Pending = "En Attente";
 Mutual_friends = " amis en commun";
 Mutual_friend = " ami en commun";
+Number_followers = " abonnés";
+Number_follower = " abonné";
+Friend_request = "Demande d'Ami";
+Friends_suggestions = "Suggestions d'Amis";
+Friends_no_results = "Aucun résultat trouvé.. N'oublies pas d'associer ton compte Facebook pour rechercher tes amis Facebook présent sur Challfie.";
+Search_facebook_friends = "Rechercher vos amis Facebook";
+
+// Profil Page
+no_selfies = "Cet utilisateur n'a pas encore pris de selfie challenge..";
+is_not_friend = "Abonnes toi pour consulter sa liste de selfie challenges..";
+is_pending_request = "Votre demande d'abonnement a été envoyé. En attente d'une réponse..";
+Log_out = "Déconnexion";
+Books = "Livres";
+change_profil_pic = "Modifier sa photo de Profil";
+choose_from_gallery = "Choisir à partir de la galerie";
+take_picture = "Prendre une photo";
+
+
+// Challenge Page
+book_of_challenges = "Livre de Challenges";
+book_is_locked = "Débloque ce livre en ayant vos selfies challenges approuvés par vos amis. Consulte ta progression dans l'onglet \"Level Progression\".";
+book_locked = "Livre Bloqué";
+difficulty = "Difficulté";
+next_level = "Prochain Niveau";
+current_level = "Niveau Actuel";
+
+// Search User
+no_users_found = "Aucun résultat trouvé";
+
+// Take A Picture Page
+add_message = "Ajouter un message..";
+post_a_challfie = "Ajouter un Challfie";
+pick_a_challenge = "Choisir un Challenge";
+settings = "Paramètres";
+privacy_text = "Visible uniquement par tes abonnés";
+shareFacebook_text = "Partager sur Facebook";
+search_a_challenge = "Rechercher un Challenge";
+add_a_new_selfie = "Ajouter un Challfie";
+create_selfie_missing_image = "Sélectionner une image.";
+
+

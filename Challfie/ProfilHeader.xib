@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="profilHeader" id="sXN-te-p6i" customClass="ProfilHeader" customModule="Challfie" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uid-jc-Epi">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vlf-lP-uP8" userLabel="headerMessageLabel">
+                            <rect key="frame" x="0.0" y="15" width="320" height="20.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="320" id="dKN-AV-vbw"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="vlf-lP-uP8" secondAttribute="centerX" id="2Fe-KF-vSI"/>
+                        <constraint firstAttribute="centerY" secondItem="vlf-lP-uP8" secondAttribute="centerY" id="Q5b-2K-S4A"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="cAu-li-BIh"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Uid-jc-Epi" firstAttribute="leading" secondItem="sXN-te-p6i" secondAttribute="leading" id="7om-Of-Y2r"/>
+                <constraint firstAttribute="centerX" secondItem="Uid-jc-Epi" secondAttribute="centerX" id="FPk-BF-fPU"/>
+                <constraint firstAttribute="trailing" secondItem="Uid-jc-Epi" secondAttribute="trailing" id="SWp-Be-iIs"/>
+                <constraint firstAttribute="bottom" secondItem="Uid-jc-Epi" secondAttribute="bottom" id="Xhn-qV-Oji"/>
+                <constraint firstItem="Uid-jc-Epi" firstAttribute="top" secondItem="sXN-te-p6i" secondAttribute="top" id="xHV-pI-0Ff"/>
+            </constraints>
+            <connections>
+                <outlet property="headerMessageLabel" destination="vlf-lP-uP8" id="XOd-mn-4C1"/>
+                <outlet property="headerMessageWidthConstraint" destination="dKN-AV-vbw" id="HnZ-M7-hXC"/>
+            </connections>
+            <point key="canvasLocation" x="284" y="88"/>
+        </collectionReusableView>
+    </objects>
+</document>

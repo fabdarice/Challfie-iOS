@@ -17,6 +17,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var credentialView: UIView!
     @IBOutlet weak var createAccountButton: UIButton!
     @IBOutlet weak var forgotPasswordButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,11 +43,18 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         self.loginTextField.delegate = self;
         self.passwordTextField.delegate = self;
         
+        // set activityIndicator to hide when it's not spinning
+        self.activityIndicator.hidesWhenStopped = true
+        self.activityIndicator.color = MP_HEX_RGB("30768A")
+
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     
     @IBAction func loginAction(sender: UIButton) {
+        self.activityIndicator.startAnimating()
+
         let parameters:[String: AnyObject] = [
             "login": self.loginTextField.text,
             "password": self.passwordTextField.text
@@ -79,9 +87,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                     // Save login and auth_token to the iOS Keychain
                     KeychainWrapper.setString(login, forKey: kSecAttrAccount)
                     KeychainWrapper.setString(auth_token, forKey: kSecValueData)
-                    
-                    
-                    
+                                                            
                     //self.dismissViewControllerAnimated(true, completion: nil)
                     self.performSegueWithIdentifier("homeSegue", sender: self)
                     
@@ -90,6 +96,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                     //self.presentViewController(firstView, animated: true, completion: nil)
                 }
             }
+            self.activityIndicator.stopAnimating()
             
             
         }
@@ -100,7 +107,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    
+    // UITextFieldDelegate Delegate
     func textFieldShouldReturn(textField: UITextField!) -> Bool {
         textField.resignFirstResponder()
         return true;

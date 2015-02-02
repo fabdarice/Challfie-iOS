@@ -11,10 +11,14 @@ import Foundation
 
 class Friend: User {
     var nb_mutual_friends: Int!
+    var nb_followers: Int!
+    
+
     
     override init(json: JSON) {
         super.init(json: json)
         self.nb_mutual_friends = json["nb_mutual_friend"].intValue
+        self.nb_followers = json["nb_followers"].intValue        
     }
     
 }

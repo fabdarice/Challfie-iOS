@@ -13,14 +13,17 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var timelineTableView: UITableView!
     @IBOutlet weak var topBarView: UIView!
+    @IBOutlet weak var myProfilImage: UIImageView!
+    @IBOutlet weak var searchImage: UIImageView!
     
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-    var footerView:UIView!
+    //var footerView:UIView!
     
     var selfies_array:[Selfie] = []
+    var selfies_array_id:[Int] = []
     var page = 1
     var refreshControl:UIRefreshControl!  // An optional variable
-
+    var first_time = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +31,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Styling the navigationController
         self.navigationController?.navigationBar.barTintColor = MP_HEX_RGB("30768A")
         self.navigationController?.navigationBar.tintColor = MP_HEX_RGB("FFFFFF")        
-        
+        self.navigationController?.navigationBar.translucent = false        
         
         // Remove separator line from UITableView
         self.timelineTableView.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -41,11 +44,25 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.timelineTableView.addSubview(refreshControl)
         
         // Initialize the loading Indicator
-        self.loadingIndicator.frame = CGRectMake(0, 0, 320, 44)
+        self.loadingIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 44)
         self.loadingIndicator.tintColor = MP_HEX_RGB("30768A")
         
         // Set Background color for topBar
         self.topBarView.backgroundColor = MP_HEX_RGB("30768A")
+        
+        // set link to my profil
+        var myProfiltapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        myProfiltapGesture.addTarget(self, action: "tapGestureToProfil")
+        self.myProfilImage.addGestureRecognizer(myProfiltapGesture)
+        self.myProfilImage.userInteractionEnabled = true
+        
+        
+        // set link to Search User xib
+        var searchPagetapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        searchPagetapGesture.addTarget(self, action: "tapGestureToSearchPage")
+        self.searchImage.addGestureRecognizer(searchPagetapGesture)
+        self.searchImage.userInteractionEnabled = true
+        
         
         // Do any additional setup after loading the view, typically from a nib.
         self.timelineTableView.delegate = self
@@ -61,31 +78,28 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         timelineTableView.estimatedRowHeight = 444.0
         
         // Load Selfies for User Timeline
-        //self.loadData()
-        self.refreshControl.beginRefreshing()
         self.refresh(actionFromInit: true)
 
     }
     
     override func viewWillAppear(animated: Bool) {
+        
         super.viewWillAppear(animated)
         
+        // Display tabBarController
         self.hidesBottomBarWhenPushed = false
-        self.navigationController?.navigationBar.hidden = true
         self.tabBarController?.tabBar.hidden = false
+        
+        // Hide navigationController
+        self.navigationController?.navigationBar.hidden = true
+        
+        // Refresh the page if not the first time
+        if self.first_time == false {
+            refresh(actionFromInit: false)
+        }
+        
+        self.first_time = false
     }
-    
-    
-    //override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-      //  if segue.identifier == "showOneSelfie" {
-        //    println("ENTER PREPAREFORSEGUE")
-            
-          //  let oneSelfieVC = segue.destinationViewController as OneSelfieVC
-//            let cell = sender as TimelineTableViewCell
-  //          println(cell.selfie.message)
-    //        oneSelfieVC.selfie = cell.selfie
-      //  }
-//    }
     
     
     func refreshInvoked(sender:AnyObject) {
@@ -94,6 +108,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // Pull-to-refresh function - Refresh all data
     func refresh(actionFromInit: Bool = false) {
+        self.refreshControl.beginRefreshing()
         self.refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Refreshing_data", comment: "Refreshing data.."))
         var parameters = [String: String]()
         var api_link: String!
@@ -125,8 +140,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         
         Alamofire.request(.POST, api_link, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                //println(mydata)
+            .responseJSON { (_, _, mydata, _) in                
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
@@ -137,6 +151,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                     if actionFromInit == false {
                         self.selfies_array.removeAll(keepCapacity: false)
+                        self.selfies_array_id.removeAll(keepCapacity: false)
                     }
                     
                     if json["selfies"].count != 0 {
@@ -149,8 +164,9 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                             selfie.challenge = challenge
                             selfie.user = user
                             selfie.last_comment = last_comment
-                            self.selfies_array.append(selfie)
                             
+                            self.selfies_array.append(selfie)
+                            self.selfies_array_id.append(selfie.id)
                         }
                         if actionFromInit == true {
                             self.page += 1
@@ -161,12 +177,20 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                     // Update Badge of Alert TabBarItem
                     var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
-                    if json["meta"]["new_alert_nb"] != 0 {
-                        
+                    if json["meta"]["new_alert_nb"] != 0 {                        
                         alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
                     } else {
                         alert_tabBarItem.badgeValue = nil
                     }
+                    
+                    // Update Badge of Friends TabBarItem
+                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+                    if json["meta"]["new_friends_request_nb"] != 0 {
+                        friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
+                    } else {
+                        friend_tabBarItem.badgeValue = nil
+                    }
+                    
                     
                     if actionFromInit == true {
                         self.display_empty_message()
@@ -210,7 +234,11 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                             selfie.challenge = challenge
                             selfie.user = user
                             selfie.last_comment = last_comment
-                            self.selfies_array.append(selfie)
+                            
+                            if contains(self.selfies_array_id, selfie.id) == false {
+                                self.selfies_array.append(selfie)
+                                self.selfies_array_id.append(selfie.id)
+                            }
                             
                         }
                         self.page += 1
@@ -224,10 +252,11 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // Function to display a message in case of an empty return results
     func display_empty_message() {
         if (self.selfies_array.count == 0) {
             // Display a message when the table is empty
-            var messageLabel = UILabel(frame: CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height))
+            var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
             messageLabel.text = NSLocalizedString("no_selfie", comment: "Welcome to Challfie!Get started by adding your friends and take your first Selfie Challenge.")
             messageLabel.textColor = MP_HEX_RGB("000000")
             messageLabel.numberOfLines = 0;
@@ -240,6 +269,19 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else {
             self.timelineTableView.backgroundView = nil            
         }
+    }
+    
+    /// Function to push to my Profil
+    func tapGestureToProfil() {
+        var globalFunctions = GlobalFunctions()
+        globalFunctions.tapGestureToProfil(self)
+    }
+    
+    // Function to push to Search Page
+    func tapGestureToSearchPage() {
+        var globalFunctions = GlobalFunctions()
+        globalFunctions.tapGestureToSearchPage(self, backBarTitle: "Timeline")
+
     }
 
     

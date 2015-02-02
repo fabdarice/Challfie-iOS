@@ -45,11 +45,15 @@ class TimelineTableViewCell : UITableViewCell {
         self.selfieView.layer.borderWidth = 1.0
         
         // Make Cells Non Selectable
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+        self.selectionStyle = UITableViewCellSelectionStyle.None                
         
         // USERNAME STYLE
         self.usernameLabel.text = selfie.user.username
         self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
+        var usernametapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        usernametapGesture.addTarget(self, action: "tapGestureToProfil")
+        self.usernameLabel.addGestureRecognizer(usernametapGesture)
+        self.usernameLabel.userInteractionEnabled = true
         
         // Selfie Level
         //self.levelLabel.text = selfie.user.book_level
@@ -102,6 +106,10 @@ class TimelineTableViewCell : UITableViewCell {
         self.commentUsernameLabel.text = selfie.last_comment.username
         self.commentUsernameLabel.textColor = MP_HEX_RGB("3E9AB5")
         self.commentUsernameLabel.sizeToFit() // To update the UILabel frame width to fit it's content
+        var commentUsernametapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        commentUsernametapGesture.addTarget(self, action: "tapGestureToCommenterProfil")
+        self.commentUsernameLabel.addGestureRecognizer(commentUsernametapGesture)
+        self.commentUsernameLabel.userInteractionEnabled = true
         
         // Last Comment Message
         let comment_message_style = NSMutableParagraphStyle()
@@ -114,14 +122,14 @@ class TimelineTableViewCell : UITableViewCell {
             self.bottomContentView.backgroundColor = MP_HEX_RGB("F7F7F7")
             comment_message_indent.addAttribute(NSParagraphStyleAttributeName, value: comment_message_style, range: NSMakeRange(0, comment_message_indent.length))
             self.commentMessageLabel.attributedText = comment_message_indent
-            self.commentMessageLabel.font = UIFont(name: "Helvetica Neue", size: 12.0)
+            self.commentMessageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0)
             self.commentMessageLabel.textColor = MP_HEX_RGB("000000")
             self.commentMessageLabel.numberOfLines = 0
         } else {
             // No Last Comment - Display a proper message
             self.bottomContentView.backgroundColor = MP_HEX_RGB("FFFFFF")
             self.commentMessageLabel.text = NSLocalizedString("first_comment", comment: "Be the first one to write a comment..")
-            self.commentMessageLabel.font = UIFont.italicSystemFontOfSize(11.0)
+            self.commentMessageLabel.font = UIFont.italicSystemFontOfSize(13.0)
             self.commentMessageLabel.textColor = MP_HEX_RGB("919191")
             
         }
@@ -155,11 +163,14 @@ class TimelineTableViewCell : UITableViewCell {
         if selfie.user.book_tier == 3 {
             self.profile_pic.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
         }
+        var profilPictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        profilPictapGesture.addTarget(self, action: "tapGestureToProfil")
+        self.profile_pic.addGestureRecognizer(profilPictapGesture)
+        self.profile_pic.userInteractionEnabled = true
         
         
         // Selfie Image
-        let selfieImageStr = ApiLink.host + selfie.photo
-        let selfieImageURL:NSURL = NSURL(string: selfieImageStr)!
+        let selfieImageURL:NSURL = NSURL(string: selfie.show_selfie_pic())!
         self.selfieImage.hnk_setImageFromURL(selfieImageURL)       
         
         // Set Selfies Challenge Status
@@ -191,7 +202,6 @@ class TimelineTableViewCell : UITableViewCell {
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
                         self.timelineVC.presentViewController(alert, animated: true, completion: nil)
                     } else {
-                        println(mydata)
                         //convert to SwiftJSON
                         let json = JSON(mydata!)
                         
@@ -259,8 +269,7 @@ class TimelineTableViewCell : UITableViewCell {
                         var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
                         self.timelineVC.presentViewController(alert, animated: true, completion: nil)
-                    } else {
-                        println(mydata)
+                    } else {                        
                         //convert to SwiftJSON
                         let json = JSON(mydata!)
                         
@@ -314,15 +323,11 @@ class TimelineTableViewCell : UITableViewCell {
         // Hide TabBar when push to OneSelfie View
         self.timelineVC.hidesBottomBarWhenPushed = true
         
+        // Push to OneSelfieVC
         var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
         oneSelfieVC.selfie = self.selfie
-        //var challengeCV = ChallengeVC(nibName: "Challenge", bundle: nil)
-        
+        self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.timelineVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
-        //(oneSelfieVC, animated: true, completion: nil)
-        //self.timelineVC.performSegueWithIdentifier("showOneSelfie", sender: self)
-            //self.timelineVC.presentViewController(challengeCV, animated: true, completion: nil)
-
     }
     
     
@@ -330,8 +335,52 @@ class TimelineTableViewCell : UITableViewCell {
         self.timelineVC.hidesBottomBarWhenPushed = true
         var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
         oneSelfieVC.selfie = self.selfie
-        
+        self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.timelineVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
-
     }
+    
+    
+    func tapGestureToProfil() {
+        // Push to ProfilVC of the selfie's user
+        var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+        profilVC.user = self.selfie.user
+        self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.timelineVC.navigationController?.pushViewController(profilVC, animated: true)
+        
+    }
+    
+    func tapGestureToCommenterProfil() {
+        // Push to ProfilVC of Commenter
+        
+        let parameters:[String: String] = [
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "user_id": self.selfie.last_comment.user_id
+        ]
+        
+        Alamofire.request(.POST, ApiLink.show_user_profile, parameters: parameters, encoding: .JSON)
+            .responseJSON { (_, _, mydata, _) in
+                if (mydata == nil) {
+                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                    self.timelineVC.presentViewController(alert, animated: true, completion: nil)
+                } else {
+                    //Convert to SwiftJSON
+                    var json = JSON(mydata!)
+                    var last_commenter: User!
+                    
+                    if json["user"].count != 0 {
+                        last_commenter = User.init(json: json["user"])
+                    }
+                    
+                    // Push to OneSelfieVC
+                    var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+                    profilVC.user = last_commenter
+                    self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                    self.timelineVC.navigationController?.pushViewController(profilVC, animated: true)
+                }
+        }
+        
+    }
+    
 }

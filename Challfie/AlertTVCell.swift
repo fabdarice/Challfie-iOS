@@ -83,7 +83,13 @@ class AlertTVCell : UITableViewCell {
         } else if alert.selfie_img != "" {
             // load selfie image
             self.rightButton.hidden = false
-            let selfieImageStr = ApiLink.host + alert.selfie_img
+            var selfieImageStr = ""
+            if ApiLink.host == "https://challfie.com" {
+                selfieImageStr = alert.selfie_img
+            } else {
+                selfieImageStr = ApiLink.host + alert.selfie_img
+            }
+            
             let selfieImageURL:NSURL = NSURL(string: selfieImageStr)!
             self.rightButton.hnk_setImageFromURL(selfieImageURL)
         } else {

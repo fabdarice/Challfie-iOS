@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="chinrg__.ttf">
             <string>Chinacat</string>
-            <string>Chinacat</string>
         </mutableArray>
         <mutableArray key="chint___.ttf">
+            <string>ChinacatThin</string>
             <string>ChinacatThin</string>
             <string>ChinacatThin</string>
             <string>ChinacatThin</string>
@@ -56,15 +56,15 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="574"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUE-Uc-2B5">
-                                    <rect key="frame" x="73" y="13" width="64" height="17"/>
+                                    <rect key="frame" x="73" y="13" width="68.5" height="18.5"/>
                                     <constraints>
                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="110" id="OJs-WQ-hFo"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="15"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exampleProfilePic" translatesAutoresizingMaskIntoConstraints="NO" id="xVK-I9-Krn" userLabel="profilePic">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVK-I9-Krn" userLabel="profilePic">
                                     <rect key="frame" x="23" y="13" width="40" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="40" id="Xfg-I2-HYl"/>
@@ -76,18 +76,18 @@
                                     <constraints>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="1ED-eb-LYh"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="challenge" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="51g-f2-feR" userLabel="challenge">
-                                    <rect key="frame" x="73" y="35" width="229" height="14.5"/>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="12"/>
+                                    <rect key="frame" x="73" y="34" width="229" height="17"/>
+                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="14"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apprentice II" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t0Y-sc-DcO">
-                                    <rect key="frame" x="147" y="13" width="59.5" height="16"/>
+                                    <rect key="frame" x="151" y="15" width="59.5" height="16"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="Bhj-S3-vQz"/>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="CBe-gi-nxX"/>
@@ -112,48 +112,47 @@
                                         <constraint firstAttribute="height" constant="400" id="Ho7-ce-iXG"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="120 comments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vK1-GH-pTz">
-                                    <rect key="frame" x="38" y="500" width="100" height="12"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="120 comments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vK1-GH-pTz">
+                                    <rect key="frame" x="38" y="500" width="73.5" height="12"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="100" id="8GQ-aw-r3V"/>
                                         <constraint firstAttribute="height" constant="12" id="ujs-sb-OtW"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="10"/>
+                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disapprove" translatesAutoresizingMaskIntoConstraints="NO" id="GUb-Bl-pC7">
-                                    <rect key="frame" x="217" y="498" width="15" height="15"/>
+                                    <rect key="frame" x="211" y="498" width="15" height="15"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="GPU-ft-2uZ"/>
                                         <constraint firstAttribute="width" constant="15" id="bjO-bB-zsW"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 approved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kb-Ml-Unw">
-                                    <rect key="frame" x="156" y="500" width="51" height="12"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="5 approved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8kb-Ml-Unw">
+                                    <rect key="frame" x="146" y="500" width="55" height="12"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="12" id="CMO-mk-Tpi"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="10"/>
+                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 disapproved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Zv-hg-7x6">
-                                    <rect key="frame" x="237" y="500" width="64.5" height="12"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 disapproved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Zv-hg-7x6">
+                                    <rect key="frame" x="231" y="500" width="71" height="12"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="12" id="EKN-Wd-1ql"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="10"/>
+                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_approve" translatesAutoresizingMaskIntoConstraints="NO" id="bOX-3q-4tx" userLabel="approveImage">
-                                    <rect key="frame" x="136" y="498" width="15" height="15"/>
+                                    <rect key="frame" x="126" y="498" width="15" height="15"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="7JL-Ph-PQK"/>
                                         <constraint firstAttribute="width" constant="15" id="Far-7D-ZKb"/>
                                     </constraints>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challenge_approve.png" translatesAutoresizingMaskIntoConstraints="NO" id="Qxn-zj-R6p" userLabel="challenge_status_Image">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qxn-zj-R6p" userLabel="challenge_status_Image">
                                     <rect key="frame" x="257" y="98" width="60" height="60"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="60" id="BBE-36-8xH"/>
@@ -208,7 +207,7 @@
                                 <constraint firstItem="b4l-Db-DeW" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leading" id="44s-Ut-3Jk"/>
                                 <constraint firstItem="6Zv-hg-7x6" firstAttribute="leading" secondItem="GUb-Bl-pC7" secondAttribute="trailing" constant="5" id="52L-D9-6kE"/>
                                 <constraint firstItem="51g-f2-feR" firstAttribute="leading" secondItem="xVK-I9-Krn" secondAttribute="trailing" constant="10" id="7mv-TM-Te4"/>
-                                <constraint firstItem="51g-f2-feR" firstAttribute="top" secondItem="pUE-Uc-2B5" secondAttribute="bottom" constant="5" id="8L5-eS-WTO"/>
+                                <constraint firstItem="51g-f2-feR" firstAttribute="top" secondItem="pUE-Uc-2B5" secondAttribute="bottom" constant="3" id="8L5-eS-WTO"/>
                                 <constraint firstItem="Qxn-zj-R6p" firstAttribute="trailing" secondItem="ZGL-am-1mg" secondAttribute="trailingMargin" constant="5" id="8g3-Tz-3Wh"/>
                                 <constraint firstItem="b4l-Db-DeW" firstAttribute="top" secondItem="Tcr-EA-Lld" secondAttribute="bottom" constant="8" id="BpF-Tz-LdY"/>
                                 <constraint firstItem="GUb-Bl-pC7" firstAttribute="leading" secondItem="8kb-Ml-Unw" secondAttribute="trailing" constant="10" id="Csd-bO-wZv"/>
@@ -221,6 +220,7 @@
                                 <constraint firstItem="bOX-3q-4tx" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="5" id="J7p-di-l4e"/>
                                 <constraint firstItem="4Ub-8t-U1W" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="3" id="OZk-qq-lJP"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="kpW-eK-0j7" secondAttribute="trailing" constant="10" id="Ppl-a2-iuz"/>
+                                <constraint firstItem="bOX-3q-4tx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vK1-GH-pTz" secondAttribute="trailing" constant="15" id="RnT-wN-ajj"/>
                                 <constraint firstItem="vK1-GH-pTz" firstAttribute="leading" secondItem="Tcr-EA-Lld" secondAttribute="trailing" constant="5" id="Vb6-d3-kPw"/>
                                 <constraint firstItem="4Ub-8t-U1W" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="t0Y-sc-DcO" secondAttribute="trailing" constant="5" id="WVV-eZ-blW"/>
                                 <constraint firstItem="Qxn-zj-R6p" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="15" id="WhZ-jh-pp9"/>
@@ -232,7 +232,7 @@
                                 <constraint firstItem="xVK-I9-Krn" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="5" id="iLr-8C-82h"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="6Zv-hg-7x6" secondAttribute="trailing" constant="10" id="lhJ-Es-E22"/>
                                 <constraint firstItem="Tcr-EA-Lld" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="5" id="mQw-2g-DFQ"/>
-                                <constraint firstItem="t0Y-sc-DcO" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="5" id="mmc-8K-pUZ"/>
+                                <constraint firstItem="t0Y-sc-DcO" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="7" id="mmc-8K-pUZ"/>
                                 <constraint firstItem="tHL-35-V04" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="10" id="qYi-db-NpE"/>
                                 <constraint firstItem="8kb-Ml-Unw" firstAttribute="leading" secondItem="bOX-3q-4tx" secondAttribute="trailing" constant="5" id="rIs-aa-pfe"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="51g-f2-feR" secondAttribute="trailing" constant="10" id="rdP-yO-SKW"/>
@@ -261,11 +261,11 @@
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </imageView>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Write a comment .." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QZa-2C-u09" userLabel="commentTextField">
-                            <rect key="frame" x="43" y="10" width="236" height="20"/>
+                            <rect key="frame" x="48" y="10" width="231" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="G5h-bQ-tDO"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="send"/>
                         </textField>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_comment" translatesAutoresizingMaskIntoConstraints="NO" id="uJj-b6-2f7" userLabel="commentIcon">
@@ -307,7 +307,7 @@
                         <constraint firstAttribute="centerY" secondItem="QZa-2C-u09" secondAttribute="centerY" id="cSQ-BG-ODD"/>
                         <constraint firstAttribute="trailing" secondItem="T3q-f6-nzU" secondAttribute="trailing" id="ciI-DB-mTR"/>
                         <constraint firstItem="T3q-f6-nzU" firstAttribute="top" secondItem="ZOi-wA-Efr" secondAttribute="top" id="cpH-D0-a90"/>
-                        <constraint firstItem="QZa-2C-u09" firstAttribute="leading" secondItem="uJj-b6-2f7" secondAttribute="trailing" constant="5" id="ey3-Yg-bts"/>
+                        <constraint firstItem="QZa-2C-u09" firstAttribute="leading" secondItem="uJj-b6-2f7" secondAttribute="trailing" constant="10" id="ey3-Yg-bts"/>
                         <constraint firstAttribute="bottom" secondItem="T3q-f6-nzU" secondAttribute="bottom" id="jPE-nJ-3M7"/>
                         <constraint firstItem="QZa-2C-u09" firstAttribute="top" secondItem="ZOi-wA-Efr" secondAttribute="topMargin" constant="2" id="t3o-6y-4Fp"/>
                         <constraint firstItem="T3q-f6-nzU" firstAttribute="leading" secondItem="ZOi-wA-Efr" secondAttribute="leading" id="v9S-IA-gLL"/>
@@ -331,8 +331,6 @@
         </view>
     </objects>
     <resources>
-        <image name="challenge_approve.png" width="457" height="415"/>
-        <image name="exampleProfilePic" width="94" height="92"/>
         <image name="icon_approve" width="78" height="84"/>
         <image name="icon_comment" width="296" height="271"/>
         <image name="icon_comment_send" width="178" height="153"/>

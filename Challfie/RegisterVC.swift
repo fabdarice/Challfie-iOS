@@ -18,7 +18,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
-
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +39,15 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         self.passwordTextField.secureTextEntry = true
         
         // Do any additional setup after loading the view, typically from a nib.
-        
+        // set activityIndicator to hide when it's not spinning
+        self.activityIndicator.hidesWhenStopped = true
+        self.activityIndicator.color = MP_HEX_RGB("30768A")
     }
     
     
     @IBAction func createAccountButton(sender: UIButton) {
+        self.activityIndicator.startAnimating()
+        
         let parameters:[String: AnyObject] = [
             "login": self.usernameTextField.text,
             "firstname": self.firstnameTextField.text,
@@ -104,6 +108,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
 
                     }
                 }
+                self.activityIndicator.stopAnimating()
         }
     }
     

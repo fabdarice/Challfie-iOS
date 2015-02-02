@@ -37,12 +37,14 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     var original_footerViewBottomConstraints: CGFloat = 0.0
     var selfie: Selfie!
     var comments_array:[Comment] = []
+    var to_bottom: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Show navigationBar
         self.navigationController?.navigationBar.hidden = false
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         // Hide tabBar
         self.tabBarController?.tabBar.hidden = true
@@ -80,6 +82,10 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // USERNAME STYLE
         self.usernameLabel.text = selfie.user.username
         self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
+        var usernametapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        usernametapGesture.addTarget(self, action: "tapGestureToProfil")
+        self.usernameLabel.addGestureRecognizer(usernametapGesture)
+        self.usernameLabel.userInteractionEnabled = true
         
         // Selfie Level
         self.levelLabel.text = selfie.user.book_level
@@ -124,10 +130,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         
         // Profile Picture
-        //var profileImage = selfie.user.profile_pic
-        var profileImage = ApiLink.host + selfie.user.profile_pic
-        let profileImageURL:NSURL = NSURL(string: profileImage)!
-        self.profilePicImage.hnk_setImageFromURL(profileImageURL)
+        let profilePicURL:NSURL = NSURL(string: selfie.user.show_profile_pic())!
+        self.profilePicImage.hnk_setImageFromURL(profilePicURL)
         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2;
         self.profilePicImage.clipsToBounds = true
         self.profilePicImage.layer.borderWidth = 2.0;
@@ -140,11 +144,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         if selfie.user.book_tier == 3 {
             self.profilePicImage.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
         }
+        var profilPictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        profilPictapGesture.addTarget(self, action: "tapGestureToProfil")
+        self.profilePicImage.addGestureRecognizer(profilPictapGesture)
+        self.profilePicImage.userInteractionEnabled = true
         
         // Selfie Image
-        //let selfieImageStr = selfie.photo
-        let selfieImageStr = ApiLink.host + selfie.photo
-        let selfieImageURL:NSURL = NSURL(string: selfieImageStr)!
+        let selfieImageURL:NSURL = NSURL(string: selfie.show_selfie_pic())!
         self.selfieImage.hnk_setImageFromURL(selfieImageURL)
         
         // Set Selfies Challenge Status
@@ -222,10 +228,10 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                         self.listCommentsHeightConstraints.constant = commentsTableView_newHeight
                         
                         // scroll to the bottom of the View
-                        let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
-                        self.scrollView.setContentOffset(bottomOffset, animated: false)
-                        
-                        
+                        if self.to_bottom == true {
+                            let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
+                            self.scrollView.setContentOffset(bottomOffset, animated: false)
+                        }                                                                        
                     } else {
                         // Set Background Color for commentsList
                         self.noCommentLabel.hidden = false
@@ -300,6 +306,15 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         
     }
     
+    // tap Gesture Functions
+    func tapGestureToProfil() {
+        // Push to ProfilVC of the selfie's user
+        var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+        profilVC.user = self.selfie.user
+        self.navigationController?.pushViewController(profilVC, animated: true)
+    }
+            
+    
     // UITableViewDelegate Functions
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.comments_array.count
@@ -308,7 +323,10 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: CommentTVCell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as CommentTVCell
         var comment:Comment = self.comments_array[indexPath.row]
-        cell.loadItem(comment)
+        
+        cell.comment = comment
+        cell.oneSelfieVC = self
+        cell.loadItem()
         
         // Update Cell Constraints
         cell.setNeedsUpdateConstraints()

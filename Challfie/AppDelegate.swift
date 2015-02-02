@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Check if the login and auth_token are valid for the user
             Alamofire.request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
+                    println(mydata)
                     if (mydata == nil) {
                         self.window?.rootViewController = loginViewController
                     } else {
@@ -55,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
             
             }
-            self.window?.rootViewController = homeTableViewController
+            //self.window?.rootViewController = homeTableViewController
         } else {
             self.window?.rootViewController = loginViewController
         }

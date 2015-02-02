@@ -12,11 +12,13 @@ class Comment {
     var id: Int!
     var message: String!
     var username: String!
+    var user_id: String!
     
     init(json: JSON) {
         self.id = json["id"].intValue
         self.message = json["message"].stringValue
         self.username = json["username"].stringValue
+        self.user_id = json["user_id"].stringValue
     }
     
 }

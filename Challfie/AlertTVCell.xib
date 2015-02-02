@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -14,10 +14,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kY-2E-CMf" userLabel="userImageButton">
-                        <rect key="frame" x="8" y="10" width="40" height="40"/>
+                        <rect key="frame" x="8" y="10" width="45" height="45"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="40" id="Rod-u7-gHs"/>
-                            <constraint firstAttribute="width" constant="40" id="neb-DI-J51"/>
+                            <constraint firstAttribute="height" constant="45" id="Rod-u7-gHs"/>
+                            <constraint firstAttribute="width" constant="45" id="neb-DI-J51"/>
                         </constraints>
                         <state key="normal" image="exampleProfilePic">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -27,10 +27,10 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTx-Pw-Y36" userLabel="rightButton">
-                        <rect key="frame" x="262" y="10" width="40" height="40"/>
+                        <rect key="frame" x="267" y="10" width="45" height="45"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="40" id="94U-Ww-Eyy"/>
-                            <constraint firstAttribute="width" constant="40" id="MhF-UH-seA"/>
+                            <constraint firstAttribute="height" constant="45" id="94U-Ww-Eyy"/>
+                            <constraint firstAttribute="width" constant="45" id="MhF-UH-seA"/>
                         </constraints>
                         <state key="normal">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,29 +40,29 @@
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRg-du-Qra">
-                        <rect key="frame" x="58" y="10" width="194" height="44.5"/>
+                        <rect key="frame" x="63" y="10" width="194" height="44.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzi-SX-KIL" userLabel="messageView">
-                                <rect key="frame" x="0.0" y="7" width="185" height="29"/>
+                                <rect key="frame" x="0.0" y="6" width="185" height="31.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Us" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ScU-J5-l8g" userLabel="usernameLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="15" height="14.5"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="16.5" height="15.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PCI-BI-6GJ" userLabel="messageLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="185" height="14"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="185" height="15.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tC-ZA-U6i">
-                                        <rect key="frame" x="0.0" y="16" width="150" height="13"/>
+                                        <rect key="frame" x="0.0" y="17" width="150" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="150" id="Ka4-mA-HeN"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="11"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="12"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -90,7 +90,7 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="VTx-Pw-Y36" secondAttribute="trailing" constant="10" id="5Zv-b2-RWG"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="VTx-Pw-Y36" secondAttribute="trailing" id="5s0-WO-4EY"/>
                     <constraint firstItem="cRg-du-Qra" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="LfK-Em-Fyk"/>
                     <constraint firstItem="VTx-Pw-Y36" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="Lfw-fw-RMa"/>
                     <constraint firstAttribute="bottom" secondItem="cRg-du-Qra" secondAttribute="bottom" constant="10" id="RMM-LM-dSp"/>

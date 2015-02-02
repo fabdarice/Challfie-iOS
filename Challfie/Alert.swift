@@ -13,6 +13,7 @@ class Alert {
     var id: Int!
     //var user_img: String!
     var author: User!
+    var selfie_id: Int!
     var selfie_img: String!
     var book_img: String!
     var message: String!
@@ -24,7 +25,7 @@ class Alert {
     init(json: JSON) {
         self.id = json["id"].intValue
         self.message = json["message"].stringValue
-        //self.user_img = json["user_img"].stringValue
+        self.selfie_id = json["selfie_id"].intValue
         self.selfie_img = json["selfie_img"].stringValue
         self.book_img = json["book_img"].stringValue
         self.time_ago = json["time_ago"].stringValue

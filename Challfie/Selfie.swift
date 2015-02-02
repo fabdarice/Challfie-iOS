@@ -40,6 +40,14 @@ class Selfie {
         self.user_vote_status = json["status_vote"].intValue
     }
     
-    
+    func show_selfie_pic() -> String {
+        var selfie_url: String!
+        if ApiLink.host == "https://challfie.com" {
+            selfie_url = self.photo
+        } else {
+            selfie_url = ApiLink.host + self.photo
+        }
+        return selfie_url
+    }
     
 }

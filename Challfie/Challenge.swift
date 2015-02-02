@@ -10,7 +10,6 @@ import Foundation
 
 class Challenge {
     var id:Int!
-    var book: Book!
     var created_at: String!
     var description: String!
     var difficulty: Int!
