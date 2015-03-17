@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import Alamofire
-import Haneke
+//import Alamofire
+//import Haneke
 
 class TimelineTableViewCell : UITableViewCell {
     
@@ -38,10 +38,10 @@ class TimelineTableViewCell : UITableViewCell {
         self.selfie = selfie
         
         // Cell Background
-        self.contentView.backgroundColor = MP_HEX_RGB("C8DFE6")
+        self.contentView.backgroundColor = MP_HEX_RGB("e9eaed")
         
         // Selfie Border color
-        self.selfieView.layer.borderColor = MP_HEX_RGB("85BBCC").CGColor
+        self.selfieView.layer.borderColor = MP_HEX_RGB("C4C4C4").CGColor
         self.selfieView.layer.borderWidth = 1.0
         
         // Make Cells Non Selectable
@@ -62,6 +62,10 @@ class TimelineTableViewCell : UITableViewCell {
         // Challenge
         self.challengeLabel.text = selfie.challenge.description
         self.challengeLabel.textColor = MP_HEX_RGB("30BAE3")
+        // Test Daily Challenge
+        if self.selfie.is_daily == true {
+            self.challengeLabel.text = NSLocalizedString("daily", comment: "Daily") + " - " + self.challengeLabel.text!
+        }
         
         // Selfie Creation Date
         self.selfieDateLabel.text = selfie.creation_date
@@ -117,19 +121,36 @@ class TimelineTableViewCell : UITableViewCell {
         comment_message_style.headIndent = 0.0
         //var comment_message_indent = NSMutableAttributedString(string: "HELLOTest1\nTest Long Line so that it will break without adding the new line char to the string.")
         var comment_message_indent = NSMutableAttributedString(string: selfie.last_comment.message)
+        
+        // Custom Label Size based on Device
+        let model = UIDevice.currentDevice().modelName
+        var sizeScale: CGFloat!
+        
+        switch model {
+        case "iPhone 4": sizeScale = 0.9
+        case "iPhone 4S": sizeScale = 0.9
+        case "iPhone 5": sizeScale = 0.9
+        case "iPhone 5c": sizeScale = 0.9
+        case "iPhone 5s": sizeScale = 0.9
+        case "iPhone 6" : sizeScale = 1.0
+        case "iPhone 6 Plus" : sizeScale = 2.0
+        default:
+            sizeScale = 1.0
+        }
+        
         // Test if Last comment exists or not
         if comment_message_indent.length != 0 {
             self.bottomContentView.backgroundColor = MP_HEX_RGB("F7F7F7")
             comment_message_indent.addAttribute(NSParagraphStyleAttributeName, value: comment_message_style, range: NSMakeRange(0, comment_message_indent.length))
             self.commentMessageLabel.attributedText = comment_message_indent
-            self.commentMessageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0)
+            self.commentMessageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0 * sizeScale)
             self.commentMessageLabel.textColor = MP_HEX_RGB("000000")
             self.commentMessageLabel.numberOfLines = 0
         } else {
             // No Last Comment - Display a proper message
             self.bottomContentView.backgroundColor = MP_HEX_RGB("FFFFFF")
             self.commentMessageLabel.text = NSLocalizedString("first_comment", comment: "Be the first one to write a comment..")
-            self.commentMessageLabel.font = UIFont.italicSystemFontOfSize(13.0)
+            self.commentMessageLabel.font = UIFont.italicSystemFontOfSize(13.0 * sizeScale)
             self.commentMessageLabel.textColor = MP_HEX_RGB("919191")
             
         }
@@ -149,8 +170,13 @@ class TimelineTableViewCell : UITableViewCell {
         
         
         // Profile Picture
-        let profileImageURL:NSURL = NSURL(string: selfie.user.show_profile_pic())!
-        self.profile_pic.hnk_setImageFromURL(profileImageURL)
+        if selfie.user.show_profile_pic() != "missing" {
+            let profileImageURL:NSURL = NSURL(string: selfie.user.show_profile_pic())!
+            self.profile_pic.hnk_setImageFromURL(profileImageURL)
+        } else {
+            self.profile_pic.image = UIImage(named: "missing_user")
+        }
+        
         self.profile_pic.layer.cornerRadius = self.profile_pic.frame.size.width / 2
         self.profile_pic.clipsToBounds = true
         self.profile_pic.layer.borderWidth = 2.0
@@ -195,7 +221,7 @@ class TimelineTableViewCell : UITableViewCell {
                 "id": self.selfie.id.description
             ]
             
-            Alamofire.request(.POST, ApiLink.selfie_approve, parameters: parameters, encoding: .JSON)
+            request(.POST, ApiLink.selfie_approve, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
                         var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -203,7 +229,7 @@ class TimelineTableViewCell : UITableViewCell {
                         self.timelineVC.presentViewController(alert, animated: true, completion: nil)
                     } else {
                         //convert to SwiftJSON
-                        let json = JSON(mydata!)
+                        let json = JSON_SWIFTY(mydata!)
                         
                         if (json["success"].intValue == 0) {
                             var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -263,7 +289,7 @@ class TimelineTableViewCell : UITableViewCell {
                 "id": self.selfie.id.description
             ]
             
-            Alamofire.request(.POST, ApiLink.selfie_reject, parameters: parameters, encoding: .JSON)
+            request(.POST, ApiLink.selfie_reject, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
                         var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -271,7 +297,7 @@ class TimelineTableViewCell : UITableViewCell {
                         self.timelineVC.presentViewController(alert, animated: true, completion: nil)
                     } else {                        
                         //convert to SwiftJSON
-                        let json = JSON(mydata!)
+                        let json = JSON_SWIFTY(mydata!)
                         
                         if (json["success"].intValue == 0) {
                             var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -338,7 +364,7 @@ class TimelineTableViewCell : UITableViewCell {
         self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.timelineVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
     }
-    
+
     
     func tapGestureToProfil() {
         // Push to ProfilVC of the selfie's user
@@ -358,7 +384,7 @@ class TimelineTableViewCell : UITableViewCell {
             "user_id": self.selfie.last_comment.user_id
         ]
         
-        Alamofire.request(.POST, ApiLink.show_user_profile, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.show_user_profile, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -366,7 +392,7 @@ class TimelineTableViewCell : UITableViewCell {
                     self.timelineVC.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     var last_commenter: User!
                     
                     if json["user"].count != 0 {

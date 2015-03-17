@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class GlobalFunctions {
     
@@ -18,7 +18,7 @@ class GlobalFunctions {
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
         ]
         
-        Alamofire.request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -26,7 +26,7 @@ class GlobalFunctions {
                     controller.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     var current_user: User!
                     
                     if json["user"].count != 0 {
@@ -52,4 +52,5 @@ class GlobalFunctions {
         controller.navigationController?.pushViewController(searchUserVC, animated: true)
         
     }
+    
 }

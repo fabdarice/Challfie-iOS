@@ -15,7 +15,7 @@ class Friend: User {
     
 
     
-    override init(json: JSON) {
+    override init(json: JSON_SWIFTY) {
         super.init(json: json)
         self.nb_mutual_friends = json["nb_mutual_friend"].intValue
         self.nb_followers = json["nb_followers"].intValue        

@@ -14,7 +14,7 @@ class Comment {
     var username: String!
     var user_id: String!
     
-    init(json: JSON) {
+    init(json: JSON_SWIFTY) {
         self.id = json["id"].intValue
         self.message = json["message"].stringValue
         self.username = json["username"].stringValue

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -35,8 +36,8 @@
                                     <constraint firstAttribute="height" constant="40" id="Y5d-BF-v8d"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" text="Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpW-eK-0j7">
-                                <rect key="frame" x="10" y="55" width="397" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" text="Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="kpW-eK-0j7">
+                                <rect key="frame" x="10" y="55" width="397" height="16.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="1ED-eb-LYh"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="YH3-GX-E2u"/>
@@ -44,6 +45,9 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="1ED-eb-LYh"/>
@@ -58,12 +62,18 @@
                                 <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="15"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="challenge" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="51g-f2-feR" userLabel="challenge">
                                 <rect key="frame" x="60" y="25" width="347" height="17"/>
                                 <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="14"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ub-8t-U1W">
                                 <rect key="frame" x="384" y="7" width="23" height="20"/>
@@ -74,6 +84,9 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="12"/>
                                 <color key="textColor" red="0.50196081399917603" green="0.50196081399917603" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t0Y-sc-DcO">
                                 <rect key="frame" x="138" y="6" width="27" height="16"/>
@@ -84,22 +97,25 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                                 <color key="textColor" red="0.50196081399917603" green="0.50196081399917603" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tHL-35-V04" userLabel="selfieImage">
-                                <rect key="frame" x="0.0" y="81" width="417" height="392"/>
+                                <rect key="frame" x="0.0" y="81.5" width="417" height="392"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="tHL-35-V04" secondAttribute="height" multiplier="17:16" id="72E-A1-u45"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_comment" translatesAutoresizingMaskIntoConstraints="NO" id="Tcr-EA-Lld" userLabel="commentImage">
-                                <rect key="frame" x="10" y="478" width="15" height="15"/>
+                                <rect key="frame" x="10" y="478.5" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="dD0-p7-DmN"/>
                                     <constraint firstAttribute="height" constant="15" id="hRV-ty-zq3"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="745" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LyK-Fp-pCC" userLabel="numberOfCommentsButton">
-                                <rect key="frame" x="30" y="480" width="73" height="12"/>
+                                <rect key="frame" x="30" y="480.5" width="73" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="5nJ-OR-Hwc"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="xgi-2v-jee"/>
@@ -119,36 +135,42 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disapprove" translatesAutoresizingMaskIntoConstraints="NO" id="GUb-Bl-pC7">
-                                <rect key="frame" x="316" y="478" width="15" height="15"/>
+                                <rect key="frame" x="316" y="478.5" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="GPU-ft-2uZ"/>
                                     <constraint firstAttribute="width" constant="15" id="bjO-bB-zsW"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="743" text="5 approved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8kb-Ml-Unw">
-                                <rect key="frame" x="250" y="480" width="56" height="12"/>
+                                <rect key="frame" x="250" y="480.5" width="56" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="CMO-mk-Tpi"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_approve" translatesAutoresizingMaskIntoConstraints="NO" id="bOX-3q-4tx" userLabel="approveImage">
-                                <rect key="frame" x="230" y="478" width="15" height="15"/>
+                                <rect key="frame" x="230" y="478.5" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="7JL-Ph-PQK"/>
                                     <constraint firstAttribute="width" constant="15" id="Far-7D-ZKb"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="742" text="0 disapproved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Zv-hg-7x6">
-                                <rect key="frame" x="336" y="480" width="71" height="12"/>
+                                <rect key="frame" x="336" y="480.5" width="71" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="EKN-Wd-1ql"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9t-KM-TnB" userLabel="approveButton">
                                 <rect key="frame" x="217" y="544" width="90" height="28"/>
@@ -203,10 +225,10 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iHd-2t-eVz" userLabel="bottomContentView">
-                                <rect key="frame" x="0.0" y="503" width="417" height="25.5"/>
+                                <rect key="frame" x="0.0" y="503.5" width="417" height="25"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="741" text="comment_message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HOj-Lg-8Vl">
-                                        <rect key="frame" x="10" y="5" width="397" height="15.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="741" text="comment_message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="HOj-Lg-8Vl">
+                                        <rect key="frame" x="10" y="5" width="397" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="wWE-Ki-Pj7"/>
                                         </constraints>
@@ -222,6 +244,9 @@
                                         <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="14"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -243,7 +268,7 @@
                                 </variation>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qxn-zj-R6p" userLabel="challenge_status_Image">
-                                <rect key="frame" x="352" y="86" width="60" height="60"/>
+                                <rect key="frame" x="357" y="76.5" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="BBE-36-8xH"/>
                                     <constraint firstAttribute="width" constant="60" id="kzo-f7-ard"/>
@@ -258,7 +283,7 @@
                             <constraint firstItem="8kb-Ml-Unw" firstAttribute="leading" secondItem="bOX-3q-4tx" secondAttribute="trailing" constant="5" id="4tO-Sp-sHr"/>
                             <constraint firstItem="Tcr-EA-Lld" firstAttribute="leading" secondItem="ppU-Gs-lOc" secondAttribute="leading" constant="10" id="8hu-UY-lAS"/>
                             <constraint firstAttribute="bottom" secondItem="r9t-KM-TnB" secondAttribute="bottom" constant="16.5" id="9m8-es-bBh"/>
-                            <constraint firstAttribute="trailing" secondItem="Qxn-zj-R6p" secondAttribute="trailing" constant="5" id="AGF-IK-oY5"/>
+                            <constraint firstAttribute="trailing" secondItem="Qxn-zj-R6p" secondAttribute="trailing" id="AGF-IK-oY5"/>
                             <constraint firstItem="HN0-b1-zty" firstAttribute="width" secondItem="GXg-Wp-ldH" secondAttribute="width" id="BQw-cT-Lje"/>
                             <constraint firstItem="51g-f2-feR" firstAttribute="top" secondItem="pUE-Uc-2B5" secondAttribute="bottom" constant="1" id="CUq-uj-gyE"/>
                             <constraint firstAttribute="trailing" secondItem="tHL-35-V04" secondAttribute="trailing" id="ClK-z4-cdo"/>
@@ -304,7 +329,7 @@
                             <constraint firstItem="tHL-35-V04" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="10" id="vNp-ZS-ZhA"/>
                             <constraint firstItem="xVK-I9-Krn" firstAttribute="leading" secondItem="ppU-Gs-lOc" secondAttribute="leading" constant="10" id="xSH-n9-Gdn"/>
                             <constraint firstItem="4Ub-8t-U1W" firstAttribute="top" secondItem="ppU-Gs-lOc" secondAttribute="top" constant="7" id="y4T-U8-Rkn"/>
-                            <constraint firstItem="Qxn-zj-R6p" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="15" id="yd8-0j-RoQ"/>
+                            <constraint firstItem="Qxn-zj-R6p" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="5" id="yd8-0j-RoQ"/>
                             <constraint firstItem="Tcr-EA-Lld" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="5" id="zoz-YI-43V"/>
                         </constraints>
                         <variation key="default">

@@ -25,7 +25,11 @@ class Selfie {
     var user_vote_status: Int!
     var last_comment: Comment!
     
-    init(json:JSON) {
+    init(id: Int) {
+        self.id = id
+    }
+    
+    init(json:JSON_SWIFTY) {
         self.id = json["id"].intValue
         self.message = json["message"].stringValue
         self.photo = json["photo"].stringValue

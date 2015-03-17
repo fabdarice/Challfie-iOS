@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class FriendRequestTVCell : FriendTVCell {
     @IBOutlet weak var profilePic2: UIImageView!
@@ -39,9 +39,15 @@ class FriendRequestTVCell : FriendTVCell {
         // Level
         self.levelLabel2.text = friend.book_level
         
+        
         // User Profile Picture
-        let profilePicURL:NSURL = NSURL(string: friend.show_profile_pic())!
-        self.profilePic2.hnk_setImageFromURL(profilePicURL)
+        if friend.show_profile_pic() != "missing" {
+            let profilePicURL:NSURL = NSURL(string: friend.show_profile_pic())!
+            self.profilePic2.hnk_setImageFromURL(profilePicURL)
+        } else {
+            self.profilePic2.image = UIImage(named: "missing_user")
+        }
+        
         self.profilePic2.layer.cornerRadius = self.profilePic2.frame.size.width / 2
         self.profilePic2.clipsToBounds = true
         self.profilePic2.layer.borderWidth = 2.0
@@ -66,7 +72,7 @@ class FriendRequestTVCell : FriendTVCell {
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
             "user_id": self.friend.id.description
         ]
-        Alamofire.request(.POST, ApiLink.accept_request, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.accept_request, parameters: parameters, encoding: .JSON)
         self.followButton.hidden = false
         self.acceptButton.hidden = true
         self.declineButton.hidden = true
@@ -92,7 +98,7 @@ class FriendRequestTVCell : FriendTVCell {
                 "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
                 "user_id": self.friend.id.description
             ]
-            Alamofire.request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
+            request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
             self.followButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
             self.not_following = false
         }

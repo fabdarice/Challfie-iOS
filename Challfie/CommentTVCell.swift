@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class CommentTVCell : UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
@@ -23,6 +23,22 @@ class CommentTVCell : UITableViewCell {
                 
         // view background color
         self.backgroundColor = MP_HEX_RGB("F7F7F7")
+        
+        // Custom Label Size based on Device
+        let model = UIDevice.currentDevice().modelName
+        var sizeScale: CGFloat!
+        
+        switch model {
+        case "iPhone 4": sizeScale = 0.9
+        case "iPhone 4S": sizeScale = 0.9
+        case "iPhone 5": sizeScale = 0.9
+        case "iPhone 5c": sizeScale = 0.9
+        case "iPhone 5s": sizeScale = 0.9
+        case "iPhone 6" : sizeScale = 1.0
+        case "iPhone 6 Plus" : sizeScale = 2.0
+        default:
+            sizeScale = 1.0
+        }
         
         // Last Comment Username
         //self.usernameLabel.setNeedsUpdateConstraints()
@@ -42,7 +58,7 @@ class CommentTVCell : UITableViewCell {
         // Test if Last comment exists or not
         comment_message_indent.addAttribute(NSParagraphStyleAttributeName, value: comment_message_style, range: NSMakeRange(0, comment_message_indent.length))
         self.messageLabel.attributedText = comment_message_indent
-        self.messageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0)
+        self.messageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0 * sizeScale)
         self.messageLabel.textColor = MP_HEX_RGB("000000")
         self.messageLabel.numberOfLines = 0
         self.messageLabel.sizeToFit()
@@ -57,7 +73,7 @@ class CommentTVCell : UITableViewCell {
             "user_id": self.comment.user_id
         ]
         
-        Alamofire.request(.POST, ApiLink.show_user_profile, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.show_user_profile, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -65,7 +81,7 @@ class CommentTVCell : UITableViewCell {
                     self.oneSelfieVC.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     var commenter: User!
                     

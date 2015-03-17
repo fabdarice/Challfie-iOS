@@ -28,9 +28,7 @@
                 <outlet property="followingNumberLabel" destination="M8D-kc-LgB" id="9av-3O-1mN"/>
                 <outlet property="levelLabel" destination="BbW-sL-qNh" id="yvQ-4e-zMY"/>
                 <outlet property="loadingIndicator" destination="Y2z-SD-Nec" id="stI-pP-6iJ"/>
-                <outlet property="profilImageTopConstraint" destination="JIq-4W-87F" id="eZ8-aS-MIZ"/>
                 <outlet property="profileImage" destination="5rX-uQ-eip" id="EMX-zo-nCY"/>
-                <outlet property="progressView" destination="NSu-Wc-MOf" id="V57-3f-off"/>
                 <outlet property="scrollView" destination="Kpu-Qw-Zck" id="GuN-ph-xdb"/>
                 <outlet property="selfiesBlockView" destination="QUQ-sz-I4r" id="uxH-H1-ms2"/>
                 <outlet property="selfiesCollectionView" destination="r88-ii-Iox" id="cce-FE-2Nj"/>
@@ -66,7 +64,7 @@
                                 </collectionView>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Y2z-SD-Nec">
                                     <rect key="frame" x="142" y="225" width="37" height="37"/>
-                                    <color key="color" red="0.0" green="0.25098040699958801" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </activityIndicatorView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2GA-u5-3l3" userLabel="userInfosContainer">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
@@ -78,25 +76,19 @@
                                                 <constraint firstAttribute="width" constant="90" id="gIc-ZP-7oQ"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie III" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbW-sL-qNh" userLabel="levelLabel">
-                                            <rect key="frame" x="128" y="113" width="64" height="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbW-sL-qNh" userLabel="levelLabel">
+                                            <rect key="frame" x="132" y="113" width="56.5" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="NSu-Wc-MOf">
-                                            <rect key="frame" x="0.0" y="15" width="320" height="2"/>
-                                        </progressView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="NSu-Wc-MOf" secondAttribute="trailing" id="8QB-gP-xPy"/>
                                         <constraint firstItem="BbW-sL-qNh" firstAttribute="top" secondItem="5rX-uQ-eip" secondAttribute="bottom" constant="10" id="Fec-wy-zjV"/>
                                         <constraint firstItem="5rX-uQ-eip" firstAttribute="top" secondItem="2GA-u5-3l3" secondAttribute="topMargin" constant="5" id="JIq-4W-87F"/>
                                         <constraint firstAttribute="centerX" secondItem="5rX-uQ-eip" secondAttribute="centerX" id="S8r-2m-f6r"/>
                                         <constraint firstAttribute="centerX" secondItem="BbW-sL-qNh" secondAttribute="centerX" id="eVQ-7m-CGJ"/>
                                         <constraint firstAttribute="height" constant="130" id="kdm-Ox-TFZ"/>
-                                        <constraint firstItem="NSu-Wc-MOf" firstAttribute="top" secondItem="2GA-u5-3l3" secondAttribute="top" constant="15" id="zE2-7a-QIA"/>
-                                        <constraint firstItem="NSu-Wc-MOf" firstAttribute="leading" secondItem="2GA-u5-3l3" secondAttribute="leading" id="zpI-B0-Tjq"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ROt-x2-Exv" userLabel="blocksContainer">
@@ -105,17 +97,20 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUQ-sz-I4r" userLabel="selfiesBlockView">
                                             <rect key="frame" x="13" y="8" width="72" height="50"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="234" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qy0-oZ-Yg1" userLabel="selfiesNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="72" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qy0-oZ-Yg1" userLabel="selfiesNumberLabel">
+                                                    <rect key="frame" x="0.0" y="3" width="72" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SELFIES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Iz-P9-iA0" userLabel="selfiesLabel">
-                                                    <rect key="frame" x="0.0" y="27" width="72" height="15"/>
+                                                    <rect key="frame" x="0.0" y="26" width="72" height="14.5"/>
                                                     <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -135,17 +130,20 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mRK-5z-LVy" userLabel="followersBlockView">
                                             <rect key="frame" x="161" y="8" width="72" height="50"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="111" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="HBk-cE-e3q" userLabel="followersNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="72" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="HBk-cE-e3q" userLabel="followersNumberLabel">
+                                                    <rect key="frame" x="0.0" y="3" width="72" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FOLLOWERS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wBu-P7-7EE" userLabel="followersLabel">
-                                                    <rect key="frame" x="0.0" y="27" width="72" height="15"/>
+                                                    <rect key="frame" x="0.0" y="26" width="72" height="14.5"/>
                                                     <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -162,7 +160,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="deH-Dl-eHo" userLabel="followingBlockView">
                                             <rect key="frame" x="87" y="8" width="72" height="50"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="115" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="M8D-kc-LgB" userLabel="followingNumberLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="M8D-kc-LgB" userLabel="followingNumberLabel">
                                                     <rect key="frame" x="0.0" y="3" width="71" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="QK5-zG-ZvF"/>
@@ -176,6 +174,9 @@
                                                     <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -190,17 +191,20 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KyL-b6-wuA" userLabel="booksBlockView">
                                             <rect key="frame" x="235" y="8" width="72" height="50"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="OWN-Fq-MbD" userLabel="booksNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="72" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="OWN-Fq-MbD" userLabel="booksNumberLabel">
+                                                    <rect key="frame" x="0.0" y="3" width="72" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BOOKS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TZA-1L-wLm" userLabel="booksLabel">
-                                                    <rect key="frame" x="0.0" y="28" width="72" height="15"/>
+                                                    <rect key="frame" x="0.0" y="27" width="72" height="14.5"/>
                                                     <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <constraints>

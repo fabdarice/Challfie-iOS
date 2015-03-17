@@ -13,12 +13,14 @@ class Book {
     var name: String!
     var cover: String!
     var is_unlocked: Bool!
+    var tier: Int!
     var challenges_array: [Challenge]!
     
-    init(json: JSON) {
+    init(json: JSON_SWIFTY) {
         self.id = json["id"].intValue
         self.name = json["name"].stringValue
         self.cover = json["cover"].stringValue
+        self.tier = json["tier"].intValue
         self.is_unlocked = json["is_unlocked"].boolValue
         self.challenges_array = []
     }

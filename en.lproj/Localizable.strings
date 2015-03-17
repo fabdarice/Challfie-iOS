@@ -9,8 +9,8 @@
 // Account Creation
 Account_creation_failed = "Account creation failed";
 Username = "Username";
-Firstname = "Firstname";
-Lastname = "Lastname";
+Firstname = "First name";
+Lastname = "Last name";
 Password = "Password";
 
 // Login Page
@@ -23,11 +23,16 @@ Email_sent = "Email sent";
 Pull_to_refresh = "Pull down to refreh";
 Refreshing_data = "Refreshing Data..";
 cancel = "Cancel";
+confirm = "Confirm";
+
+// Facebook Choose Username Page
+choose_username = "Select your username";
+only_alphanumeric = "* must contain only alphanumeric characters";
 
 // Popcup
 Close = "Close";
 Error = "Error";
-Generic_error = "Please check your network connection. \nIf this doesn't resolve the problem, please report it to us on the website at www.challfie.com - Section 'Contact Us'";
+Generic_error = "Please check your network connection. \nIf the problem persists, report it to us through the \"Contact\" section or via challfie.com";
 
 // Selfie
 Comment = " comment";
@@ -37,7 +42,8 @@ Approves = " approved";
 Rejects = " rejected";
 Reject = " rejected";
 first_comment = "Be the first one to write a comment..";
-no_selfie = "Welcome to Challfie!\n\nGet started by adding your friends and take your first Selfie Challenge.";
+no_selfie = "Welcome to Challfie!\n\nGet started by adding your friends and take your first Challfie.";
+daily = "Daily";
 
 // Comment
 Write_Comment = "Write a comment..";
@@ -58,14 +64,14 @@ Mutual_friend = " mutual friend";
 Number_followers = " followers";
 Number_follower = " follower";
 Friend_request = "Friend Request";
-Friends_suggestions = "Friends Suggestions";
-Friends_no_results = "No results found.. Link your Facebook account if you haven't done it already to look for your Facebook's friends on Challfie.";
+Friends_suggestions = "Friend Suggestions";
+Friends_no_results = "No results found..";
 Search_facebook_friends = "Search for your Facebook's Friends";
 
 // Profil Page
 no_selfies = "This user doesn't have any selfies yet..";
-is_not_friend = "Follow this user to see his/her selfie challenges..";
-is_pending_request = "Your following request have been sent. Waiting for approval..";
+is_not_friend = "Follow this user to see his/her Challfies..";
+is_pending_request = "Your request have been sent. Waiting for approval..";
 Log_out = "Log out";
 Books = "books";
 change_profil_pic = "Change Your Profile Picture";
@@ -75,7 +81,7 @@ take_picture = "Take a Picture";
 
 // Challenge Page
 book_of_challenges = "Book of Challenges";
-book_is_locked = "Unlock this book by getting your selfie challenges approved by your friends. Check your progress in the \"Level Progression\" tab";
+book_is_locked = "Unlock this book by getting your Challfies approved by your friends.";
 book_locked = "Book Locked";
 difficulty = "Difficulty";
 next_level = "Next Level";
@@ -83,6 +89,7 @@ current_level = "Current Level";
 
 // Search User
 no_users_found = "No results found";
+search_username = "Search by Username or Email";
 
 // Take A Picture Page
 add_message = "Add a message..";
@@ -91,8 +98,25 @@ pick_a_challenge = "Pick a Challenge";
 settings = "Settings";
 privacy_text = "Only visible to your followers";
 shareFacebook_text = "Share on Facebook";
-search_a_challenge = "Search a Challenge";
-add_a_new_selfie = "Add a new Challfie";
-create_selfie_missing_image = "Please select a picture.";
+search_a_challenge = "Filter challenges";
+add_a_new_selfie = "Add a New Challfie";
+create_selfie_missing_image = "Selfie missing.. Please select a picture..";
+create_selfie_missing_challenge = "Please select a challenge..";
+uploading_selfie = "Uploading Selfie...";
+upload_failed = "Upload Failed :(";
+upload_completed = "Upload Completed!";
+
+// Contact Page
+report_bug = "Report a bug";
+require_account_assistance = "Request assistance for your account";
+report_content = "Report obscene, offensive content";
+give_suggestions = "Give suggestions for the application";
+others = "Others";
+
+// Side Menu
+daily_challenge = "Daily Challenge";
+ranking = "Ranking";
+statistics = "Statistics";
+about_us = "About Us";
 
 

@@ -9,13 +9,15 @@
 import Foundation
 
 struct ApiLink {
-    static var host = "http://ADM-ML-C02MM24.local:3000"
-    //static var host = "https://challfie.com"
+    //static var host = "http://ADM-ML-C02MM24.local:3000"
+    static var host = "https://challfie.com"
     
     // Register and Sign_in
     static var register = host + "/api/users"
     static var sign_in = host + "/api/users/sign_in"
     static var reset_password = host + "/api/users/password"
+    static var facebook_register = host + "/api/users/facebook"
+    static var facebook_link_account = host + "/api/user/facebook_link"
     
     // SelfieController
     static var timeline = host + "/api/selfies"
@@ -29,7 +31,6 @@ struct ApiLink {
     // CommentController
     static var create_comment = host + "/api/comments"
     
-    
     // AlertController - NotificationController
     static var alerts_list = host + "/api/notifications"
     static var alert_refresh = host + "/api/notifications/refresh"    
@@ -40,7 +41,7 @@ struct ApiLink {
     static var show_my_profile = host + "/api/current_user"
     static var user_selfies = host + "/api/user/selfies"
     static var autocomplete_search_user = host + "/api/user/autocomplete_search_user"
-    static var update_profile_pic = host + "/api/user/update"
+    static var update_user = host + "/api/user/update"
     
     // FriendsController
     static var suggestions_and_request = host + "/api/suggestions_and_request"
@@ -57,4 +58,11 @@ struct ApiLink {
     
     // ChallengesController
     static var challenges_list = host + "/api/challenges"
+    static var daily_challenge = host + "/api/daily_challenge"
+    
+    // ContactController 
+    static var create_contact = host + "/api/contact/create"
+    
+    // DevicesController
+    static var create_or_update_device = host + "/api/device/create"
 }

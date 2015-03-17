@@ -10,17 +10,13 @@ import Foundation
 
 class Challenge {
     var id:Int!
-    var created_at: String!
     var description: String!
     var difficulty: Int!
-    var point: Int!
     
-    init(json: JSON) {
+    init(json: JSON_SWIFTY) {
         self.id = json["id"].intValue
-        self.created_at = json["created_at"].stringValue
         self.description = json["description"].stringValue
         self.difficulty = json["difficulty"].intValue
-        self.point = json["point"].intValue
     }
     
 }

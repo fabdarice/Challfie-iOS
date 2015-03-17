@@ -8,47 +8,36 @@
 
 import Foundation
 
-import Alamofire
+//import Alamofire
 
 class BookVC : UIViewController, UIPageViewControllerDataSource {
     
-    @IBOutlet weak var topBarHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topBarView: UIView!
     @IBOutlet weak var booksTabHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var topBar_bookstab_vertical_constraint: NSLayoutConstraint!
     @IBOutlet weak var challengeBookButton: UIButton!
-    @IBOutlet weak var profilImage: UIImageView!    
-    @IBOutlet weak var searchImage: UIImageView!
     
-    var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     var books_array:[Book] = []
     var pageViewController: UIPageViewController?
-
+    var last_book_unlocked_index: Int = 0
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()                
+        // navigationController Title
+        let logoImageView = UIImageView(image: UIImage(named: "challfie_letter"))
+        logoImageView.frame = CGRectMake(0.0, 0.0, 150.0, 35.0)
+        logoImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        self.navigationItem.titleView = logoImageView
+        
+        // navigationController Left and Right Button
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
         
         // Styling Background
         self.view.backgroundColor = MP_HEX_RGB("1A596B")
         
-        // Set Background color for topBar
-        self.topBarView.backgroundColor = MP_HEX_RGB("30768A")
-        
         // Book of Challenges Button
         self.challengeBookButton.setTitle(NSLocalizedString("book_of_challenges", comment: "Book of Challenges"), forState: UIControlState.Normal)
-        
-        // set link to my profil
-        var myProfiltapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        myProfiltapGesture.addTarget(self, action: "tapGestureToProfil")
-        self.profilImage.addGestureRecognizer(myProfiltapGesture)
-        self.profilImage.userInteractionEnabled = true
-        
-        // set link to Search User xib
-        var searchPagetapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        searchPagetapGesture.addTarget(self, action: "tapGestureToSearchPage")
-        self.searchImage.addGestureRecognizer(searchPagetapGesture)
-        self.searchImage.userInteractionEnabled = true
         
         // call API to load list of books of challenge
         self.loadData()
@@ -61,27 +50,44 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
         
-        // Hide navigationController
-        self.navigationController?.navigationBar.hidden = true
+        // Show StatusBarBackground
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = false
+        
+        // show navigation and hide on swipe & keboard Appears
+        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.hidesBarsOnSwipe = true
+        self.navigationController?.hidesBarsWhenKeyboardAppears = true
+    }
+    
+    func toggleSideMenu() {
+        toggleSideMenuView()
     }
 
     func loadData() {
-        self.loadingIndicator.startAnimating()
+        // add loadingIndicator pop-up
+        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        loadingActivityVC.view.tag = 21
+        self.view.addSubview(loadingActivityVC.view)
         let parameters:[String: String] = [
             "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
         ]
         
-        Alamofire.request(.POST, ApiLink.books_list, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.books_list, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
+
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
-                    println(mydata)
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     if json["books"].count != 0 {
                         for var i:Int = 0; i < json["books"].count; i++ {
@@ -102,15 +108,9 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
                 // call a function to initiate the UIPageViewController
                 self.createPageViewController()
                 
-                self.loadingIndicator.stopAnimating()
+
         }
         
-    }
-    
-    /// Function to push to my Profil
-    func tapGestureToProfil() {
-        var globalFunctions = GlobalFunctions()
-        globalFunctions.tapGestureToProfil(self)
     }
     
     // Function to push to Search Page
@@ -127,12 +127,17 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
         self.pageViewController = self.storyboard!.instantiateViewControllerWithIdentifier("booksPageVC") as? UIPageViewController
         self.pageViewController?.dataSource = self
         if self.books_array.count > 0 {
-            let firstBookContentVC = getBookContentVC(0)!
-            let startingViewControllers: NSArray = [firstBookContentVC]
+            for var i = 0; i < self.books_array.count; i++ {
+                if self.books_array[i].is_unlocked == true && self.books_array[i].tier != 100 {
+                    last_book_unlocked_index = i
+                }
+            }
+            let lastBookContentVC = getBookContentVC(last_book_unlocked_index)!
+            let startingViewControllers: NSArray = [lastBookContentVC]
             self.pageViewController?.setViewControllers(startingViewControllers, direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         }
         
-        let heightOtherView = self.topBarHeightConstraint.constant + self.booksTabHeightConstraint.constant + self.topBar_bookstab_vertical_constraint.constant
+        let heightOtherView =  self.booksTabHeightConstraint.constant + self.topBar_bookstab_vertical_constraint.constant
         
         self.pageViewController?.view.frame = CGRectMake(0, heightOtherView, self.view.frame.size.width, self.view.frame.size.height - heightOtherView)
         
@@ -189,7 +194,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
     }
     
     func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return 0
+        return last_book_unlocked_index
     }
 
 

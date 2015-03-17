@@ -6,7 +6,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchUserVC" customModule="Challfie" customModuleProvider="target">
             <connections>
-                <outlet property="loadingIndicator" destination="sRP-Mj-iUM" id="Q9C-tw-WOz"/>
                 <outlet property="searchBar" destination="zcd-1f-sRv" id="pGC-et-jLj"/>
                 <outlet property="tableView" destination="H8G-Lu-a3k" id="Opb-jq-Bxa"/>
                 <outlet property="topView" destination="5br-9y-VgF" id="dcY-TP-5e0"/>
@@ -41,22 +40,16 @@
                     <rect key="frame" x="0.0" y="45" width="320" height="523"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="sRP-Mj-iUM">
-                    <rect key="frame" x="141.5" y="88" width="37" height="37"/>
-                    <color key="color" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="5br-9y-VgF" firstAttribute="top" secondItem="a6h-2p-WzI" secondAttribute="top" id="19K-KR-G8Q"/>
-                <constraint firstItem="sRP-Mj-iUM" firstAttribute="top" secondItem="5br-9y-VgF" secondAttribute="bottom" constant="43" id="1EN-Ou-Y2i"/>
                 <constraint firstAttribute="trailing" secondItem="H8G-Lu-a3k" secondAttribute="trailing" id="2KF-98-gcd"/>
                 <constraint firstItem="H8G-Lu-a3k" firstAttribute="leading" secondItem="a6h-2p-WzI" secondAttribute="leading" id="51T-ih-5Rw"/>
                 <constraint firstItem="5br-9y-VgF" firstAttribute="leading" secondItem="a6h-2p-WzI" secondAttribute="leading" id="B5c-kf-Lte"/>
                 <constraint firstAttribute="bottom" secondItem="H8G-Lu-a3k" secondAttribute="bottom" id="Jgq-jz-nub"/>
                 <constraint firstAttribute="trailing" secondItem="5br-9y-VgF" secondAttribute="trailing" id="ZaR-3W-ZFy"/>
                 <constraint firstItem="H8G-Lu-a3k" firstAttribute="top" secondItem="5br-9y-VgF" secondAttribute="bottom" id="pzo-vC-2ZK"/>
-                <constraint firstAttribute="centerX" secondItem="sRP-Mj-iUM" secondAttribute="centerX" id="vVa-FC-UsN"/>
             </constraints>
             <point key="canvasLocation" x="43" y="9"/>
         </view>

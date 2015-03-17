@@ -7,14 +7,18 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
     
     @IBOutlet weak var timelineTableView: UITableView!
-    @IBOutlet weak var topBarView: UIView!
-    @IBOutlet weak var myProfilImage: UIImageView!
-    @IBOutlet weak var searchImage: UIImageView!
+    @IBOutlet weak var uploadSelfieView: UIView!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var uploadSelfieImage: UIImageView!
+    @IBOutlet weak var uploadSelfieLabel: UILabel!
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var retryButton: UIButton!
     
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     //var footerView:UIView!
@@ -23,7 +27,10 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selfies_array_id:[Int] = []
     var page = 1
     var refreshControl:UIRefreshControl!  // An optional variable
+    var progressTimer: NSTimer!
+    var progressData:Float = 0.1
     var first_time = true
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +38,30 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Styling the navigationController
         self.navigationController?.navigationBar.barTintColor = MP_HEX_RGB("30768A")
         self.navigationController?.navigationBar.tintColor = MP_HEX_RGB("FFFFFF")        
-        self.navigationController?.navigationBar.translucent = false        
+        self.navigationController?.navigationBar.translucent = false
+        
+        // navigationController Title
+        let logoImageView = UIImageView(image: UIImage(named: "challfie_letter"))
+        logoImageView.frame = CGRectMake(0.0, 0.0, 150.0, 35.0)
+        logoImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        self.navigationItem.titleView = logoImageView
+        
+        if let navBar = self.navigationController?.navigationBar {
+            self.view.bringSubviewToFront(navBar)
+        }
+        
+        // Add Background for status bar
+        let statusBarViewBackground = UIView(frame: CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, 20.0))
+        statusBarViewBackground.backgroundColor = MP_HEX_RGB("30768A")
+        statusBarViewBackground.tag = 22
+        UIApplication.sharedApplication().keyWindow?.addSubview(statusBarViewBackground)
+        
+        // navigationController Left and Right Button
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
+        
+        // hide uploadSelfie View
+        self.uploadSelfieView.hidden = true
         
         // Remove separator line from UITableView
         self.timelineTableView.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -47,23 +77,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.loadingIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 44)
         self.loadingIndicator.tintColor = MP_HEX_RGB("30768A")
         
-        // Set Background color for topBar
-        self.topBarView.backgroundColor = MP_HEX_RGB("30768A")
-        
-        // set link to my profil
-        var myProfiltapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        myProfiltapGesture.addTarget(self, action: "tapGestureToProfil")
-        self.myProfilImage.addGestureRecognizer(myProfiltapGesture)
-        self.myProfilImage.userInteractionEnabled = true
-        
-        
-        // set link to Search User xib
-        var searchPagetapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        searchPagetapGesture.addTarget(self, action: "tapGestureToSearchPage")
-        self.searchImage.addGestureRecognizer(searchPagetapGesture)
-        self.searchImage.userInteractionEnabled = true
-        
-        
         // Do any additional setup after loading the view, typically from a nib.
         self.timelineTableView.delegate = self
         self.timelineTableView.dataSource = self
@@ -77,6 +90,19 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         timelineTableView.rowHeight = UITableViewAutomaticDimension
         timelineTableView.estimatedRowHeight = 444.0
         
+        
+        // Add right swipe gesture recognizer
+        
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "toggleSideMenu")
+        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
+        self.timelineTableView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        
+        // Add left swipe gesture recognizer
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "toggleSideMenu")
+        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+        //sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        self.timelineTableView.addGestureRecognizer(leftSwipeGestureRecognizer)
+        
         // Load Selfies for User Timeline
         self.refresh(actionFromInit: true)
 
@@ -89,16 +115,48 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Display tabBarController
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
-        
-        // Hide navigationController
-        self.navigationController?.navigationBar.hidden = true
-        
+
         // Refresh the page if not the first time
-        if self.first_time == false {
-            refresh(actionFromInit: false)
+        if self.first_time == false && self.uploadSelfieView.hidden == true {
+            self.refresh(actionFromInit: false)
         }
         
+        // Show Status Bar because GKImagePicker hides it (From TakePicture)
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+        
+        // Hide on swipe & keboard Appears
+        self.navigationController?.hidesBarsOnSwipe = true
+        self.navigationController?.hidesBarsWhenKeyboardAppears = true
+        
+        // Show StatusBarBackground
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = false
+        
         self.first_time = false
+    }
+    
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        if self.uploadSelfieView.hidden == false {
+            self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
+        }
+    }
+    
+    func toggleSideMenu() {
+        println("ENTER SWIPE")
+        toggleSideMenuView()
+    }
+    
+    func updateProgress() {
+        if self.progressData < 0.9 {
+            self.progressData += 0.1
+            self.progressView.progress = self.progressData
+        } else {
+            self.progressTimer.invalidate()
+        }
     }
     
     
@@ -139,15 +197,15 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         
-        Alamofire.request(.POST, api_link, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in                
+        request(.POST, api_link, parameters: parameters, encoding: .JSON)
+            .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     if actionFromInit == false {
                         self.selfies_array.removeAll(keepCapacity: false)
@@ -175,6 +233,8 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         self.timelineTableView.reloadData()
                     }
                     
+                    
+                    
                     // Update Badge of Alert TabBarItem
                     var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
                     if json["meta"]["new_alert_nb"] != 0 {                        
@@ -191,6 +251,10 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         friend_tabBarItem.badgeValue = nil
                     }
                     
+                    var badgeNumber : Int!
+                    badgeNumber = json["meta"]["new_alert_nb"].intValue + json["meta"]["new_friends_request_nb"].intValue
+                    
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
                     
                     if actionFromInit == true {
                         self.display_empty_message()
@@ -214,7 +278,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             "page": self.page.description
         ]
         
-        Alamofire.request(.POST, ApiLink.timeline, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.timeline, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -222,7 +286,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
@@ -271,21 +335,30 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    /// Function to push to my Profil
-    func tapGestureToProfil() {
-        var globalFunctions = GlobalFunctions()
-        globalFunctions.tapGestureToProfil(self)
-    }
-    
     // Function to push to Search Page
     func tapGestureToSearchPage() {
         var globalFunctions = GlobalFunctions()
         globalFunctions.tapGestureToSearchPage(self, backBarTitle: "Timeline")
 
     }
-
     
-    // UITableViewDelegate Functions
+    @IBAction func closeUploadSelfieView(sender: UIButton) {
+        self.uploadSelfieView.hidden = true
+        self.tableViewTopConstraint.constant = 0.0
+    }
+    
+    @IBAction func retryUploadSelfie(sender: UIButton) {
+        if let viewControllers = self.tabBarController?.viewControllers {
+            let navController = viewControllers[2] as UINavigationController
+            var takepictureVC = navController.viewControllers[0] as TakePictureVC
+            takepictureVC.createSelfie()
+            self.progressData = 0.1
+            self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
+        }
+    }
+    
+    
+    // MARK - UITableViewDelegate Functions
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.selfies_array.count
     }
@@ -304,8 +377,16 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.None
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return false
+    }
+    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-            
+        hideSideMenuView()
         // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
         if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height - self.timelineTableView.bounds.size.height)) {
             // Add Loading Indicator to footerView
@@ -315,6 +396,8 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.loadData()
         }
     }
+    
+
  
 
 }

@@ -7,15 +7,10 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    
-    @IBOutlet weak var topBarView: UIView!
     @IBOutlet weak var tableView: UITableView!    
-    @IBOutlet weak var myProfilImage: UIImageView!
-    @IBOutlet weak var searchImage: UIImageView!
     
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     var page = 1
@@ -24,7 +19,6 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     var alerts_array_id:[Int] = []
     var first_time = true
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,6 +26,16 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.navigationBar.barTintColor = MP_HEX_RGB("30768A")
         self.navigationController?.navigationBar.tintColor = MP_HEX_RGB("FFFFFF")
         self.navigationController?.navigationBar.translucent = false
+
+        // navigationController Title
+        let logoImageView = UIImageView(image: UIImage(named: "challfie_letter"))
+        logoImageView.frame = CGRectMake(0.0, 0.0, 150.0, 35.0)
+        logoImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        self.navigationItem.titleView = logoImageView
+        
+        // navigationController Left and Right Button
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
         
         // Remove tableview Inset Separator
         self.tableView.layoutMargins = UIEdgeInsetsZero
@@ -48,25 +52,9 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.loadingIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 44)
         self.loadingIndicator.tintColor = MP_HEX_RGB("30768A")
         
-        // Set Background color for topBar
-        self.topBarView.backgroundColor = MP_HEX_RGB("30768A")
-        
-        // set link to my profil
-        var myProfiltapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        myProfiltapGesture.addTarget(self, action: "tapGestureToProfil")
-        self.myProfilImage.addGestureRecognizer(myProfiltapGesture)
-        self.myProfilImage.userInteractionEnabled = true
-        
-        // set link to Search User xib
-        var searchPagetapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        searchPagetapGesture.addTarget(self, action: "tapGestureToSearchPage")
-        self.searchImage.addGestureRecognizer(searchPagetapGesture)
-        self.searchImage.userInteractionEnabled = true
-        
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
         
         // Register the xib for the Custom TableViewCell
         var nib = UINib(nibName: "AlertTVCell", bundle: nil)
@@ -86,14 +74,19 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Display tabBarController
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
-        
-        // Hide navigationController
-        self.navigationController?.navigationBar.hidden = true
-        
+                
         // Refresh the page if not the first time
         if self.first_time == false {
             refresh(actionFromInit: false)
         }
+        
+        // Hide on swipe & keboard Appears
+        self.navigationController?.hidesBarsOnSwipe = true
+        self.navigationController?.hidesBarsWhenKeyboardAppears = true
+        
+        // Show StatusBarBackground
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = false
         
         self.first_time = false
     }
@@ -105,11 +98,26 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
         ]
-        Alamofire.request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
         
         self.tabBarItem.badgeValue = nil
+        
+        // Update App Badge Number
+        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+        
+        var badgeNumber : Int!
+        if friend_tabBarItem.badgeValue != nil {
+            badgeNumber = friend_tabBarItem.badgeValue?.toInt()
+            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+        } else {
+            UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        }
     }
     
+    func toggleSideMenu() {
+        toggleSideMenuView()
+    }
     
     func refreshInvoked(sender:AnyObject) {
         refresh(actionFromInit: false)
@@ -148,7 +156,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         
-        Alamofire.request(.POST, api_link, parameters: parameters, encoding: .JSON)
+        request(.POST, api_link, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -156,7 +164,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     if actionFromInit == false {
                         self.alerts_array.removeAll(keepCapacity: false)
@@ -205,7 +213,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             "page": self.page.description
         ]
         
-        Alamofire.request(.POST, ApiLink.alerts_list, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.alerts_list, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -213,7 +221,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     if json["notifications"].count != 0 {
                         for var i:Int = 0; i < json["notifications"].count; i++ {
@@ -257,12 +265,6 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    /// Function to push to my Profil
-    func tapGestureToProfil() {
-        var globalFunctions = GlobalFunctions()
-        globalFunctions.tapGestureToProfil(self)
-    }
-    
     // Function to push to Search Page
     func tapGestureToSearchPage() {
         var globalFunctions = GlobalFunctions()
@@ -296,6 +298,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        hideSideMenuView()
         // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
         if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
             // Add Loading Indicator to footerView
@@ -315,28 +318,41 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         // load book image
         if alert.book_img != "" {
             // Push to Challenge Book
-        } else if alert.selfie_img != "" {
-            // Push to OneSelfie View
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             
+            var bookVC:BookVC = mainStoryboard.instantiateViewControllerWithIdentifier("bookID") as BookVC
+           
+            self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+            self.navigationController?.pushViewController(bookVC, animated: true)
+            
+        } else if alert.selfie_img != "" {
+            // Push to OneSelfieVC
+            var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
+            var selfie = Selfie.init(id: alert.selfie_id)
+            oneSelfieVC.selfie = selfie
+            
+            // Hide TabBar when push to OneSelfie View
+            self.hidesBottomBarWhenPushed = true
+            
+            self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Alert_tab", comment: "Alert"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+            self.navigationController?.pushViewController(oneSelfieVC, animated: true)
+            
+            /*
             let parameters:[String: String] = [
                 "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
                 "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
                 "id": alert.selfie_id.description
             ]
             
-            Alamofire.request(.POST, ApiLink.show_selfie, parameters: parameters, encoding: .JSON)
+            request(.POST, ApiLink.show_selfie, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
                         var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
                         self.presentViewController(alert, animated: true, completion: nil)
                     } else {
-                        println(mydata)
                         //Convert to SwiftJSON
-                        var json = JSON(mydata!)
-                        
-                        println(json["selfie"])
-                        
+                        var json = JSON_SWIFTY(mydata!)
                         var selfie: Selfie!
                         
                         if json["selfie"].count != 0 {
@@ -350,14 +366,10 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                         
                         // Hide TabBar when push to OneSelfie View
                         self.hidesBottomBarWhenPushed = true
-                        
-                        // Push to OneSelfieVC
-                        var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
                         oneSelfieVC.selfie = selfie
-                        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Alert_tab", comment: "Alert"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-                        self.navigationController?.pushViewController(oneSelfieVC, animated: true)
                     }
             }
+            */
         } else {
             // Push to Profil View(UserProfil)
             var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)

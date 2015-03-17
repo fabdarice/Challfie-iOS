@@ -21,14 +21,19 @@ Authentication_failed = "Connexion échouée";
 Pull_to_refresh = "Tirer vers le bas pour rafraichir";
 Refreshing_data = "Chargement des données..";
 cancel = "Annuler";
+confirm = "Valider";
 
 // Forgot Password Page
 Email_sent = "Email envoyé";
 
+// Facebook Choose Username Page
+choose_username = "Choisis ton identifiant";
+only_alphanumeric = "* uniquement des caractères alphanumérique autorisés";
+
 // Popcup
 Close = "Fermer";
 Error = "Erreur";
-Generic_error = "Veuillez vérifier votre connexion Internet. \nSi le problème persiste, merci de le notifier sur le site web www.challfie.com, section 'Contact'";
+Generic_error = "Veuillez vérifier votre connexion Internet. \nSi le problème persiste, reporter le problème dans la section \"Contact\"";
 
 // Selfie
 Comment = " commentaire";
@@ -37,8 +42,9 @@ Approve = " approuvent";
 Approves = " approuve";
 Rejects = " rejette";
 Reject = " rejettent";
-first_comment = "Soyez le premier a commenté..";
-no_selfie = "Bienvenue sur Challfie!\n\nDémarre dès à présent en ajoutant tes amis et prends ton premier Selfie Challenge.";
+first_comment = "Soyez le premier à commenter..";
+no_selfie = "Bienvenue sur Challfie!\n\nDémarre dès à présent en ajoutant tes amis et prends ton premier Challfie.";
+daily = "Journalier";
 
 // Comment
 Write_Comment = "Ajouter un commentaire..";
@@ -60,7 +66,7 @@ Number_followers = " abonnés";
 Number_follower = " abonné";
 Friend_request = "Demande d'Ami";
 Friends_suggestions = "Suggestions d'Amis";
-Friends_no_results = "Aucun résultat trouvé.. N'oublies pas d'associer ton compte Facebook pour rechercher tes amis Facebook présent sur Challfie.";
+Friends_no_results = "Aucun résultat trouvé..";
 Search_facebook_friends = "Rechercher vos amis Facebook";
 
 // Profil Page
@@ -76,7 +82,7 @@ take_picture = "Prendre une photo";
 
 // Challenge Page
 book_of_challenges = "Livre de Challenges";
-book_is_locked = "Débloque ce livre en ayant vos selfies challenges approuvés par vos amis. Consulte ta progression dans l'onglet \"Level Progression\".";
+book_is_locked = "Débloque ce livre en ayant vos Challfies approuvés par vos amis.";
 book_locked = "Livre Bloqué";
 difficulty = "Difficulté";
 next_level = "Prochain Niveau";
@@ -84,6 +90,7 @@ current_level = "Niveau Actuel";
 
 // Search User
 no_users_found = "Aucun résultat trouvé";
+search_username = "Rechercher par Identifiant ou Email";
 
 // Take A Picture Page
 add_message = "Ajouter un message..";
@@ -94,6 +101,24 @@ privacy_text = "Visible uniquement par tes abonnés";
 shareFacebook_text = "Partager sur Facebook";
 search_a_challenge = "Rechercher un Challenge";
 add_a_new_selfie = "Ajouter un Challfie";
-create_selfie_missing_image = "Sélectionner une image.";
+create_selfie_missing_image = "Selfie manquante.. Sélectionner une image..";
+create_selfie_missing_challenge = "Sélectionner un challenge..";
+uploading_selfie = "Selfie en téléchargement...";
+upload_failed = "Téléchargement échoué :(";
+upload_completed = "Selfie posté avec succès!";
+
+// Contact
+report_bug = "Reporter un bug";
+require_account_assistance = "Demande d'assistance pour ton compte";
+report_content = "Reporter du contenu obscène, raciste ou pornographique.";
+give_suggestions = "Emettre des suggestions pour l'application";
+others = "Autres";
+
+// Side Menu
+daily_challenge = "Challenge du Jour";
+ranking = "Classement";
+statistics = "Statistiques";
+about_us = "A propos";
+
 
 

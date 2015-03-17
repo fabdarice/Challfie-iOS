@@ -1,0 +1,75 @@
+
+/* Class = "IBUITabBarItem"; title = "HOME"; ObjectID = "3dv-Mn-Qjv"; */
+"3dv-Mn-Qjv.title" = "TIMELINE";
+
+/* Class = "IBUIButton"; normalTitle = "Mot de passe oublie?"; ObjectID = "4n2-Q6-I14"; */
+"4n2-Q6-I14.normalTitle" = "Mot de passe oublié?";
+
+/* Class = "IBUITabBarItem"; badgeValue = "1"; ObjectID = "52n-wS-l4W"; */
+"52n-wS-l4W.badgeValue" = "1";
+
+/* Class = "IBUITabBarItem"; title = "AMIS"; ObjectID = "52n-wS-l4W"; */
+"52n-wS-l4W.title" = "AMIS";
+
+/* Class = "IBUITabBarItem"; badgeValue = "10"; ObjectID = "6im-dn-1Aq"; */
+"6im-dn-1Aq.badgeValue" = "10";
+
+/* Class = "IBUITabBarItem"; title = "ALERT"; ObjectID = "6im-dn-1Aq"; */
+"6im-dn-1Aq.title" = "ALERTE";
+
+/* Class = "IBUILabel"; text = "* Password must be at least 8 characters long"; ObjectID = "7Om-sw-HrP"; */
+"7Om-sw-HrP.text" = "* mot de passe doit contenir minimum 8 caractères";
+
+/* Class = "IBUIButton"; normalTitle = "Log in"; ObjectID = "7aI-09-A7n"; */
+"7aI-09-A7n.normalTitle" = "Se Connecter";
+
+/* Class = "IBUITabBarItem"; title = "CHALLENGE"; ObjectID = "C14-DK-LHG"; */
+"C14-DK-LHG.title" = "CHALLENGE";
+
+/* Class = "IBUITextField"; placeholder = "Last name"; ObjectID = "DNn-hC-IHC"; */
+"DNn-hC-IHC.placeholder" = "Nom";
+
+/* Class = "IBUILabel"; text = "New Account on Challfie"; ObjectID = "Jbj-0i-kUn"; */
+"Jbj-0i-kUn.text" = "Créer un nouveau Compte";
+
+/* Class = "IBUIButton"; normalTitle = "Already have an account?"; ObjectID = "OsH-Ol-N1L"; */
+"OsH-Ol-N1L.normalTitle" = "Déjà membre de Challfie?";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "QFb-iw-BKI"; */
+"QFb-iw-BKI.placeholder" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "Create Account"; ObjectID = "VSi-5d-lFd"; */
+"VSi-5d-lFd.normalTitle" = "Créer mon compte";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "XJ6-dw-bBJ"; */
+"XJ6-dw-bBJ.placeholder" = "Mot de passe";
+
+/* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "Xe1-ZO-eie"; */
+"Xe1-ZO-eie.placeholder" = "Identifiant";
+
+/* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "ZWn-iR-JuB"; */
+"ZWn-iR-JuB.placeholder" = "Identifiant";
+
+/* Class = "IBUITextField"; placeholder = "First name"; ObjectID = "bX2-fT-wnl"; */
+"bX2-fT-wnl.placeholder" = "Prénom";
+
+/* Class = "IBUILabel"; text = "I forgot my password"; ObjectID = "bmb-qQ-iLA"; */
+"bmb-qQ-iLA.text" = "J'ai oublié mon mot de passe";
+
+/* Class = "IBUIViewController"; title = "TimelineVC"; ObjectID = "cde-PN-nNO"; */
+"cde-PN-nNO.title" = "TimelineVC";
+
+/* Class = "IBUIButton"; normalTitle = "Sign in for Challfie"; ObjectID = "dtI-h9-9jQ"; */
+"dtI-h9-9jQ.normalTitle" = "Se Connecter Sur Challfie";
+
+/* Class = "IBUIButton"; normalTitle = "Register New Account"; ObjectID = "eZ4-hm-Rei"; */
+"eZ4-hm-Rei.normalTitle" = "Créer un nouveau Compte";
+
+/* Class = "IBUIButton"; normalTitle = "Send Password Instructions"; ObjectID = "fZc-cF-KrV"; */
+"fZc-cF-KrV.normalTitle" = "Réinitialiser mon mot de passe";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "hEK-mY-KOO"; */
+"hEK-mY-KOO.placeholder" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "Password *"; ObjectID = "ob5-Qf-IhK"; */
+"ob5-Qf-IhK.placeholder" = "Mot de passe *";

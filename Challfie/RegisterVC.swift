@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+//import Alamofire
 
 
 class RegisterVC: UIViewController, UITextFieldDelegate {
@@ -18,7 +18,6 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,15 +37,14 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         // Hide Password in TextField with *****
         self.passwordTextField.secureTextEntry = true
         
-        // Do any additional setup after loading the view, typically from a nib.
-        // set activityIndicator to hide when it's not spinning
-        self.activityIndicator.hidesWhenStopped = true
-        self.activityIndicator.color = MP_HEX_RGB("30768A")
     }
     
     
     @IBAction func createAccountButton(sender: UIButton) {
-        self.activityIndicator.startAnimating()
+        // add loadingIndicator pop-up
+        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        loadingActivityVC.view.tag = 21
+        self.view.addSubview(loadingActivityVC.view)
         
         let parameters:[String: AnyObject] = [
             "login": self.usernameTextField.text,
@@ -59,9 +57,12 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         ]
 
 
-        Alamofire.request(.POST, ApiLink.register, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.register, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
-                
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
@@ -69,7 +70,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                 } else {
                 
                     //convert to SwiftJSON
-                    let json = JSON(mydata!)
+                    let json = JSON_SWIFTY(mydata!)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RSPONSE FROM HTTP Request
@@ -108,7 +109,6 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
 
                     }
                 }
-                self.activityIndicator.stopAnimating()
         }
     }
     

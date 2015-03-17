@@ -7,15 +7,12 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class ChallengeVC : UIViewController {
     
-    @IBOutlet weak var profilImage: UIImageView!
-    @IBOutlet weak var searchImage: UIImageView!
-    @IBOutlet weak var topBarView: UIView!
     @IBOutlet weak var bookProgressView: UIView!
-    @IBOutlet weak var topBarHeightContraint: NSLayoutConstraint!
+//    @IBOutlet weak var topBarHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var nextBookProgressHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var progresspercentageLabel: UILabel!
     @IBOutlet weak var progressNextLevelLabel: UILabel!
@@ -26,6 +23,8 @@ class ChallengeVC : UIViewController {
     @IBOutlet weak var nextLevelLabel: UILabel!
     @IBOutlet weak var nextLevelTitle: UILabel!
     @IBOutlet weak var challengeBookButton: UIButton!
+    @IBOutlet weak var bookProgressViewHeightConstraint: NSLayoutConstraint!
+    
     
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     var percent:Int = 0
@@ -40,12 +39,19 @@ class ChallengeVC : UIViewController {
         self.navigationController?.navigationBar.tintColor = MP_HEX_RGB("FFFFFF")
         self.navigationController?.navigationBar.translucent = false
         
+        // navigationController Title
+        let logoImageView = UIImageView(image: UIImage(named: "challfie_letter"))
+        logoImageView.frame = CGRectMake(0.0, 0.0, 150.0, 35.0)
+        logoImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        self.navigationItem.titleView = logoImageView
+        
+        // navigationController Left and Right Button
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
+        
         // Styling Background
         self.view.backgroundColor = MP_HEX_RGB("1A596B")
         
-        // Set Background color for topBar
-        self.topBarView.backgroundColor = MP_HEX_RGB("30768A")
-
         // Label Color
         self.progresspercentageLabel.textColor = MP_HEX_RGB("8ceeff")
         self.levelProgressionLabel.textColor = MP_HEX_RGB("8ceeff")
@@ -58,19 +64,22 @@ class ChallengeVC : UIViewController {
         self.challengeBookButton.setTitle(NSLocalizedString("book_of_challenges", comment: "Book of Challenges"), forState: UIControlState.Normal)
         
         // Separator Color
-        self.separator3Image.backgroundColor = MP_HEX_RGB("3993ad")
+        self.separator3Image.backgroundColor = MP_HEX_RGB("30768A")
         
-        // set link to my profil
-        var myProfiltapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        myProfiltapGesture.addTarget(self, action: "tapGestureToProfil")
-        self.profilImage.addGestureRecognizer(myProfiltapGesture)
-        self.profilImage.userInteractionEnabled = true
-        
-        // set link to Search User xib
-        var searchPagetapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        searchPagetapGesture.addTarget(self, action: "tapGestureToSearchPage")
-        self.searchImage.addGestureRecognizer(searchPagetapGesture)
-        self.searchImage.userInteractionEnabled = true
+        // Set bookProgressView height based on the device
+        let model = UIDevice.currentDevice().modelName
+
+        switch model {
+        case "iPhone 4": bookProgressViewHeightConstraint.constant = 180
+        case "iPhone 4S": bookProgressViewHeightConstraint.constant = 180
+        case "iPhone 5": bookProgressViewHeightConstraint.constant = 225
+        case "iPhone 5c": bookProgressViewHeightConstraint.constant = 225
+        case "iPhone 5s": bookProgressViewHeightConstraint.constant = 225
+        case "iPhone 6" : bookProgressViewHeightConstraint.constant = 250
+        case "iPhone 6 Plus" : bookProgressViewHeightConstraint.constant = 300
+        default:
+            bookProgressViewHeightConstraint.constant = 225
+        }        
         
         self.createFullCircle()
         
@@ -83,12 +92,20 @@ class ChallengeVC : UIViewController {
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
         
-        // Hide navigationController
-        self.navigationController?.navigationBar.hidden = true
+        // remove progressLayer to refresh with new one
         self.progressLayer.removeFromSuperlayer()
+        
+        // show navigation and don't hide on swipe & keboard Appears
+        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.hidesBarsOnSwipe = false
+        self.navigationController?.hidesBarsWhenKeyboardAppears = false
         
         // call API to load level Progression
         loadData()
+    }
+        
+    func toggleSideMenu() {
+        toggleSideMenuView()
     }
     
     func loadData() {
@@ -98,7 +115,7 @@ class ChallengeVC : UIViewController {
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!            
         ]
         
-        Alamofire.request(.POST, ApiLink.level_progression, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.level_progression, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
@@ -106,7 +123,7 @@ class ChallengeVC : UIViewController {
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     // Update Badge of Alert TabBarItem
                     var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
@@ -143,9 +160,9 @@ class ChallengeVC : UIViewController {
         let textContent = self.percent
         
         // Where is start
-        let arcCenter  = CGPoint(x: UIScreen.mainScreen().bounds.size.width / 2, y: CGRectGetMidY(self.bookProgressView.bounds))
+        let arcCenter  = CGPoint(x: UIScreen.mainScreen().bounds.size.width / 2, y: self.bookProgressViewHeightConstraint.constant / 2)
         // Diameter
-        let radius: CGFloat = CGFloat(min(CGRectGetMidX(self.bookProgressView.bounds) - 20, CGRectGetMidY(self.bookProgressView.bounds)-20))
+        let radius: CGFloat = CGFloat(self.bookProgressViewHeightConstraint.constant / 2 - 20)
         
         let startAngle: CGFloat = CGFloat(M_PI * 1.5)
         let endAngle: CGFloat = CGFloat(M_PI * 1.5 + (M_PI * 2))
@@ -167,9 +184,9 @@ class ChallengeVC : UIViewController {
     // Create Animated Circle Progress
     func createProgressLayer() {
         // Where is start
-        let arcCenter  = CGPoint(x: UIScreen.mainScreen().bounds.size.width / 2, y: CGRectGetMidY(self.bookProgressView.bounds))
+        let arcCenter  = CGPoint(x: UIScreen.mainScreen().bounds.size.width / 2, y: self.bookProgressViewHeightConstraint.constant / 2)
         // Diameter
-        let radius: CGFloat = CGFloat(min(CGRectGetMidX(self.bookProgressView.bounds) - 20, CGRectGetMidY(self.bookProgressView.bounds)-20))
+        let radius: CGFloat = CGFloat(self.bookProgressViewHeightConstraint.constant / 2 - 20)
         
         let startAngle: CGFloat = CGFloat(M_PI * 1.5)
         let endAngle: CGFloat = CGFloat(M_PI * 1.5 + (M_PI * 2))
@@ -198,20 +215,6 @@ class ChallengeVC : UIViewController {
         //gradientMaskLayer.mask = progressLayer
         self.bookProgressView.layer.addSublayer(progressLayer)
         
-    }
-    
-    @IBAction func progressionButtonPress(sender: UIButton) {
-        
-    }
-    
-    @IBAction func challengeButtonPress(sender: UIButton) {
-        
-    }
-    
-    /// Function to push to my Profil
-    func tapGestureToProfil() {
-        var globalFunctions = GlobalFunctions()
-        globalFunctions.tapGestureToProfil(self)
     }
     
     // Function to push to Search Page

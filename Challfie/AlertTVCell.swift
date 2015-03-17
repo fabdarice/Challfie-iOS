@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Haneke
+//import Haneke
 
 
 class AlertTVCell : UITableViewCell {
@@ -57,8 +57,14 @@ class AlertTVCell : UITableViewCell {
  
         // load user image
         if alert.author != nil {
-            let profilePicURL:NSURL = NSURL(string: alert.author.show_profile_pic())!
-            self.userImageButton.hnk_setImageFromURL(profilePicURL)
+            // Profile Picture
+            if alert.author.show_profile_pic() != "missing" {
+                let profilePicURL:NSURL = NSURL(string: alert.author.show_profile_pic())!
+                self.userImageButton.hnk_setImageFromURL(profilePicURL)
+            } else {
+                self.userImageButton.setBackgroundImage(UIImage(named: "missing_user"), forState: UIControlState.Normal)
+            }
+            
             self.userImageButton.layer.cornerRadius = self.userImageButton.frame.size.width / 2
             self.userImageButton.clipsToBounds = true
             self.userImageButton.layer.borderWidth = 2.0
@@ -77,7 +83,13 @@ class AlertTVCell : UITableViewCell {
         // load book image
         if alert.book_img != "" {
             self.rightButton.hidden = false
-            let bookImageStr = ApiLink.host + alert.book_img
+            var bookImageStr = ""
+            if ApiLink.host == "https://challfie.com" {
+                bookImageStr = alert.book_img
+            } else {
+                bookImageStr = ApiLink.host + alert.book_img
+            }
+            
             let bookImageURL:NSURL = NSURL(string: bookImageStr)!
             self.rightButton.hnk_setImageFromURL(bookImageURL)
         } else if alert.selfie_img != "" {

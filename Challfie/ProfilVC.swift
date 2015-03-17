@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 import MobileCoreServices
 
 class ProfilHeader : UICollectionReusableView {    
@@ -15,7 +15,10 @@ class ProfilHeader : UICollectionReusableView {
     @IBOutlet weak var headerMessageWidthConstraint: NSLayoutConstraint!
 }
 
-class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+//UIImagePickerControllerDelegate
+//UINavigationControllerDelegate
+
+class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIScrollViewDelegate, GKImagePickerDelegate {
     
     @IBOutlet weak var userInfosContainerView: UIView!
     @IBOutlet weak var profileImage: UIImageView!
@@ -38,16 +41,14 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     @IBOutlet weak var selfiesCollectionView: UICollectionView!
     @IBOutlet weak var selfiesCollectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var profilImageTopConstraint: NSLayoutConstraint!
+
     
     var user: User!
     var selfies_array: [Selfie] = []
     var page = 1
-    var image_base64String : String!
-    
     var is_current_user: Bool = false
     let reuseIdentifier = "ProfilSelfieCell"
+    var imagePicker: GKImagePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,9 +66,6 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             self.is_current_user = true
         }
         
-        // Hide the progressView
-        self.progressView.hidden = true
-        
         // Level Label
         self.levelLabel.text = self.user.book_level
         self.levelLabel.textColor = MP_HEX_RGB("FFFFFF")
@@ -84,7 +82,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.booksLabel.textColor = blockLabelColor
         
         // number of selfies/Following/Followers/Books Label color
-        let numberLabelcolor = MP_HEX_RGB("44ACC9")
+        let numberLabelcolor = MP_HEX_RGB("5BD9FC")
         self.selfiesNumberLabel.textColor = numberLabelcolor
         self.followingNumberLabel.textColor = numberLabelcolor
         self.followersNumberLabel.textColor = numberLabelcolor
@@ -94,38 +92,29 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.selfiesCollectionView.backgroundColor = UIColor.clearColor()
         
         // block background Image
-        let selfieBlockBackgroundImage = UIImageView(image: UIImage(named: "profil_block_background"))
-        selfieBlockBackgroundImage.bounds = self.selfiesBlockView.bounds
-        selfieBlockBackgroundImage.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-        selfieBlockBackgroundImage.contentMode = UIViewContentMode.ScaleToFill
-        self.selfiesBlockView.addSubview(selfieBlockBackgroundImage)
-        self.selfiesBlockView.sendSubviewToBack(selfieBlockBackgroundImage)
+        self.selfiesBlockView.backgroundColor = MP_HEX_RGB("104757")
+        self.followingBlockView.backgroundColor = MP_HEX_RGB("104757")
+        self.followersBlockView.backgroundColor = MP_HEX_RGB("104757")
+        self.booksBlockView.backgroundColor = MP_HEX_RGB("104757")
         
-        let followingBlockBackgroundImage = UIImageView(image: UIImage(named: "profil_block_background"))
-        followingBlockBackgroundImage.bounds = self.selfiesBlockView.bounds
-        followingBlockBackgroundImage.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-        followingBlockBackgroundImage.contentMode = UIViewContentMode.ScaleToFill
-        self.followingBlockView.addSubview(followingBlockBackgroundImage)
-        self.followingBlockView.sendSubviewToBack(followingBlockBackgroundImage)
-        
-        let followersBlockBackgroundImage = UIImageView(image: UIImage(named: "profil_block_background"))
-        followersBlockBackgroundImage.bounds = self.selfiesBlockView.bounds
-        followersBlockBackgroundImage.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-        followersBlockBackgroundImage.contentMode = UIViewContentMode.ScaleToFill
-        self.followersBlockView.addSubview(followersBlockBackgroundImage)
-        self.followersBlockView.sendSubviewToBack(followersBlockBackgroundImage)
-        
-        let booksBlockBackgroundImage = UIImageView(image: UIImage(named: "profil_block_background"))
-        booksBlockBackgroundImage.bounds = self.selfiesBlockView.bounds
-        booksBlockBackgroundImage.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-        booksBlockBackgroundImage.contentMode = UIViewContentMode.ScaleToFill
-        self.booksBlockView.addSubview(booksBlockBackgroundImage)
-        self.booksBlockView.sendSubviewToBack(booksBlockBackgroundImage)
+        self.selfiesBlockView.layer.borderColor = MP_HEX_RGB("30768A").CGColor
+        self.selfiesBlockView.layer.borderWidth = 1.0
+        self.followingBlockView.layer.borderColor = MP_HEX_RGB("30768A").CGColor
+        self.followingBlockView.layer.borderWidth = 1.0
+        self.followersBlockView.layer.borderColor = MP_HEX_RGB("30768A").CGColor
+        self.followersBlockView.layer.borderWidth = 1.0
+        self.booksBlockView.layer.borderColor = MP_HEX_RGB("30768A").CGColor
+        self.booksBlockView.layer.borderWidth = 1.0
         
         
-        // Profile Picture
-        let profilePicURL:NSURL = NSURL(string: self.user.show_profile_pic())!
-        self.profileImage.hnk_setImageFromURL(profilePicURL)
+        // User Profile Picture
+        if self.user.show_profile_pic() != "missing" {
+            let profilePicURL:NSURL = NSURL(string: self.user.show_profile_pic())!
+            self.profileImage.hnk_setImageFromURL(profilePicURL)
+        } else {
+            self.profileImage.image = UIImage(named: "missing_user")
+        }
+        
         self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width / 2;
         self.profileImage.clipsToBounds = true
         self.profileImage.layer.borderWidth = 2.0;
@@ -148,7 +137,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         }
         
         // Initialize the loading Indicator
-        self.loadingIndicator.tintColor = MP_HEX_RGB("30768A")
+        self.loadingIndicator.tintColor = MP_HEX_RGB("FFFFFF")
         self.loadingIndicator.hidesWhenStopped = true
         
         // set datasource and delegate to this class
@@ -212,8 +201,19 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         super.viewWillAppear(animated)
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
+   
+        // Show Status Bar because GKImagePicker hides it
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+        
+        // Show StatusBarBackground
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
+        // show navigation and don't hide on swipe & keboard Appears
+        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.hidesBarsOnSwipe = false
+        self.navigationController?.hidesBarsWhenKeyboardAppears = false
     }
-    
     
     func loadData() {
         self.loadingIndicator.startAnimating()
@@ -224,16 +224,15 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             "page": self.page.description
         ]
         
-        Alamofire.request(.POST, ApiLink.user_selfies, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.user_selfies, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
-                    println(mydata)
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON_SWIFTY(mydata!)
                     
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
@@ -282,7 +281,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             "user_id": self.user.id.description
         ]
         
-        Alamofire.request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
+        request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_pending"), style: UIBarButtonItemStyle.Plain, target: self, action: nil)
         self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("f3c378")
         self.user.is_following = true
@@ -295,6 +294,11 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         let oneAction = UIAlertAction(title: NSLocalizedString("Log_out", comment: "Log out"), style: UIAlertActionStyle.Destructive) { (_) in
             KeychainWrapper.removeObjectForKey(kSecAttrAccount)
             KeychainWrapper.removeObjectForKey(kSecValueData)
+            if let facebookSession = FBSession.activeSession() {
+                facebookSession.closeAndClearTokenInformation()
+                facebookSession.close()
+                FBSession.setActiveSession(nil)
+            }
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as LoginVC
             self.presentViewController(loginViewController, animated: true, completion: nil)
@@ -389,15 +393,16 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     // When the user is taking a picture from the device camera
     func showCamera() {
         if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
-            var picker = UIImagePickerController()
-            picker.delegate = self
-            picker.sourceType = UIImagePickerControllerSourceType.Camera
-            var mediaTypes: Array<AnyObject> = [kUTTypeImage]
-            picker.mediaTypes = mediaTypes
-            picker.cameraDevice = UIImagePickerControllerCameraDevice.Front
             
-            picker.allowsEditing = true
-            self.presentViewController(picker, animated: true, completion: nil)
+            self.imagePicker = GKImagePicker()
+            self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)
+            self.imagePicker.delegate = self
+            
+            //set the source type
+            self.imagePicker.imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
+            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDevice.Front        
+            
+            self.presentViewController(self.imagePicker.imagePickerController, animated: true, completion: nil)
         }
         else{
             var alert = UIAlertController(title: "No Camera Found", message: "No camera was found..", preferredStyle: UIAlertControllerStyle.Alert)
@@ -408,14 +413,89 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     
     // When the user is selecting a picture from the gallery
     func showPhotoGallery() {
-        var picker = UIImagePickerController()
+        
+        self.imagePicker = GKImagePicker()
+        self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)
+        self.imagePicker.delegate = self
+        
+        //set the source type
+        self.imagePicker.imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        
+        self.presentViewController(self.imagePicker.imagePickerController, animated: true, completion: nil)
+        
+        /*var picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         picker.allowsEditing = true
-        self.presentViewController(picker, animated: true, completion: nil)
+        self.presentViewController(picker, animated: true, completion: nil)*/
+    }
+    
+    // MARK: - GKImagePicker Delegate Methods
+    func imagePicker(imagePicker: GKImagePicker!, pickedImage image: UIImage!) {
+        var imageToSave:UIImage!
+        
+        imageToSave = self.fixOrientation(image)
+        if imagePicker.imagePickerController.sourceType == UIImagePickerControllerSourceType.Camera {            
+            UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil, nil)
+        }
+        
+        let parameters:[String: String] = [
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
+        ]
+        
+        let imageData = UIImageJPEGRepresentation(imageToSave, 0.6)            
+        
+        var manager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager()
+        manager.POST(ApiLink.update_user, parameters: parameters, constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
+            formData.appendPartWithFileData(imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpeg", mimeType: "image/jpeg")
+            }, success: { (operation: AFHTTPRequestOperation!, responseObject) -> Void in
+                //convert to SwiftJSON
+                let json = JSON_SWIFTY(responseObject!)
+                self.user.profile_pic = json["user"]["avatar"].stringValue
+                
+                // User Profile Picture
+                if self.user.show_profile_pic() != "missing" {
+                    let profilePicURL:NSURL = NSURL(string: self.user.show_profile_pic())!
+                    self.profileImage.hnk_setImageFromURL(profilePicURL)
+                } else {
+                    self.profileImage.image = UIImage(named: "missing_user")
+                }
+                
+                
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
+            }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
+                
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
+                
+                var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+        })
+        
+        // Dismiss Camera Preview
+        imagePicker.imagePickerController.dismissViewControllerAnimated(true, completion: nil)
+        
+        // Add loadingIndicator pop-up
+        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        loadingActivityVC.view.tag = 21
+        loadingActivityVC.has_navigationBar = true
+        loadingActivityVC.has_tabBar = true
+        self.contentView.addSubview(loadingActivityVC.view)
+    }
+
+    func imagePickerDidCancel(imagePicker: GKImagePicker!) {
+        imagePicker.imagePickerController.dismissViewControllerAnimated(true, completion: nil)
     }
     
     
+    /*
     // MARK: - UIImagePicker Delegate Methods
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {
         let mediaType = info[UIImagePickerControllerMediaType] as String
@@ -424,18 +504,16 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         // Handle a still image capture
         let compResult:CFComparisonResult = CFStringCompare(mediaType as NSString!, kUTTypeImage, CFStringCompareFlags.CompareCaseInsensitive)
         if ( compResult == CFComparisonResult.CompareEqualTo ) {
-            editedImage = info[UIImagePickerControllerEditedImage] as UIImage?
             originalImage = info[UIImagePickerControllerOriginalImage] as UIImage?
             
-            if ( editedImage == nil ) {
+            if ( editedImage != nil ) {
                 imageToSave = editedImage
             } else {
                 imageToSave = originalImage
             }
             
             imageToSave = self.fixOrientation(imageToSave!)
-            let imageData = UIImagePNGRepresentation(imageToSave)
-            self.image_base64String = imageData.base64EncodedStringWithOptions(.allZeros)
+            let imageData = UIImageJPEGRepresentation(imageToSave, 0.6)            
             
             // Save the new image (original or edited) to the Camera Roll
             if picker.sourceType == UIImagePickerControllerSourceType.Camera {
@@ -444,47 +522,61 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             
             let parameters:[String: String] = [
                 "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
-                "image_base64String": self.image_base64String
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
             ]
             
-            self.progressView.hidden = false
-            self.progressView.progress = 0.02
-            self.profilImageTopConstraint.constant = 20
-            
-            Alamofire.request(.POST, ApiLink.update_profile_pic, parameters: parameters, encoding: .JSON)
-                .responseJSON { (_, _, mydata, _) in
-                    if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+            var manager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager()
+            manager.POST(ApiLink.update_user, parameters: parameters, constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
+                formData.appendPartWithFileData(imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpeg", mimeType: "image/jpeg")
+                }, success: { (operation: AFHTTPRequestOperation!, responseObject) -> Void in
+                    //convert to SwiftJSON
+                    let json = JSON(responseObject!)
+                    self.user.profile_pic = json["user"]["avatar"].stringValue
+                    
+                    // User Profile Picture
+                    if self.user.show_profile_pic() != "missing" {
+                        let profilePicURL:NSURL = NSURL(string: self.user.show_profile_pic())!
+                        self.profileImage.hnk_setImageFromURL(profilePicURL)
                     } else {
-                        println(mydata)
-                        //convert to SwiftJSON
-                        let json = JSON(mydata!)
-                        
-                        if (json["success"].intValue == 1) {
-                            self.profileImage.image = imageToSave
-                        }  else {
-                            // ERROR RESPONSE FROM HTTP Request
-                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        }
-                        
+                        self.profileImage.image = UIImage(named: "missing_user")
                     }
-                    self.progressView.hidden = true
-                    self.profilImageTopConstraint.constant = 5
-            }
-            
+                    
+                    
+                    // Remove loadingIndicator pop-up
+                    if let loadingActivityView = self.view.viewWithTag(21) {
+                        loadingActivityView.removeFromSuperview()
+                    }
+                }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
+                    
+                    // Remove loadingIndicator pop-up
+                    if let loadingActivityView = self.view.viewWithTag(21) {
+                        loadingActivityView.removeFromSuperview()
+                    }
+                    
+                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
         }
         
+        // Dismiss Camera Preview
         picker.dismissViewControllerAnimated(true, completion: nil)
         
+        // Add loadingIndicator pop-up
+        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        loadingActivityVC.view.tag = 21
+        loadingActivityVC.has_navigationBar = true
+        loadingActivityVC.has_tabBar = true
+        self.contentView.addSubview(loadingActivityVC.view)
+        
     }
+    
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
+
+*/
     
     func fixOrientation(img:UIImage) -> UIImage {
         

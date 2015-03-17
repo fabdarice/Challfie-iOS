@@ -53,7 +53,7 @@ public enum Type :Int{
 
 // MARK: - JSON Base
 
-public struct JSON {
+public struct JSON_SWIFTY {
     
     /**
     Creates a JSON using the data.
@@ -127,12 +127,12 @@ public struct JSON {
     public var error: NSError? { get { return self._error } }
     
     /// The static null json
-    public static var nullJSON: JSON { get { return JSON(NSNull()) } }
+    public static var nullJSON: JSON_SWIFTY { get { return JSON_SWIFTY(NSNull()) } }
     
 }
 
 // MARK: - SequenceType
-extension JSON: SequenceType{
+extension JSON_SWIFTY: SequenceType{
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.empty` or `dictonary.empty` otherwise return `false`.
     var isEmpty: Bool {
@@ -167,15 +167,15 @@ extension JSON: SequenceType{
     
     :returns: Return a *generator* over the elements of this *sequence*.
     */
-    public func generate() -> GeneratorOf <(String, JSON)> {
+    public func generate() -> GeneratorOf <(String, JSON_SWIFTY)> {
         switch self.type {
         case .Array:
             let array_ = object as [AnyObject]
             var generate_ = array_.generate()
             var index_: Int = 0
-            return GeneratorOf<(String, JSON)> {
+            return GeneratorOf<(String, JSON_SWIFTY)> {
                 if let element_: AnyObject = generate_.next() {
-                    return ("\(index_++)", JSON(element_))
+                    return ("\(index_++)", JSON_SWIFTY(element_))
                 } else {
                     return nil
                 }
@@ -183,15 +183,15 @@ extension JSON: SequenceType{
         case .Dictionary:
             let dictionary_ = object as [String : AnyObject]
             var generate_ = dictionary_.generate()
-            return GeneratorOf<(String, JSON)> {
+            return GeneratorOf<(String, JSON_SWIFTY)> {
                 if let (key_: String, value_: AnyObject) = generate_.next() {
-                    return (key_, JSON(value_))
+                    return (key_, JSON_SWIFTY(value_))
                 } else {
                     return nil
                 }
             }
         default:
-            return GeneratorOf<(String, JSON)> {
+            return GeneratorOf<(String, JSON_SWIFTY)> {
                 return nil
             }
         }
@@ -209,14 +209,14 @@ extension Int: SubscriptType {}
 
 extension String: SubscriptType {}
 
-extension JSON {
+extension JSON_SWIFTY {
     
     /// If `type` is `.Array`, return json which's object is `array[index]`, otherwise return null json with error.
-    private subscript(#index: Int) -> JSON {
+    private subscript(#index: Int) -> JSON_SWIFTY {
         get {
             
             if self.type != .Array {
-                var errorResult_ = JSON.nullJSON
+                var errorResult_ = JSON_SWIFTY.nullJSON
                 errorResult_._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
                 return errorResult_
             }
@@ -224,10 +224,10 @@ extension JSON {
             let array_ = self.object as [AnyObject]
             
             if index >= 0 && index < array_.count {
-                return JSON(array_[index])
+                return JSON_SWIFTY(array_[index])
             }
             
-            var errorResult_ = JSON.nullJSON
+            var errorResult_ = JSON_SWIFTY.nullJSON
             errorResult_._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
             return errorResult_
         }
@@ -243,12 +243,12 @@ extension JSON {
     }
     
     /// If `type` is `.Dictionary`, return json which's object is `dictionary[key]` , otherwise return null json with error.
-    private subscript(#key: String) -> JSON {
+    private subscript(#key: String) -> JSON_SWIFTY {
         get {
-            var returnJSON = JSON.nullJSON
+            var returnJSON = JSON_SWIFTY.nullJSON
             if self.type == .Dictionary {
                 if let object_: AnyObject = self.object[key] {
-                    returnJSON = JSON(object_)
+                    returnJSON = JSON_SWIFTY(object_)
                 } else {
                     returnJSON._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"])
                 }
@@ -267,7 +267,7 @@ extension JSON {
     }
     
     /// If `sub` is `Int`, return `subscript(index:)`; If `sub` is `String`,  return `subscript(key:)`.
-    private subscript(#sub: SubscriptType) -> JSON {
+    private subscript(#sub: SubscriptType) -> JSON_SWIFTY {
         get {
             if sub is String {
                 return self[key:sub as String]
@@ -297,10 +297,10 @@ extension JSON {
     
     :returns: Return a json found by the path or a null json with error
     */
-    public subscript(path: [SubscriptType]) -> JSON {
+    public subscript(path: [SubscriptType]) -> JSON_SWIFTY {
         get {
             if path.count == 0 {
-                return JSON.nullJSON
+                return JSON_SWIFTY.nullJSON
             }
             
             var next = self
@@ -333,17 +333,17 @@ extension JSON {
     }
     
     /**
-    Find a json in the complex data structuresby using the Int/String's array.
+    Find a JSON_SWIFTY in the complex data structuresby using the Int/String's array.
     
-    :param: path The target json's path. Example:
+    :param: path The target JSON_SWIFTY's path. Example:
     
-    let name = json[9,"list","person","name"]
+    let name = JSON_SWIFTY[9,"list","person","name"]
     
-    The same as: let name = json[9]["list"]["person"]["name"]
+    The same as: let name = JSON_SWIFTY[9]["list"]["person"]["name"]
     
-    :returns: Return a json found by the path or a null json with error
+    :returns: Return a JSON_SWIFTY found by the path or a null JSON_SWIFTY with error
     */
-    public subscript(path: SubscriptType...) -> JSON {
+    public subscript(path: SubscriptType...) -> JSON_SWIFTY {
         get {
             return self[path]
         }
@@ -355,7 +355,7 @@ extension JSON {
 
 // MARK: - LiteralConvertible
 
-extension JSON: StringLiteralConvertible {
+extension JSON_SWIFTY: StringLiteralConvertible {
     
     public init(stringLiteral value: StringLiteralType) {
         self.init(value)
@@ -370,28 +370,28 @@ extension JSON: StringLiteralConvertible {
     }
 }
 
-extension JSON: IntegerLiteralConvertible {
+extension JSON_SWIFTY: IntegerLiteralConvertible {
     
     public init(integerLiteral value: IntegerLiteralType) {
         self.init(value)
     }
 }
 
-extension JSON: BooleanLiteralConvertible {
+extension JSON_SWIFTY: BooleanLiteralConvertible {
     
     public init(booleanLiteral value: BooleanLiteralType) {
         self.init(value)
     }
 }
 
-extension JSON: FloatLiteralConvertible {
+extension JSON_SWIFTY: FloatLiteralConvertible {
     
     public init(floatLiteral value: FloatLiteralType) {
         self.init(value)
     }
 }
 
-extension JSON: DictionaryLiteralConvertible {
+extension JSON_SWIFTY: DictionaryLiteralConvertible {
     
     public init(dictionaryLiteral elements: (String, AnyObject)...) {
         var dictionary_ = [String : AnyObject]()
@@ -402,14 +402,14 @@ extension JSON: DictionaryLiteralConvertible {
     }
 }
 
-extension JSON: ArrayLiteralConvertible {
+extension JSON_SWIFTY: ArrayLiteralConvertible {
     
     public init(arrayLiteral elements: AnyObject...) {
         self.init(elements)
     }
 }
 
-extension JSON: NilLiteralConvertible {
+extension JSON_SWIFTY: NilLiteralConvertible {
     
     public init(nilLiteral: ()) {
         self.init(NSNull())
@@ -418,10 +418,10 @@ extension JSON: NilLiteralConvertible {
 
 // MARK: - Raw
 
-extension JSON: RawRepresentable {
+extension JSON_SWIFTY: RawRepresentable {
     
     public init?(rawValue: AnyObject) {
-        if JSON(rawValue).type == .Unknow {
+        if JSON_SWIFTY(rawValue).type == .Unknow {
             return nil
         } else {
             self.init(rawValue)
@@ -460,7 +460,7 @@ extension JSON: RawRepresentable {
 
 // MARK: - Printable, DebugPrintable
 
-extension JSON: Printable, DebugPrintable {
+extension JSON_SWIFTY: Printable, DebugPrintable {
     
     public var description: String {
         if let string = self.rawString(options:.PrettyPrinted) {
@@ -477,21 +477,21 @@ extension JSON: Printable, DebugPrintable {
 
 // MARK: - Array
 
-extension JSON {
+extension JSON_SWIFTY {
     
-    //Optional [JSON]
-    public var array: [JSON]? {
+    //Optional [JSON_SWIFTY]
+    public var array: [JSON_SWIFTY]? {
         get {
             if self.type == .Array {
-                return map(self.object as [AnyObject]){ JSON($0) }
+                return map(self.object as [AnyObject]){ JSON_SWIFTY($0) }
             } else {
                 return nil
             }
         }
     }
     
-    //Non-optional [JSON]
-    public var arrayValue: [JSON] {
+    //Non-optional [JSON_SWIFTY]
+    public var arrayValue: [JSON_SWIFTY] {
         get {
             return self.array ?? []
         }
@@ -519,7 +519,7 @@ extension JSON {
 
 // MARK: - Dictionary
 
-extension JSON {
+extension JSON_SWIFTY {
     
     private func _map<Key:Hashable ,Value, NewValue>(source: [Key: Value], transform: Value -> NewValue) -> [Key: NewValue] {
         var result = [Key: NewValue](minimumCapacity:source.count)
@@ -529,19 +529,19 @@ extension JSON {
         return result
     }
     
-    //Optional [String : JSON]
-    public var dictionary: [String : JSON]? {
+    //Optional [String : JSON_SWIFTY]
+    public var dictionary: [String : JSON_SWIFTY]? {
         get {
             if self.type == .Dictionary {
-                return _map(self.object as [String : AnyObject]){ JSON($0) }
+                return _map(self.object as [String : AnyObject]){ JSON_SWIFTY($0) }
             } else {
                 return nil
             }
         }
     }
     
-    //Non-optional [String : JSON]
-    public var dictionaryValue: [String : JSON] {
+    //Non-optional [String : JSON_SWIFTY]
+    public var dictionaryValue: [String : JSON_SWIFTY] {
         get {
             return self.dictionary ?? [:]
         }
@@ -569,7 +569,7 @@ extension JSON {
 
 // MARK: - Bool
 
-extension JSON: BooleanType {
+extension JSON_SWIFTY: BooleanType {
     
     //Optional bool
     public var bool: Bool? {
@@ -608,7 +608,7 @@ extension JSON: BooleanType {
 
 // MARK: - String
 
-extension JSON {
+extension JSON_SWIFTY {
     
     //Optional string
     public var string: String? {
@@ -650,7 +650,7 @@ extension JSON {
 }
 
 // MARK: - Number
-extension JSON {
+extension JSON_SWIFTY {
     
     //Optional number
     public var number: NSNumber? {
@@ -692,7 +692,7 @@ extension JSON {
 }
 
 //MARK: - Null
-extension JSON {
+extension JSON_SWIFTY {
     
     public var null: NSNull? {
         get {
@@ -710,7 +710,7 @@ extension JSON {
 }
 
 //MARK: - URL
-extension JSON {
+extension JSON_SWIFTY {
     
     //Optional URL
     public var URL: NSURL? {
@@ -734,7 +734,7 @@ extension JSON {
 
 // MARK: - Int, Double, Float, Int8, Int16, Int32, Int64
 
-extension JSON {
+extension JSON_SWIFTY {
     
     public var double: Double? {
         get {
@@ -1002,9 +1002,9 @@ extension JSON {
 }
 
 //MARK: - Comparable
-extension JSON: Comparable {}
+extension JSON_SWIFTY: Comparable {}
 
-public func ==(lhs: JSON, rhs: JSON) -> Bool {
+public func ==(lhs: JSON_SWIFTY, rhs: JSON_SWIFTY) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
@@ -1024,7 +1024,7 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func <=(lhs: JSON, rhs: JSON) -> Bool {
+public func <=(lhs: JSON_SWIFTY, rhs: JSON_SWIFTY) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
@@ -1044,7 +1044,7 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func >=(lhs: JSON, rhs: JSON) -> Bool {
+public func >=(lhs: JSON_SWIFTY, rhs: JSON_SWIFTY) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
@@ -1064,7 +1064,7 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func >(lhs: JSON, rhs: JSON) -> Bool {
+public func >(lhs: JSON_SWIFTY, rhs: JSON_SWIFTY) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
@@ -1076,7 +1076,7 @@ public func >(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func <(lhs: JSON, rhs: JSON) -> Bool {
+public func <(lhs: JSON_SWIFTY, rhs: JSON_SWIFTY) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
@@ -1123,6 +1123,7 @@ public func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     return !(rhs == rhs)
 }
 
+/*
 public func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
     
     switch (lhs.isBool, rhs.isBool) {
@@ -1133,7 +1134,7 @@ public func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
     default:
         return lhs.compare(rhs) == NSComparisonResult.OrderedAscending
     }
-}
+}*/
 
 public func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
     
@@ -1173,14 +1174,14 @@ public func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
 //MARK:- Unavailable
 
-@availability(*, unavailable, renamed="JSON")
-public typealias JSONValue = JSON
+@availability(*, unavailable, renamed="JSON_SWIFTY")
+public typealias JSONValue = JSON_SWIFTY
 
-extension JSON {
+extension JSON_SWIFTY {
     
     @availability(*, unavailable, message="use 'init(_ object:AnyObject)' instead")
     public init(object: AnyObject) {
-        self = JSON(object)
+        self = JSON_SWIFTY(object)
     }
     
     @availability(*, unavailable, renamed="dictionaryObject")

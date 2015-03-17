@@ -1,0 +1,33 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/fcheng/workspace/mobileapp/Challfie/build/Build/Products/Debug-iphonesimulator/Haneke.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "Haneke-Swift.h",
+          'external-contents': "/Users/fcheng/workspace/mobileapp/Challfie/build/Build/Products/Debug-iphonesimulator/Haneke.framework/Headers/Haneke-Swift.h"
+        },
+        {
+          'type': 'file',
+          'name': "Haneke.h",
+          'external-contents': "/Users/fcheng/workspace/mobileapp/HanekeSwift/Haneke/Haneke.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/fcheng/workspace/mobileapp/Challfie/build/Build/Products/Debug-iphonesimulator/Haneke.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/fcheng/workspace/mobileapp/Challfie/build/Build/Products/Debug-iphonesimulator/Haneke.framework/Modules/module.modulemap"
+        }
+      ]
+    }
+  ]
+}

@@ -33,4 +33,23 @@ class ChallengeTVCell : UITableViewCell {
         }
         
     }
+    
+    
+    func loadItemForTakePicture() {
+        self.challengeLabel.numberOfLines = 0
+        self.challengeLabel.text = self.challenge.description
+        self.challengeLabel.textColor = UIColor.blackColor()
+        self.challengeLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        self.challengeLabel.sizeToFit()
+        
+        switch self.challenge.difficulty {
+        case 1 : self.difficultyImageView.image = UIImage(named: "star_very_easy_black")
+        case 2 : self.difficultyImageView.image = UIImage(named: "star_easy_black")
+        case 3 : self.difficultyImageView.image = UIImage(named: "star_intermediate_black")
+        case 4 : self.difficultyImageView.image = UIImage(named: "star_hard_black")
+        case 5 : self.difficultyImageView.image = UIImage(named: "star_very_hard_black")
+        default:
+            self.difficultyImageView.image = UIImage(named: "star_very_easy_black")
+        }
+    }
 }

@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     var users_array:[Friend] = []
     
@@ -25,14 +24,13 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.navigationBar.hidden = false
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        self.loadingIndicator.hidesWhenStopped = true
-        
         // set top background color
         self.topView.backgroundColor = MP_HEX_RGB("30768A")
         
         // set searchBar textfield backgroun to white
         self.searchBar.searchBarStyle = UISearchBarStyle.Minimal
         self.searchBar.setSearchFieldBackgroundImage(UIImage(named: "searchBarTextFieldBackground"), forState: UIControlState.Normal)
+        self.searchBar.placeholder = NSLocalizedString("search_username", comment: "Search by Username or Email")
         
         // Remove tableview Inset Separator
         self.tableView.layoutMargins = UIEdgeInsetsZero
@@ -53,12 +51,29 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.viewWillAppear(animated)
+        // Don't hide on swipe & keboard Appears
+        self.navigationController?.hidesBarsOnSwipe = false
+        self.navigationController?.hidesBarsWhenKeyboardAppears = false
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.viewWillDisappear(animated)
+        // Hide on swipe & keboard Appears
+        self.navigationController?.hidesBarsOnSwipe = true
+        self.navigationController?.hidesBarsWhenKeyboardAppears = true
+    }
+    
     // UISearchBarDelegate, UISearchDisplayDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.users_array.removeAll(keepCapacity: false)
         searchBar.resignFirstResponder()
         if countElements(searchBar.text) >= 2 {
-            self.loadingIndicator.startAnimating()
+            // add loadingIndicator pop-up
+            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            loadingActivityVC.view.tag = 21
+            self.view.addSubview(loadingActivityVC.view)
 
             let parameters:[String: String] = [
                 "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
@@ -66,16 +81,19 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
                 "user_input": searchBar.text
             ]
             
-            Alamofire.request(.POST, ApiLink.autocomplete_search_user, parameters: parameters, encoding: .JSON)
+            request(.POST, ApiLink.autocomplete_search_user, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
+                    // Remove loadingIndicator pop-up
+                    if let loadingActivityView = self.view.viewWithTag(21) {
+                        loadingActivityView.removeFromSuperview()
+                    }
                     if (mydata == nil) {
                         var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
                         self.presentViewController(alert, animated: true, completion: nil)
                     } else {
                         //Convert to SwiftJSON
-                        println(mydata)
-                        var json = JSON(mydata!)
+                        var json = JSON_SWIFTY(mydata!)
                         
                         if json["users"].count != 0 {
                             for var i:Int = 0; i < json["users"].count; i++ {
@@ -87,7 +105,6 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
                         }
                         self.tableView.reloadData()
                     }
-                    self.loadingIndicator.stopAnimating()
             }
         }
     }

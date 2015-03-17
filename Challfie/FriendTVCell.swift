@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Alamofire
+//import Alamofire
 
 class FriendTVCell : UITableViewCell {
     @IBOutlet weak var profilePic: UIImageView!    
@@ -48,8 +48,12 @@ class FriendTVCell : UITableViewCell {
         self.levelLabel.text = friend.book_level
         
         // User Profile Picture
-        let profilePicURL:NSURL = NSURL(string: friend.show_profile_pic())!
-        self.profilePic.hnk_setImageFromURL(profilePicURL)
+        if friend.show_profile_pic() != "missing" {
+            let profilePicURL:NSURL = NSURL(string: friend.show_profile_pic())!
+            self.profilePic.hnk_setImageFromURL(profilePicURL)
+        } else {
+            self.profilePic.image = UIImage(named: "missing_user")
+        }
         self.profilePic.layer.cornerRadius = self.profilePic.frame.size.width / 2
         self.profilePic.clipsToBounds = true
         self.profilePic.layer.borderWidth = 2.0
@@ -113,7 +117,7 @@ class FriendTVCell : UITableViewCell {
         
         if friends_tab == 1 {
             // SUGGESTIONS
-            Alamofire.request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
+            request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
             self.relationshipButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
             self.friend.is_following = true
             self.friend.is_pending = true
@@ -122,7 +126,7 @@ class FriendTVCell : UITableViewCell {
         if (friends_tab == 3 || friends_tab == 4) {
             // FOLLOWERS
             if not_following == true {
-                Alamofire.request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
+                request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
                 self.relationshipButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
                 self.friend.is_following = true
                 self.friend.is_pending = true
