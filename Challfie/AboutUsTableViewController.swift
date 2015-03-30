@@ -15,7 +15,6 @@ class AboutUsTableViewController: UITableViewController {
         
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = true
-        self.navigationController?.hidesBarsWhenKeyboardAppears = true
         // Add Background for status bar
         let statusBarViewBackground = UIView(frame: CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, 20.0))
         statusBarViewBackground.backgroundColor = MP_HEX_RGB("30768A")
@@ -36,7 +35,7 @@ class AboutUsTableViewController: UITableViewController {
         var nib = UINib(nibName: "ExtraPagesTVCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "ExtraPagesCell")
         
-        self.navigationItem.title = "About Us"
+        self.navigationItem.title = NSLocalizedString("about_us", comment: "About Us")
         self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "Helvetica Neue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
     }
     
@@ -65,13 +64,13 @@ class AboutUsTableViewController: UITableViewController {
         switch indexPath.row {
         case 0 :
             cell.titleLabel.text = nil
-            cell.messageLabel.text = "Challfie is a social network that takes selfies to the next level by adding a fun and competitive spin."
+            cell.messageLabel.text = NSLocalizedString("about_us_text_one", comment: "About Us Part I")
         case 1 :
             cell.titleLabel.text = nil
-            cell.messageLabel.text = "It incorporates the concept of challenges that users must complete and have approved by their friends. \nThe more challenges that are completed and approved, the more points users earn, allowing them to reach higher levels and unlock new challenges."
+            cell.messageLabel.text = NSLocalizedString("about_us_text_two", comment: "About Us Part II")
         case 2 :
             cell.titleLabel.text = nil
-            cell.messageLabel.text = "So grab your camera and take your first Challfie!"
+            cell.messageLabel.text = NSLocalizedString("about_us_text_three", comment: "About Us Part III")
             
         default :
             cell.titleLabel.text = ""

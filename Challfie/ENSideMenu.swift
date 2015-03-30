@@ -82,7 +82,7 @@ public class ENSideMenu : NSObject {
     }
     private let menuPosition:ENSideMenuPosition = .Left
     public var bouncingEnabled :Bool = true
-    private let sideMenuContainerView =  UIView()
+    public let sideMenuContainerView =  UIView()
     private var menuTableViewController : UITableViewController!
     private var animator : UIDynamicAnimator!
     private let sourceView : UIView!
@@ -98,8 +98,6 @@ public class ENSideMenu : NSObject {
         
         animator = UIDynamicAnimator(referenceView:sourceView)
         
-        //println(sourceView.frame)
-        
         // Add right swipe gesture recognizer
         let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
         rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
@@ -110,12 +108,10 @@ public class ENSideMenu : NSObject {
         leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
         
         if (menuPosition == .Left) {
-            println("ENTER MENU POSITION LEFT")
             sourceView.addGestureRecognizer(rightSwipeGestureRecognizer)
             sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer)
         }
         else {
-            println("ENTER MENU POSITION RIGHT")
             sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer)
             sourceView.addGestureRecognizer(leftSwipeGestureRecognizer)
         }
@@ -129,6 +125,7 @@ public class ENSideMenu : NSObject {
         self.menuTableViewController.tableView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
         sideMenuContainerView.addSubview(self.menuTableViewController.tableView)
     }
+    
     
     private func updateFrame() {
         let menuFrame = CGRectMake(
@@ -243,7 +240,6 @@ public class ENSideMenu : NSObject {
     }
     
     internal func handleGesture(gesture: UISwipeGestureRecognizer) {
-        println("ENTER handleGesture")
         toggleMenu((self.menuPosition == .Right && gesture.direction == .Left)
             || (self.menuPosition == .Left && gesture.direction == .Right))
     }

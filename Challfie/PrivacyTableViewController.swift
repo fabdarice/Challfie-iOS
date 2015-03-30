@@ -21,7 +21,6 @@ class PrivacyTableViewController: UITableViewController {
         
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = true
-        self.navigationController?.hidesBarsWhenKeyboardAppears = true
         // Add Background for status bar
         let statusBarViewBackground = UIView(frame: CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, 20.0))
         statusBarViewBackground.backgroundColor = MP_HEX_RGB("30768A")

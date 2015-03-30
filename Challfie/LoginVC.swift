@@ -59,9 +59,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
 
         // Facebook Login
         self.facebookLoginView.delegate = self
-        self.facebookLoginView.readPermissions = ["public_profile", "email", "user_friends"]
-        
-        
+        self.facebookLoginView.readPermissions = ["public_profile", "email", "user_friends", "publish_actions"]    
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -232,10 +230,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                                 var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as HomeTBC
                                 // Add Background for status bar
                                 let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-                                let statusBarViewBackground = UIView(frame: CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, 20.0))
-                                statusBarViewBackground.backgroundColor = MP_HEX_RGB("30768A")
                                 appDelegate.window?.rootViewController = homeTableViewController
-                                appDelegate.window?.rootViewController?.view.addSubview(statusBarViewBackground)
                                 self.presentViewController(homeTableViewController, animated: true, completion: nil)
                             } else {
                                 // User needs to set his Challfie username since coming from Facebook

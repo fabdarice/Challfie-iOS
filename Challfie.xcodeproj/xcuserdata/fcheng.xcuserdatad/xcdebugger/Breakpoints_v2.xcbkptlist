@@ -41,22 +41,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Challfie/TimelineVC.swift"
-            timestampString = "448267489.653432"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Challfie/Challenge.swift"
             timestampString = "444627875.729194"
             startingColumnNumber = "9223372036854775807"
@@ -278,11 +262,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/OneSelfieVC.swift"
-            timestampString = "448101665.654105"
+            timestampString = "449098304.932582"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "324"
-            endingLineNumber = "324"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
             landmarkName = "commentSendButton(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -400,7 +384,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "13"
-            endingLineNumber = "13">
+            endingLineNumber = "13"
+            landmarkName = "FriendRequestTVCell"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -410,11 +396,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/ProfilVC.swift"
-            timestampString = "448101795.54249"
+            timestampString = "448663955.248473"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
             landmarkName = "loadData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -426,11 +412,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/ProfilVC.swift"
-            timestampString = "448101795.54249"
+            timestampString = "448663955.248473"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "loadData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -488,11 +474,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/ChallengeVC.swift"
-            timestampString = "448101965.916052"
+            timestampString = "448875194.710937"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
             landmarkName = "createProgressLayer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -536,7 +522,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/TakePictureVC.swift"
-            timestampString = "447983183.841314"
+            timestampString = "448874812.673502"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "391"

@@ -45,6 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let login = KeychainWrapper.stringForKey(kSecAttrAccount)
         let auth_token = KeychainWrapper.stringForKey(kSecValueData)
         
+        var launchScreenVC = UIViewController(nibName: "LoadingLaunchScreen", bundle: nil)
+        self.window?.rootViewController = launchScreenVC
+        
         if (login != nil && auth_token != nil) {
             let parameters:[String: AnyObject] = [
                 "login": login!,
@@ -61,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             
                             if username_activated == true {
                                 self.window?.rootViewController = homeTableViewController
+                                //self.window?.rootViewController = tutorialVC
                             } else {
                                 self.window?.rootViewController = facebookUsernameViewController
                             }

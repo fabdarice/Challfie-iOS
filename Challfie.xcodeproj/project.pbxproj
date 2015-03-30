@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0EA943381C1E99E09CCCA9B0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC8B9A79BD9A5B609E9DB92 /* libPods.a */; };
 		87019B921AB3B3FE007526C6 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87019B911AB3B3FE007526C6 /* Alamofire.swift */; };
+		87189EA31AC7F7A400B6E7AC /* tutorial_step_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 87189EA51AC7F7A400B6E7AC /* tutorial_step_01.png */; };
+		87189EA91AC7F96300B6E7AC /* tutorial_step_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 87189EAB1AC7F96300B6E7AC /* tutorial_step_02.png */; };
+		87189EAE1AC7F97500B6E7AC /* tutorial_step_03.png in Resources */ = {isa = PBXBuildFile; fileRef = 87189EB01AC7F97500B6E7AC /* tutorial_step_03.png */; };
 		87203E711A19EC8000A168D4 /* TimelineCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87203E701A19EC8000A168D4 /* TimelineCustomCell.xib */; };
 		8721456C1A681A1A00369FB1 /* TakePictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721456B1A681A1A00369FB1 /* TakePictureVC.swift */; };
 		8721456E1A682A7000369FB1 /* SearchUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8721456D1A682A7000369FB1 /* SearchUser.xib */; };
@@ -65,6 +68,10 @@
 		8781BEE81A443D710055EFBD /* follow_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 8781BEEA1A443D710055EFBD /* follow_button.png */; };
 		8781BEEE1A451F7B0055EFBD /* pending_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 8781BEF01A451F7B0055EFBD /* pending_button.png */; };
 		8781BEF51A4520CF0055EFBD /* FriendRequestTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8781BEF41A4520CF0055EFBD /* FriendRequestTVCell.xib */; };
+		878573BC1AC3F4C300354500 /* TutorialPageContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 878573BB1AC3F4C300354500 /* TutorialPageContent.xib */; };
+		878573BE1AC3F4D900354500 /* TutorialPageContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878573BD1AC3F4D900354500 /* TutorialPageContentVC.swift */; };
+		878573C01AC3F5F300354500 /* TutorialVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878573BF1AC3F5F300354500 /* TutorialVC.swift */; };
+		878573C21AC4A6BC00354500 /* LoadingLaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 878573C11AC4A6BC00354500 /* LoadingLaunchScreen.xib */; };
 		8787EDCA1A9F14CB00A2639D /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787EDC91A9F14CB00A2639D /* ContactViewController.swift */; };
 		8787EDCF1A9F1D4600A2639D /* Contact.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8787EDCE1A9F1D4600A2639D /* Contact.xib */; };
 		87904FAB1A0C9FF2004FD75E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87904FAA1A0C9FF2004FD75E /* AppDelegate.swift */; };
@@ -155,6 +162,12 @@
 /* Begin PBXFileReference section */
 		496CFF2BC884CAF70341ADFB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		87019B911AB3B3FE007526C6 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
+		87189EA41AC7F7A400B6E7AC /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/tutorial_step_01.png; sourceTree = "<group>"; };
+		87189EA61AC7F7A700B6E7AC /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/tutorial_step_01.png; sourceTree = "<group>"; };
+		87189EAA1AC7F96300B6E7AC /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/tutorial_step_02.png; sourceTree = "<group>"; };
+		87189EAF1AC7F97500B6E7AC /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/tutorial_step_03.png; sourceTree = "<group>"; };
+		87189EB11AC7F97700B6E7AC /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/tutorial_step_03.png; sourceTree = "<group>"; };
+		87189EB21AC7F99000B6E7AC /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/tutorial_step_02.png; sourceTree = "<group>"; };
 		87203E701A19EC8000A168D4 /* TimelineCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineCustomCell.xib; sourceTree = "<group>"; };
 		8721456B1A681A1A00369FB1 /* TakePictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TakePictureVC.swift; sourceTree = "<group>"; };
 		8721456D1A682A7000369FB1 /* SearchUser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchUser.xib; sourceTree = "<group>"; };
@@ -224,6 +237,10 @@
 		8781BEEF1A451F7B0055EFBD /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/pending_button.png; sourceTree = "<group>"; };
 		8781BEF11A451F7D0055EFBD /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/pending_button.png; sourceTree = "<group>"; };
 		8781BEF41A4520CF0055EFBD /* FriendRequestTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendRequestTVCell.xib; sourceTree = "<group>"; };
+		878573BB1AC3F4C300354500 /* TutorialPageContent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TutorialPageContent.xib; sourceTree = "<group>"; };
+		878573BD1AC3F4D900354500 /* TutorialPageContentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialPageContentVC.swift; sourceTree = "<group>"; };
+		878573BF1AC3F5F300354500 /* TutorialVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialVC.swift; sourceTree = "<group>"; };
+		878573C11AC4A6BC00354500 /* LoadingLaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingLaunchScreen.xib; sourceTree = "<group>"; };
 		8787EDC91A9F14CB00A2639D /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		8787EDCE1A9F1D4600A2639D /* Contact.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Contact.xib; sourceTree = "<group>"; };
 		87904FA51A0C9FF2004FD75E /* Challfie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challfie.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -420,6 +437,8 @@
 				8721456D1A682A7000369FB1 /* SearchUser.xib */,
 				87B198C11A8C96E700299627 /* LoadingActivity.xib */,
 				8787EDCE1A9F1D4600A2639D /* Contact.xib */,
+				878573BB1AC3F4C300354500 /* TutorialPageContent.xib */,
+				878573C11AC4A6BC00354500 /* LoadingLaunchScreen.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -446,6 +465,8 @@
 				8721456F1A682D5B00369FB1 /* SearchUserVC.swift */,
 				87B198BF1A8C963E00299627 /* LoadingActivityVC.swift */,
 				873FBB4D1A8E03450043E272 /* FacebookUsernameVC.swift */,
+				878573BD1AC3F4D900354500 /* TutorialPageContentVC.swift */,
+				878573BF1AC3F5F300354500 /* TutorialVC.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -548,6 +569,9 @@
 		87B053771A2B24A7000B5A60 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				87189EB01AC7F97500B6E7AC /* tutorial_step_03.png */,
+				87189EAB1AC7F96300B6E7AC /* tutorial_step_02.png */,
+				87189EA51AC7F7A400B6E7AC /* tutorial_step_01.png */,
 				872791AB1A6B24F10012DE69 /* edit_profil_button.png */,
 				8781BEF01A451F7B0055EFBD /* pending_button.png */,
 				8781BEEA1A443D710055EFBD /* follow_button.png */,
@@ -735,20 +759,24 @@
 				877874461A2C0F600031718E /* approve_select_button.png in Resources */,
 				8787EDCF1A9F1D4600A2639D /* Contact.xib in Resources */,
 				877874681A2E98200031718E /* challenge_approve.png in Resources */,
+				87189EAE1AC7F97500B6E7AC /* tutorial_step_03.png in Resources */,
 				8781BEF51A4520CF0055EFBD /* FriendRequestTVCell.xib in Resources */,
 				87F240F01A9FC2B400865323 /* PLCameraSheetDoneButtonPressed@2x.png in Resources */,
 				877874501A2C11050031718E /* reject_button.png in Resources */,
 				87904FCC1A0CA8D1004FD75E /* chinrg__.ttf in Resources */,
 				87F240EF1A9FC2B400865323 /* PLCameraSheetDoneButtonPressed.png in Resources */,
+				87189EA31AC7F7A400B6E7AC /* tutorial_step_01.png in Resources */,
 				874A15A21A9B428B0050FF5C /* ExtraPagesTVCell.xib in Resources */,
 				87CA93B41A5A2C4F004D72FE /* ProfilHeader.xib in Resources */,
 				8781BEE81A443D710055EFBD /* follow_button.png in Resources */,
+				87189EA91AC7F96300B6E7AC /* tutorial_step_02.png in Resources */,
 				873681611A3523AE004E6897 /* OneSelfie.xib in Resources */,
 				8781BEDC1A4410FF0055EFBD /* remove_button.png in Resources */,
 				87B0538D1A2B3B34000B5A60 /* Localizable.strings in Resources */,
 				874A15941A9746400050FF5C /* Images.xcassets in Resources */,
 				87F240EC1A9FC2B400865323 /* PLCameraSheetButtonPressed@2x.png in Resources */,
 				8757BF8E1A63C7BC0018B16B /* ChallengeTVCell.xib in Resources */,
+				878573BC1AC3F4C300354500 /* TutorialPageContent.xib in Resources */,
 				873281871A5D123300B99429 /* BookPageContent.xib in Resources */,
 				877874621A2E97E70031718E /* challenge_pending.png in Resources */,
 				87F240ED1A9FC2B400865323 /* PLCameraSheetDoneButton.png in Resources */,
@@ -756,6 +784,7 @@
 				8721456E1A682A7000369FB1 /* SearchUser.xib in Resources */,
 				872DBFFF1A3AF14E00806FE9 /* AlertTVCell.xib in Resources */,
 				8781BED61A440DC70055EFBD /* following_button.png in Resources */,
+				878573C21AC4A6BC00354500 /* LoadingLaunchScreen.xib in Resources */,
 				879387041A4BFE2E00609934 /* Profil.xib in Resources */,
 				877874561A2C11B80031718E /* approve_button.png in Resources */,
 				87904FB51A0C9FF2004FD75E /* LaunchScreen.xib in Resources */,
@@ -819,6 +848,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87E298721A3173FE00DEF385 /* ChallengeVC.swift in Sources */,
+				878573BE1AC3F4D900354500 /* TutorialPageContentVC.swift in Sources */,
 				872820AE1A15FAF90010AB75 /* User.swift in Sources */,
 				87D2D0021AB3BDA7008CDC89 /* NetworkFetcher.swift in Sources */,
 				87D2D0071AB3BDA7008CDC89 /* UIImage+Haneke.swift in Sources */,
@@ -873,6 +903,7 @@
 				874A15961A9752410050FF5C /* ENSideMenu.swift in Sources */,
 				87D2D0041AB3BDA7008CDC89 /* NSHTTPURLResponse+Haneke.swift in Sources */,
 				87F240E41A9FC2B400865323 /* GKImageCropOverlayView.m in Sources */,
+				878573C01AC3F5F300354500 /* TutorialVC.swift in Sources */,
 				873281831A5D10CA00B99429 /* BookPageContentVC.swift in Sources */,
 				87019B921AB3B3FE007526C6 /* Alamofire.swift in Sources */,
 				87D2CFFD1AB3BDA7008CDC89 /* Fetch.swift in Sources */,
@@ -912,6 +943,33 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		87189EA51AC7F7A400B6E7AC /* tutorial_step_01.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87189EA41AC7F7A400B6E7AC /* en */,
+				87189EA61AC7F7A700B6E7AC /* fr */,
+			);
+			name = tutorial_step_01.png;
+			sourceTree = "<group>";
+		};
+		87189EAB1AC7F96300B6E7AC /* tutorial_step_02.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87189EAA1AC7F96300B6E7AC /* en */,
+				87189EB21AC7F99000B6E7AC /* fr */,
+			);
+			name = tutorial_step_02.png;
+			sourceTree = "<group>";
+		};
+		87189EB01AC7F97500B6E7AC /* tutorial_step_03.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87189EAF1AC7F97500B6E7AC /* fr */,
+				87189EB11AC7F97700B6E7AC /* en */,
+			);
+			name = tutorial_step_03.png;
+			sourceTree = "<group>";
+		};
 		872791AB1A6B24F10012DE69 /* edit_profil_button.png */ = {
 			isa = PBXVariantGroup;
 			children = (

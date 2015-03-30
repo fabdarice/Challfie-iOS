@@ -9,7 +9,7 @@
 import Foundation
 //import Alamofire
 
-class FacebookUsernameVC : UIViewController {
+class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     @IBOutlet weak var setUsernameView: UIView!
     @IBOutlet weak var selectUsernameLabel: UILabel!
     @IBOutlet weak var usernameHelperLabel: UILabel!
@@ -22,7 +22,7 @@ class FacebookUsernameVC : UIViewController {
         super.viewDidLoad()
         
         // Cell Background
-        self.view.backgroundColor = MP_HEX_RGB("30768A")
+        //self.view.backgroundColor = MP_HEX_RGB("30768A")
         
         // View Border color
         self.setUsernameView.layer.borderColor = MP_HEX_RGB("308A6C").CGColor
@@ -31,11 +31,49 @@ class FacebookUsernameVC : UIViewController {
         self.setUsernameButton.backgroundColor = MP_HEX_RGB("308A6C")
         self.selectUsernameLabel.textColor = UIColor.whiteColor()
         
+        // Set Textfield Delegate for hiding keyboard
+        self.usernameTextField.delegate = self
+        
         // FR-EN
         self.selectUsernameLabel.text = NSLocalizedString("choose_username", comment: "Choose a Username")
         self.usernameHelperLabel.text = NSLocalizedString("only_alphanumeric", comment: "must contain only alphanumeric characters")
         self.usernameTextField.placeholder = NSLocalizedString("Username", comment: "Username") + " *"
         self.setUsernameButton.setTitle(NSLocalizedString("confirm", comment: "Confirm"), forState: UIControlState.Normal)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Add Notification for when the Keyboard pop up  and when it is dismissed
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name:UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name:UIKeyboardDidHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func keyboardDidShow(notification: NSNotification) {
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.setUsernameView.transform = CGAffineTransformMakeTranslation(0.0, -60.0)}, completion: nil)
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.selectUsernameLabel.transform = CGAffineTransformMakeTranslation(0.0, -60.0)}, completion: nil)
+    }
+    
+    func keyboardDidHide(notification: NSNotification) {
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.setUsernameView.transform = CGAffineTransformMakeTranslation(0.0, 0.0)}, completion: nil)
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.selectUsernameLabel.transform = CGAffineTransformMakeTranslation(0.0, 0.0)}, completion: nil)
+    }
+    
+    // MARK: - UITextFieldDelegate Delegate
+    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+        textField.resignFirstResponder()
+        
+        self.validateUsernameButton(self.setUsernameButton)
+        return true;
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        self.view.endEditing(true)
     }
     
     @IBAction func validateUsernameButton(sender: AnyObject) {
@@ -49,8 +87,7 @@ class FacebookUsernameVC : UIViewController {
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
             "new_username": self.usernameTextField.text
         ]
-        
-        
+                
         request(.POST, ApiLink.update_user, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 // Remove loadingIndicator pop-up
@@ -63,9 +100,7 @@ class FacebookUsernameVC : UIViewController {
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //convert to SwiftJSON
-                    let json = JSON_SWIFTY(mydata!)
-                    
-                    println(json)
+                    let json = JSON_SWIFTY(mydata!)                    
                     
                     if json["username"].count != 0 {
                         // ERROR VALIDATION OF USERNAME

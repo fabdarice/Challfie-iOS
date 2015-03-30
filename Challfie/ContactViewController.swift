@@ -60,6 +60,29 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         self.textView.resignFirstResponder()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Add Notification for when the Keyboard pop up  and when it is dismissed
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name:UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name:UIKeyboardDidHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func keyboardDidShow(notification: NSNotification) {
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.pickerView.transform = CGAffineTransformMakeTranslation(0.0, -140.0)}, completion: nil)
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.textView.transform = CGAffineTransformMakeTranslation(0.0, -140.0)}, completion: nil)
+    }
+    
+    func keyboardDidHide(notification: NSNotification) {
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.pickerView.transform = CGAffineTransformMakeTranslation(0.0, 0.0)}, completion: nil)
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.textView.transform = CGAffineTransformMakeTranslation(0.0, 0.0)}, completion: nil)
+    }
+    
     
     @IBAction func sendMessage(sender: AnyObject) {
         var contactTypeInt: Int!
@@ -67,6 +90,9 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         // Add loadingIndicator pop-up
         var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
+        // -49 because of the height of the Tabbar ; -40 because of navigationController
+        var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+        loadingActivityVC.view.frame = newframe
         self.view.addSubview(loadingActivityVC.view)
         
         switch contactType[self.pickerView.selectedRowInComponent(0)] {

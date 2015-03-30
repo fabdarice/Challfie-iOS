@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -24,7 +25,7 @@
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="dsP-B8-zVX"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                         <variation key="default">
                             <mask key="constraints">
@@ -74,7 +75,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exampleProfilePic" translatesAutoresizingMaskIntoConstraints="NO" id="0ev-Vb-nvf" userLabel="profilePicButton">
-                        <rect key="frame" x="8" y="10" width="40" height="40"/>
+                        <rect key="frame" x="8" y="9.5" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="fzn-J6-A0x"/>
                             <constraint firstAttribute="width" constant="40" id="iZ8-Jx-Mbo"/>
@@ -86,6 +87,7 @@
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="I0K-2R-VCS"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="JUd-I3-zRI"/>
                     <constraint firstAttribute="trailingMargin" secondItem="SyE-th-V2e" secondAttribute="trailing" constant="10" id="PNa-Ch-quD"/>
+                    <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="ScR-kq-Ecg"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Tbq-Fr-1Wq"/>
                     <constraint firstItem="x4I-ND-leN" firstAttribute="top" secondItem="Gg3-5A-O2D" secondAttribute="bottom" constant="2" id="dIs-4Q-DKg"/>
                     <constraint firstItem="SyE-th-V2e" firstAttribute="trailing" secondItem="kcE-gZ-leJ" secondAttribute="trailingMargin" constant="10" id="k3L-34-9ng"/>
@@ -100,6 +102,7 @@
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="JUd-I3-zRI"/>
+                        <exclude reference="Tbq-Fr-1Wq"/>
                         <exclude reference="k3L-34-9ng"/>
                     </mask>
                 </variation>

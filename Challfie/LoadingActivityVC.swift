@@ -28,41 +28,8 @@ class LoadingActivityVC: UIViewController {
             variableHeight += 40
         }
         
-        // Set bookProgressView height based on the device
-        let model = UIDevice.currentDevice().modelName
-        
-        var screenHeight: CGFloat = 0.0
-        var screenWidth: CGFloat = 0.0
-        
-        switch model {
-        case "iPhone 4S":
-            screenHeight = 480
-            screenWidth = 320.0
-        case "iPhone 5":
-            screenHeight = 568
-            screenWidth = 320.0
-        case "iPhone 5c":
-            screenHeight = 568
-            screenWidth = 320.0
-        case "iPhone 5s":
-            screenHeight = 568
-            screenWidth = 320.0
-        case "iPhone 6" :
-            screenHeight = 667
-            screenWidth = 375
-        case "iPhone 6 Plus" :
-            screenHeight = 736
-            screenWidth = 414.0
-        default:
-            screenHeight = 667
-            screenWidth = 375
-        }
-        
-        println("VIEW FRAME : \(self.view.frame)")
-        
         // -49 because of the height of the Tabbar ; -40 because of navigationController
-        var newframe = CGRectMake(0.0, 0.0, screenWidth, screenHeight - variableHeight)
-        
+        var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - variableHeight)        
         self.view.frame = newframe
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
@@ -71,10 +38,7 @@ class LoadingActivityVC: UIViewController {
         self.activityView.layer.cornerRadius = 15.0
         //self.activityView.clipsToBounds = true
         self.activityView.layer.borderWidth = 2.0
-        //self.activityView.backgroundColor = MP_HEX_RGB("D1D1D1")
         self.activityView.backgroundColor = MP_HEX_RGB("052933")
         self.activityView.layer.borderColor = MP_HEX_RGB("1A596B").CGColor
-
-        
     }
 }

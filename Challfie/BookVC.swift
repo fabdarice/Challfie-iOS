@@ -10,7 +10,7 @@ import Foundation
 
 //import Alamofire
 
-class BookVC : UIViewController, UIPageViewControllerDataSource {
+class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDelegate {
     
     @IBOutlet weak var booksTabHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var topBar_bookstab_vertical_constraint: NSLayoutConstraint!
@@ -29,9 +29,12 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
         logoImageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.navigationItem.titleView = logoImageView
         
+        // Add Delegate to SideMenu
+        self.sideMenuController()?.sideMenu?.delegate = self
+        
         // navigationController Left and Right Button
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
         
         // Styling Background
         self.view.backgroundColor = MP_HEX_RGB("1A596B")
@@ -57,11 +60,6 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
         // show navigation and hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
         self.navigationController?.hidesBarsOnSwipe = true
-        self.navigationController?.hidesBarsWhenKeyboardAppears = true
-    }
-    
-    func toggleSideMenu() {
-        toggleSideMenuView()
     }
 
     func loadData() {
@@ -107,8 +105,6 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
                 
                 // call a function to initiate the UIPageViewController
                 self.createPageViewController()
-                
-
         }
         
     }
@@ -196,6 +192,30 @@ class BookVC : UIViewController, UIPageViewControllerDataSource {
     func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
         return last_book_unlocked_index
     }
-
-
+    
+    
+    // MARK: - ENSideMenu Delegate
+    func sideMenuWillOpen() {
+        // Add Tap gesture to Hide Side Menu
+        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    func sideMenuWillClose() {
+        // Remove Tap gesture to Hide Side Menu
+        if let recognizers = self.view.gestureRecognizers {
+            for recognizer in recognizers {
+                self.view.removeGestureRecognizer(recognizer as UIGestureRecognizer)
+            }
+        }
+    }
+    
+    func toggleSideMenu() {
+        toggleSideMenuView()
+    }
+    
+    func hideSideMenu() {
+        hideSideMenuView()
+    }
+    
 }

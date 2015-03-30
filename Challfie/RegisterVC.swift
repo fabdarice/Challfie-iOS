@@ -18,6 +18,8 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
+    @IBOutlet weak var registerView: UIView!
+    @IBOutlet weak var createNewAccountLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +39,29 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         // Hide Password in TextField with *****
         self.passwordTextField.secureTextEntry = true
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Add Notification for when the Keyboard pop up  and when it is dismissed
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name:UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name:UIKeyboardDidHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func keyboardDidShow(notification: NSNotification) {
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.registerView.transform = CGAffineTransformMakeTranslation(0.0, -65.0)}, completion: nil)
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.createNewAccountLabel.transform = CGAffineTransformMakeTranslation(0.0, -65.0)}, completion: nil)
+    }
+    
+    func keyboardDidHide(notification: NSNotification) {
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.registerView.transform = CGAffineTransformMakeTranslation(0.0, 0.0)}, completion: nil)
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.createNewAccountLabel.transform = CGAffineTransformMakeTranslation(0.0, 0.0)}, completion: nil)
     }
     
     
@@ -105,7 +130,8 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                         KeychainWrapper.setString(auth_token, forKey: kSecValueData)
                         
                         // Modal to Timeline TabBarViewCOntroller
-                        self.performSegueWithIdentifier("homeSegue2", sender: self)
+                        //self.performSegueWithIdentifier("homeSegue2", sender: self)
+                        self.performSegueWithIdentifier("registerSegue", sender: self)
 
                     }
                 }

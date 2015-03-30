@@ -47,6 +47,7 @@ daily = "Daily";
 
 // Comment
 Write_Comment = "Write a comment..";
+comment_empty = "Comment cannot be empty.";
 
 // Alert
 Alert_tab = "Alert";
@@ -119,4 +120,18 @@ ranking = "Ranking";
 statistics = "Statistics";
 about_us = "About Us";
 
+// About Us Page
+about_us_text_one = "Challfie is a social network that takes selfies to the next level by adding a fun and competitive spin.";
+about_us_text_two = "It incorporates the concept of challenges that users must complete and have approved by their friends. \nThe more challenges that are completed and approved, the more points users earn, allowing them to reach higher levels and unlock new challenges.";
+about_us_text_three = "So grab your camera and take your first Challfie!";
+
+
+// Tutorial Page
+step = "STEP";
+skip_tutorial = "Skip Tutorial";
+get_started = "Get Started";
+tutorial_step_one = "Pick a challenge among a hundred of fun ideas to discover";
+tutorial_step_two = "Take a selfie to complete your challenge";
+tutorial_step_three = "Get your selfie challenge approved by your friends";
+tutorial_step_four = "Earn points for each Challfie approved and level up to unlock new challenges";
 

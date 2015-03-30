@@ -72,16 +72,14 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
 
     GKImageCropViewController *cropController = [[GKImageCropViewController alloc] init];
-//    cropController.contentSizeForViewInPopover = picker.contentSizeForViewInPopover;
-    cropController.preferredContentSize = picker.preferredContentSize;
+//    cropController.contentSizeForViewInPopover = picker.contentSizeForViewInPopover; // 
+    cropController.preferredContentSize = picker.preferredContentSize; // CUSTOM FAB
     cropController.sourceImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     cropController.resizeableCropArea = self.resizeableCropArea;
     cropController.cropSize = self.cropSize;
     cropController.delegate = self;
     cropController.imagepicker = self;
     
-    //[self.imagePickerController pushViewController:cropController animated:true]; // CUSTOM FAB
-    //[picker dismissViewControllerAnimated:true completion:nil]; // CUSTOM FAB
     [picker pushViewController:cropController animated:YES];
     
     

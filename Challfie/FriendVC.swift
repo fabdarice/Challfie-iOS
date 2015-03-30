@@ -9,7 +9,7 @@
 import Foundation
 //import Alamofire
 
-class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ENSideMenuDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var suggestionsButton: UIButton!
@@ -38,6 +38,9 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.navigationBar.translucent = false
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
+        // Add Delegate to SideMenu
+        self.sideMenuController()?.sideMenu?.delegate = self
+        
         // navigationController Title
         let logoImageView = UIImageView(image: UIImage(named: "challfie_letter"))
         logoImageView.frame = CGRectMake(0.0, 0.0, 150.0, 35.0)
@@ -45,8 +48,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationItem.titleView = logoImageView
         
         // navigationController Left and Right Button
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
         
         // Set Background of "Search for Facebook" Button
         self.linkFacebookButton.backgroundColor = MP_HEX_RGB("3f5c9a")
@@ -81,8 +84,14 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Set the height of a cell dynamically
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 100.0
+        self.tableView.estimatedRowHeight = 60.0
         
+        // Add right swipe gesture hide Side Menu
+        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
+        
+        
+        // Set Default tab to Suggestions/Pending Request
         self.friends_tab = 1
         
     }
@@ -104,13 +113,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         // show navigation and don't hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
         self.navigationController?.hidesBarsOnSwipe = false
-        self.navigationController?.hidesBarsWhenKeyboardAppears = false
     }
-    
-    func toggleSideMenu() {
-        toggleSideMenuView()
-    }
-    
+
     func loadRequestData(pagination: Bool) {
         if pagination == true {
             self.loadingIndicator.startAnimating()
@@ -118,6 +122,9 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             // add loadingIndicator pop-up
             var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
+            // -49 because of the height of the Tabbar ; -40 because of navigationController
+            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+            loadingActivityVC.view.frame = newframe
             self.view.addSubview(loadingActivityVC.view)
         }
         
@@ -194,6 +201,10 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             // add loadingIndicator pop-up
             var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
+            // -49 because of the height of the Tabbar ; -40 because of navigationController
+            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+            loadingActivityVC.view.frame = newframe
+
             self.view.addSubview(loadingActivityVC.view)
         }
 
@@ -309,7 +320,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     @IBAction func linkFacebook(sender: AnyObject) {
-        FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
+        FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends",
+            "publish_actions"], allowLoginUI: true, completionHandler: {
             (session:FBSession!, state:FBSessionState, error:NSError!) in
                 let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
                 // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
@@ -423,7 +435,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    // tableView Delegate
+    // MARK: - tableView Delegate
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             var numberRows: Int!
@@ -574,7 +586,6 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        hideSideMenuView()
         // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
         if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
             // Add Loading Indicator to footerView
@@ -600,49 +611,39 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.pushViewController(profilVC, animated: true)
     }
     
-    
-    // MARK: - Facebook Delegate Methods
-    /*
-    func loginViewFetchedUserInfo(loginView : FBLoginView!, user: FBGraphUser) {
+    // MARK: - ENSideMenu Delegate
+    func sideMenuWillOpen() {
+        // Add Tap gesture to Hide Side Menu
+        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
+        self.tableView.addGestureRecognizer(tapGesture)
         
-        let fbAccessToken = FBSession.activeSession().accessTokenData.accessToken
-        let fbTokenExpiresAt = FBSession.activeSession().accessTokenData.expirationDate.timeIntervalSince1970
-        let userProfileImage = "http://graph.facebook.com/\(user.objectID)/picture?type=large"
+        // Add right swipe gesture hide Side Menu
+        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
         
-        let parameters:[String: AnyObject] = [
-            "uid": user.objectID,
-            "login": user.name,
-            "email": user.objectForKey("email"),
-            "firstname": user.first_name,
-            "lastname": user.last_name,
-            "profilepic": userProfileImage,
-            "fbtoken": fbAccessToken,
-            "fbtoken_expires_at": fbTokenExpiresAt,
-            "fb_locale": user.objectForKey("locale")
-        ]
-        
-        request(.POST, ApiLink.facebook_register, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else {
-                    //convert to SwiftJSON
-                    let json = JSON(mydata!)
-                    if (json["success"].intValue == 0) {
-                        // ERROR RESPONSE FROM HTTP Request
-                        var alert = UIAlertController(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
-                        
-                    } else {
-                        self.loadRequestData()
-                    }
-                }
-                
-        }
-        
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Left
+        self.tableView.addGestureRecognizer(leftSwipeGestureRecognizer)
+        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Left
+        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
     }
-*/
+    
+    func sideMenuWillClose() {
+        // Remove Tap gesture to Hide Side Menu
+        if let recognizers = self.tableView.gestureRecognizers {
+            for recognizer in recognizers {
+                self.tableView.removeGestureRecognizer(recognizer as UIGestureRecognizer)
+            }
+        }               
+    }
+    
+    func toggleSideMenu() {
+        toggleSideMenuView()
+    }
+    
+    func hideSideMenu() {
+        hideSideMenuView()
+    }
+    
 }

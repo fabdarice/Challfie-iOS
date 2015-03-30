@@ -20,8 +20,6 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Show navigationBar
-        self.navigationController?.navigationBar.hidden = false
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         // set top background color
@@ -44,7 +42,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
         // Register the xib for the Custom TableViewCell
         var nib = UINib(nibName: "FriendTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "FriendCell")
-        
+
         // Set the height of a cell dynamically
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 20.0
@@ -52,17 +50,12 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.viewWillAppear(animated)
+        super.viewWillAppear(animated)
+        
+        // Show navigationBar
+        self.navigationController?.navigationBarHidden = false
         // Don't hide on swipe & keboard Appears
-        self.navigationController?.hidesBarsOnSwipe = false
-        self.navigationController?.hidesBarsWhenKeyboardAppears = false
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        self.viewWillDisappear(animated)
-        // Hide on swipe & keboard Appears
-        self.navigationController?.hidesBarsOnSwipe = true
-        self.navigationController?.hidesBarsWhenKeyboardAppears = true
+        navigationController?.hidesBarsOnSwipe = false
     }
     
     // UISearchBarDelegate, UISearchDisplayDelegate
@@ -73,6 +66,9 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
             // add loadingIndicator pop-up
             var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
+            // -49 because of the height of the Tabbar ; -40 because of navigationController
+            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+            loadingActivityVC.view.frame = newframe
             self.view.addSubview(loadingActivityVC.view)
 
             let parameters:[String: String] = [

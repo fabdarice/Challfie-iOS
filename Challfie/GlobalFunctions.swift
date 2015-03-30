@@ -46,7 +46,7 @@ class GlobalFunctions {
     
     // Function to push to Search Page
     func tapGestureToSearchPage(controller: UIViewController, backBarTitle: String) {
-        // Push to OneSelfieVC
+        // Push to SearchPage
         var searchUserVC = SearchUserVC(nibName: "SearchUser" , bundle: nil)
         controller.navigationItem.backBarButtonItem = UIBarButtonItem(title: backBarTitle, style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         controller.navigationController?.pushViewController(searchUserVC, animated: true)

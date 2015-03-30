@@ -32,7 +32,7 @@ class ChallengeVC : UIViewController {
     //var fullcircleLayer : CAShapeLayer = CAShapeLayer()
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()        
         
         // Styling the navigationController
         self.navigationController?.navigationBar.barTintColor = MP_HEX_RGB("30768A")
@@ -46,8 +46,8 @@ class ChallengeVC : UIViewController {
         self.navigationItem.titleView = logoImageView
         
         // navigationController Left and Right Button
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
         
         // Styling Background
         self.view.backgroundColor = MP_HEX_RGB("1A596B")
@@ -76,12 +76,27 @@ class ChallengeVC : UIViewController {
         case "iPhone 5c": bookProgressViewHeightConstraint.constant = 225
         case "iPhone 5s": bookProgressViewHeightConstraint.constant = 225
         case "iPhone 6" : bookProgressViewHeightConstraint.constant = 250
-        case "iPhone 6 Plus" : bookProgressViewHeightConstraint.constant = 300
+        case "iPhone 6 Plus" : bookProgressViewHeightConstraint.constant = 350
         default:
             bookProgressViewHeightConstraint.constant = 225
         }        
         
         self.createFullCircle()
+        
+        // Add right swipe gesture Hide Side Menu
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(rightSwipeGestureRecognizer)
+        
+        // Add left swipe gesture Show Side Menu
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+        self.view.addGestureRecognizer(leftSwipeGestureRecognizer)
+        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+
+        // Add Tap gesture to Hide Side Menu
+        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
+        self.view.addGestureRecognizer(tapGesture)
         
     }
     
@@ -98,7 +113,6 @@ class ChallengeVC : UIViewController {
         // show navigation and don't hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
         self.navigationController?.hidesBarsOnSwipe = false
-        self.navigationController?.hidesBarsWhenKeyboardAppears = false
         
         // call API to load level Progression
         loadData()
@@ -108,7 +122,23 @@ class ChallengeVC : UIViewController {
         toggleSideMenuView()
     }
     
+    func hideSideMenu() {
+        hideSideMenuView()
+    }
+    
+    func showSideMenu() {
+        showSideMenuView()
+    }
+    
     func loadData() {
+        // add loadingIndicator pop-up
+        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        loadingActivityVC.view.tag = 21
+        // -49 because of the height of the Tabbar ; -40 because of navigationController
+        var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+        loadingActivityVC.view.frame = newframe
+        self.view.addSubview(loadingActivityVC.view)
+        
         self.loadingIndicator.startAnimating()
         let parameters:[String: String] = [
             "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
@@ -117,6 +147,10 @@ class ChallengeVC : UIViewController {
         
         request(.POST, ApiLink.level_progression, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
                 if (mydata == nil) {
                     var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))

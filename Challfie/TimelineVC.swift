@@ -9,7 +9,7 @@
 import Foundation
 //import Alamofire
 
-class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
 
     
     @IBOutlet weak var timelineTableView: UITableView!
@@ -57,8 +57,8 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         UIApplication.sharedApplication().keyWindow?.addSubview(statusBarViewBackground)
         
         // navigationController Left and Right Button
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
         
         // hide uploadSelfie View
         self.uploadSelfieView.hidden = true
@@ -90,22 +90,35 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         timelineTableView.rowHeight = UITableViewAutomaticDimension
         timelineTableView.estimatedRowHeight = 444.0
         
+        // Add right swipe gesture hide Side Menu
+        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
         
-        // Add right swipe gesture recognizer
-        
-        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "toggleSideMenu")
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
         rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
+        rightSwipeGestureRecognizer.delegate = self
         self.timelineTableView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        let rightSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        rightSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Right
+        rightSwipeGestureRecognizer2.delegate = self
+        ensideMenu.sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer2)
         
-        // Add left swipe gesture recognizer
-        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "toggleSideMenu")
+        // Add left swipe gesture Show Side Menu
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
         leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-        //sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        leftSwipeGestureRecognizer.delegate = self
         self.timelineTableView.addGestureRecognizer(leftSwipeGestureRecognizer)
+        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer2.direction = UISwipeGestureRecognizerDirection.Left
+        leftSwipeGestureRecognizer2.delegate = self
+        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
+        
+        // Add Tap gesture to Hide Side Menu
+        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
+        self.timelineTableView.addGestureRecognizer(tapGesture)
         
         // Load Selfies for User Timeline
         self.refresh(actionFromInit: true)
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -126,7 +139,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = true
-        self.navigationController?.hidesBarsWhenKeyboardAppears = true
         
         // Show StatusBarBackground
         let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
@@ -145,10 +157,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func toggleSideMenu() {
-        println("ENTER SWIPE")
-        toggleSideMenuView()
-    }
     
     func updateProgress() {
         if self.progressData < 0.9 {
@@ -377,16 +385,8 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.None
-    }
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        hideSideMenuView()
         // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
         if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height - self.timelineTableView.bounds.size.height)) {
             // Add Loading Indicator to footerView
@@ -397,7 +397,23 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // UIGestureDelegate
+    func gestureRecognizer(UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
+            return true
+    }
 
+    func toggleSideMenu() {
+        toggleSideMenuView()
+    }
+    
+    func hideSideMenu() {
+        hideSideMenuView()
+    }
+    
+    func showSideMenu() {
+        showSideMenuView()
+    }
+    
  
-
 }

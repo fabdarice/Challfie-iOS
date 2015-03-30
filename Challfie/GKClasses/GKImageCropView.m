@@ -96,6 +96,7 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
 #pragma mark -
 #pragma Public Methods
 
+// FAB IMPORTANT
 - (UIImage *)croppedImage{
     
     //Calculate rect that needs to be cropped
@@ -108,7 +109,9 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
     //finally crop image
     CGImageRef imageRef = CGImageCreateWithImageInRect([self.imageToCrop CGImage], visibleRect);
     UIImage *result = [UIImage imageWithCGImage:imageRef scale:self.imageToCrop.scale orientation:self.imageToCrop.imageOrientation];
+    
     CGImageRelease(imageRef);
+    
     return result;
 }
 
@@ -135,17 +138,26 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
     
     if (self.cropSize.width > self.cropSize.height) {
         scale = (self.imageToCrop.size.width < self.imageToCrop.size.height ?
-                 MAX(scaleWidth, scaleHeight) :
+                 MIN(scaleWidth, scaleHeight) :
                  MIN(scaleWidth, scaleHeight));
     }else{
         scale = (self.imageToCrop.size.width < self.imageToCrop.size.height ?
                  MIN(scaleWidth, scaleHeight) :
-                 MAX(scaleWidth, scaleHeight));
+                 MIN(scaleWidth, scaleHeight));
     }
     
     //extract visible rect from scrollview and scale it
     CGRect visibleRect = [scrollView convertRect:scrollView.bounds toView:imageView];
-    return visibleRect = GKScaleRect(visibleRect, scale);
+    
+    
+  //  NSLog(@"SCALE %f", scale);
+    
+    //NSLog(@"BEFORE VISIBLE RECT : %@", NSStringFromCGRect(visibleRect));
+    visibleRect = GKScaleRect(visibleRect, scale);
+    //NSLog(@"AFTER VISIBLE RECT : %@", NSStringFromCGRect(visibleRect));
+    return visibleRect;
+    
+    
 }
 
 
@@ -181,7 +193,6 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
         self.userInteractionEnabled = YES;
         self.backgroundColor = [UIColor blackColor];
         self.scrollView = [[ScrollView alloc] initWithFrame:self.bounds ];
-        // FAB CUSTOM self.scrollView = [[ScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, 40.0, 80.0) ];
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.delegate = self;
@@ -191,7 +202,6 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
         [self addSubview:self.scrollView];
         
         self.imageView = [[UIImageView alloc] initWithFrame:self.scrollView.frame];
-        //FAB CUSTOM self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 120.0)];
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.imageView.backgroundColor = [UIColor blackColor];
         [self.scrollView addSubview:self.imageView];
@@ -263,6 +273,9 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
         faktoredHeight =  height / faktor; // CUSTOM FAB
         scrollView.contentOffset = CGPointMake(0, (faktoredHeight - size.height) / 2); // Custom Fab
     }
+    
+//    NSLog(@"faktoredHeight : %f", faktoredHeight);
+  //  NSLog(@"faktoredWidth : %f", faktoredWidth);
     
     self.scrollView.contentSize = CGSizeMake(faktoredWidth, faktoredHeight); // custom Fab
     /*

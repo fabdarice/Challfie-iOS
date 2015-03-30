@@ -13,9 +13,9 @@ import Foundation
 class AlertTVCell : UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var userImageButton: UIButton!
-    @IBOutlet weak var rightButton: UIButton!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var rightImageView: UIImageView!
     
     func loadItem(alert:Alert) {
         
@@ -60,29 +60,29 @@ class AlertTVCell : UITableViewCell {
             // Profile Picture
             if alert.author.show_profile_pic() != "missing" {
                 let profilePicURL:NSURL = NSURL(string: alert.author.show_profile_pic())!
-                self.userImageButton.hnk_setImageFromURL(profilePicURL)
+                self.userImageView.hnk_setImageFromURL(profilePicURL)
             } else {
-                self.userImageButton.setBackgroundImage(UIImage(named: "missing_user"), forState: UIControlState.Normal)
+                self.userImageView.image = UIImage(named: "missing_user")
             }
             
-            self.userImageButton.layer.cornerRadius = self.userImageButton.frame.size.width / 2
-            self.userImageButton.clipsToBounds = true
-            self.userImageButton.layer.borderWidth = 2.0
-            self.userImageButton.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
+            self.userImageView.layer.cornerRadius = self.userImageView.frame.size.width / 2
+            self.userImageView.clipsToBounds = true
+            self.userImageView.layer.borderWidth = 2.0
+            self.userImageView.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
             if alert.author.book_tier == 1 {
-                self.userImageButton.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
+                self.userImageView.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
             }
             if alert.author.book_tier == 2 {
-                self.userImageButton.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
+                self.userImageView.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
             }
             if alert.author.book_tier == 3 {
-                self.userImageButton.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
+                self.userImageView.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
             }
         }
         
         // load book image
         if alert.book_img != "" {
-            self.rightButton.hidden = false
+            self.rightImageView.hidden = false
             var bookImageStr = ""
             if ApiLink.host == "https://challfie.com" {
                 bookImageStr = alert.book_img
@@ -91,10 +91,10 @@ class AlertTVCell : UITableViewCell {
             }
             
             let bookImageURL:NSURL = NSURL(string: bookImageStr)!
-            self.rightButton.hnk_setImageFromURL(bookImageURL)
+            self.rightImageView.hnk_setImageFromURL(bookImageURL)
         } else if alert.selfie_img != "" {
             // load selfie image
-            self.rightButton.hidden = false
+            self.rightImageView.hidden = false
             var selfieImageStr = ""
             if ApiLink.host == "https://challfie.com" {
                 selfieImageStr = alert.selfie_img
@@ -103,18 +103,12 @@ class AlertTVCell : UITableViewCell {
             }
             
             let selfieImageURL:NSURL = NSURL(string: selfieImageStr)!
-            self.rightButton.hnk_setImageFromURL(selfieImageURL)
+            self.rightImageView.hnk_setImageFromURL(selfieImageURL)
         } else {
-            self.rightButton.hidden = true
+            self.rightImageView.hidden = true
         }
         
     }
-    
-    @IBAction func userImageButton(sender: AnyObject) {
-    }
-    
-    
-    @IBAction func rightButton(sender: UIButton) {
-    }
+
     
 }

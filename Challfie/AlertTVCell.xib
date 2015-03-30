@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -14,32 +14,13 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BnX-Qp-4OO" id="Grx-8U-eYS">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kY-2E-CMf" userLabel="userImageButton">
-                        <rect key="frame" x="8" y="10" width="45" height="45"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="er9-ks-EMM" userLabel="userImage">
+                        <rect key="frame" x="10" y="10" width="45" height="45"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="45" id="Rod-u7-gHs"/>
-                            <constraint firstAttribute="width" constant="45" id="neb-DI-J51"/>
+                            <constraint firstAttribute="height" constant="45" id="c4w-YT-25m"/>
+                            <constraint firstAttribute="width" constant="45" id="nip-LE-wjQ"/>
                         </constraints>
-                        <state key="normal">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="userImageButton:" destination="BnX-Qp-4OO" eventType="touchUpInside" id="GJ5-wg-Zjt"/>
-                        </connections>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTx-Pw-Y36" userLabel="rightButton">
-                        <rect key="frame" x="267" y="10" width="45" height="45"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="45" id="94U-Ww-Eyy"/>
-                            <constraint firstAttribute="width" constant="45" id="MhF-UH-seA"/>
-                        </constraints>
-                        <state key="normal">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="rightButton:" destination="BnX-Qp-4OO" eventType="touchUpInside" id="9vK-zN-vqW"/>
-                        </connections>
-                    </button>
+                    </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRg-du-Qra">
                         <rect key="frame" x="63" y="10" width="194" height="44.5"/>
                         <subviews>
@@ -49,7 +30,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Us" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ScU-J5-l8g" userLabel="usernameLabel">
                                         <rect key="frame" x="0.0" y="0.0" width="16.5" height="15.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
@@ -58,7 +39,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="PCI-BI-6GJ" userLabel="messageLabel">
                                         <rect key="frame" x="0.0" y="0.0" width="185" height="15.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
@@ -98,23 +79,30 @@
                             <constraint firstItem="Qzi-SX-KIL" firstAttribute="leading" secondItem="cRg-du-Qra" secondAttribute="leading" id="oIJ-73-nWW"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="H8N-Hd-1dC" userLabel="rightImageView">
+                        <rect key="frame" x="265" y="10" width="45" height="44.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="45" id="BLn-pM-mAR"/>
+                            <constraint firstAttribute="height" constant="45" id="F4s-Xw-kts"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="VTx-Pw-Y36" secondAttribute="trailing" id="5s0-WO-4EY"/>
+                    <constraint firstItem="er9-ks-EMM" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="1uf-Na-z6o"/>
+                    <constraint firstAttribute="trailing" secondItem="H8N-Hd-1dC" secondAttribute="trailing" constant="10" id="JeI-oi-Hh3"/>
                     <constraint firstItem="cRg-du-Qra" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="LfK-Em-Fyk"/>
-                    <constraint firstItem="VTx-Pw-Y36" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="Lfw-fw-RMa"/>
+                    <constraint firstItem="H8N-Hd-1dC" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="Mdq-qv-xHm"/>
                     <constraint firstAttribute="bottom" secondItem="cRg-du-Qra" secondAttribute="bottom" constant="10" id="RMM-LM-dSp"/>
-                    <constraint firstItem="VTx-Pw-Y36" firstAttribute="leading" secondItem="cRg-du-Qra" secondAttribute="trailing" constant="10" id="TjN-xg-3Fc"/>
-                    <constraint firstItem="2kY-2E-CMf" firstAttribute="leading" secondItem="Grx-8U-eYS" secondAttribute="leadingMargin" id="Zkm-ql-vdx"/>
-                    <constraint firstItem="cRg-du-Qra" firstAttribute="leading" secondItem="2kY-2E-CMf" secondAttribute="trailing" constant="10" id="a5z-yq-gyd"/>
-                    <constraint firstItem="2kY-2E-CMf" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="kVS-7v-G8W"/>
+                    <constraint firstItem="cRg-du-Qra" firstAttribute="leading" secondItem="er9-ks-EMM" secondAttribute="trailing" constant="8" id="UVf-MC-aNk"/>
+                    <constraint firstItem="er9-ks-EMM" firstAttribute="leading" secondItem="Grx-8U-eYS" secondAttribute="leading" constant="10" id="VXs-Ra-BWl"/>
+                    <constraint firstItem="H8N-Hd-1dC" firstAttribute="leading" secondItem="cRg-du-Qra" secondAttribute="trailing" constant="8" id="aOf-4c-Jyj"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="dateLabel" destination="2tC-ZA-U6i" id="jJc-JY-E72"/>
                 <outlet property="messageLabel" destination="PCI-BI-6GJ" id="C8q-bA-Bai"/>
-                <outlet property="rightButton" destination="VTx-Pw-Y36" id="QYv-aU-iCP"/>
-                <outlet property="userImageButton" destination="2kY-2E-CMf" id="nnC-t3-Fkf"/>
+                <outlet property="rightImageView" destination="H8N-Hd-1dC" id="5r2-Ux-pAn"/>
+                <outlet property="userImageView" destination="er9-ks-EMM" id="W9z-NB-Cb9"/>
                 <outlet property="usernameLabel" destination="ScU-J5-l8g" id="5fn-dE-rnN"/>
             </connections>
             <point key="canvasLocation" x="162" y="148.5"/>

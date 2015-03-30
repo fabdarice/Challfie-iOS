@@ -41,14 +41,7 @@
 - (void)_actionCancel{
     //[self.navigationController popViewControllerAnimated:YES];
 
-    //[self.imagepicker.imagePickerController dismissViewControllerAnimated:true completion:nil]; //Custom Fab
-    //self.presentingViewController //Custom Fab
     [self.imagepicker.delegate imagePickerDidCancel:self.imagepicker]; // Custom Fab
-    //[self presentViewController:self.imagepicker.imagePickerController animated:true completion:nil]; //Custom Fab
-    //self.imagepicker.mytabBarController.selectedIndex = 0; //Custom Fab
-    //[NSTimer scheduledTimerWithTimeInterval:.05 target:self selector:@selector(_showCamera) userInfo:nil repeats:NO]; //Custom Fab
-    
-    
 }
 
 - (void)_actionUse{

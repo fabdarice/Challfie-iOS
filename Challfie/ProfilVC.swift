@@ -212,7 +212,6 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         // show navigation and don't hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
         self.navigationController?.hidesBarsOnSwipe = false
-        self.navigationController?.hidesBarsWhenKeyboardAppears = false
     }
     
     func loadData() {
@@ -393,6 +392,9 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     // When the user is taking a picture from the device camera
     func showCamera() {
         if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
+            // Add Background for status bar
+            let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+            statusBarViewBackground?.hidden = true
             
             self.imagePicker = GKImagePicker()
             self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)
@@ -413,6 +415,9 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     
     // When the user is selecting a picture from the gallery
     func showPhotoGallery() {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
         
         self.imagePicker = GKImagePicker()
         self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)

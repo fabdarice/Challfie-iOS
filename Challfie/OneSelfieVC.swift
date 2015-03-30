@@ -33,6 +33,10 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var noCommentLabel: UILabel!
     @IBOutlet weak var sendCommentButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var approveButton: UIButton!
+    @IBOutlet weak var rejectButton: UIButton!
+    @IBOutlet weak var selfieImageHeightConstraint: NSLayoutConstraint!
+    
     
     var original_footerViewBottomConstraints: CGFloat = 0.0
     var selfie: Selfie!
@@ -41,6 +45,9 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var screenFrame = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+        self.view.frame = screenFrame
         
         // Show navigationBar
         self.navigationController?.navigationBar.hidden = false
@@ -81,8 +88,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         // Retrive list of comments of the selected Selfie
         self.loadData()
-        
-        
+                
         // Add constraints to force vertical scrolling of UIScrollView 
         // Basically set the leading and trailing of contentView to the View's one (instead of the scrollView)
         // Can't be done in the Interface Builder (.xib)
@@ -99,7 +105,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // show navigation and don't hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
         self.navigationController?.hidesBarsOnSwipe = false
-        self.navigationController?.hidesBarsWhenKeyboardAppears = false
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -188,8 +193,10 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.profilePicImage.userInteractionEnabled = true
         
         // Selfie Image
+        self.selfieImageHeightConstraint.constant = UIScreen.mainScreen().bounds.width        
         let selfieImageURL:NSURL = NSURL(string: selfie.show_selfie_pic())!
         self.selfieImage.hnk_setImageFromURL(selfieImageURL)
+        
         
         // Set Selfies Challenge Status
         if self.selfie.approval_status == 0 {
@@ -199,6 +206,19 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else if selfie.approval_status == 2 {
             self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
         }
+        
+        // Approve Button && Disapprove Button
+        if selfie.user_vote_status == 1 {
+            self.approveButton.setImage(UIImage(named: "approve_select_button.png"), forState: .Normal)
+            self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
+        } else if selfie.user_vote_status == 2 {
+            self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
+            self.rejectButton.setImage(UIImage(named: "reject_select_button.png"), forState: .Normal)
+        } else {
+            self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
+            self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
+        }
+
     }
     
     
@@ -220,7 +240,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // add loadingIndicator pop-up
         var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
-        self.contentView.addSubview(loadingActivityVC.view)
+        self.view.addSubview(loadingActivityVC.view)
         
         let parameters:[String: String] = [
             "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
@@ -258,7 +278,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                     request(.POST, ApiLink.selfie_list_comments, parameters: parameters, encoding: .JSON)
                         .responseJSON { (_, _, mydata2, _) in
                             // Remove loadingIndicator pop-up
-                            if let loadingActivityView = self.contentView.viewWithTag(21) {
+                            if let loadingActivityView = self.view.viewWithTag(21) {
                                 loadingActivityView.removeFromSuperview()
                             }
                             if (mydata == nil) {
@@ -301,8 +321,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                                 }
                                 
                             }
-                            //self.activityIndicator.stopAnimating()
-                            
                     }
                 }
         }
@@ -342,26 +360,32 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
                     
-                    if json["comments"].count != 0 {
-                        for var i:Int = 0; i < json["comments"].count; i++ {
-                            var comment = Comment.init(json: json["comments"][i])
-                            self.comments_array.append(comment)
+                    if json["meta"]["sucess"].boolValue == false {
+                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("comment_empty", comment: "Comment cannot be empty"), preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else {
+                        if json["comments"].count != 0 {
+                            for var i:Int = 0; i < json["comments"].count; i++ {
+                                var comment = Comment.init(json: json["comments"][i])
+                                self.comments_array.append(comment)
+                            }
+                            self.commentsListView.backgroundColor = MP_HEX_RGB("F7F7F7")
+                            self.noCommentLabel.hidden = true
+                            self.listCommentsTableView.reloadData()
+                            
+                            // Set the height of listCommentstableView dynamically based on the height of each cell
+                            // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
+                            var commentsTableView_newHeight: CGFloat = 0.0
+                            for var i:Int = 0; i < self.comments_array.count; i++ {
+                                commentsTableView_newHeight += self.listCommentsTableView.rectForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)).size.height
+                            }
+                            self.listCommentsHeightConstraints.constant = commentsTableView_newHeight
+                            
+                            // scroll to the bottom of the View
+                            let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
+                            self.scrollView.setContentOffset(bottomOffset, animated: false)
                         }
-                        self.commentsListView.backgroundColor = MP_HEX_RGB("F7F7F7")
-                        self.noCommentLabel.hidden = true
-                        self.listCommentsTableView.reloadData()
-                        
-                        // Set the height of listCommentstableView dynamically based on the height of each cell
-                        // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
-                        var commentsTableView_newHeight: CGFloat = 0.0
-                        for var i:Int = 0; i < self.comments_array.count; i++ {
-                            commentsTableView_newHeight += self.listCommentsTableView.rectForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)).size.height
-                        }
-                        self.listCommentsHeightConstraints.constant = commentsTableView_newHeight
-                        
-                        // scroll to the bottom of the View
-                        let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
-                        self.scrollView.setContentOffset(bottomOffset, animated: false)
                     }
                 }
                 self.activityIndicator.stopAnimating()
@@ -405,5 +429,139 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         textField.resignFirstResponder()
         return true
     }
+    
+    // MARK: - IBAction approveButton & rejectButton
+    @IBAction func approveButtonAction(sender: AnyObject) {
+        // Perform the action only if the user hasn't approved yet the Selfie
+        if self.selfie.user_vote_status != 1 {
+            let parameters:[String: String] = [
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "id": self.selfie.id.description
+            ]
+            
+            request(.POST, ApiLink.selfie_approve, parameters: parameters, encoding: .JSON)
+                .responseJSON { (_, _, mydata, _) in
+                    if (mydata == nil) {
+                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else {
+                        //convert to SwiftJSON
+                        let json = JSON_SWIFTY(mydata!)
+                        
+                        if (json["success"].intValue == 0) {
+                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                            
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        } else {
+                            if self.selfie.approval_status != json["approval_status"].intValue {
+                                self.selfie.approval_status = json["approval_status"].intValue
+                                // Set Selfies Challenge Status
+                                if self.selfie.approval_status == 0 {
+                                    self.challengeStatusImage.image = UIImage(named: "challenge_pending.png")
+                                } else if self.selfie.approval_status == 1 {
+                                    self.challengeStatusImage.image = UIImage(named: "challenge_approve.png")
+                                } else if self.selfie.approval_status == 2 {
+                                    self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
+                                }
+                            }
+                            
+                            
+                            self.approveButton.setImage(UIImage(named: "approve_select_button.png"), forState: .Normal)
+                            
+                            // Selfies was initially rejected by the user
+                            if self.selfie.user_vote_status == 2 {
+                                self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
+                                self.selfie.nb_downvotes = self.selfie.nb_downvotes - 1
+                                
+                                if self.selfie.nb_downvotes <= 1 {
+                                    self.numberRejectLabel.text = self.selfie.nb_downvotes.description + NSLocalizedString("Rejects", comment: "Rejects")
+                                } else {
+                                    self.numberRejectLabel.text = self.selfie.nb_downvotes.description + NSLocalizedString("Reject", comment: "Reject")
+                                }
+                            }
+                            
+                            self.selfie.nb_upvotes = self.selfie.nb_upvotes + 1
+                            self.selfie.user_vote_status = 1
+                            
+                            if self.selfie.nb_upvotes <= 1 {
+                                self.numberApprovalLabel.text = self.selfie.nb_upvotes.description + NSLocalizedString("Approves", comment: "Approves")
+                            } else {
+                                self.numberApprovalLabel.text = self.selfie.nb_upvotes.description + NSLocalizedString("Approve", comment: "Approve")
+                            }
+                        }
+                        
+                    }
+            }
+        }
+    }
+    
+    @IBAction func rejectButtonAction(sender: AnyObject) {
+        // Perform the action only if the user hasn't rejected yet the Selfie
+        if self.selfie.user_vote_status != 2 {
+            let parameters:[String: String] = [
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "id": self.selfie.id.description
+            ]
+            
+            request(.POST, ApiLink.selfie_reject, parameters: parameters, encoding: .JSON)
+                .responseJSON { (_, _, mydata, _) in
+                    if (mydata == nil) {
+                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else {
+                        //convert to SwiftJSON
+                        let json = JSON_SWIFTY(mydata!)
+                        
+                        if (json["success"].intValue == 0) {
+                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        } else {
+                            if self.selfie.approval_status != json["approval_status"].intValue {
+                                self.selfie.approval_status = json["approval_status"].intValue
+                                // Set Selfies Challenge Status
+                                if self.selfie.approval_status == 0 {
+                                    self.challengeStatusImage.image = UIImage(named: "challenge_pending.png")
+                                } else if self.selfie.approval_status == 1 {
+                                    self.challengeStatusImage.image = UIImage(named: "challenge_approve.png")
+                                } else if self.selfie.approval_status == 2 {
+                                    self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
+                                }
+                            }
+                            
+                            self.rejectButton.setImage(UIImage(named: "reject_select_button.png"), forState: .Normal)
+                            
+                            // Selfies was initially approved by the user
+                            if self.selfie.user_vote_status == 1 {
+                                self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
+                                self.selfie.nb_upvotes = self.selfie.nb_upvotes - 1
+                                
+                                if self.selfie.nb_upvotes <= 1 {
+                                    self.numberApprovalLabel.text = self.selfie.nb_upvotes.description + NSLocalizedString("Approves", comment: "Approves")
+                                } else {
+                                    self.numberApprovalLabel.text = self.selfie.nb_upvotes.description + NSLocalizedString("Approve", comment: "Approve")
+                                }
+                            }
+                            
+                            self.selfie.nb_downvotes = self.selfie.nb_downvotes + 1
+                            self.selfie.user_vote_status = 2
+                            
+                            if self.selfie.nb_downvotes <= 1 {
+                                self.numberRejectLabel.text = self.selfie.nb_downvotes.description + NSLocalizedString("Rejects", comment: "Rejects")
+                            } else {
+                                self.numberRejectLabel.text = self.selfie.nb_downvotes.description + NSLocalizedString("Reject", comment: "Reject")
+                            }
+                        }
+                    }
+            }
+        }
+    }
+    
         
+    
 }

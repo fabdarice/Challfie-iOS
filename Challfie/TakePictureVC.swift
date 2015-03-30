@@ -208,7 +208,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON_SWIFTY(mydata!)                    
                     
                     // Check if account is linked with Facebook
                     self.isFacebookLinked = json["meta"]["isFacebookLinked"].boolValue
@@ -456,17 +456,14 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     // When the user is taking a picture from the device camera
     func showCamera() {
         if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
-            //var picker = UIImagePickerController()
-            //picker.delegate = self
-            //picker.sourceType = UIImagePickerControllerSourceType.Camera
-            //var mediaTypes: Array<AnyObject> = [kUTTypeImage]
-            //picker.mediaTypes = mediaTypes
-            //picker.allowsEditing = true
-            //picker.cameraDevice = UIImagePickerControllerCameraDevice.Front
-            
+            // Add Background for status bar
+            let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+            statusBarViewBackground?.hidden = true
             self.imagePicker = GKImagePicker()
             self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)
+           // self.imagePicker.cropSize = CGSizeMake(300.0, 300.0)
             self.imagePicker.delegate = self
+            self.imagePicker.resizeableCropArea = false
 
             //set the source type
             self.imagePicker.imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
@@ -483,9 +480,15 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     // When the user is selecting a picture from the gallery
     func showPhotoLibrary() {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
         self.imagePicker = GKImagePicker()
         self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)
+        //self.imagePicker.cropSize = CGSizeMake(300.0, 300.0)
         self.imagePicker.delegate = self
+        self.imagePicker.resizeableCropArea = false
         
         //set the source type
         self.imagePicker.imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
@@ -558,6 +561,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     func imagePicker(imagePicker: GKImagePicker!, pickedImage image: UIImage!) {
         self.photo_taken = true
         self.imageToSave = image
+        
         if self.use_camera == true {
             self.imageToSave = self.fixOrientation(image)
             UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
@@ -579,65 +583,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         self.tabBarController?.selectedIndex = 0
     }
     
-    /*
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        //self.imageToSave = image
-        //if self.use_camera == true {
-        //    self.imageToSave = self.fixOrientation(image)
-        //}
-        
-        //self.cameraView.image = self.imageToSave
-        
-        picker.dismissViewControllerAnimated(true, completion: nil)
-    }
-        
-
-
-    
-    // MARK: - UIImagePicker Delegate Methods
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {
-        self.photo_taken = true
-        let mediaType = info[UIImagePickerControllerMediaType] as String
-        var originalImage:UIImage?, editedImage:UIImage?
-        
-        // Handle a still image capture
-        let compResult:CFComparisonResult = CFStringCompare(mediaType as NSString!, kUTTypeImage, CFStringCompareFlags.CompareCaseInsensitive)
-        if ( compResult == CFComparisonResult.CompareEqualTo ) {
-            editedImage = info[UIImagePickerControllerEditedImage] as UIImage?
-            originalImage = info[UIImagePickerControllerOriginalImage] as UIImage?
-            
-            if ( editedImage != nil ) {
-                self.imageToSave = editedImage
-            } else {
-                self.imageToSave = originalImage
-            }
-
-            self.cameraView.image = imageToSave
-            
-            if self.use_camera == true {
-                self.imageToSave = self.fixOrientation(imageToSave!)
-                UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
-            }
-        }
-        
-        self.shareFacebookSwitch.on = false
-        self.message_presence = false
-        self.messageTextView.text = NSLocalizedString("add_message", comment: "Add a message..")
-        self.messageTextView.textColor = UIColor.lightGrayColor()
-        self.messageTextView.font = UIFont.italicSystemFontOfSize(13.0)
-
-        
-        picker.dismissViewControllerAnimated(true, completion: nil)
-        
-    }
-    
-    
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
-        self.tabBarController?.selectedIndex = 0
-    }
-
-*/
     
     func fixOrientation(img:UIImage) -> UIImage {
         if (img.imageOrientation == UIImageOrientation.Up) {

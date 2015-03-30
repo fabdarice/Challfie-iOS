@@ -9,7 +9,7 @@
 import Foundation
 //import Alamofire
 
-class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, ENSideMenuDelegate {
     @IBOutlet weak var tableView: UITableView!    
     
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
@@ -26,6 +26,9 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.navigationBar.barTintColor = MP_HEX_RGB("30768A")
         self.navigationController?.navigationBar.tintColor = MP_HEX_RGB("FFFFFF")
         self.navigationController?.navigationBar.translucent = false
+        
+        // Add Delegate to SideMenu
+        self.sideMenuController()?.sideMenu?.delegate = self
 
         // navigationController Title
         let logoImageView = UIImageView(image: UIImage(named: "challfie_letter"))
@@ -34,8 +37,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationItem.titleView = logoImageView
         
         // navigationController Left and Right Button
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_Menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
         
         // Remove tableview Inset Separator
         self.tableView.layoutMargins = UIEdgeInsetsZero
@@ -64,6 +67,30 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 100.0
         
+        // Add right swipe gesture hide Side Menu
+        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
+        
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
+        rightSwipeGestureRecognizer.delegate = self
+        self.tableView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        let rightSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        rightSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Right
+        rightSwipeGestureRecognizer2.delegate = self
+        ensideMenu.sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer2)
+        
+        // Add left swipe gesture Show Side Menu
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+        leftSwipeGestureRecognizer.delegate = self
+        self.tableView.addGestureRecognizer(leftSwipeGestureRecognizer)
+        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer2.direction = UISwipeGestureRecognizerDirection.Left
+        leftSwipeGestureRecognizer2.delegate = self
+        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
+        
+                
         // Load Alerts List
         self.refresh(actionFromInit: true)
     }
@@ -82,7 +109,6 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = true
-        self.navigationController?.hidesBarsWhenKeyboardAppears = true
         
         // Show StatusBarBackground
         let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
@@ -113,10 +139,6 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else {
             UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         }
-    }
-    
-    func toggleSideMenu() {
-        toggleSideMenuView()
     }
     
     func refreshInvoked(sender:AnyObject) {
@@ -165,7 +187,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
-                    
+
                     if actionFromInit == false {
                         self.alerts_array.removeAll(keepCapacity: false)
                         self.alerts_array_id.removeAll(keepCapacity: false)
@@ -272,7 +294,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    // tableView Delegate
+    // MARK: - tableView Delegate
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //
         var cell: AlertTVCell = tableView.dequeueReusableCellWithIdentifier("AlertCell") as AlertTVCell
@@ -298,7 +320,6 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        hideSideMenuView()
         // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
         if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
             // Add Loading Indicator to footerView
@@ -311,7 +332,6 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         //var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as FriendTVCell
-        //println(cell.usernameLabel.text)
         var alert: Alert = self.alerts_array[indexPath.row]
         
         
@@ -337,39 +357,6 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Alert_tab", comment: "Alert"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             self.navigationController?.pushViewController(oneSelfieVC, animated: true)
             
-            /*
-            let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
-                "id": alert.selfie_id.description
-            ]
-            
-            request(.POST, ApiLink.show_selfie, parameters: parameters, encoding: .JSON)
-                .responseJSON { (_, _, mydata, _) in
-                    if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
-                    } else {
-                        //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
-                        var selfie: Selfie!
-                        
-                        if json["selfie"].count != 0 {
-                            selfie = Selfie.init(json: json["selfie"])
-                            var challenge = Challenge.init(json: json["selfie"]["challenge"])
-                            var user = User.init(json: json["selfie"]["user"])
-                            
-                            selfie.challenge = challenge
-                            selfie.user = user
-                        }
-                        
-                        // Hide TabBar when push to OneSelfie View
-                        self.hidesBottomBarWhenPushed = true
-                        oneSelfieVC.selfie = selfie
-                    }
-            }
-            */
         } else {
             // Push to Profil View(UserProfil)
             var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
@@ -377,8 +364,65 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             self.navigationController?.pushViewController(profilVC, animated: true)
         }
-        
-        
     }
+    
+    // MARK: - ENSideMenu Delegate
+    func sideMenuWillOpen() {
+        // Add Tap gesture to Hide Side Menu
+        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
+        self.tableView.addGestureRecognizer(tapGesture)
+
+    }
+    
+    func sideMenuWillClose() {
+        // Remove Tap gesture to Hide Side Menu
+        if let recognizers = self.tableView.gestureRecognizers {
+            for recognizer in recognizers {
+                self.tableView.removeGestureRecognizer(recognizer as UIGestureRecognizer)
+            }
+        }
+        
+        // Add right swipe gesture show Side Menu
+        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
+        
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
+        rightSwipeGestureRecognizer.delegate = self
+        self.tableView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        let rightSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        rightSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Right
+        rightSwipeGestureRecognizer2.delegate = self
+        ensideMenu.sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer2)
+        
+        // Add left swipe gesture hide Side Menu
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+        leftSwipeGestureRecognizer.delegate = self
+        self.tableView.addGestureRecognizer(leftSwipeGestureRecognizer)
+        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
+        leftSwipeGestureRecognizer2.direction = UISwipeGestureRecognizerDirection.Left
+        leftSwipeGestureRecognizer2.delegate = self
+        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
+    }
+    
+    func toggleSideMenu() {
+        toggleSideMenuView()
+    }
+    
+    func hideSideMenu() {
+        hideSideMenuView()
+    }
+    
+    func showSideMenu() {
+        showSideMenuView()
+    }
+    
+    // MARK: - UIGestureDelegate
+    func gestureRecognizer(UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
+            return true
+    }
+    
 
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -66,7 +67,7 @@
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exampleProfilePic" translatesAutoresizingMaskIntoConstraints="NO" id="0ev-Vb-nvf" userLabel="profilePicButton">
-                        <rect key="frame" x="8" y="10" width="40" height="40"/>
+                        <rect key="frame" x="8" y="9.5" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="fzn-J6-A0x"/>
                             <constraint firstAttribute="width" constant="40" id="iZ8-Jx-Mbo"/>
@@ -101,13 +102,16 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="CjO-Mj-ZGk" secondAttribute="trailing" constant="10" id="0nc-AH-7jS"/>
+                    <constraint firstAttribute="centerY" secondItem="0ev-Vb-nvf" secondAttribute="centerY" id="Abg-gh-hfZ"/>
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="I0K-2R-VCS"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="JUd-I3-zRI"/>
+                    <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Lyo-Wh-Jh3"/>
                     <constraint firstAttribute="trailingMargin" secondItem="oce-x6-9wn" secondAttribute="trailing" constant="10" id="NE6-Px-r8s"/>
                     <constraint firstItem="Qfv-S6-xGF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qrc-fe-ubT" secondAttribute="trailing" constant="10" id="OG6-iT-Ngo"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Tbq-Fr-1Wq"/>
                     <constraint firstItem="oce-x6-9wn" firstAttribute="leading" secondItem="Qfv-S6-xGF" secondAttribute="trailing" constant="10" id="XRT-wN-BYQ"/>
                     <constraint firstAttribute="centerY" secondItem="oce-x6-9wn" secondAttribute="centerY" id="YNn-5d-tcW"/>
+                    <constraint firstItem="0ev-Vb-nvf" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="10" id="cHk-uR-8aS"/>
                     <constraint firstItem="x4I-ND-leN" firstAttribute="top" secondItem="Gg3-5A-O2D" secondAttribute="bottom" constant="2" id="dIs-4Q-DKg"/>
                     <constraint firstItem="oce-x6-9wn" firstAttribute="trailing" secondItem="kcE-gZ-leJ" secondAttribute="trailingMargin" constant="10" id="gAf-mw-6ZX"/>
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="12" id="m69-J6-tid"/>
@@ -123,6 +127,9 @@
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="JUd-I3-zRI"/>
+                        <exclude reference="Lyo-Wh-Jh3"/>
+                        <exclude reference="Tbq-Fr-1Wq"/>
+                        <exclude reference="nck-Jz-nzE"/>
                         <exclude reference="gAf-mw-6ZX"/>
                     </mask>
                 </variation>

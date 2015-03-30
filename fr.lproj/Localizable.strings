@@ -48,6 +48,7 @@ daily = "Journalier";
 
 // Comment
 Write_Comment = "Ajouter un commentaire..";
+comment_empty = "Le commentaire ne peut pas être vide.";
 
 // Alert
 Alert_tab = "Alerte";
@@ -120,5 +121,19 @@ ranking = "Classement";
 statistics = "Statistiques";
 about_us = "A propos";
 
+// About Us Page
+about_us_text_one = "Challfie est le nouveau réseau social qui amène la notion de Selfie à un tout autre niveau en ajoutant une touche de compétitivité et de divertissement.";
+about_us_text_two = "Il intègre le concept de challenge que les utilisateurs doivent compléter et faire approuver par leurs amis. Plus un utilisateur aura complété et fait approuver de challenge, plus il sera récompensé par des points qui lui permettront de progresser de level et de débloquer de nouveaux challenges.";
+about_us_text_three = "N'attendez plus et prenez votre premier Challfie !!";
+
+
+// Tutorial Page
+step = "ÉTAPE";
+skip_tutorial = "Passer le tutoriel";
+get_started = "Démarrer";
+tutorial_step_one = "Choisis un challenge parmi une centaine d'idées fun à découvrir";
+tutorial_step_two = "Complète ton challenge en prenant le selfie correspondant.";
+tutorial_step_three = "Obtiens l'approbation de ton selfie challenge par tes amis";
+tutorial_step_four = "Gagne des points pour chaque Challfie approuvé et progresse de niveau pour débloquer de nouveaux challenges";
 
 

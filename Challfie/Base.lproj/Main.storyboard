@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -101,7 +101,7 @@
                                     <constraint firstAttribute="height" constant="20.5" id="KPd-rr-f0v"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtI-h9-9jQ">
@@ -152,7 +152,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAA-ap-l9k" userLabel="bottomView">
                                 <rect key="frame" x="0.0" y="448" width="320" height="120"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="light_green_background_50" translatesAutoresizingMaskIntoConstraints="NO" id="ISz-y8-PZI">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challfie_general_background" translatesAutoresizingMaskIntoConstraints="NO" id="ISz-y8-PZI">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eZ4-hm-Rei">
@@ -163,6 +163,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <state key="normal" title="Register New Account">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -374,6 +375,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challfie_general_background" translatesAutoresizingMaskIntoConstraints="NO" id="Fdx-3q-7Ue" userLabel="backgroundView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="481-cE-Y7z" userLabel="setUsernameView">
                                 <rect key="frame" x="35" y="224" width="250" height="120"/>
                                 <subviews>
@@ -399,7 +403,7 @@
                                             <constraint firstAttribute="height" constant="20" id="LiV-39-I4a"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                     </textField>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_textfield_border" translatesAutoresizingMaskIntoConstraints="NO" id="Puu-5y-rXD">
                                         <rect key="frame" x="8" y="33" width="234" height="5"/>
@@ -447,12 +451,12 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YJT-Wv-jXM" userLabel="selectUsernameLabel">
-                                <rect key="frame" x="69.5" y="183" width="182" height="21"/>
+                                <rect key="frame" x="69" y="183" width="182" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20.5" id="FzC-xH-pn5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -460,7 +464,11 @@
                         <constraints>
                             <constraint firstItem="481-cE-Y7z" firstAttribute="top" secondItem="YJT-Wv-jXM" secondAttribute="bottom" constant="20" id="59I-zZ-kBn"/>
                             <constraint firstAttribute="centerY" secondItem="481-cE-Y7z" secondAttribute="centerY" id="DJX-6C-mnT"/>
+                            <constraint firstItem="Kdj-BO-nGJ" firstAttribute="top" secondItem="Fdx-3q-7Ue" secondAttribute="bottom" id="Swt-Vm-lcG"/>
+                            <constraint firstAttribute="trailing" secondItem="Fdx-3q-7Ue" secondAttribute="trailing" id="Wiy-xA-TP3"/>
                             <constraint firstAttribute="centerX" secondItem="YJT-Wv-jXM" secondAttribute="centerX" id="XdQ-2b-cnH"/>
+                            <constraint firstItem="Fdx-3q-7Ue" firstAttribute="top" secondItem="SsT-wW-g2V" secondAttribute="top" id="psY-BS-1CH"/>
+                            <constraint firstItem="Fdx-3q-7Ue" firstAttribute="leading" secondItem="SsT-wW-g2V" secondAttribute="leading" id="vvE-Ll-egL"/>
                             <constraint firstAttribute="centerX" secondItem="481-cE-Y7z" secondAttribute="centerX" id="zNX-tn-eZl"/>
                         </constraints>
                     </view>
@@ -489,13 +497,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Account on Challfie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jbj-0i-kUn" userLabel="newAccountLabel">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Account on Challfie" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jbj-0i-kUn" userLabel="newAccountLabel">
                                 <rect key="frame" x="37" y="90" width="247" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="27" id="Fnj-Ww-JWI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="22"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GQD-Wz-IRs" userLabel="inputView">
@@ -707,18 +715,49 @@
                     </view>
                     <navigationItem key="navigationItem" id="Q6v-ZD-wHX"/>
                     <connections>
+                        <outlet property="createNewAccountLabel" destination="Jbj-0i-kUn" id="jeE-V9-jOh"/>
                         <outlet property="emailTextField" destination="hEK-mY-KOO" id="NSE-ZB-lXI"/>
                         <outlet property="firstnameTextField" destination="bX2-fT-wnl" id="tXU-vR-FSB"/>
                         <outlet property="lastnameTextField" destination="DNn-hC-IHC" id="MeO-xE-Dej"/>
                         <outlet property="passwordHelperLabel" destination="7Om-sw-HrP" id="EVj-eg-Krj"/>
                         <outlet property="passwordTextField" destination="ob5-Qf-IhK" id="kfU-3f-zhF"/>
+                        <outlet property="registerView" destination="GQD-Wz-IRs" id="Owi-cr-3bK"/>
                         <outlet property="usernameTextField" destination="ZWn-iR-JuB" id="keB-Y7-96k"/>
-                        <segue destination="o6h-vP-V7l" kind="modal" identifier="homeSegue2" id="Gf4-kg-Nde"/>
+                        <segue destination="ES3-ya-XZu" kind="modal" identifier="registerSegue" id="PJW-wt-a5c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fSh-R2-vqy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="80" y="791"/>
+        </scene>
+        <!--TutorialVC-->
+        <scene sceneID="pWQ-jX-qVE">
+            <objects>
+                <viewController storyboardIdentifier="tutorialVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ES3-ya-XZu" customClass="TutorialVC" customModule="Challfie" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="k35-aJ-Maw"/>
+                        <viewControllerLayoutGuide type="bottom" id="TyP-hz-v01"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MPf-JP-zSR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="o6h-vP-V7l" kind="modal" identifier="homeSegue2" id="wbY-Wv-goI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y3u-jH-yDn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="491" y="1116"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="JoA-qQ-fiA">
+            <objects>
+                <pageViewController storyboardIdentifier="tutorialPageVC" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="cEa-KB-mzX" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Oww-b6-rPO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="135" y="1480"/>
         </scene>
         <!--Alert Item-->
         <scene sceneID="aDn-sb-7nS">
@@ -828,13 +867,13 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1M-HT-yHg" userLabel="settingView">
                                                 <rect key="frame" x="0.0" y="121" width="320" height="82"/>
                                                 <subviews>
-                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8oh-Oi-YZL" userLabel="privacySwitch">
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8oh-Oi-YZL" userLabel="privacySwitch">
                                                         <rect key="frame" x="261" y="5" width="51" height="31"/>
                                                     </switch>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Only visible to your followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R6N-Bv-lIo" userLabel="privacyLabel">
                                                         <rect key="frame" x="45" y="12" width="206" height="16.5"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
@@ -843,7 +882,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share on Facebook" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vPn-Nv-JrW" userLabel="shareFacebookLabel">
                                                         <rect key="frame" x="45" y="52" width="206" height="20"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
@@ -854,7 +893,7 @@
                                                     </switch>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fdg-7N-Uvk" userLabel="separatorView">
                                                         <rect key="frame" x="0.0" y="41" width="320" height="1"/>
-                                                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="kjA-j5-zDB"/>
                                                         </constraints>
@@ -1280,10 +1319,12 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JnG-uo-fwv" userLabel="CenterView">
                                         <rect key="frame" x="80" y="75" width="160" height="100"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50%" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gN6-iH-0JK">
-                                                <rect key="frame" x="37.5" y="5" width="85.5" height="60.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gN6-iH-0JK">
+                                                <rect key="frame" x="70" y="5" width="20" height="60.5"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="height" constant="60.5" id="Yc3-p4-UAC"/>
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="130" id="dZS-Nh-doR"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="fcO-Cs-lID"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="50"/>
                                                 <color key="textColor" red="0.40000000596046448" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1333,8 +1374,12 @@
                                         <color key="textColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nkd-EC-WVc" userLabel="currentBookLabel">
-                                        <rect key="frame" x="124" y="30" width="52.5" height="16"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nkd-EC-WVc" userLabel="currentBookLabel">
+                                        <rect key="frame" x="124" y="30" width="50" height="13"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="1bP-B5-XUY"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="MBS-sF-hsS"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="1" green="0.80000001192092896" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1351,8 +1396,12 @@
                                         <color key="textColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apprentice I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g7j-Pa-NrM" userLabel="nextBookLabel">
-                                        <rect key="frame" x="107" y="46" width="73" height="16"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g7j-Pa-NrM" userLabel="nextBookLabel">
+                                        <rect key="frame" x="107" y="46" width="50" height="13"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="jY6-lC-RqW"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="mw8-qz-xrk"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="1" green="0.80000001192092896" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1539,14 +1588,14 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uploading Selfie.." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UE1-pf-7Cy" userLabel="uploadingLabel">
                                         <rect key="frame" x="65" y="10" width="240" height="15.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHG-vU-vJN" userLabel="closeButton">
-                                        <rect key="frame" x="290" y="17" width="15" height="15"/>
+                                        <rect key="frame" x="285" y="14.5" width="20" height="20"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="15" id="Ivh-n6-IdC"/>
-                                            <constraint firstAttribute="height" constant="15" id="hr7-bC-2sH"/>
+                                            <constraint firstAttribute="width" constant="20" id="Ivh-n6-IdC"/>
+                                            <constraint firstAttribute="height" constant="20" id="hr7-bC-2sH"/>
                                         </constraints>
                                         <state key="normal" image="icon_close">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1556,10 +1605,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gch-cQ-FLN" userLabel="retryButton">
-                                        <rect key="frame" x="265" y="17" width="15" height="15"/>
+                                        <rect key="frame" x="255" y="14.5" width="20" height="20"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="15" id="7ze-ox-Uyx"/>
-                                            <constraint firstAttribute="height" constant="15" id="YQa-ze-E5X"/>
+                                            <constraint firstAttribute="width" constant="20" id="7ze-ox-Uyx"/>
+                                            <constraint firstAttribute="height" constant="20" id="YQa-ze-E5X"/>
                                         </constraints>
                                         <state key="normal" image="icon_retry">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1628,6 +1677,7 @@
         <image name="challenge_tab_right" width="160" height="45"/>
         <image name="challenge_tab_right_selected" width="160" height="45"/>
         <image name="challfie_background_login" width="606" height="772"/>
+        <image name="challfie_general_background" width="400" height="700"/>
         <image name="challfie_letter" width="220" height="54"/>
         <image name="email_icon" width="140" height="140"/>
         <image name="facebook_icon" width="170" height="170"/>
@@ -1637,7 +1687,6 @@
         <image name="icon_close" width="119" height="119"/>
         <image name="icon_retry" width="30" height="28"/>
         <image name="lastname_icon" width="160" height="170"/>
-        <image name="light_green_background_50" width="3000" height="2000"/>
         <image name="loginButtonBackground" width="194" height="30"/>
         <image name="login_textfield_border" width="219" height="10"/>
         <image name="password_icon" width="124" height="162"/>
@@ -1656,8 +1705,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="wbY-Wv-goI"/>
         <segue reference="6xE-qg-2qS"/>
-        <segue reference="df4-yw-1Nm"/>
-        <segue reference="PCu-CD-r8C"/>
+        <segue reference="K7W-fj-IXG"/>
     </inferredMetricsTieBreakers>
 </document>
