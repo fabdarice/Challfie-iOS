@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FlagContentVC" customModule="Challfie" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="XvR-t4-aGY" id="BPS-hG-rJZ"/>
+                <outlet property="view" destination="iN0-l3-epB" id="4Ib-F9-NxC"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="XvR-t4-aGY" userLabel="flagContentTableView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="XvR-t4-aGY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CZ4-zS-OPn"/>
+                <constraint firstAttribute="bottom" secondItem="XvR-t4-aGY" secondAttribute="bottom" id="LU3-jm-fzM"/>
+                <constraint firstItem="XvR-t4-aGY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="kia-ho-s7t"/>
+                <constraint firstAttribute="trailing" secondItem="XvR-t4-aGY" secondAttribute="trailing" id="p1I-PL-TrD"/>
+            </constraints>
+            <point key="canvasLocation" x="217" y="145"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

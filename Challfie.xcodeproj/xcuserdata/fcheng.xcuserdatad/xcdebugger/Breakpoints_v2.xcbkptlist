@@ -262,11 +262,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/OneSelfieVC.swift"
-            timestampString = "449098304.932582"
+            timestampString = "461643487.316562"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
+            startingLineNumber = "372"
+            endingLineNumber = "372"
             landmarkName = "commentSendButton(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -396,11 +396,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/ProfilVC.swift"
-            timestampString = "448663955.248473"
+            timestampString = "461643487.316562"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "loadData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -412,13 +412,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/ProfilVC.swift"
-            timestampString = "448663955.248473"
+            timestampString = "461643487.316562"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
-            landmarkName = "loadData()"
-            landmarkType = "5">
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "ProfilVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -474,7 +474,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/ChallengeVC.swift"
-            timestampString = "448875194.710937"
+            timestampString = "461643487.316562"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "233"
@@ -506,11 +506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/TakePictureVC.swift"
-            timestampString = "447983183.841314"
+            timestampString = "461663932.093295"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -522,11 +522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/TakePictureVC.swift"
-            timestampString = "448874812.673502"
+            timestampString = "461734108.132591"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
+            startingLineNumber = "462"
+            endingLineNumber = "462"
             landmarkName = "createSelfie()"
             landmarkType = "5">
          </BreakpointContent>

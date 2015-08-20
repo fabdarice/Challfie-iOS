@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="chinrg__.ttf">
-            <string>Chinacat</string>
-            <string>Chinacat</string>
-            <string>Chinacat</string>
-            <string>Chinacat</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfilVC" customModule="Challfie" customModuleProvider="target">
             <connections>
@@ -49,10 +40,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4hb-5c-uf7" userLabel="contentView">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="588"/>
+                            <rect key="frame" x="0.0" y="0.0" width="330" height="588"/>
                             <subviews>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r88-ii-Iox">
-                                    <rect key="frame" x="0.0" y="215" width="320" height="373"/>
+                                    <rect key="frame" x="0.0" y="215" width="330" height="373"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="373" id="G1D-Dt-by9"/>
                                     </constraints>
@@ -64,22 +55,22 @@
                                     </collectionViewFlowLayout>
                                 </collectionView>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Y2z-SD-Nec">
-                                    <rect key="frame" x="142" y="225" width="37" height="37"/>
+                                    <rect key="frame" x="147" y="225" width="37" height="37"/>
                                     <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </activityIndicatorView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2GA-u5-3l3" userLabel="userInfosContainer">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="330" height="130"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5rX-uQ-eip" userLabel="profilePicImage">
-                                            <rect key="frame" x="115" y="13" width="90" height="90"/>
+                                            <rect key="frame" x="120" y="13" width="90" height="90"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="90" id="EOE-yN-lBn"/>
                                                 <constraint firstAttribute="width" constant="90" id="gIc-ZP-7oQ"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbW-sL-qNh" userLabel="levelLabel">
-                                            <rect key="frame" x="132" y="113" width="56.5" height="17"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <rect key="frame" x="138" y="113" width="55" height="16.5"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -93,20 +84,20 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ROt-x2-Exv" userLabel="blocksContainer">
-                                    <rect key="frame" x="0.0" y="140" width="320" height="55"/>
+                                    <rect key="frame" x="0.0" y="140" width="330" height="55"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUQ-sz-I4r" userLabel="selfiesBlockView">
-                                            <rect key="frame" x="13" y="8" width="72" height="50"/>
+                                            <rect key="frame" x="13" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qy0-oZ-Yg1" userLabel="selfiesNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="72" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="3" width="74.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SELFIES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Iz-P9-iA0" userLabel="selfiesLabel">
-                                                    <rect key="frame" x="0.0" y="26" width="72" height="14.5"/>
-                                                    <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
+                                                    <rect key="frame" x="0.0" y="26" width="74.5" height="14"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
@@ -129,17 +120,17 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mRK-5z-LVy" userLabel="followersBlockView">
-                                            <rect key="frame" x="161" y="8" width="72" height="50"/>
+                                            <rect key="frame" x="166" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="HBk-cE-e3q" userLabel="followersNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="72" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="3" width="74.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FOLLOWERS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wBu-P7-7EE" userLabel="followersLabel">
-                                                    <rect key="frame" x="0.0" y="26" width="72" height="14.5"/>
-                                                    <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
+                                                    <rect key="frame" x="0.0" y="26" width="74.5" height="14"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
@@ -159,10 +150,10 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="deH-Dl-eHo" userLabel="followingBlockView">
-                                            <rect key="frame" x="87" y="8" width="72" height="50"/>
+                                            <rect key="frame" x="89.5" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="M8D-kc-LgB" userLabel="followingNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="71" height="21"/>
+                                                    <rect key="frame" x="0.0" y="3" width="73.5" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="QK5-zG-ZvF"/>
                                                     </constraints>
@@ -171,8 +162,8 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FOLLOWING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HRu-CL-kS3" userLabel="followingLabel">
-                                                    <rect key="frame" x="2" y="27" width="68" height="14.5"/>
-                                                    <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
+                                                    <rect key="frame" x="2" y="27" width="70.5" height="14"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
@@ -190,17 +181,17 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KyL-b6-wuA" userLabel="booksBlockView">
-                                            <rect key="frame" x="235" y="8" width="72" height="50"/>
+                                            <rect key="frame" x="242.5" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="OWN-Fq-MbD" userLabel="booksNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="72" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="3" width="74.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BOOKS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TZA-1L-wLm" userLabel="booksLabel">
-                                                    <rect key="frame" x="0.0" y="27" width="72" height="14.5"/>
-                                                    <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="12"/>
+                                                    <rect key="frame" x="0.0" y="27" width="74.5" height="14"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>

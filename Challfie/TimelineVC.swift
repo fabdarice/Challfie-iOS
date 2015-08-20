@@ -139,7 +139,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = true
-        
+
         // Show StatusBarBackground
         let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
         statusBarViewBackground?.hidden = false
@@ -147,16 +147,13 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.first_time = false
     }
     
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         
         if self.uploadSelfieView.hidden == false {
             self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
         }
     }
-    
     
     func updateProgress() {
         if self.progressData < 0.9 {
@@ -208,9 +205,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         request(.POST, api_link, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -271,8 +266,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 self.refreshControl.endRefreshing()
                 self.refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull_to_refresh", comment: "Pull down to refresh"))
         }
-        
-
     }
 
     
@@ -289,9 +282,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         request(.POST, ApiLink.timeline, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -333,7 +324,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             messageLabel.textColor = MP_HEX_RGB("000000")
             messageLabel.numberOfLines = 0;
             messageLabel.textAlignment = NSTextAlignment.Center
-            messageLabel.font = UIFont(name: "Chinacat", size: 16.0)
+            messageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 16.0)
             messageLabel.sizeToFit()
             
             self.timelineTableView.backgroundView = messageLabel
@@ -377,6 +368,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         var selfie:Selfie = self.selfies_array[indexPath.row]
         cell.loadItem(selfie: selfie)
         cell.timelineVC = self
+        cell.indexPath = indexPath
 
         // Update Cell Constraints        
         cell.setNeedsUpdateConstraints()
@@ -385,15 +377,16 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         return cell
     }
     
-    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-        if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height - self.timelineTableView.bounds.size.height)) {
-            // Add Loading Indicator to footerView
-            self.timelineTableView.tableFooterView = self.loadingIndicator
-            
-            // Load Next Page of Selfies for User Timeline
-            self.loadData()
+        if self.loadingIndicator.isAnimating() == false {
+            // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
+            if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height - self.timelineTableView.bounds.size.height)) {
+                // Add Loading Indicator to footerView
+                self.timelineTableView.tableFooterView = self.loadingIndicator
+                
+                // Load Next Page of Selfies for User Timeline
+                self.loadData()
+            }
         }
     }
     

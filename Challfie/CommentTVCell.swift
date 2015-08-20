@@ -58,7 +58,7 @@ class CommentTVCell : UITableViewCell {
         // Test if Last comment exists or not
         comment_message_indent.addAttribute(NSParagraphStyleAttributeName, value: comment_message_style, range: NSMakeRange(0, comment_message_indent.length))
         self.messageLabel.attributedText = comment_message_indent
-        self.messageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0 * sizeScale)
+        self.messageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0 * sizeScale)
         self.messageLabel.textColor = MP_HEX_RGB("000000")
         self.messageLabel.numberOfLines = 0
         self.messageLabel.sizeToFit()
@@ -76,9 +76,7 @@ class CommentTVCell : UITableViewCell {
         request(.POST, ApiLink.show_user_profile, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.oneSelfieVC.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.oneSelfieVC)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)

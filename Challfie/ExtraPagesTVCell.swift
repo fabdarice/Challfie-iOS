@@ -18,7 +18,7 @@ class ExtraPagesTVCell: UITableViewCell {
         self.titleLabel.font = UIFont.boldSystemFontOfSize(14.0)
         self.titleLabel.numberOfLines = 0
         
-        self.messageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0)
+        self.messageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
         self.messageLabel.numberOfLines = 0
         self.messageLabel.textColor = UIColor.blackColor()
     }

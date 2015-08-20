@@ -51,7 +51,7 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         self.view.userInteractionEnabled = true
         
         self.navigationItem.title = "Contact Us"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "Helvetica Neue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
                 
     }
     
@@ -124,24 +124,17 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
                     loadingActivityView.removeFromSuperview()
                 }
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //convert to SwiftJSON
                     let json = JSON_SWIFTY(mydata!)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RESPONSE FROM HTTP Request
-                        var alert = UIAlertController(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
-                        
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, controller: self)
                     } else {
                         // SUCCESS RESPONSE FROM HTTP Request
-                        var alert = UIAlertController(title: "Message Sent", message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: "Message Sent", message: json["message"].stringValue, controller: self)
                     }
                 }
         }
@@ -185,7 +178,7 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
         let pickerLabel = UILabel()
         let titleData = self.contactType[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Helvetica Neue", size: 13.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue", size: 13.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])
         pickerLabel.attributedText = myTitle
         pickerLabel.textAlignment = .Center
         

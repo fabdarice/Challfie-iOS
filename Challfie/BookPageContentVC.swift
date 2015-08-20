@@ -63,7 +63,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
                 messageLabel.textColor = MP_HEX_RGB("FFFFFF")
                 messageLabel.numberOfLines = 0
                 messageLabel.textAlignment = NSTextAlignment.Center
-                messageLabel.font = UIFont(name: "Chinacat", size: 16.0)
+                messageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 16.0)
                 messageLabel.sizeToFit()
                 
                 self.challengeTableView.backgroundView = messageLabel

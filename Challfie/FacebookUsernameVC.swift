@@ -13,10 +13,9 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     @IBOutlet weak var setUsernameView: UIView!
     @IBOutlet weak var selectUsernameLabel: UILabel!
     @IBOutlet weak var usernameHelperLabel: UILabel!
-    
     @IBOutlet weak var usernameTextField: UITextField!
-    
-    @IBOutlet weak var setUsernameButton: UIButton!
+    @IBOutlet weak var setUsernameButton: UIButton!        
+    @IBOutlet weak var eulaLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +38,11 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
         self.usernameHelperLabel.text = NSLocalizedString("only_alphanumeric", comment: "must contain only alphanumeric characters")
         self.usernameTextField.placeholder = NSLocalizedString("Username", comment: "Username") + " *"
         self.setUsernameButton.setTitle(NSLocalizedString("confirm", comment: "Confirm"), forState: UIControlState.Normal)
+        
+        // Eula
+        self.eulaLabel.text = NSLocalizedString("eula", comment: "by signing up for this account, you agree to the terms and conditions")
+        self.eulaLabel.font = UIFont.italicSystemFontOfSize(10.0)
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -95,19 +99,14 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
                     loadingActivityView.removeFromSuperview()
                 }
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //convert to SwiftJSON
                     let json = JSON_SWIFTY(mydata!)                    
                     
                     if json["username"].count != 0 {
                         // ERROR VALIDATION OF USERNAME
-                        var alert = UIAlertController(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["username"][0].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
-                        
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["username"][0].stringValue, controller: self)
                     } else {
                         // SUCCESS RESPONSE FROM HTTP Request
                         let login:String! = json["user"]["username"].string
@@ -115,10 +114,18 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
                         // Save login and auth_token to the iOS Keychain
                         KeychainWrapper.setString(login, forKey: kSecAttrAccount)
                         
-                        self.performSegueWithIdentifier("homeSegue3", sender: self)
+                        self.performSegueWithIdentifier("facebookregisterSegue", sender: self)
+                        
                     }
                 }
         }
         
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "facebookregisterSegue") {
+            var tutorialVC: TutorialVC = segue.destinationViewController as TutorialVC
+            tutorialVC.from_facebook = true
+        }
     }
 }

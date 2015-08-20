@@ -39,23 +39,17 @@ class ForgotPasswordVC : UIViewController, UITextFieldDelegate {
                     loadingActivityView.removeFromSuperview()
                 }
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                 
                     //convert to SwiftJSON
                     let json = JSON_SWIFTY(mydata!)
                     
                     if (json["success"].intValue == 0) {
-                        var alert =  UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: json["message"].stringValue, controller: self)
                     } else {
                         // SUCCESS RESPONSE FROM HTTP Request
-                        var alert =  UIAlertController(title: NSLocalizedString("Email_sent", comment: "Email sent"), message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Email_sent", comment: "Email sent"), message: json["message"].stringValue, controller: self)
                     }
                 }
         }

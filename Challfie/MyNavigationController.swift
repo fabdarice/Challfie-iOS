@@ -20,7 +20,7 @@ class MyNavigationController: ENSideMenuNavigationController, ENSideMenuDelegate
                         
         sideMenu = ENSideMenu(sourceView: self.view, menuTableViewController: menuTVC, menuPosition:.Left)
         //sideMenu?.delegate = self //optional
-        sideMenu?.menuWidth = 200.0 // optional, default is 160
+        sideMenu?.menuWidth = 250.0 // optional, default is 160
         sideMenu?.bouncingEnabled = false
 
         

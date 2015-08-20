@@ -8,17 +8,18 @@
 
 // Account Creation
 
-Account_creation_failed = "Echec lors de la création de compte";
+Account_creation_failed = "Échec lors de la création de compte";
 Username = "Identifiant";
 Firstname = "Prénom";
 Lastname = "Nom";
 Password = "Mot de passe";
+eula = "la création de ton compte implique que tu consens aux modalités et conditions de services";
 
 // Login Page
 Authentication_failed = "Connexion échouée";
 
 // General
-Pull_to_refresh = "Tirer vers le bas pour rafraichir";
+Pull_to_refresh = "Tire vers le bas pour rafraichir";
 Refreshing_data = "Chargement des données..";
 cancel = "Annuler";
 confirm = "Valider";
@@ -33,7 +34,7 @@ only_alphanumeric = "* uniquement des caractères alphanumérique autorisés";
 // Popcup
 Close = "Fermer";
 Error = "Erreur";
-Generic_error = "Veuillez vérifier votre connexion Internet. \nSi le problème persiste, reporter le problème dans la section \"Contact\"";
+Generic_error = "Vérifie ta connexion Internet. \nSi le problème persiste, reporte le problème dans la section \"Contact\"";
 
 // Selfie
 Comment = " commentaire";
@@ -42,13 +43,21 @@ Approve = " approuvent";
 Approves = " approuve";
 Rejects = " rejette";
 Reject = " rejettent";
-first_comment = "Soyez le premier à commenter..";
+first_comment = "Sois le premier à commenter..";
 no_selfie = "Bienvenue sur Challfie!\n\nDémarre dès à présent en ajoutant tes amis et prends ton premier Challfie.";
 daily = "Journalier";
+flag_as_inappropriate = "Merci. Le contenu de ce selfie a été signalé comme étant inapproprié.";
+report_selfie = "Signaler Selfie";
+report_inappropriate_content = "Signaler du contenu inapproprié";
+delete_selfie = "Supprimer selfie";
+delete_selfie_confiration = "Es-tu certain de vouloir supprimer ce selfie? Il sera supprimé de manière permanente de votre compte.";
+delete = "Supprimer";
+
 
 // Comment
-Write_Comment = "Ajouter un commentaire..";
+Write_Comment = "Ajoute un commentaire..";
 comment_empty = "Le commentaire ne peut pas être vide.";
+view_all_comments = "Afficher tous les commentaires (100 derniers)";
 
 // Alert
 Alert_tab = "Alerte";
@@ -60,50 +69,52 @@ Suggestions = "Suggestions";
 Following = "Abonnements";
 Followers = "Abonnés";
 Follow = "S'abonner";
-Pending = "En Attente";
+Pending = "En attente";
 Mutual_friends = " amis en commun";
 Mutual_friend = " ami en commun";
 Number_followers = " abonnés";
 Number_follower = " abonné";
-Friend_request = "Demande d'Ami";
-Friends_suggestions = "Suggestions d'Amis";
+Friend_request = "Demande d'ami";
+Friends_suggestions = "Suggestions d'amis";
 Friends_no_results = "Aucun résultat trouvé..";
 Search_facebook_friends = "Rechercher vos amis Facebook";
 
 // Profil Page
 no_selfies = "Cet utilisateur n'a pas encore pris de selfie challenge..";
-is_not_friend = "Abonnes toi pour consulter sa liste de selfie challenges..";
-is_pending_request = "Votre demande d'abonnement a été envoyé. En attente d'une réponse..";
+is_not_friend = "Abonne toi pour consulter sa liste de selfie challenges..";
+is_pending_request = "Ta demande d'abonnement a été envoyé. En attente d'une réponse..";
 Log_out = "Déconnexion";
 Books = "Livres";
 change_profil_pic = "Modifier sa photo de Profil";
 choose_from_gallery = "Choisir à partir de la galerie";
 take_picture = "Prendre une photo";
+Profil_tab = "Profil";
+profil_blocked = "Ton compte a été bloqué par un administrateur. Merci de nous contacter en cas d'erreur.";
 
 
 // Challenge Page
-book_of_challenges = "Livre de Challenges";
+book_of_challenges = "Livre de challenges";
 book_is_locked = "Débloque ce livre en ayant vos Challfies approuvés par vos amis.";
-book_locked = "Livre Bloqué";
+book_locked = "Livre bloqué";
 difficulty = "Difficulté";
-next_level = "Prochain Niveau";
-current_level = "Niveau Actuel";
+next_level = "Prochain niveau";
+current_level = "Niveau actuel";
 
 // Search User
 no_users_found = "Aucun résultat trouvé";
 search_username = "Rechercher par Identifiant ou Email";
 
 // Take A Picture Page
-add_message = "Ajouter un message..";
-post_a_challfie = "Ajouter un Challfie";
-pick_a_challenge = "Choisir un Challenge";
+add_message = "Ajoute un message..";
+post_a_challfie = "Ajoute un Challfie";
+pick_a_challenge = "Choisis un Challenge";
 settings = "Paramètres";
 privacy_text = "Visible uniquement par tes abonnés";
 shareFacebook_text = "Partager sur Facebook";
-search_a_challenge = "Rechercher un Challenge";
+search_a_challenge = "Rechercher un challenge";
 add_a_new_selfie = "Ajouter un Challfie";
-create_selfie_missing_image = "Selfie manquante.. Sélectionner une image..";
-create_selfie_missing_challenge = "Sélectionner un challenge..";
+create_selfie_missing_image = "Selfie manquante.. Sélectionne une image..";
+create_selfie_missing_challenge = "Sélectionne un challenge..";
 uploading_selfie = "Selfie en téléchargement...";
 upload_failed = "Téléchargement échoué :(";
 upload_completed = "Selfie posté avec succès!";
@@ -116,15 +127,16 @@ give_suggestions = "Emettre des suggestions pour l'application";
 others = "Autres";
 
 // Side Menu
-daily_challenge = "Challenge du Jour";
+daily_challenge = "Challenge du jour";
 ranking = "Classement";
 statistics = "Statistiques";
 about_us = "A propos";
+contact_us = "Contactez-nous";
 
 // About Us Page
 about_us_text_one = "Challfie est le nouveau réseau social qui amène la notion de Selfie à un tout autre niveau en ajoutant une touche de compétitivité et de divertissement.";
-about_us_text_two = "Il intègre le concept de challenge que les utilisateurs doivent compléter et faire approuver par leurs amis. Plus un utilisateur aura complété et fait approuver de challenge, plus il sera récompensé par des points qui lui permettront de progresser de level et de débloquer de nouveaux challenges.";
-about_us_text_three = "N'attendez plus et prenez votre premier Challfie !!";
+about_us_text_two = "Il intègre le concept de challenge que les utilisateurs doivent compléter et faire approuver par leurs amis. Plus un utilisateur aura complété et fait approuver de challenge, plus il sera récompensé par des points qui lui permettront de monter de niveau et de débloquer de nouveaux challenges.";
+about_us_text_three = "N'attends plus et prends ton premier Challfie !!";
 
 
 // Tutorial Page
@@ -134,6 +146,23 @@ get_started = "Démarrer";
 tutorial_step_one = "Choisis un challenge parmi une centaine d'idées fun à découvrir";
 tutorial_step_two = "Complète ton challenge en prenant le selfie correspondant.";
 tutorial_step_three = "Obtiens l'approbation de ton selfie challenge par tes amis";
-tutorial_step_four = "Gagne des points pour chaque Challfie approuvé et progresse de niveau pour débloquer de nouveaux challenges";
+tutorial_step_four = "Gagne des points pour chaque Challfie approuvé et monte de niveau pour débloquer de nouveaux challenges";
+
+// Link Facebook Tutorial Page
+link_facebook_title = "Associe ton compte Facebook *";
+link_facebook_info = "* nous ne posterons jamais rien sur ta Timeline sans ta permission";
+link_facebook_button = "Recherche tes amis Facebook";
+skip_link_facebook_step = "Passer cette étape";
+
+// Ranking Page
+ranking_title = "Classement";
+
+// Admin
+block_selfie = "Block selfie";
+block_selfie_notification = "Selfie has been blocked";
+block_user = "Block user";
+block_user_notification = "User has been blocked";
+clear_flag = "Clear selfie flags";
+clear_flag_notification = "Flags have been cleared for this Selfie";
 
 

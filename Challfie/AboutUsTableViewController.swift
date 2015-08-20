@@ -14,7 +14,8 @@ class AboutUsTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Hide on swipe & keboard Appears
-        self.navigationController?.hidesBarsOnSwipe = true
+       self.navigationController?.hidesBarsOnSwipe = true
+
         // Add Background for status bar
         let statusBarViewBackground = UIView(frame: CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, 20.0))
         statusBarViewBackground.backgroundColor = MP_HEX_RGB("30768A")
@@ -36,7 +37,7 @@ class AboutUsTableViewController: UITableViewController {
         tableView.registerNib(nib, forCellReuseIdentifier: "ExtraPagesCell")
         
         self.navigationItem.title = NSLocalizedString("about_us", comment: "About Us")
-        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "Helvetica Neue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
     }
     
     override func didReceiveMemoryWarning() {

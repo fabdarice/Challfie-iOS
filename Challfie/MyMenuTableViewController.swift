@@ -45,10 +45,9 @@ class MyMenuTableViewController: UITableViewController {
         // Return the number of rows in the section.
         switch section {
         case 0 : return 1
-        case 1 : return 3
+        case 1 : return 2
         case 2 : return 4
         case 3 : return 1
-        case 4 : return 1
         default:
             return 0
         }
@@ -64,20 +63,14 @@ class MyMenuTableViewController: UITableViewController {
             cell!.backgroundColor = UIColor.clearColor()
         }
         var imageView : UIImageView = UIImageView(frame: CGRectMake(10.0, 10.0, 20.0, 20.0))
-        //            cell!.textLabel?.textColor = UIColor.whiteColor()
-        //          cell!.textLabel?.font = UIFont(name: "Helvetica Neue", size: 14.0)
-        
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         
-        
         var textLabel : UILabel = UILabel(frame: CGRectMake(40.0, 10.0, cell!.frame.size.width - 7 - 20, 20.0))
-        textLabel.font = UIFont(name: "Helvetica Neue", size: 13.0)
+        textLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
         textLabel.textColor = MP_HEX_RGB("D1D1D1")
-
         
         cell!.addSubview(imageView)
         cell!.addSubview(textLabel)
-
         
         let selectedBackgroundView = UIView(frame: CGRectMake(0, 0, cell!.frame.size.width, cell!.frame.size.height))
         selectedBackgroundView.backgroundColor = UIColor.clearColor()
@@ -87,7 +80,7 @@ class MyMenuTableViewController: UITableViewController {
         if indexPath.section == 0 {
             switch indexPath.row {
             case 0 :
-                textLabel.font = UIFont(name: "Helvetica Neue", size: 14.0)
+                textLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)
                 textLabel.textColor = MP_HEX_RGB("FFFFFF")
                 
                 // Get Current User
@@ -99,9 +92,10 @@ class MyMenuTableViewController: UITableViewController {
                 request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
                     .responseJSON { (_, _, mydata, _) in
                         if (mydata == nil) {
-                            
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
                         } else {
                             //Convert to SwiftJSON
+                            
                             var json = JSON_SWIFTY(mydata!)
                             
                             if json["user"].count != 0 {
@@ -129,20 +123,8 @@ class MyMenuTableViewController: UITableViewController {
                 textLabel.text = NSLocalizedString("daily_challenge", comment: "Daily Challenge")
                 imageView.image = UIImage(named: "icon_daily_challenge")
             case 1 :
-                textLabel.text = NSLocalizedString("ranking", comment: "Ranking") + " (soon)"
+                textLabel.text = NSLocalizedString("ranking", comment: "Ranking")
                 imageView.image = UIImage(named: "icon_ranking")
-                cell?.userInteractionEnabled = false
-                cell?.textLabel?.enabled = false
-                cell?.detailTextLabel?.enabled = false
-                textLabel.enabled = false
-                
-            case 2 :
-                textLabel.text = NSLocalizedString("statistics", comment: "Statistics") + " (soon)"
-                imageView.image = UIImage(named: "icon_stats")
-                cell?.userInteractionEnabled = false
-                cell?.textLabel?.enabled = false
-                cell?.detailTextLabel?.enabled = false
-                textLabel.enabled = false
             default:
                 textLabel.text = ""
             }
@@ -152,7 +134,7 @@ class MyMenuTableViewController: UITableViewController {
         if indexPath.section == 2 {
             switch indexPath.row {
             case 0 :
-                textLabel.text = NSLocalizedString("about_us", comment: "About Us")
+                textLabel.text = NSLocalizedString("about_us", comment: "About us")
                 imageView.image = UIImage(named: "icon_about_us")
             case 1 :
                 textLabel.text = "Privacy"
@@ -161,7 +143,7 @@ class MyMenuTableViewController: UITableViewController {
                 textLabel.text = "Terms"
                 imageView.image = UIImage(named: "icon_terms")
             case 3 :
-                textLabel.text = "Contact"
+                textLabel.text = NSLocalizedString("contact_us", comment: "Contact us")
                 imageView.image = UIImage(named: "icon_contact")
             default:
                 textLabel.text = ""
@@ -213,9 +195,7 @@ class MyMenuTableViewController: UITableViewController {
             request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.navController.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
                     } else {
                         //Convert to SwiftJSON
                         var json = JSON_SWIFTY(mydata!)
@@ -246,26 +226,19 @@ class MyMenuTableViewController: UITableViewController {
                 request(.POST, ApiLink.daily_challenge, parameters: parameters, encoding: .JSON)
                     .responseJSON { (_, _, mydata, _) in
                         if (mydata == nil) {
-                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            self.navController.presentViewController(alert, animated: true, completion: nil)
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
                         } else {
                             //Convert to SwiftJSON
                             var json = JSON_SWIFTY(mydata!)
-                            var alert = UIAlertController(title: NSLocalizedString("daily_challenge", comment: "Daily Challenge"), message: json["daily_challenge"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            self.navController.presentViewController(alert, animated: true, completion: nil)
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("daily_challenge", comment: "Daily Challenge"), message: json["daily_challenge"].stringValue, controller: self.navController)
                             selectedCell.contentView.backgroundColor = UIColor.clearColor()
-                            
                         }
                 }
             }
             // Rank
             if indexPath.row == 1 {
-                selectedCell.contentView.backgroundColor = UIColor.clearColor()
-            }
-            // Statistics
-            if indexPath.row == 2 {
+                var rankingVC = RankingVC(nibName: "Ranking" , bundle: nil)
+                self.navController.pushViewController(rankingVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
             break
@@ -340,7 +313,7 @@ class MyMenuTableViewController: UITableViewController {
         headerView.layer.borderColor = MP_HEX_RGB("01171F").CGColor
         headerView.layer.borderWidth = 1.0
         var headerLabel = UILabel(frame: CGRectMake(10.0, 5.0, tableView.frame.width, 15.0))
-        headerLabel.font = UIFont(name: "Chinacat", size: 13.0)
+        headerLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
         headerLabel.textColor = MP_HEX_RGB("A3A3A3")
         
         

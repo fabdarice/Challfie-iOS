@@ -57,9 +57,9 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
         let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
         statusBarViewBackground?.hidden = false
         
-        // show navigation and hide on swipe & keboard Appears
+        // show navigation and don't hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
-        self.navigationController?.hidesBarsOnSwipe = true
+        self.navigationController?.hidesBarsOnSwipe = false
     }
 
     func loadData() {
@@ -80,9 +80,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
                 }
 
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)

@@ -55,7 +55,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
         // Show navigationBar
         self.navigationController?.navigationBarHidden = false
         // Don't hide on swipe & keboard Appears
-        navigationController?.hidesBarsOnSwipe = false
+        self.navigationController?.hidesBarsOnSwipe = false
     }
     
     // UISearchBarDelegate, UISearchDisplayDelegate
@@ -84,9 +84,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
                         loadingActivityView.removeFromSuperview()
                     }
                     if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //Convert to SwiftJSON
                         var json = JSON_SWIFTY(mydata!)
@@ -114,7 +112,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
             messageLabel.textColor = MP_HEX_RGB("000000")
             messageLabel.numberOfLines = 0;
             messageLabel.textAlignment = NSTextAlignment.Center
-            messageLabel.font = UIFont(name: "Chinacat", size: 16.0)
+            messageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 16.0)
             messageLabel.sizeToFit()
             self.tableView.backgroundView = messageLabel
             

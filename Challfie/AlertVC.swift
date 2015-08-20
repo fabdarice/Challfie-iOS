@@ -120,24 +120,26 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
-        ]
-        request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
-        
-        self.tabBarItem.badgeValue = nil
-        
-        // Update App Badge Number
-        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
-        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
-        
-        var badgeNumber : Int!
-        if friend_tabBarItem.badgeValue != nil {
-            badgeNumber = friend_tabBarItem.badgeValue?.toInt()
-            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
-        } else {
-            UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        if KeychainWrapper.stringForKey(kSecAttrAccount) != nil {
+            let parameters = [
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
+            ]
+            request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
+            
+            self.tabBarItem.badgeValue = nil
+            
+            // Update App Badge Number
+            var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+            var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+            
+            var badgeNumber : Int!
+            if friend_tabBarItem.badgeValue != nil {
+                badgeNumber = friend_tabBarItem.badgeValue?.toInt()
+                UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+            } else {
+                UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+            }
         }
     }
     
@@ -181,9 +183,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         request(.POST, api_link, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -238,9 +238,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         request(.POST, ApiLink.alerts_list, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -275,7 +273,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             messageLabel.textColor = MP_HEX_RGB("000000")
             messageLabel.numberOfLines = 0;
             messageLabel.textAlignment = NSTextAlignment.Center
-            messageLabel.font = UIFont(name: "Chinacat", size: 16.0)
+            messageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 16.0)
             messageLabel.sizeToFit()
             
             self.tableView.backgroundView = messageLabel
@@ -319,14 +317,16 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         return self.alerts_array.count
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-        if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
-            // Add Loading Indicator to footerView
-            self.tableView.tableFooterView = self.loadingIndicator
-            
-            // Load Next Page of Selfies for User Timeline
-            self.loadData()
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {        
+        if self.loadingIndicator.isAnimating() == false {
+            // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
+            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
+                // Add Loading Indicator to footerView
+                self.tableView.tableFooterView = self.loadingIndicator
+                
+                // Load Next Page of Selfies for User Timeline
+                self.loadData()
+            }
         }
     }
     

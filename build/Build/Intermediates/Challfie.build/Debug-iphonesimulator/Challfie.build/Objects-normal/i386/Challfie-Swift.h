@@ -376,6 +376,7 @@ SWIFT_CLASS("_TtC8Challfie16ExtraPagesTVCell")
 @class UITextField;
 @class NSSet;
 @class UIEvent;
+@class UIStoryboardSegue;
 
 SWIFT_CLASS("_TtC8Challfie18FacebookUsernameVC")
 @interface FacebookUsernameVC : UIViewController <UITextFieldDelegate>
@@ -392,6 +393,7 @@ SWIFT_CLASS("_TtC8Challfie18FacebookUsernameVC")
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 - (IBAction)validateUsernameButton:(id)sender;
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
@@ -987,6 +989,7 @@ SWIFT_CLASS("_TtC8Challfie10TutorialVC")
 @interface TutorialVC : UIViewController <UIPageViewControllerDataSource>
 @property (nonatomic) UIPageViewController * pageViewController;
 @property (nonatomic) NSInteger numberOfPages;
+@property (nonatomic) BOOL from_facebook;
 - (void)viewDidLoad;
 - (void)createPageViewController;
 - (void)setupPageControl;
@@ -995,6 +998,7 @@ SWIFT_CLASS("_TtC8Challfie10TutorialVC")
 - (TutorialPageContentVC *)getTutorialPageContentVC:(NSInteger)itemIndex;
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController;
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController;
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;

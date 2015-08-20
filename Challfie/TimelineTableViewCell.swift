@@ -29,9 +29,11 @@ class TimelineTableViewCell : UITableViewCell {
     @IBOutlet weak var disapproveButton: UIButton!
     @IBOutlet weak var challengeStatusImage: UIImageView!
     @IBOutlet weak var numberCommentsButton: UIButton!
+    @IBOutlet weak var challengeView: UIView!
     
     var selfie: Selfie!
     var timelineVC: TimelineVC!
+    var indexPath: NSIndexPath!
     
     func loadItem(#selfie: Selfie) {
         
@@ -56,12 +58,11 @@ class TimelineTableViewCell : UITableViewCell {
         self.usernameLabel.userInteractionEnabled = true
         
         // Selfie Level
-        //self.levelLabel.text = selfie.user.book_level
-        self.levelLabel.text = "Apprentice III"
+        self.levelLabel.text = selfie.user.book_level        
         
         // Challenge
         self.challengeLabel.text = selfie.challenge.description
-        self.challengeLabel.textColor = MP_HEX_RGB("30BAE3")
+        self.challengeLabel.textColor = MP_HEX_RGB("FFFFFF")
         // Test Daily Challenge
         if self.selfie.is_daily == true {
             self.challengeLabel.text = NSLocalizedString("daily", comment: "Daily") + " - " + self.challengeLabel.text!
@@ -82,7 +83,6 @@ class TimelineTableViewCell : UITableViewCell {
             self.numberCommentsButton.setTitle(selfie.nb_comments.description + NSLocalizedString("Comments", comment: "Comments"), forState: UIControlState.Normal)
         }
         
-        
         // Number of approval
         self.numberApprovalLabel.textColor = MP_HEX_RGB("30768A")
         if selfie.nb_upvotes <= 1 {
@@ -90,7 +90,6 @@ class TimelineTableViewCell : UITableViewCell {
         } else {
             self.numberApprovalLabel.text = selfie.nb_upvotes.description + NSLocalizedString("Approve", comment: "Approve")
         }
-        
         
         // Number of disapproval
         self.numberDisapprovalLabel.textColor = MP_HEX_RGB("919191")
@@ -100,10 +99,15 @@ class TimelineTableViewCell : UITableViewCell {
             self.numberDisapprovalLabel.text = selfie.nb_downvotes.description + NSLocalizedString("Reject", comment: "Reject")
         }
         
-        
         // Last Comment Border color
         self.bottomContentView.layer.borderColor = MP_HEX_RGB("E0E0E0").CGColor
         self.bottomContentView.layer.borderWidth = 0.5
+        self.bottomContentView.backgroundColor = MP_HEX_RGB("FFFFFF")
+        
+        // ChallengeView Border & Background Color
+        self.challengeView.layer.borderColor = MP_HEX_RGB("2B9ABA").CGColor
+        self.challengeView.layer.borderWidth = 0.5
+        self.challengeView.backgroundColor = MP_HEX_RGB("658D99")
                 
         // Last Comment Username
         self.commentUsernameLabel.setNeedsUpdateConstraints()
@@ -140,15 +144,15 @@ class TimelineTableViewCell : UITableViewCell {
         
         // Test if Last comment exists or not
         if comment_message_indent.length != 0 {
-            self.bottomContentView.backgroundColor = MP_HEX_RGB("F7F7F7")
+            //self.bottomContentView.backgroundColor = MP_HEX_RGB("F7F7F7")
             comment_message_indent.addAttribute(NSParagraphStyleAttributeName, value: comment_message_style, range: NSMakeRange(0, comment_message_indent.length))
             self.commentMessageLabel.attributedText = comment_message_indent
-            self.commentMessageLabel.font = UIFont(name: "Helvetica Neue", size: 13.0 * sizeScale)
+            self.commentMessageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0 * sizeScale)
             self.commentMessageLabel.textColor = MP_HEX_RGB("000000")
             self.commentMessageLabel.numberOfLines = 0
         } else {
             // No Last Comment - Display a proper message
-            self.bottomContentView.backgroundColor = MP_HEX_RGB("FFFFFF")
+            //self.bottomContentView.backgroundColor = MP_HEX_RGB("FFFFFF")
             self.commentMessageLabel.text = NSLocalizedString("first_comment", comment: "Be the first one to write a comment..")
             self.commentMessageLabel.font = UIFont.italicSystemFontOfSize(13.0 * sizeScale)
             self.commentMessageLabel.textColor = MP_HEX_RGB("919191")
@@ -224,18 +228,13 @@ class TimelineTableViewCell : UITableViewCell {
             request(.POST, ApiLink.selfie_approve, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.timelineVC.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                     } else {
                         //convert to SwiftJSON
                         let json = JSON_SWIFTY(mydata!)
                         
                         if (json["success"].intValue == 0) {
-                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            
-                            self.timelineVC.presentViewController(alert, animated: true, completion: nil)
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                         } else {
                             if self.selfie.approval_status != json["approval_status"].intValue {
                                 self.selfie.approval_status = json["approval_status"].intValue
@@ -292,17 +291,13 @@ class TimelineTableViewCell : UITableViewCell {
             request(.POST, ApiLink.selfie_reject, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.timelineVC.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                     } else {                        
                         //convert to SwiftJSON
                         let json = JSON_SWIFTY(mydata!)
                         
                         if (json["success"].intValue == 0) {
-                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            self.timelineVC.presentViewController(alert, animated: true, completion: nil)
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                         } else {
                             if self.selfie.approval_status != json["approval_status"].intValue {
                                 self.selfie.approval_status = json["approval_status"].intValue
@@ -387,9 +382,7 @@ class TimelineTableViewCell : UITableViewCell {
         request(.POST, ApiLink.show_user_profile, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.timelineVC.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -407,6 +400,107 @@ class TimelineTableViewCell : UITableViewCell {
                 }
         }
         
+    }
+    @IBAction func settingsButton(sender: AnyObject) {
+        var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
+        let login = KeychainWrapper.stringForKey(kSecAttrAccount)
+        var oneAction : UIAlertAction!
+        
+        if self.selfie.user.username == login {
+            oneAction = UIAlertAction(title: NSLocalizedString("delete_selfie", comment: "Delete selfie"), style: UIAlertActionStyle.Destructive) { (_) in
+                
+                var delete_confirmation = UIAlertController(title: NSLocalizedString("delete_selfie", comment: "Delete selfie"), message: NSLocalizedString("delete_selfie_confiration", comment: "Are you sure you want to delete this selfie? It will be permanently deleted from your account"), preferredStyle: UIAlertControllerStyle.Alert)
+                
+                let confirmationOk = UIAlertAction(title: NSLocalizedString("delete", comment: "Delete"), style: UIAlertActionStyle.Destructive) { (_) in
+                    let parameters = [
+                        "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                        "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                        "selfie_id": self.selfie.id.description
+                    ]
+                    
+                    // Add loadingIndicator pop-up
+                    var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+                    loadingActivityVC.view.tag = 21
+                    self.timelineVC.view.addSubview(loadingActivityVC.view)
+                    
+                    request(.POST, ApiLink.delete_selfie, parameters: parameters, encoding: .JSON)
+                        .responseJSON { (_, _, mydata, _) in
+                            // Remove loadingIndicator pop-up
+                            if let loadingActivityView = self.timelineVC.view.viewWithTag(21) {
+                                loadingActivityView.removeFromSuperview()
+                            }
+                            if (mydata == nil) {
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
+                            } else {
+                                //convert to SwiftJSON
+                                let json = JSON_SWIFTY(mydata!)
+                                if (json["success"].intValue == 0) {
+                                    // ERROR RESPONSE FROM HTTP Request
+                                    GlobalFunctions().displayAlert(title: NSLocalizedString("delete_selfie", comment: "Delete Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
+                                } else {
+                                    // SUCCESS RESPONSE FROM HTTP Request
+                                    self.timelineVC.selfies_array.removeAtIndex(self.indexPath.row)
+                                    self.timelineVC.timelineTableView.reloadData()
+                                }
+                            }
+                            
+                    }
+                }
+                let confirmationCancel = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Default, handler: nil)
+                
+                delete_confirmation.addAction(confirmationCancel)
+                delete_confirmation.addAction(confirmationOk)
+                
+                self.timelineVC.presentViewController(delete_confirmation, animated: true, completion: nil)
+            }
+
+        }
+        
+        
+        let twoAction = UIAlertAction(title: NSLocalizedString("report_inappropriate_content", comment: "Report Inappropriate Content"), style: UIAlertActionStyle.Destructive) { (_) in
+            let parameters = [
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "selfie_id": self.selfie.id.description
+            ]
+            
+            // Add loadingIndicator pop-up
+            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            loadingActivityVC.view.tag = 21
+            self.timelineVC.view.addSubview(loadingActivityVC.view)
+            
+            request(.POST, ApiLink.flag_selfie, parameters: parameters, encoding: .JSON)
+                .responseJSON { (_, _, mydata, _) in
+                    // Remove loadingIndicator pop-up
+                    if let loadingActivityView = self.timelineVC.view.viewWithTag(21) {
+                        loadingActivityView.removeFromSuperview()
+                    }
+                    if (mydata == nil) {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
+                    } else {
+                        //convert to SwiftJSON
+                        let json = JSON_SWIFTY(mydata!)
+                        if (json["success"].intValue == 0) {
+                            // ERROR RESPONSE FROM HTTP Request
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("report_selfie", comment: "Report Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
+                        } else {
+                            // SUCCESS RESPONSE FROM HTTP Request
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("report_selfie", comment: "Report Selfie"), message: NSLocalizedString("flag_as_inappropriate", comment: "Thank you. This selfie has been flagged as inappropriate and will be reviewed by an administrator."), controller: self.timelineVC)
+                        }
+                    }
+            }
+
+        }
+        let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
+        
+        if self.selfie.user.username == login {
+            alert.addAction(oneAction)
+        }
+        alert.addAction(twoAction)
+        alert.addAction(thirdAction)
+        
+        self.timelineVC.presentViewController(alert, animated: true, completion: nil)
     }
     
 }

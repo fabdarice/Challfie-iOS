@@ -21,6 +21,7 @@ class PrivacyTableViewController: UITableViewController {
         
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = true
+            
         // Add Background for status bar
         let statusBarViewBackground = UIView(frame: CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, 20.0))
         statusBarViewBackground.backgroundColor = MP_HEX_RGB("30768A")
@@ -35,7 +36,7 @@ class PrivacyTableViewController: UITableViewController {
         tableView.registerNib(nib, forCellReuseIdentifier: "ExtraPagesCell")
         
         self.navigationItem.title = "Privacy"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "Helvetica Neue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
     }
     
     override func didReceiveMemoryWarning() {

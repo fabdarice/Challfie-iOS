@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RankingCell" rowHeight="50" id="HHs-PQ-4cS" customClass="RankingTVCell" customModule="Challfie" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HHs-PQ-4cS" id="Zo2-He-BM3">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2R-B1-PtU" userLabel="usernameLabel">
+                        <rect key="frame" x="92" y="14.5" width="58" height="15.5"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apprentice III" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELc-wO-ex6" userLabel="levelLabel">
+                        <rect key="frame" x="157" y="14" width="90" height="14.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="90" id="FIP-3d-kiG"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVo-eO-uuO" userLabel="progressLevel">
+                        <rect key="frame" x="262" y="14" width="40" height="14.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="mNP-3M-PdZ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="214" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hl-NN-WjU" userLabel="rankLabel">
+                        <rect key="frame" x="10" y="14.5" width="22.5" height="15.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="7Vr-em-p1z"/>
+                            <constraint firstAttribute="width" constant="22.5" id="bak-lK-xHv"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="7Vr-em-p1z"/>
+                            </mask>
+                        </variation>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CW9-Qd-5ao" userLabel="profilPicImageView">
+                        <rect key="frame" x="42" y="2" width="40" height="39.5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="6U7-oZ-8Ri"/>
+                            <constraint firstAttribute="width" constant="40" id="j8Z-sf-M3n"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="HVo-eO-uuO" firstAttribute="leading" secondItem="ELc-wO-ex6" secondAttribute="trailing" constant="15" id="21G-ER-x2r"/>
+                    <constraint firstAttribute="centerY" secondItem="4hl-NN-WjU" secondAttribute="centerY" id="8Wd-s2-apL"/>
+                    <constraint firstAttribute="centerY" secondItem="ELc-wO-ex6" secondAttribute="centerY" id="C2f-bJ-cV7"/>
+                    <constraint firstItem="4hl-NN-WjU" firstAttribute="leading" secondItem="Zo2-He-BM3" secondAttribute="leading" constant="10" id="DTw-b5-Phx"/>
+                    <constraint firstAttribute="bottom" secondItem="CW9-Qd-5ao" secondAttribute="bottom" constant="2" id="Ggr-HC-86U"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="HVo-eO-uuO" secondAttribute="trailing" constant="10" id="LKd-1z-Wrj"/>
+                    <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="Zo2-He-BM3" secondAttribute="leading" constant="15" id="Mkl-RK-XfF"/>
+                    <constraint firstAttribute="centerY" secondItem="m2R-B1-PtU" secondAttribute="centerY" id="P3r-Gm-FhV"/>
+                    <constraint firstItem="CW9-Qd-5ao" firstAttribute="top" secondItem="Zo2-He-BM3" secondAttribute="top" constant="2" id="U31-fu-nm7"/>
+                    <constraint firstAttribute="centerY" secondItem="HVo-eO-uuO" secondAttribute="centerY" id="iC4-eM-McT"/>
+                    <constraint firstItem="m2R-B1-PtU" firstAttribute="leading" secondItem="CW9-Qd-5ao" secondAttribute="trailing" constant="10" id="mS6-Kw-ZxS"/>
+                    <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="4hl-NN-WjU" secondAttribute="trailing" constant="10" id="rN6-H3-MDt"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="Mkl-RK-XfF"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="levelLabel" destination="ELc-wO-ex6" id="q2a-iR-SFj"/>
+                <outlet property="profilPicImageView" destination="CW9-Qd-5ao" id="sch-aS-Dxd"/>
+                <outlet property="progressLabel" destination="HVo-eO-uuO" id="0MA-vd-mpD"/>
+                <outlet property="rankLabel" destination="4hl-NN-WjU" id="1RB-mX-497"/>
+                <outlet property="usernameLabel" destination="m2R-B1-PtU" id="a2v-jp-TFN"/>
+            </connections>
+            <point key="canvasLocation" x="327" y="251"/>
+        </tableViewCell>
+    </objects>
+</document>

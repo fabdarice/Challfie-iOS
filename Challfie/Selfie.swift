@@ -24,6 +24,8 @@ class Selfie {
     var nb_comments: Int!
     var user_vote_status: Int!
     var last_comment: Comment!
+    var flag_count: Int!
+    var blocked: Bool!
     
     init(id: Int) {
         self.id = id
@@ -42,6 +44,8 @@ class Selfie {
         self.nb_downvotes = json["nb_downvotes"].intValue
         self.nb_comments = json["nb_comments"].intValue
         self.user_vote_status = json["status_vote"].intValue
+        self.flag_count = json["flag_count"].intValue
+        self.blocked = json["blocked"].boolValue
     }
     
     func show_selfie_pic() -> String {

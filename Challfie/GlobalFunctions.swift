@@ -21,9 +21,7 @@ class GlobalFunctions {
         request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    controller.presentViewController(alert, animated: true, completion: nil)
+                    self.displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: controller)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -51,6 +49,13 @@ class GlobalFunctions {
         controller.navigationItem.backBarButtonItem = UIBarButtonItem(title: backBarTitle, style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         controller.navigationController?.pushViewController(searchUserVC, animated: true)
         
+    }
+    
+    // Display Alert
+    func displayAlert(#title: String, message: String, controller: UIViewController) {
+        var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+        controller.presentViewController(alert, animated: true, completion: nil)
     }
     
 }

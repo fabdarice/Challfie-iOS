@@ -27,7 +27,7 @@ class AlertTVCell : UITableViewCell {
         }
         
         // Test if we display the username or not
-        if (alert.type_notification != "selfie_status") && (alert.type_notification != "book_unlock") {
+        if (alert.type_notification != "selfie_status") && (alert.type_notification != "book_unlock") && (alert.type_notification != "daily_challenge") {
             // Alert Username
             self.usernameLabel.hidden = false
             self.usernameLabel.text = alert.author.username

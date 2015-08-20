@@ -27,6 +27,8 @@ struct ApiLink {
     static var selfie_list_comments = host + "/api/selfie/comments"
     static var show_selfie = host + "/api/selfie"
     static var create_selfie = host + "/api/selfie/create"
+    static var flag_selfie = host + "/api/selfie/flag_selfie"
+    static var delete_selfie = host + "/api/selfie/delete"
     
     // CommentController
     static var create_comment = host + "/api/comments"
@@ -42,6 +44,8 @@ struct ApiLink {
     static var user_selfies = host + "/api/user/selfies"
     static var autocomplete_search_user = host + "/api/user/autocomplete_search_user"
     static var update_user = host + "/api/user/update"
+    static var users_ranking = host + "/api/users/ranking"
+    static var update_facebook_permission = host + "/api/users/update_facebook_permission"
     
     // FriendsController
     static var suggestions_and_request = host + "/api/suggestions_and_request"
@@ -65,4 +69,11 @@ struct ApiLink {
     
     // DevicesController
     static var create_or_update_device = host + "/api/device/create"
+    
+    // AdministratorsController
+    static var flag_selfies_list = host + "/api/admin/list_flag_selfies"
+    static var block_selfie = host + "/api/admin/block_selfie"
+    static var block_user = host + "/api/admin/block_user"
+    static var clear_flag_selfie = host + "/api/admin/clear_flag_selfie"
+    
 }

@@ -12,6 +12,7 @@ class TutorialVC : UIViewController, UIPageViewControllerDataSource {
  
     var pageViewController: UIPageViewController?
     var numberOfPages = 4
+    var from_facebook = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +81,7 @@ class TutorialVC : UIViewController, UIPageViewControllerDataSource {
         let pageContent = TutorialPageContentVC(nibName: "TutorialPageContent", bundle: nil)
         pageContent.itemIndex = itemIndex
         pageContent.tutorialVC = self
+        pageContent.fromFacebook = self.from_facebook
         
         return pageContent
     }
@@ -92,6 +94,13 @@ class TutorialVC : UIViewController, UIPageViewControllerDataSource {
     
     func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
         return 0
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "homeSegue2") && (self.from_facebook == true) {
+            var tabBar: HomeTBC = segue.destinationViewController as HomeTBC
+            tabBar.selectedIndex = 3
+        }
     }
     
 }

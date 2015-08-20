@@ -19,7 +19,9 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
     @IBOutlet weak var registerView: UIView!
-    @IBOutlet weak var createNewAccountLabel: UILabel!
+    @IBOutlet weak var createNewAccountLabel: UILabel!    
+    @IBOutlet weak var eulaLabel: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,10 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
 
         // Hide Password in TextField with *****
         self.passwordTextField.secureTextEntry = true
+        
+        // Eula
+        self.eulaLabel.text = NSLocalizedString("eula", comment: "by signing up for this account, you agree to the terms and conditions")
+        self.eulaLabel.font = UIFont.italicSystemFontOfSize(10.0)
         
     }
     
@@ -89,11 +95,8 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                     loadingActivityView.removeFromSuperview()
                 }
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else {
-                
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                } else {                
                     //convert to SwiftJSON
                     let json = JSON_SWIFTY(mydata!)
                     
@@ -116,10 +119,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                             error_message += "\n" + NSLocalizedString("Lastname", comment: "Lastname") + " : " + json["message"]["lastname"][0].stringValue
                         }
                         
-                        
-                        var alert = UIAlertController(title: NSLocalizedString("Account_creation_failed", comment: "Account creation failed"), message: error_message, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Account_creation_failed", comment: "Account creation failed"), message: error_message, controller: self)
                     } else {
                         // SUCCESS RSPONSE FROM HTTP Request
                         let login:String! = json["login"].string

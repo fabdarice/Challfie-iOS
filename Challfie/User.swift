@@ -26,6 +26,9 @@ class User {
     var is_pending: Bool!
     var uid: String!
     var oauth_token: String!
+    var progression: Int!
+    var administrator: Int!
+    var blocked: Bool!
     
     init(json: JSON_SWIFTY) {
         self.id = json["id"].intValue
@@ -43,7 +46,9 @@ class User {
         self.is_pending = json["is_pending"].boolValue
         self.uid = json["uid"].stringValue
         self.oauth_token = json["oauth_token"].stringValue
-        
+        self.progression = json["progression"].intValue
+        self.administrator = json["administrator"].intValue
+        self.blocked = json["blocked"].boolValue
     }
     
     func show_profile_pic() -> String {

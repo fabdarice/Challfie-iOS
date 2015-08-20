@@ -36,7 +36,7 @@ class TermsTableViewController: UITableViewController {
         tableView.registerNib(nib, forCellReuseIdentifier: "ExtraPagesCell")
         
         self.navigationItem.title = "Terms & Conditions"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "Helvetica Neue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
     }
     
     override func didReceiveMemoryWarning() {

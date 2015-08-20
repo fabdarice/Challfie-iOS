@@ -53,8 +53,6 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         
         // Set Background of "Search for Facebook" Button
         self.linkFacebookButton.backgroundColor = MP_HEX_RGB("3f5c9a")
-//        self.linkFacebookButton.layer.borderColor = MP_HEX_RGB("85BBCC").CGColor
- //       self.linkFacebookButton.layer.borderWidth = 1.0
         self.linkFacebookButton.hidden = true
         self.friendsTab_FriendsTV_constraints.constant = 0.0
         self.linkFacebookButton.setTitle(NSLocalizedString("Search_facebook_friends", comment: "Search for your Facebook's Friends"), forState: UIControlState.Normal)
@@ -238,9 +236,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     }
                 }
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -320,8 +316,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     }
     
     @IBAction func linkFacebook(sender: AnyObject) {
-        FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends",
-            "publish_actions"], allowLoginUI: true, completionHandler: {
+        FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
             (session:FBSession!, state:FBSessionState, error:NSError!) in
                 let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
                 // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
@@ -329,9 +324,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                 if FBSession.activeSession().isOpen {
                     FBRequestConnection.startForMeWithCompletionHandler({ (connection, user, error) -> Void in
                         if (error != nil) {
-                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            self.presentViewController(alert, animated: true, completion: nil)
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
                             let user_uid: String = user.objectForKey("id") as String
                             let user_lastname = user.objectForKey("last_name") as String
@@ -349,25 +342,21 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                                 "lastname": user_lastname,
                                 "fbtoken": fbAccessToken,
                                 "fbtoken_expires_at": fbTokenExpiresAt,
-                                "fb_locale": user_locale
+                                "fb_locale": user_locale,
+                                "isPublishPermissionEnabled": false
                             ]
                             
                             request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
                                 .responseJSON { (_, _, mydata, _) in
                                     if (mydata == nil) {
-                                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                                        self.presentViewController(alert, animated: true, completion: nil)
+                                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                     } else {
                                         //convert to SwiftJSON
                                         let json = JSON_SWIFTY(mydata!)
                                         
                                         if (json["success"].intValue == 0) {
                                             // ERROR RESPONSE FROM HTTP Request
-                                            var alert = UIAlertController(title: "Facebook Authentication", message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                                            self.presentViewController(alert, animated: true, completion: nil)
-                                            
+                                            GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)
                                         } else {
                                             self.suggestions_page = 1
                                             self.suggestions_array.removeAll(keepCapacity: false)
@@ -391,7 +380,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         messageLabel.textColor = MP_HEX_RGB("000000")
         messageLabel.numberOfLines = 0;
         messageLabel.textAlignment = NSTextAlignment.Center
-        messageLabel.font = UIFont(name: "Chinacat", size: 16.0)
+        messageLabel.font = UIFont(name: "HelveticaNeue-Light", size: 16.0)
         if self.friends_tab == 1 {
             if (self.suggestions_array.count == 0) {
                 // Display a message when the table is empty
@@ -489,7 +478,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         var headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 20.0))
         headerView.backgroundColor = MP_HEX_RGB("1A596B")
         var headerLabel = UILabel(frame: CGRectMake(10.0, 5.0, tableView.frame.width, 17.0))
-        headerLabel.font = UIFont(name: "Helvetica Neue", size: 13.0)
+        headerLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
         headerLabel.textColor = MP_HEX_RGB("FFFFFF")
         
         headerView.addSubview(headerLabel)
@@ -586,16 +575,18 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-        if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
-            // Add Loading Indicator to footerView
-            self.tableView.tableFooterView = self.loadingIndicator
-            
-            // Load Next Page of Selfies for User Timeline
-            if self.friends_tab == 1 {
-                self.loadRequestData(true)
-            } else {
-                self.loadData(true)
+        if self.loadingIndicator.isAnimating() == false {
+            // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
+            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
+                // Add Loading Indicator to footerView
+                self.tableView.tableFooterView = self.loadingIndicator
+                
+                // Load Next Page of Selfies for User Timeline
+                if self.friends_tab == 1 {
+                    self.loadRequestData(true)
+                } else {
+                    self.loadData(true)
+                }
             }
         }
     }

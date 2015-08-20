@@ -38,6 +38,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     var use_camera: Bool = true
     var imageToSave: UIImage!
     var isFacebookLinked: Bool = false
+    var isPublishPermissionEnabled: Bool = false
     var imagePicker: GKImagePicker!
     
     override func viewDidLoad() {
@@ -57,7 +58,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         self.navigationItem.rightBarButtonItem = doneItem
         
         var navigationTitle : UILabel = UILabel(frame: CGRectMake(0.0, 0.0, 100.0, 40.0))
-        navigationTitle.font = UIFont(name: "Chinacat", size: 16.0)
+        navigationTitle.font = UIFont(name: "HelveticaNeue", size: 16.0)
         navigationTitle.text = NSLocalizedString("post_a_challfie", comment: "Post a Challfie")
         navigationTitle.textColor = UIColor.whiteColor()
         self.navigationItem.titleView = navigationTitle
@@ -203,15 +204,17 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         request(.POST, ApiLink.challenges_list, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)                    
                     
                     // Check if account is linked with Facebook
                     self.isFacebookLinked = json["meta"]["isFacebookLinked"].boolValue
+                    
+                    // Check if Publish Action has already been authorized
+                    self.isPublishPermissionEnabled = json["meta"]["isPublishPermissionEnabled"].boolValue
+
                     
                     if json["challenges"].count != 0 {
                         for var i:Int = 0; i < json["challenges"].count; i++ {
@@ -255,7 +258,39 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     // Function when Share Facebook Switch is ON
     func addFacebookLink() {
         if self.shareFacebookSwitch.on == true {
-            if isFacebookLinked == false {
+            if self.isFacebookLinked == false || self.isPublishPermissionEnabled == false {
+                if self.isPublishPermissionEnabled == false && self.isFacebookLinked == true {
+                    FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
+                        (session:FBSession!, state:FBSessionState, error:NSError!) in
+                        //let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+                        // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+                        //appDelegate.sessionStateChanged(session, state: state, error: error)
+                        println ("ENTER")
+                        if FBSession.activeSession().isOpen {
+                            println ("session Is Open")
+                            println(FBSession.activeSession().permissions)
+                            if contains(FBSession.activeSession().permissions  as [String], "publish_actions") == false {
+                                println ("NO PERMISSION")
+                                FBSession.activeSession().requestNewPublishPermissions(["publish_actions"], defaultAudience: FBSessionDefaultAudience.Friends, completionHandler: {(session:FBSession!, error:NSError!) in
+                                    if (error != nil) {
+                                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                                        self.shareFacebookSwitch.on = false
+                                    } else {
+                                        self.updateFacebookPublishPermissions()
+                                    }
+                                })
+                            } else {
+                                self.updateFacebookPublishPermissions()
+                            }
+                        } else {
+                        //    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                            //self.shareFacebookSwitch.on = false
+                            println("SESSION OFF")
+                        }
+                    
+                    })
+                } else {
+                    println ("ENTER NO ACCOUNT YET")
                     FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends", "publish_actions"], allowLoginUI: true, completionHandler: {
                         (session:FBSession!, state:FBSessionState, error:NSError!) in
                         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
@@ -264,9 +299,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                         if FBSession.activeSession().isOpen {
                             FBRequestConnection.startForMeWithCompletionHandler({ (connection, user, error) -> Void in
                                 if (error != nil) {
-                                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                                    self.presentViewController(alert, animated: true, completion: nil)
+                                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                     self.shareFacebookSwitch.on = false
                                 } else {
                                     let user_uid: String = user.objectForKey("id") as String
@@ -285,15 +318,14 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                         "lastname": user_lastname,
                                         "fbtoken": fbAccessToken,
                                         "fbtoken_expires_at": fbTokenExpiresAt,
-                                        "fb_locale": user_locale
+                                        "fb_locale": user_locale,
+                                        "isPublishPermissionEnabled" : true
                                     ]
                                     
                                     request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
                                         .responseJSON { (_, _, mydata, _) in
                                             if (mydata == nil) {
-                                                var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                                                alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                                                self.presentViewController(alert, animated: true, completion: nil)
+                                                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                                 self.shareFacebookSwitch.on = false
                                             } else {
                                                 //convert to SwiftJSON
@@ -301,13 +333,13 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                                 
                                                 if (json["success"].intValue == 0) {
                                                     // ERROR RESPONSE FROM HTTP Request
-                                                    var alert = UIAlertController(title: "Facebook Authentication", message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                                                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                                                    self.presentViewController(alert, animated: true, completion: nil)
+                                                    GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)                                                                                                        
                                                     self.shareFacebookSwitch.on = false                                                                                                        
                                                 } else {
                                                     self.isFacebookLinked = true
+                                                    self.isPublishPermissionEnabled = true
                                                 }
+                                                println ("ENTER NO ACCOUNT YET - OK FINAL")
                                             }
                                     }
                                     
@@ -316,10 +348,41 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                             })
                         }
                     })
-                    
+                }
             }
         }
     }
+    
+    func updateFacebookPublishPermissions () {
+        let parameters:[String: AnyObject] = [
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "isPublishPermissionEnabled": true
+        ]
+        
+        request(.POST, ApiLink.update_facebook_permission, parameters: parameters, encoding: .JSON)
+            .responseJSON { (_, _, mydata, _) in
+                if (mydata == nil) {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    self.shareFacebookSwitch.on = false
+                } else {
+                    //convert to SwiftJSON
+                    let json = JSON_SWIFTY(mydata!)
+                    
+                    if (json["success"].intValue == 0) {
+                        // ERROR RESPONSE FROM HTTP Request
+                        GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)
+                        self.shareFacebookSwitch.on = false
+                    } else {
+                        self.isFacebookLinked = true
+                        self.isPublishPermissionEnabled = true
+                    }
+                }
+                println("ENTER GOOD MAN!")
+        }
+    }
+    
+    
     
     // Dismiss Searchbar Keyboard
     func dismissKeyboard() {
@@ -354,8 +417,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         let selectedIndexPath: NSIndexPath = self.tableView.indexPathForSelectedRow()!
         var selected_challenge: Challenge = self.books_array[selectedIndexPath.section].challenges_array[selectedIndexPath.row]
         
+        //let imageData = UIImagePNGRepresentation(self.imageToSave)
 
-        let imageData = UIImageJPEGRepresentation(self.imageToSave, 0.6)
+        let imageData = UIImageJPEGRepresentation(self.imageToSave, 0.9)
 
         var is_private: String = ""
         if self.privacySwitch.on {
@@ -387,8 +451,13 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
      
         // Switch to Timeline Tab
         if let viewControllers = self.tabBarController?.viewControllers {
-            let navController = viewControllers[0] as UINavigationController
-            var timelineVC: TimelineVC = navController.viewControllers[0] as TimelineVC
+            //let navController = viewControllers[0] as UINavigationController
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            var timelienNavController:MyNavigationController = mainStoryboard.instantiateViewControllerWithIdentifier("navigationTimelineID") as MyNavigationController
+            
+            
+            ERRROR HERE
+            var timelineVC: TimelineVC = timelienNavController.viewControllers[0] as TimelineVC
             timelineVC.uploadSelfieView.hidden = false
             // Background
             timelineVC.uploadSelfieView.backgroundColor = MP_HEX_RGB("FFFFFF")
@@ -472,9 +541,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             self.presentViewController(self.imagePicker.imagePickerController, animated: true, completion: nil)            
         }
         else{
-            var alert = UIAlertController(title: "No Camera Found", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            GlobalFunctions().displayAlert(title: "No Camera Found", message: " ", controller: self)
         }
     }
     
@@ -623,7 +690,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         var headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 20.0))
         headerView.backgroundColor = MP_HEX_RGB("30768A")
         var headerLabel = UILabel(frame: CGRectMake(15.0, 5.0, tableView.frame.width, 17.0))
-        headerLabel.font = UIFont(name: "Chinacat", size: 13.0)
+        headerLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
         headerLabel.textColor = MP_HEX_RGB("FFFFFF")
         
         headerLabel.text = self.books_array[section].name

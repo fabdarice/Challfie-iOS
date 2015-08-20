@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HomeTBC: UITabBarController, UITabBarControllerDelegate {
+class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelegate {
     
     //var new_alert_nb:Int! = 0
 
@@ -49,9 +49,9 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate {
 
                 let navController = viewController as UINavigationController
                 var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
-
-                // Show Pop-op to options to choose between camera and photo library
-                var alert = UIAlertController(title: nil, message: NSLocalizedString("add_a_new_selfie", comment: "Add a new Challfie"), preferredStyle: UIAlertControllerStyle.ActionSheet)
+                
+                // Show Pop-op to options to choose between camera and photo library on iOS 8
+                var alert = UIAlertController(title: nil, message: NSLocalizedString("add_a_new_selfie", comment: "Add a new challfie"), preferredStyle: UIAlertControllerStyle.ActionSheet)
                 let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
                         takePictureVC.use_camera = true
                         takePictureVC.photo_taken = false
@@ -69,6 +69,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate {
                 alert.addAction(thirdAction)
                 
                 self.presentViewController(alert, animated: true, completion: nil)
+                
                 return false
             }
         }

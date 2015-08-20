@@ -59,7 +59,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
 
         // Facebook Login
         self.facebookLoginView.delegate = self
-        self.facebookLoginView.readPermissions = ["public_profile", "email", "user_friends", "publish_actions"]    
+        self.facebookLoginView.readPermissions = ["public_profile", "email", "user_friends"]
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -106,19 +106,14 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                     loadingActivityView.removeFromSuperview()
                 }
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //convert to SwiftJSON
                     let json = JSON_SWIFTY(mydata!)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RESPONSE FROM HTTP Request
-                        var alert = UIAlertController(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
-                        
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, controller: self)
                     } else {
                         // SUCCESS RESPONSE FROM HTTP Request
                         let login:String! = json["login"].string
@@ -199,9 +194,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                         loadingActivityView.removeFromSuperview()
                     }
                     if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         self.first_facebook_login = false
                     } else {
                         //convert to SwiftJSON
@@ -210,10 +203,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                         if (json["success"].intValue == 0) {
                             self.first_facebook_login = false
                             // ERROR RESPONSE FROM HTTP Request
-                            var alert = UIAlertController(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            self.presentViewController(alert, animated: true, completion: nil)
-                            
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, controller: self)
                         } else {
                             // SUCCESS RESPONSE FROM HTTP Request
                             let login:String! = json["login"].string

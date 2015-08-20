@@ -23,6 +23,7 @@ class TutorialPageContentVC : UIViewController {
     
     var itemIndex: Int = 0
     var tutorialVC: TutorialVC!
+    var fromFacebook: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,8 +100,14 @@ class TutorialPageContentVC : UIViewController {
     
     
     @IBAction func skipAction(sender: AnyObject) {
-        // Modal to Timeline TabBarViewCOntroller
-        tutorialVC.performSegueWithIdentifier("homeSegue2", sender: self)
+        
+        if self.fromFacebook == true {
+            // Modal to Timeline TabBarViewCOntroller
+            tutorialVC.performSegueWithIdentifier("homeSegue2", sender: self)
+        } else {
+            // Modal to LinkFacebook Tutorial Page
+            tutorialVC.performSegueWithIdentifier("linkFacebookSegue", sender: self)
+        }
         
     }
     

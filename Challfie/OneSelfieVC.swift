@@ -36,12 +36,15 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var approveButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
     @IBOutlet weak var selfieImageHeightConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var challengeView: UIView!
+    @IBOutlet weak var viewAllCommentsButton: UIButton!    
+    @IBOutlet weak var viewAllCommentsButtonHeightConstraints: NSLayoutConstraint!
     
     var original_footerViewBottomConstraints: CGFloat = 0.0
     var selfie: Selfie!
     var comments_array:[Comment] = []
     var to_bottom: Bool = true
+    var is_administrator: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +80,11 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.listCommentsTableView.delegate = self
         self.listCommentsTableView.dataSource = self
         self.commentTextField.delegate = self
+        
+        // ChallengeView Border & Background Color
+        self.challengeView.layer.borderColor = MP_HEX_RGB("2B9ABA").CGColor
+        self.challengeView.layer.borderWidth = 0.5
+        self.challengeView.backgroundColor = MP_HEX_RGB("658D99")
         
         // Register the xib for the Custom TableViewCell
         var nib = UINib(nibName: "CommentTVCell", bundle: nil)
@@ -130,7 +138,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         // Challenge
         self.challengeLabel.text = selfie.challenge.description
-        self.challengeLabel.textColor = MP_HEX_RGB("30BAE3")
+        self.challengeLabel.textColor = MP_HEX_RGB("FFFFFF")
         
         // Selfie Creation Date
         self.dateLabel.text = selfie.creation_date
@@ -147,6 +155,17 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             self.numberCommentsLabel.text = selfie.nb_comments.description + NSLocalizedString("Comment", comment: "Comment")
         } else {
             self.numberCommentsLabel.text = selfie.nb_comments.description + NSLocalizedString("Comments", comment: "Comments")
+        }
+        
+        if selfie.nb_comments > 20 {
+            // Show the Button to display all comments
+            self.viewAllCommentsButton.hidden = false
+            self.viewAllCommentsButtonHeightConstraints.constant = 15.0
+            self.viewAllCommentsButton.setTitle(NSLocalizedString("view_all_comments", comment: "View All Comments.."), forState: UIControlState.Normal)
+            self.viewAllCommentsButton.setTitleColor(MP_HEX_RGB("30768A"), forState: UIControlState.Normal)
+        } else {
+            self.viewAllCommentsButton.hidden = true
+            self.viewAllCommentsButtonHeightConstraints.constant = 0.0
         }
         
         
@@ -237,6 +256,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // Retrive list of comments of the selected Selfie
     func loadData() {
+
         // add loadingIndicator pop-up
         var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
@@ -250,14 +270,12 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         request(.POST, ApiLink.show_selfie, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
                 if (mydata == nil) {
-                    // Remove loadingIndicator pop-up
-                    if let loadingActivityView = self.view.viewWithTag(21) {
-                        loadingActivityView.removeFromSuperview()
-                    }
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
@@ -274,60 +292,75 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                     }
                     
                     self.loadSelfie()
+                    self.loadComments(all_comment: false)
                     
-                    request(.POST, ApiLink.selfie_list_comments, parameters: parameters, encoding: .JSON)
-                        .responseJSON { (_, _, mydata2, _) in
-                            // Remove loadingIndicator pop-up
-                            if let loadingActivityView = self.view.viewWithTag(21) {
-                                loadingActivityView.removeFromSuperview()
-                            }
-                            if (mydata == nil) {
-                                var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                                alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                                self.presentViewController(alert, animated: true, completion: nil)
-                            } else {
-                                //Convert to SwiftJSON
-                                var json2 = JSON_SWIFTY(mydata2!)
-                                
-                                if json2["selfies"].count != 0 {
-                                    for var i:Int = 0; i < json2["selfies"].count; i++ {
-                                        var comment = Comment.init(json: json2["selfies"][i])
-                                        self.comments_array.append(comment)
-                                    }
-                                    self.commentsListView.backgroundColor = MP_HEX_RGB("F7F7F7")
-                                    self.noCommentLabel.hidden = true
-                                    self.listCommentsTableView.reloadData()
-                                    
-                                    // Set the height of listCommentstableView dynamically based on the height of each cell
-                                    // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
-                                    var commentsTableView_newHeight: CGFloat = 0.0
-                                    for var i:Int = 0; i < self.comments_array.count; i++ {
-                                        commentsTableView_newHeight += self.listCommentsTableView.rectForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)).size.height
-                                    }
-                                    self.listCommentsHeightConstraints.constant = commentsTableView_newHeight
-                                    
-                                    // scroll to the bottom of the View
-                                    if self.to_bottom == true {
-                                        let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
-                                        self.scrollView.setContentOffset(bottomOffset, animated: false)
-                                    }
-                                } else {
-                                    // Set Background Color for commentsList
-                                    self.noCommentLabel.hidden = false
-                                    self.commentsListView.backgroundColor = MP_HEX_RGB("FFFFFF")
-                                    self.noCommentLabel.text = NSLocalizedString("first_comment", comment: "Be the first one to write a comment..")
-                                    self.noCommentLabel.font = UIFont.italicSystemFontOfSize(12.0)
-                                    self.noCommentLabel.textColor = MP_HEX_RGB("919191")
-                                }
-                                
-                            }
-                    }
                 }
         }
         
         
     }
     
+    
+    func loadComments(all_comment: Bool = false) {
+        // add loadingIndicator pop-up
+        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        loadingActivityVC.view.tag = 21
+        self.view.addSubview(loadingActivityVC.view)
+        
+        let parameters:[String: String] = [
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "id": self.selfie.id.description,
+            "all_comment": all_comment.description
+        ]
+        
+        self.comments_array.removeAll(keepCapacity: false)
+        
+        request(.POST, ApiLink.selfie_list_comments, parameters: parameters, encoding: .JSON)
+            .responseJSON { (_, _, mydata, _) in
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
+                if (mydata == nil) {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                } else {
+                    //Convert to SwiftJSON
+                    var json2 = JSON_SWIFTY(mydata!)
+                    
+                    if json2["selfies"].count != 0 {
+                        for var i:Int = 0; i < json2["selfies"].count; i++ {
+                            var comment = Comment.init(json: json2["selfies"][i])
+                            self.comments_array.append(comment)
+                        }
+                        self.commentsListView.backgroundColor = MP_HEX_RGB("F7F7F7")
+                        self.noCommentLabel.hidden = true
+                        self.listCommentsTableView.reloadData()
+                        
+                        // Set the height of listCommentstableView dynamically based on the height of each cell
+                        // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
+                        var commentsTableView_newHeight: CGFloat = 0.0
+                        for var i:Int = 0; i < self.comments_array.count; i++ {
+                            commentsTableView_newHeight += self.listCommentsTableView.rectForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)).size.height
+                        }
+                        self.listCommentsHeightConstraints.constant = commentsTableView_newHeight
+                        
+                        // scroll to the bottom of the View
+                        if self.to_bottom == true {
+                            let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
+                            self.scrollView.setContentOffset(bottomOffset, animated: false)
+                        }
+                    } else {
+                        // Set Background Color for commentsList
+                        self.noCommentLabel.hidden = false
+                        self.commentsListView.backgroundColor = MP_HEX_RGB("FFFFFF")
+                        self.noCommentLabel.text = NSLocalizedString("first_comment", comment: "Be the first one to write a comment..")
+                        self.noCommentLabel.font = UIFont.italicSystemFontOfSize(12.0)
+                        self.noCommentLabel.textColor = MP_HEX_RGB("919191")
+                    }
+                }
+        }
+    }
     
     @IBAction func commentSendButton(sender: UIButton) {
         self.activityIndicator.startAnimating()
@@ -353,17 +386,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         request(.POST, ApiLink.create_comment, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
-                    var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
                     
                     if json["meta"]["sucess"].boolValue == false {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("comment_empty", comment: "Comment cannot be empty"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("comment_empty", comment: "Comment cannot be empty"), controller: self)
                     } else {
                         if json["comments"].count != 0 {
                             for var i:Int = 0; i < json["comments"].count; i++ {
@@ -393,7 +422,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         
     }
     
-    // tap Gesture Functions
+    // MARK - : tap Gesture Functions
     func tapGestureToProfil() {
         // Push to ProfilVC of the selfie's user
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
@@ -402,7 +431,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
             
     
-    // UITableViewDelegate Functions
+    // MARK : - UITableViewDelegate Functions
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.comments_array.count
     }
@@ -423,7 +452,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         return cell
     }
     
-    // UITextFieldDelegate Functions
+    
+    // // MARK : - UITextFieldDelegate Functions
     func textFieldShouldReturn(textField: UITextField!) -> Bool {        
         self.commentSendButton(self.sendCommentButton)
         textField.resignFirstResponder()
@@ -443,18 +473,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             request(.POST, ApiLink.selfie_approve, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //convert to SwiftJSON
                         let json = JSON_SWIFTY(mydata!)
                         
                         if (json["success"].intValue == 0) {
-                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            
-                            self.presentViewController(alert, animated: true, completion: nil)
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
                             if self.selfie.approval_status != json["approval_status"].intValue {
                                 self.selfie.approval_status = json["approval_status"].intValue
@@ -510,17 +535,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             request(.POST, ApiLink.selfie_reject, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata == nil) {
-                        var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //convert to SwiftJSON
                         let json = JSON_SWIFTY(mydata!)
                         
                         if (json["success"].intValue == 0) {
-                            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-                            self.presentViewController(alert, animated: true, completion: nil)
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
                             if self.selfie.approval_status != json["approval_status"].intValue {
                                 self.selfie.approval_status = json["approval_status"].intValue
@@ -562,6 +583,163 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
+    
+    @IBAction func settingsButton(sender: AnyObject) {
+        var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        if self.is_administrator == true {
+            let adminOneAction = UIAlertAction(title: "Block Selfie", style: UIAlertActionStyle.Destructive) { (_) in
+                let parameters = [
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "selfie_id": self.selfie.id.description
+                ]
+                
+                // Add loadingIndicator pop-up
+                var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+                loadingActivityVC.view.tag = 21
+                self.view.addSubview(loadingActivityVC.view)
+                
+                request(.POST, ApiLink.block_selfie, parameters: parameters, encoding: .JSON)
+                    .responseJSON { (_, _, mydata, _) in
+                        // Remove loadingIndicator pop-up
+                        if let loadingActivityView = self.view.viewWithTag(21) {
+                            loadingActivityView.removeFromSuperview()
+                        }
+                        if (mydata == nil) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        } else {
+                            //convert to SwiftJSON
+                            let json = JSON_SWIFTY(mydata!)
+                            if (json["success"].intValue == 0) {
+                                // ERROR RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("block_selfie", comment: "Block Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                            } else {
+                                // SUCCESS RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("block_selfie", comment: "Block Selfie"), message: NSLocalizedString("block_selfie_notification", comment: "Selfie has been blocked"), controller: self)
+                            }
+                        }
+                }
+                
+            }
+            let adminTwoAction = UIAlertAction(title: "Block User", style: UIAlertActionStyle.Destructive) { (_) in
+                let parameters = [
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "user_id": self.selfie.user.id.description
+                ]
+                
+                // Add loadingIndicator pop-up
+                var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+                loadingActivityVC.view.tag = 21
+                self.view.addSubview(loadingActivityVC.view)
+                
+                request(.POST, ApiLink.block_user, parameters: parameters, encoding: .JSON)
+                    .responseJSON { (_, _, mydata, _) in
+                        // Remove loadingIndicator pop-up
+                        if let loadingActivityView = self.view.viewWithTag(21) {
+                            loadingActivityView.removeFromSuperview()
+                        }
+                        if (mydata == nil) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        } else {
+                            //convert to SwiftJSON
+                            let json = JSON_SWIFTY(mydata!)
+                            if (json["success"].intValue == 0) {
+                                // ERROR RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("block_user", comment: "Block User"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                            } else {
+                                // SUCCESS RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("block_user", comment: "Block User"), message: NSLocalizedString("block_user_notification", comment: "User has been blocked"), controller: self)
+                            }
+                        }
+                }
+            }
+            let adminThreeAction = UIAlertAction(title: "Clear Flag", style: UIAlertActionStyle.Default) { (_) in
+                let parameters = [
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "selfie_id": self.selfie.id.description
+                ]
+                
+                // Add loadingIndicator pop-up
+                var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+                loadingActivityVC.view.tag = 21
+                self.view.addSubview(loadingActivityVC.view)
+                
+                request(.POST, ApiLink.clear_flag_selfie, parameters: parameters, encoding: .JSON)
+                    .responseJSON { (_, _, mydata, _) in
+                        // Remove loadingIndicator pop-up
+                        if let loadingActivityView = self.view.viewWithTag(21) {
+                            loadingActivityView.removeFromSuperview()
+                        }
+                        if (mydata == nil) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        } else {
+                            //convert to SwiftJSON
+                            let json = JSON_SWIFTY(mydata!)
+                            if (json["success"].intValue == 0) {
+                                // ERROR RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("clear_flag", comment: "Clear Selfie Flag"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                            } else {
+                                // SUCCESS RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("clear_flag", comment: "Clear Selfie Flag"), message: NSLocalizedString("clear_flag_notification", comment: "Flags have been cleared for this Selfie"), controller: self)
+                            }
+                        }
+                }
+            }
+            
+            alert.addAction(adminOneAction)
+            alert.addAction(adminTwoAction)
+            alert.addAction(adminThreeAction)
+        }
+        let oneAction = UIAlertAction(title: NSLocalizedString("report_inappropriate_content", comment: "Report Inappropriate Content"), style: UIAlertActionStyle.Default) { (_) in
+            let parameters = [
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "selfie_id": self.selfie.id.description
+            ]
+            
+            // Add loadingIndicator pop-up
+            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            loadingActivityVC.view.tag = 21
+            self.view.addSubview(loadingActivityVC.view)
+            
+            request(.POST, ApiLink.flag_selfie, parameters: parameters, encoding: .JSON)
+                .responseJSON { (_, _, mydata, _) in
+                    // Remove loadingIndicator pop-up
+                    if let loadingActivityView = self.view.viewWithTag(21) {
+                        loadingActivityView.removeFromSuperview()
+                    }
+                    if (mydata == nil) {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    } else {
+                        //convert to SwiftJSON
+                        let json = JSON_SWIFTY(mydata!)
+                        if (json["success"].intValue == 0) {
+                            // ERROR RESPONSE FROM HTTP Request
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("report_selfie", comment: "Report Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        } else {
+                            // SUCCESS RESPONSE FROM HTTP Request
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("report_selfie", comment: "Report Selfie"), message: NSLocalizedString("flag_as_inappropriate", comment: "Thank you. This selfie has been flagged as inappropriate and will be reviewed by an administrator."), controller: self)
+                        }
+                    }
+            }
+        }
+        let twoAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
         
+        alert.addAction(oneAction)
+        alert.addAction(twoAction)
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+
+    }
+
+    
+    @IBAction func viewAllCommentsButton(sender: AnyObject) {
+        self.loadComments(all_comment: true)
+        self.viewAllCommentsButton.hidden = true
+        self.viewAllCommentsButtonHeightConstraints.constant = 0.0
+    }
+    
     
 }

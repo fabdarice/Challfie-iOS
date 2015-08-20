@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="chinrg__.ttf">
-            <string>Chinacat</string>
-        </mutableArray>
         <mutableArray key="chint___.ttf">
-            <string>ChinacatThin</string>
-            <string>ChinacatThin</string>
-            <string>ChinacatThin</string>
-            <string>ChinacatThin</string>
             <string>ChinacatThin</string>
         </mutableArray>
     </customFonts>
@@ -24,6 +16,7 @@
                 <outlet property="approveButton" destination="TFg-dn-zRc" id="uEh-9J-Cx7"/>
                 <outlet property="challengeLabel" destination="51g-f2-feR" id="Q0e-9j-bRn"/>
                 <outlet property="challengeStatusImage" destination="Qxn-zj-R6p" id="mGk-9m-uky"/>
+                <outlet property="challengeView" destination="zzm-j8-N98" id="Ghp-HA-xvZ"/>
                 <outlet property="commentTextField" destination="QZa-2C-u09" id="6A0-ts-P9c"/>
                 <outlet property="commentsListView" destination="b4l-Db-DeW" id="kGY-HW-AVo"/>
                 <outlet property="contentView" destination="ZGL-am-1mg" id="YTJ-zc-Spx"/>
@@ -45,26 +38,28 @@
                 <outlet property="selfieImageHeightConstraint" destination="Ho7-ce-iXG" id="XYb-SU-4Bs"/>
                 <outlet property="sendCommentButton" destination="xzQ-A0-PbU" id="b0C-Qd-tli"/>
                 <outlet property="usernameLabel" destination="pUE-Uc-2B5" id="wd9-LX-tIs"/>
-                <outlet property="view" destination="g0s-1Z-osj" id="eQF-LT-AUm"/>
+                <outlet property="view" destination="g0s-1Z-osj" id="9zw-cA-QHr"/>
+                <outlet property="viewAllCommentsButton" destination="Mqe-eo-KZG" id="QDk-Mu-0d9"/>
+                <outlet property="viewAllCommentsButtonHeightConstraints" destination="LJ4-KX-q26" id="U0x-e9-b9s"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="g0s-1Z-osj">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="645"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="698"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="PFq-wI-n4q">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="605"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="658"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZGL-am-1mg" userLabel="contentView">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="591"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="628"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUE-Uc-2B5" userLabel="usernaleLabel">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUE-Uc-2B5" userLabel="usernameLabel">
                                     <constraints>
                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="110" id="OJs-WQ-hFo"/>
                                         <constraint firstAttribute="height" constant="18.5" id="U9E-ck-PgW"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="Chinacat" family="Chinacat" pointSize="15"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -83,20 +78,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="2" id="1ED-eb-LYh"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
-                                    </userDefinedRuntimeAttributes>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="51g-f2-feR" userLabel="challenge">
-                                    <rect key="frame" x="73" y="34.5" width="229" height="14"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="XM5-iF-5aL"/>
-                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="uV3-B1-w2i"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -109,16 +91,146 @@
                                         <constraint firstAttribute="height" constant="16" id="Bhj-S3-vQz"/>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="CBe-gi-nxX"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                                     <color key="textColor" red="0.50196081399917603" green="0.50196081399917603" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ub-8t-U1W" userLabel="dateLabel">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tHL-35-V04" userLabel="selfieImage">
+                                    <rect key="frame" x="0.0" y="105" width="320" height="400"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="60" id="ZLD-Dm-ILf"/>
+                                        <constraint firstAttribute="height" constant="400" id="Ho7-ce-iXG"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 comments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vK1-GH-pTz">
+                                    <rect key="frame" x="38" y="512" width="59.5" height="12"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="12" id="ujs-sb-OtW"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disapprove" translatesAutoresizingMaskIntoConstraints="NO" id="GUb-Bl-pC7">
+                                    <rect key="frame" x="214" y="510" width="15" height="15"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="15" id="GPU-ft-2uZ"/>
+                                        <constraint firstAttribute="width" constant="15" id="bjO-bB-zsW"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="0 approved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8kb-Ml-Unw">
+                                    <rect key="frame" x="149.5" y="512" width="54.5" height="12"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="12" id="CMO-mk-Tpi"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 disapproved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Zv-hg-7x6">
+                                    <rect key="frame" x="234" y="512" width="68" height="12"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="12" id="EKN-Wd-1ql"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_approve" translatesAutoresizingMaskIntoConstraints="NO" id="bOX-3q-4tx" userLabel="approveImage">
+                                    <rect key="frame" x="129.5" y="510" width="15" height="15"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="15" id="7JL-Ph-PQK"/>
+                                        <constraint firstAttribute="width" constant="15" id="Far-7D-ZKb"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qxn-zj-R6p" userLabel="challenge_status_Image">
+                                    <rect key="frame" x="257" y="105" width="60" height="60"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="60" id="BBE-36-8xH"/>
+                                        <constraint firstAttribute="width" constant="60" id="kzo-f7-ard"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_comment" translatesAutoresizingMaskIntoConstraints="NO" id="Tcr-EA-Lld" userLabel="commentImage">
+                                    <rect key="frame" x="18" y="510" width="15" height="15"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="15" id="dD0-p7-DmN"/>
+                                        <constraint firstAttribute="height" constant="15" id="hRV-ty-zq3"/>
+                                    </constraints>
+                                </imageView>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9gk-w9-gGX" userLabel="activityIndicator">
+                                    <rect key="frame" x="142" y="185" width="37" height="37"/>
+                                    <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </activityIndicatorView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbG-57-y5X" userLabel="rejectButton">
+                                    <rect key="frame" x="220" y="590" width="90" height="28"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="28" id="Yh6-e9-FwZ"/>
+                                        <constraint firstAttribute="width" constant="90" id="rWk-O3-XqD"/>
+                                    </constraints>
+                                    <state key="normal" image="reject_button.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="rejectButtonAction:" destination="-1" eventType="touchUpInside" id="qMP-x0-79i"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFg-dn-zRc" userLabel="approveButton">
+                                    <rect key="frame" x="120" y="590" width="90" height="28"/>
+                                    <state key="normal" image="approve_button.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="approveButtonAction:" destination="-1" eventType="touchUpInside" id="5P0-Eh-rTw"/>
+                                    </connections>
+                                </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zzm-j8-N98" userLabel="challengeView">
+                                    <rect key="frame" x="0.0" y="75" width="320" height="30"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="51g-f2-feR" userLabel="challenge">
+                                            <rect key="frame" x="20" y="8" width="280" height="14"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="XM5-iF-5aL"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="uV3-B1-w2i"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="14"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="51g-f2-feR" firstAttribute="top" secondItem="zzm-j8-N98" secondAttribute="top" constant="8" id="5gN-Am-hjC"/>
+                                        <constraint firstAttribute="trailing" secondItem="51g-f2-feR" secondAttribute="trailing" constant="20" id="KsG-0Z-xOv"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="gpK-fn-xSX"/>
+                                        <constraint firstItem="51g-f2-feR" firstAttribute="leading" secondItem="zzm-j8-N98" secondAttribute="leading" constant="20" id="ifW-Ms-1JV"/>
+                                        <constraint firstAttribute="bottom" secondItem="51g-f2-feR" secondAttribute="bottom" constant="8" id="r0j-Ax-WFd"/>
+                                    </constraints>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YGw-dl-Mnv" userLabel="settingsButton">
+                                    <rect key="frame" x="288" y="10" width="22" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="22" id="7Ru-d0-4Wu"/>
+                                        <constraint firstAttribute="height" constant="20" id="D4S-oA-r1H"/>
+                                    </constraints>
+                                    <state key="normal" image="icon_settings">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="settingsButton:" destination="-1" eventType="touchUpInside" id="OKu-Uk-Eb1"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ub-8t-U1W" userLabel="dateLabel">
+                                    <constraints>
                                         <constraint firstAttribute="height" constant="20" id="hPm-8u-KOm"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="11"/>
@@ -128,74 +240,22 @@
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </label>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tHL-35-V04" userLabel="selfieImage">
-                                    <rect key="frame" x="0.0" y="75" width="320" height="400"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mqe-eo-KZG" userLabel="viewAllCommentsButton">
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="400" id="Ho7-ce-iXG"/>
+                                        <constraint firstAttribute="width" constant="300" id="5d1-a5-a35"/>
+                                        <constraint firstAttribute="height" id="LJ4-KX-q26"/>
                                     </constraints>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 comments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vK1-GH-pTz">
-                                    <rect key="frame" x="38" y="482" width="63.5" height="12"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="12" id="ujs-sb-OtW"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disapprove" translatesAutoresizingMaskIntoConstraints="NO" id="GUb-Bl-pC7">
-                                    <rect key="frame" x="211" y="480" width="15" height="15"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="15" id="GPU-ft-2uZ"/>
-                                        <constraint firstAttribute="width" constant="15" id="bjO-bB-zsW"/>
-                                    </constraints>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="0 approved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8kb-Ml-Unw">
-                                    <rect key="frame" x="144" y="482" width="57" height="12"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="12" id="CMO-mk-Tpi"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
-                                    </userDefinedRuntimeAttributes>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 disapproved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Zv-hg-7x6">
-                                    <rect key="frame" x="231" y="482" width="71" height="12"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="12" id="EKN-Wd-1ql"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="11"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
-                                    </userDefinedRuntimeAttributes>
-                                </label>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_approve" translatesAutoresizingMaskIntoConstraints="NO" id="bOX-3q-4tx" userLabel="approveImage">
-                                    <rect key="frame" x="124" y="480" width="15" height="15"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="15" id="7JL-Ph-PQK"/>
-                                        <constraint firstAttribute="width" constant="15" id="Far-7D-ZKb"/>
-                                    </constraints>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qxn-zj-R6p" userLabel="challenge_status_Image">
-                                    <rect key="frame" x="257" y="80" width="60" height="60"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="60" id="BBE-36-8xH"/>
-                                        <constraint firstAttribute="width" constant="60" id="kzo-f7-ard"/>
-                                    </constraints>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_comment" translatesAutoresizingMaskIntoConstraints="NO" id="Tcr-EA-Lld" userLabel="commentImage">
-                                    <rect key="frame" x="18" y="480" width="15" height="15"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="15" id="dD0-p7-DmN"/>
-                                        <constraint firstAttribute="height" constant="15" id="hRV-ty-zq3"/>
-                                    </constraints>
-                                </imageView>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="13"/>
+                                    <state key="normal">
+                                        <color key="titleColor" red="0.0" green="0.25098040699958801" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="viewAllCommentsButton:" destination="-1" eventType="touchUpInside" id="Qay-Ly-WbS"/>
+                                    </connections>
+                                </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b4l-Db-DeW" userLabel="commentsListView">
-                                    <rect key="frame" x="0.0" y="503" width="320" height="40"/>
+                                    <rect key="frame" x="0.0" y="540" width="320" height="40"/>
                                     <subviews>
                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="23" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="ohj-vF-4XI" userLabel="commentsListTableView">
                                             <rect key="frame" x="18" y="10" width="284" height="20"/>
@@ -208,7 +268,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="12" id="wqO-aO-im6"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -225,79 +285,56 @@
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="x72-yd-4YC"/>
                                     </constraints>
                                 </view>
-                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9gk-w9-gGX" userLabel="activityIndicator">
-                                    <rect key="frame" x="141" y="145" width="37" height="37"/>
-                                    <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </activityIndicatorView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbG-57-y5X" userLabel="rejectButton">
-                                    <rect key="frame" x="220" y="553" width="90" height="28"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="28" id="Yh6-e9-FwZ"/>
-                                        <constraint firstAttribute="width" constant="90" id="rWk-O3-XqD"/>
-                                    </constraints>
-                                    <state key="normal" image="reject_button.png">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="rejectButtonAction:" destination="-1" eventType="touchUpInside" id="qMP-x0-79i"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFg-dn-zRc" userLabel="approveButton">
-                                    <rect key="frame" x="120" y="553" width="90" height="28"/>
-                                    <state key="normal" image="approve_button.png">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="approveButtonAction:" destination="-1" eventType="touchUpInside" id="5P0-Eh-rTw"/>
-                                    </connections>
-                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="xVK-I9-Krn" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leadingMargin" constant="15" id="3BL-30-NRo"/>
                                 <constraint firstItem="b4l-Db-DeW" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leading" id="44s-Ut-3Jk"/>
                                 <constraint firstItem="6Zv-hg-7x6" firstAttribute="leading" secondItem="GUb-Bl-pC7" secondAttribute="trailing" constant="5" id="52L-D9-6kE"/>
-                                <constraint firstItem="51g-f2-feR" firstAttribute="leading" secondItem="xVK-I9-Krn" secondAttribute="trailing" constant="10" id="7mv-TM-Te4"/>
-                                <constraint firstItem="51g-f2-feR" firstAttribute="top" secondItem="pUE-Uc-2B5" secondAttribute="bottom" constant="3" id="8L5-eS-WTO"/>
                                 <constraint firstItem="Qxn-zj-R6p" firstAttribute="trailing" secondItem="ZGL-am-1mg" secondAttribute="trailingMargin" constant="5" id="8g3-Tz-3Wh"/>
-                                <constraint firstItem="b4l-Db-DeW" firstAttribute="top" secondItem="Tcr-EA-Lld" secondAttribute="bottom" constant="8" id="BpF-Tz-LdY"/>
+                                <constraint firstAttribute="trailing" secondItem="zzm-j8-N98" secondAttribute="trailing" id="AAG-hX-seW"/>
                                 <constraint firstItem="TFg-dn-zRc" firstAttribute="height" secondItem="mbG-57-y5X" secondAttribute="height" id="CWe-aO-2r6"/>
                                 <constraint firstItem="GUb-Bl-pC7" firstAttribute="leading" secondItem="8kb-Ml-Unw" secondAttribute="trailing" constant="10" id="Csd-bO-wZv"/>
                                 <constraint firstItem="kpW-eK-0j7" firstAttribute="top" secondItem="xVK-I9-Krn" secondAttribute="bottom" constant="10" id="DwL-Z6-Xvg"/>
+                                <constraint firstItem="Mqe-eo-KZG" firstAttribute="top" secondItem="vK1-GH-pTz" secondAttribute="bottom" constant="8" id="E7y-Wh-yJH"/>
                                 <constraint firstItem="t0Y-sc-DcO" firstAttribute="leading" secondItem="pUE-Uc-2B5" secondAttribute="trailing" constant="10" id="Epd-1p-PUJ"/>
-                                <constraint firstItem="9gk-w9-gGX" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="80" id="G0z-uk-GYd"/>
                                 <constraint firstItem="8kb-Ml-Unw" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="7" id="GHH-mm-XxY"/>
+                                <constraint firstItem="zzm-j8-N98" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="10" id="IUT-wx-dmD"/>
                                 <constraint firstItem="kpW-eK-0j7" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leadingMargin" constant="10" id="Io5-8x-agy"/>
                                 <constraint firstItem="bOX-3q-4tx" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="5" id="J7p-di-l4e"/>
+                                <constraint firstItem="tHL-35-V04" firstAttribute="top" secondItem="zzm-j8-N98" secondAttribute="bottom" id="Luv-Qh-B4M"/>
                                 <constraint firstAttribute="trailing" secondItem="mbG-57-y5X" secondAttribute="trailing" constant="10" id="Nil-w8-SEz"/>
-                                <constraint firstItem="4Ub-8t-U1W" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="3" id="OZk-qq-lJP"/>
+                                <constraint firstItem="4Ub-8t-U1W" firstAttribute="top" secondItem="t0Y-sc-DcO" secondAttribute="bottom" constant="2" id="Ose-nm-UjU"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="kpW-eK-0j7" secondAttribute="trailing" constant="10" id="Ppl-a2-iuz"/>
                                 <constraint firstItem="bOX-3q-4tx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vK1-GH-pTz" secondAttribute="trailing" constant="15" id="RnT-wN-ajj"/>
+                                <constraint firstItem="4Ub-8t-U1W" firstAttribute="leading" secondItem="xVK-I9-Krn" secondAttribute="trailing" constant="10" id="V90-6q-lHc"/>
                                 <constraint firstItem="vK1-GH-pTz" firstAttribute="leading" secondItem="Tcr-EA-Lld" secondAttribute="trailing" constant="5" id="Vb6-d3-kPw"/>
-                                <constraint firstItem="4Ub-8t-U1W" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="t0Y-sc-DcO" secondAttribute="trailing" constant="5" id="WVV-eZ-blW"/>
-                                <constraint firstItem="Qxn-zj-R6p" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="15" id="WhZ-jh-pp9"/>
                                 <constraint firstItem="tHL-35-V04" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leading" id="XqB-wv-cky"/>
                                 <constraint firstItem="mbG-57-y5X" firstAttribute="top" secondItem="b4l-Db-DeW" secondAttribute="bottom" constant="10" id="Yhw-gB-0yS"/>
                                 <constraint firstItem="pUE-Uc-2B5" firstAttribute="leading" secondItem="xVK-I9-Krn" secondAttribute="trailing" constant="10" id="aZJ-Pq-cgZ"/>
                                 <constraint firstItem="vK1-GH-pTz" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="7" id="bpz-FZ-eFX"/>
+                                <constraint firstAttribute="centerX" secondItem="Mqe-eo-KZG" secondAttribute="centerX" id="eNr-uG-2RB"/>
+                                <constraint firstItem="Qxn-zj-R6p" firstAttribute="top" secondItem="zzm-j8-N98" secondAttribute="bottom" id="esm-g3-DtT"/>
                                 <constraint firstItem="GUb-Bl-pC7" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="5" id="fXL-Sk-PNh"/>
                                 <constraint firstItem="6Zv-hg-7x6" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="7" id="fmV-VS-JrR"/>
+                                <constraint firstItem="9gk-w9-gGX" firstAttribute="top" secondItem="zzm-j8-N98" secondAttribute="bottom" constant="80" id="hNB-OC-ReY"/>
                                 <constraint firstItem="xVK-I9-Krn" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="5" id="iLr-8C-82h"/>
                                 <constraint firstItem="TFg-dn-zRc" firstAttribute="width" secondItem="mbG-57-y5X" secondAttribute="width" id="iSs-SW-PrN"/>
+                                <constraint firstItem="b4l-Db-DeW" firstAttribute="top" secondItem="Mqe-eo-KZG" secondAttribute="bottom" constant="8" id="igs-HB-twy"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="6Zv-hg-7x6" secondAttribute="trailing" constant="10" id="lhJ-Es-E22"/>
                                 <constraint firstItem="Tcr-EA-Lld" firstAttribute="top" secondItem="tHL-35-V04" secondAttribute="bottom" constant="5" id="mQw-2g-DFQ"/>
                                 <constraint firstItem="t0Y-sc-DcO" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="7" id="mmc-8K-pUZ"/>
                                 <constraint firstItem="mbG-57-y5X" firstAttribute="leading" secondItem="TFg-dn-zRc" secondAttribute="trailing" constant="10" id="osG-jz-4gU"/>
-                                <constraint firstItem="tHL-35-V04" firstAttribute="top" secondItem="kpW-eK-0j7" secondAttribute="bottom" constant="10" id="qYi-db-NpE"/>
                                 <constraint firstItem="8kb-Ml-Unw" firstAttribute="leading" secondItem="bOX-3q-4tx" secondAttribute="trailing" constant="5" id="rIs-aa-pfe"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="51g-f2-feR" secondAttribute="trailing" constant="10" id="rdP-yO-SKW"/>
+                                <constraint firstItem="zzm-j8-N98" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leading" id="rTg-gZ-CTY"/>
+                                <constraint firstAttribute="trailing" secondItem="YGw-dl-Mnv" secondAttribute="trailing" constant="10" id="rmh-vo-Wfd"/>
                                 <constraint firstAttribute="trailing" secondItem="tHL-35-V04" secondAttribute="trailing" id="sdI-uu-6TY"/>
                                 <constraint firstAttribute="centerX" secondItem="9gk-w9-gGX" secondAttribute="centerX" id="tYi-Li-DAe"/>
+                                <constraint firstItem="YGw-dl-Mnv" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="top" constant="10" id="vCM-hv-dHz"/>
                                 <constraint firstItem="Tcr-EA-Lld" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leadingMargin" constant="10" id="vYd-6n-UFN"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" placeholder="YES" id="w30-dG-Asm"/>
                                 <constraint firstAttribute="trailing" secondItem="b4l-Db-DeW" secondAttribute="trailing" id="wB4-9U-u4E"/>
                                 <constraint firstAttribute="bottom" secondItem="mbG-57-y5X" secondAttribute="bottom" constant="10" id="xWL-2Q-s8I"/>
                                 <constraint firstItem="TFg-dn-zRc" firstAttribute="top" secondItem="b4l-Db-DeW" secondAttribute="bottom" constant="10" id="y3C-0T-Xeh"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="4Ub-8t-U1W" secondAttribute="trailing" constant="10" id="yc2-aZ-WJh"/>
                                 <constraint firstItem="pUE-Uc-2B5" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="topMargin" constant="5" id="ziM-mV-10S"/>
                             </constraints>
                         </view>
@@ -310,7 +347,7 @@
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOi-wA-Efr" userLabel="footerView">
-                    <rect key="frame" x="0.0" y="605" width="320" height="40"/>
+                    <rect key="frame" x="0.0" y="658" width="320" height="40"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabBar_background_white" translatesAutoresizingMaskIntoConstraints="NO" id="T3q-f6-nzU" userLabel="footerBackgroundImage">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -321,7 +358,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="G5h-bQ-tDO"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="send"/>
                         </textField>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_comment" translatesAutoresizingMaskIntoConstraints="NO" id="uJj-b6-2f7" userLabel="commentIcon">
@@ -383,7 +420,7 @@
             </constraints>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="211" y="551.5"/>
+            <point key="canvasLocation" x="211" y="578"/>
         </view>
     </objects>
     <resources>
@@ -392,6 +429,7 @@
         <image name="icon_comment" width="296" height="271"/>
         <image name="icon_comment_send" width="178" height="153"/>
         <image name="icon_disapprove" width="41" height="45"/>
+        <image name="icon_settings" width="170" height="170"/>
         <image name="reject_button.png" width="676" height="207"/>
         <image name="tabBar_background_white" width="380" height="49"/>
         <image name="textfield_green_border" width="219" height="10"/>
