@@ -60,10 +60,10 @@
 "cde-PN-nNO.title" = "TimelineVC";
 
 /* Class = "IBUIButton"; normalTitle = "Sign in for Challfie"; ObjectID = "dtI-h9-9jQ"; */
-"dtI-h9-9jQ.normalTitle" = "Se Connecter Sur Challfie";
+"dtI-h9-9jQ.normalTitle" = "Se connecter Sur Challfie";
 
 /* Class = "IBUIButton"; normalTitle = "Register New Account"; ObjectID = "eZ4-hm-Rei"; */
-"eZ4-hm-Rei.normalTitle" = "Créer un nouveau Compte";
+"eZ4-hm-Rei.normalTitle" = "Créer un nouveau compte";
 
 /* Class = "IBUIButton"; normalTitle = "Send Password Instructions"; ObjectID = "fZc-cF-KrV"; */
 "fZc-cF-KrV.normalTitle" = "Réinitialiser mon mot de passe";

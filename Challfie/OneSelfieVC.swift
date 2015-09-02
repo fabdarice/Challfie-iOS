@@ -120,7 +120,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         NSNotificationCenter.defaultCenter().removeObserver(self)
                 
     }
-
     
     func loadSelfie() {
         
@@ -136,9 +135,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // Selfie Level
         self.levelLabel.text = selfie.user.book_level
         
-        // Challenge
+        // Challenge        
         self.challengeLabel.text = selfie.challenge.description
         self.challengeLabel.textColor = MP_HEX_RGB("FFFFFF")
+        // Test Daily Challenge
+        if self.selfie.is_daily == true {
+            self.challengeLabel.text = NSLocalizedString("daily", comment: "Daily") + " - " + self.challengeLabel.text!
+        }
         
         // Selfie Creation Date
         self.dateLabel.text = selfie.creation_date
@@ -176,7 +179,11 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             self.numberApprovalLabel.text = selfie.nb_upvotes.description + NSLocalizedString("Approve", comment: "Approve")
         }
-        
+        // Add Tap Gesture to Page to retrieve list of users who approved
+        var numberApprovaltapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        numberApprovaltapGesture.addTarget(self, action: "tapGestureToUserApprovalList")
+        self.numberApprovalLabel.addGestureRecognizer(numberApprovaltapGesture)
+        self.numberApprovalLabel.userInteractionEnabled = true
         
         // Number of disapproval
         self.numberRejectLabel.textColor = MP_HEX_RGB("919191")
@@ -185,6 +192,11 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             self.numberRejectLabel.text = selfie.nb_downvotes.description + NSLocalizedString("Reject", comment: "Reject")
         }
+        // Add Tap Gesture to Page to retrieve list of users who rejected
+        var numberRejecttapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        numberRejecttapGesture.addTarget(self, action: "tapGestureToUserRejectList")
+        self.numberRejectLabel.addGestureRecognizer(numberRejecttapGesture)
+        self.numberRejectLabel.userInteractionEnabled = true
         
         // Profile Picture
         if self.selfie.user.show_profile_pic() != "missing" {
@@ -212,9 +224,10 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.profilePicImage.userInteractionEnabled = true
         
         // Selfie Image
-        self.selfieImageHeightConstraint.constant = UIScreen.mainScreen().bounds.width        
+        self.selfieImageHeightConstraint.constant = UIScreen.mainScreen().bounds.width / selfie.ratio_photo
         let selfieImageURL:NSURL = NSURL(string: selfie.show_selfie_pic())!
         self.selfieImage.hnk_setImageFromURL(selfieImageURL)
+        self.selfieImage.contentMode = UIViewContentMode.ScaleAspectFit
         
         
         // Set Selfies Challenge Status
@@ -226,16 +239,25 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
         }
         
-        // Approve Button && Disapprove Button
-        if selfie.user_vote_status == 1 {
-            self.approveButton.setImage(UIImage(named: "approve_select_button.png"), forState: .Normal)
-            self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
-        } else if selfie.user_vote_status == 2 {
-            self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
-            self.rejectButton.setImage(UIImage(named: "reject_select_button.png"), forState: .Normal)
+        if self.selfie.user.username == KeychainWrapper.stringForKey(kSecAttrAccount) {
+            // Hide Approve&Disapprove Button because own selfie
+            self.approveButton.hidden = true
+            self.rejectButton.hidden = true
         } else {
-            self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
-            self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
+            // Hide Approve&Disapprove Button because own selfie
+            self.approveButton.hidden = false
+            self.rejectButton.hidden = false
+            // Approve Button && Disapprove Button
+            if selfie.user_vote_status == 1 {
+                self.approveButton.setImage(UIImage(named: "approve_select_button.png"), forState: .Normal)
+                self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
+            } else if selfie.user_vote_status == 2 {
+                self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
+                self.rejectButton.setImage(UIImage(named: "reject_select_button.png"), forState: .Normal)
+            } else {
+                self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
+                self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
+            }
         }
 
     }
@@ -254,7 +276,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.footerViewBottomConstraints.constant = self.original_footerViewBottomConstraints
     }
     
-    // Retrive list of comments of the selected Selfie
+    // MARK: - Retrive list of comments of the selected Selfie
     func loadData() {
 
         // add loadingIndicator pop-up
@@ -279,28 +301,33 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
-                    var selfie: Selfie!
                     
-                    if json["selfie"].count != 0 {
-                        selfie = Selfie.init(json: json["selfie"])
-                        var challenge = Challenge.init(json: json["selfie"]["challenge"])
-                        var user = User.init(json: json["selfie"]["user"])
+                    if json["meta"]["hidden"].boolValue == true {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("is_deleted", comment: "This selfie has been deleted."), controller: self)
+                    } else {
+                        var selfie: Selfie!
                         
-                        selfie.challenge = challenge
-                        selfie.user = user
-                        self.selfie = selfie
+                        if json["selfie"].count != 0 {
+                            selfie = Selfie.init(json: json["selfie"])
+                            var challenge = Challenge.init(json: json["selfie"]["challenge"])
+                            var user = User.init(json: json["selfie"]["user"])
+                            
+                            selfie.challenge = challenge
+                            selfie.user = user
+                            self.selfie = selfie
+                        }
+                        
+                        self.loadSelfie()
+                        self.loadComments(all_comment: false)
+
                     }
-                    
-                    self.loadSelfie()
-                    self.loadComments(all_comment: false)
-                    
                 }
         }
         
         
     }
     
-    
+    // MARK: - Load Comments
     func loadComments(all_comment: Bool = false) {
         // add loadingIndicator pop-up
         var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
@@ -347,7 +374,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                         
                         // scroll to the bottom of the View
                         if self.to_bottom == true {
-                            let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
+                            let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height + self.selfieImageHeightConstraint.constant)
                             self.scrollView.setContentOffset(bottomOffset, animated: false)
                         }
                     } else {
@@ -362,65 +389,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    @IBAction func commentSendButton(sender: UIButton) {
-        self.activityIndicator.startAnimating()
-        
-        var last_comment_id: Int = -1
-        
-        if self.comments_array.count > 0 {
-            last_comment_id = self.comments_array.last!.id
-        }
-        
-        let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
-            "selfie_id": self.selfie.id.description,
-            "last_comment_id" : last_comment_id.description,
-            "message": self.commentTextField.text
-        ]
-        
-        // Hide Keyboard & clear Text in Textfield
-        self.commentTextField.resignFirstResponder()
-        self.commentTextField.text = ""
-        
-        request(.POST, ApiLink.create_comment, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
-                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
-                    //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
-                    
-                    if json["meta"]["sucess"].boolValue == false {
-                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("comment_empty", comment: "Comment cannot be empty"), controller: self)
-                    } else {
-                        if json["comments"].count != 0 {
-                            for var i:Int = 0; i < json["comments"].count; i++ {
-                                var comment = Comment.init(json: json["comments"][i])
-                                self.comments_array.append(comment)
-                            }
-                            self.commentsListView.backgroundColor = MP_HEX_RGB("F7F7F7")
-                            self.noCommentLabel.hidden = true
-                            self.listCommentsTableView.reloadData()
-                            
-                            // Set the height of listCommentstableView dynamically based on the height of each cell
-                            // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
-                            var commentsTableView_newHeight: CGFloat = 0.0
-                            for var i:Int = 0; i < self.comments_array.count; i++ {
-                                commentsTableView_newHeight += self.listCommentsTableView.rectForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)).size.height
-                            }
-                            self.listCommentsHeightConstraints.constant = commentsTableView_newHeight
-                            
-                            // scroll to the bottom of the View
-                            let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height)
-                            self.scrollView.setContentOffset(bottomOffset, animated: false)
-                        }
-                    }
-                }
-                self.activityIndicator.stopAnimating()
-        }
-        
-    }
     
     // MARK - : tap Gesture Functions
     func tapGestureToProfil() {
@@ -428,6 +396,23 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = self.selfie.user
         self.navigationController?.pushViewController(profilVC, animated: true)
+    }
+    
+    func tapGestureToUserApprovalList() {
+        // Push to UserApprovalListVC
+        var userApprovalListVC = UserApprovalListVC()
+        userApprovalListVC.is_approval_list = true
+        userApprovalListVC.selfie_id = self.selfie.id.description
+        self.navigationController?.pushViewController(userApprovalListVC, animated: true)
+    }
+    
+    func tapGestureToUserRejectList() {
+        // Push to UserApprovalListVC
+        var userApprovalListVC = UserApprovalListVC()
+        userApprovalListVC.is_approval_list = false
+        userApprovalListVC.selfie_id = self.selfie.id.description
+        self.navigationController?.pushViewController(userApprovalListVC, animated: true)
+        
     }
             
     
@@ -583,6 +568,66 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
+    @IBAction func commentSendButton(sender: UIButton) {
+        self.activityIndicator.startAnimating()
+        
+        var last_comment_id: Int = -1
+        
+        if self.comments_array.count > 0 {
+            last_comment_id = self.comments_array.last!.id
+        }
+        
+        let parameters:[String: String] = [
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "selfie_id": self.selfie.id.description,
+            "last_comment_id" : last_comment_id.description,
+            "message": self.commentTextField.text
+        ]
+        
+        // Hide Keyboard & clear Text in Textfield
+        self.commentTextField.resignFirstResponder()
+        self.commentTextField.text = ""
+        
+        request(.POST, ApiLink.create_comment, parameters: parameters, encoding: .JSON)
+            .responseJSON { (_, _, mydata, _) in
+                if (mydata == nil) {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                } else {
+                    //Convert to SwiftJSON
+                    var json = JSON_SWIFTY(mydata!)
+                    
+                    if json["meta"]["sucess"].boolValue == false {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("comment_empty", comment: "Comment cannot be empty"), controller: self)
+                    } else {
+                        if json["comments"].count != 0 {
+                            for var i:Int = 0; i < json["comments"].count; i++ {
+                                var comment = Comment.init(json: json["comments"][i])
+                                self.comments_array.append(comment)
+                            }
+                            self.commentsListView.backgroundColor = MP_HEX_RGB("F7F7F7")
+                            self.noCommentLabel.hidden = true
+                            self.listCommentsTableView.reloadData()
+                            
+                            // Set the height of listCommentstableView dynamically based on the height of each cell
+                            // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
+                            var commentsTableView_newHeight: CGFloat = 0.0
+                            for var i:Int = 0; i < self.comments_array.count; i++ {
+                                commentsTableView_newHeight += self.listCommentsTableView.rectForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)).size.height
+                            }
+                            self.listCommentsHeightConstraints.constant = commentsTableView_newHeight
+                            
+                            // scroll to the bottom of the View
+                            let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height + self.selfieImageHeightConstraint.constant)
+                            self.scrollView.setContentOffset(bottomOffset, animated: false)
+                        }
+                    }
+                }
+                self.activityIndicator.stopAnimating()
+        }
+        
+    }
+
     
     @IBAction func settingsButton(sender: AnyObject) {
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)

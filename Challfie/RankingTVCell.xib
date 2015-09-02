@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,38 +12,50 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HHs-PQ-4cS" id="Zo2-He-BM3">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2R-B1-PtU" userLabel="usernameLabel">
-                        <rect key="frame" x="92" y="14.5" width="58" height="15.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="m2R-B1-PtU" userLabel="usernameLabel">
+                        <rect key="frame" x="95" y="14.5" width="105" height="15.5"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apprentice III" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELc-wO-ex6" userLabel="levelLabel">
-                        <rect key="frame" x="157" y="14" width="90" height="14.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apprentice III" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="ELc-wO-ex6" userLabel="levelLabel">
+                        <rect key="frame" x="205" y="14" width="70" height="14.5"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="90" id="FIP-3d-kiG"/>
+                            <constraint firstAttribute="width" constant="70" id="FIP-3d-kiG"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVo-eO-uuO" userLabel="progressLevel">
-                        <rect key="frame" x="262" y="14" width="40" height="14.5"/>
+                        <rect key="frame" x="280" y="14" width="40" height="14.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="mNP-3M-PdZ"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="214" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hl-NN-WjU" userLabel="rankLabel">
-                        <rect key="frame" x="10" y="14.5" width="22.5" height="15.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="214" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hl-NN-WjU" userLabel="rankLabel">
+                        <rect key="frame" x="5" y="14" width="40" height="15.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="7Vr-em-p1z"/>
-                            <constraint firstAttribute="width" constant="22.5" id="bak-lK-xHv"/>
+                            <constraint firstAttribute="width" constant="40" id="bak-lK-xHv"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="7Vr-em-p1z"/>
@@ -52,7 +63,7 @@
                         </variation>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CW9-Qd-5ao" userLabel="profilPicImageView">
-                        <rect key="frame" x="42" y="2" width="40" height="39.5"/>
+                        <rect key="frame" x="50" y="2" width="40" height="39.5"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="6U7-oZ-8Ri"/>
                             <constraint firstAttribute="width" constant="40" id="j8Z-sf-M3n"/>
@@ -61,18 +72,19 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="HVo-eO-uuO" firstAttribute="leading" secondItem="ELc-wO-ex6" secondAttribute="trailing" constant="15" id="21G-ER-x2r"/>
+                    <constraint firstItem="HVo-eO-uuO" firstAttribute="leading" secondItem="ELc-wO-ex6" secondAttribute="trailing" constant="5" id="21G-ER-x2r"/>
                     <constraint firstAttribute="centerY" secondItem="4hl-NN-WjU" secondAttribute="centerY" id="8Wd-s2-apL"/>
                     <constraint firstAttribute="centerY" secondItem="ELc-wO-ex6" secondAttribute="centerY" id="C2f-bJ-cV7"/>
-                    <constraint firstItem="4hl-NN-WjU" firstAttribute="leading" secondItem="Zo2-He-BM3" secondAttribute="leading" constant="10" id="DTw-b5-Phx"/>
+                    <constraint firstItem="4hl-NN-WjU" firstAttribute="leading" secondItem="Zo2-He-BM3" secondAttribute="leading" constant="5" id="DTw-b5-Phx"/>
                     <constraint firstAttribute="bottom" secondItem="CW9-Qd-5ao" secondAttribute="bottom" constant="2" id="Ggr-HC-86U"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="HVo-eO-uuO" secondAttribute="trailing" constant="10" id="LKd-1z-Wrj"/>
+                    <constraint firstAttribute="trailing" secondItem="HVo-eO-uuO" secondAttribute="trailing" id="LKd-1z-Wrj"/>
                     <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="Zo2-He-BM3" secondAttribute="leading" constant="15" id="Mkl-RK-XfF"/>
                     <constraint firstAttribute="centerY" secondItem="m2R-B1-PtU" secondAttribute="centerY" id="P3r-Gm-FhV"/>
                     <constraint firstItem="CW9-Qd-5ao" firstAttribute="top" secondItem="Zo2-He-BM3" secondAttribute="top" constant="2" id="U31-fu-nm7"/>
                     <constraint firstAttribute="centerY" secondItem="HVo-eO-uuO" secondAttribute="centerY" id="iC4-eM-McT"/>
-                    <constraint firstItem="m2R-B1-PtU" firstAttribute="leading" secondItem="CW9-Qd-5ao" secondAttribute="trailing" constant="10" id="mS6-Kw-ZxS"/>
-                    <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="4hl-NN-WjU" secondAttribute="trailing" constant="10" id="rN6-H3-MDt"/>
+                    <constraint firstItem="m2R-B1-PtU" firstAttribute="leading" secondItem="CW9-Qd-5ao" secondAttribute="trailing" constant="5" id="mS6-Kw-ZxS"/>
+                    <constraint firstItem="ELc-wO-ex6" firstAttribute="leading" secondItem="m2R-B1-PtU" secondAttribute="trailing" constant="5" id="p4y-7F-XKs"/>
+                    <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="4hl-NN-WjU" secondAttribute="trailing" constant="5" id="rN6-H3-MDt"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">

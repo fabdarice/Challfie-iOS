@@ -132,6 +132,14 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         user = self.users_array[indexPath.row]
         cell.friend = user
+        
+        // Set so it will Refresh Following Tab when visiting
+        if let allTabViewControllers = self.tabBarController?.viewControllers {
+            var navController:UINavigationController = allTabViewControllers[3] as UINavigationController
+            var friendsVC: FriendVC = navController.viewControllers[0] as FriendVC
+            cell.friendVC = friendsVC
+        }
+        
         cell.indexPath = indexPath
         cell.tableView = self.tableView
         cell.loadItem(4)

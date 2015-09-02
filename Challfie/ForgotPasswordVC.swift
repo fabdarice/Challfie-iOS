@@ -11,13 +11,21 @@ import Foundation
 
 class ForgotPasswordVC : UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!    
+    @IBOutlet weak var forgotPasswordTitleLabl: UILabel!
+    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var sendResetPasswordButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Set Textfield Delegate for hiding keyboard
         self.emailTextField.delegate = self
+        
+        self.emailTextField.placeholder = NSLocalizedString("Email", comment: "Email")
+        self.forgotPasswordTitleLabl.text = NSLocalizedString("forgot_password_title", comment: "I forgot my password")
+        self.signInButton.setTitle(NSLocalizedString("sign_in_challfie", comment: "Log in to Challfie"), forState: .Normal)
+        self.sendResetPasswordButton.setTitle(NSLocalizedString("send_reset_password", comment: "Send Password Instructions"), forState: .Normal)
     }
     
     

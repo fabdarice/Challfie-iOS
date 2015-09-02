@@ -10,7 +10,7 @@ import Foundation
 //import Alamofire
 
 class ChallengeVC : UIViewController {
-    
+
     @IBOutlet weak var bookProgressView: UIView!
 //    @IBOutlet weak var topBarHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var nextBookProgressHeightConstraint: NSLayoutConstraint!
@@ -33,7 +33,7 @@ class ChallengeVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()        
-        
+
         // Styling the navigationController
         self.navigationController?.navigationBar.barTintColor = MP_HEX_RGB("30768A")
         self.navigationController?.navigationBar.tintColor = MP_HEX_RGB("FFFFFF")

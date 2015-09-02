@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoLibraryPreviewVC" customModule="Challfie" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="dXm-C5-1ex" id="kVR-nW-xiB"/>
+                <outlet property="imageView" destination="Cgk-xa-AWO" id="1Jj-Q9-zG8"/>
+                <outlet property="validateButton" destination="eDl-B7-ANM" id="VYf-ip-mkb"/>
+                <outlet property="view" destination="iN0-l3-epB" id="GOX-Rx-aWi"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cgk-xa-AWO" userLabel="imageView">
+                    <rect key="frame" x="5" y="20" width="310" height="488"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aFs-th-ZJ3" userLabel="toolBarView">
+                    <rect key="frame" x="0.0" y="508" width="320" height="60"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eDl-B7-ANM" userLabel="ValidateButton">
+                            <rect key="frame" x="220" y="0.0" width="100" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="Fdr-aU-BH1"/>
+                            </constraints>
+                            <state key="normal" title="Accept">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="validateAction:" destination="-1" eventType="touchUpInside" id="K17-RG-jyY"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXm-C5-1ex" userLabel="CancelButton">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="OIB-Rc-1UP"/>
+                            </constraints>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="flb-sY-oyo"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="eDl-B7-ANM" firstAttribute="top" secondItem="aFs-th-ZJ3" secondAttribute="top" id="8zh-19-RaM"/>
+                        <constraint firstAttribute="bottom" secondItem="dXm-C5-1ex" secondAttribute="bottom" id="BVN-5e-ApG"/>
+                        <constraint firstAttribute="trailing" secondItem="eDl-B7-ANM" secondAttribute="trailing" id="CW5-Dq-Mtc"/>
+                        <constraint firstItem="dXm-C5-1ex" firstAttribute="leading" secondItem="aFs-th-ZJ3" secondAttribute="leading" id="F8I-AN-5FX"/>
+                        <constraint firstAttribute="bottom" secondItem="eDl-B7-ANM" secondAttribute="bottom" id="L8k-7C-sfN"/>
+                        <constraint firstItem="dXm-C5-1ex" firstAttribute="top" secondItem="aFs-th-ZJ3" secondAttribute="top" id="eSJ-W3-LdS"/>
+                        <constraint firstAttribute="height" constant="60" id="wlQ-mq-QXc"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="aFs-th-ZJ3" secondAttribute="trailing" id="0UU-Qd-Knp"/>
+                <constraint firstItem="Cgk-xa-AWO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="Of7-US-KR4"/>
+                <constraint firstAttribute="bottom" secondItem="aFs-th-ZJ3" secondAttribute="bottom" id="fai-UC-6Zw"/>
+                <constraint firstItem="aFs-th-ZJ3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="h8Y-nH-rVE"/>
+                <constraint firstItem="aFs-th-ZJ3" firstAttribute="top" secondItem="Cgk-xa-AWO" secondAttribute="bottom" id="pyX-At-P97"/>
+                <constraint firstAttribute="trailing" secondItem="Cgk-xa-AWO" secondAttribute="trailing" constant="5" id="rLc-tZ-DV5"/>
+                <constraint firstItem="Cgk-xa-AWO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="sP4-ey-UzX"/>
+            </constraints>
+            <point key="canvasLocation" x="240" y="214"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

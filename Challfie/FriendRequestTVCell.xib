@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -19,8 +19,11 @@
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="dsP-B8-zVX"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="dsP-B8-zVX"/>
@@ -35,6 +38,9 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="JCv-j5-DQl"/>
@@ -42,16 +48,19 @@
                         </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qrc-fe-ubT">
-                        <rect key="frame" x="132" y="13" width="45" height="14"/>
+                        <rect key="frame" x="132.5" y="13" width="45" height="14"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CjO-Mj-ZGk" userLabel="followButton">
-                        <rect key="frame" x="227" y="15" width="75" height="30"/>
+                        <rect key="frame" x="227" y="0.0" width="75" height="60"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="75" id="5NY-Jk-mua"/>
-                            <constraint firstAttribute="height" constant="30" id="BCk-bk-V7w"/>
+                            <constraint firstAttribute="height" constant="60" id="BCk-bk-V7w"/>
                         </constraints>
                         <state key="normal" image="follow_button.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -60,18 +69,18 @@
                             <action selector="followButton:" destination="Fkd-zY-w41" eventType="touchUpInside" id="e2B-cT-32U"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exampleProfilePic" translatesAutoresizingMaskIntoConstraints="NO" id="0ev-Vb-nvf" userLabel="profilePicButton">
-                        <rect key="frame" x="8" y="9.5" width="40" height="40"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0ev-Vb-nvf" userLabel="profilePicButton">
+                        <rect key="frame" x="8" y="10" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="fzn-J6-A0x"/>
                             <constraint firstAttribute="width" constant="40" id="iZ8-Jx-Mbo"/>
                         </constraints>
                     </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qfv-S6-xGF" userLabel="acceptRequestButton">
-                        <rect key="frame" x="232" y="15" width="30" height="30"/>
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qfv-S6-xGF" userLabel="acceptRequestButton">
+                        <rect key="frame" x="225" y="5" width="40" height="50"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="30" id="ER3-As-DRs"/>
-                            <constraint firstAttribute="height" constant="30" id="qQV-wJ-vGr"/>
+                            <constraint firstAttribute="width" constant="40" id="ER3-As-DRs"/>
+                            <constraint firstAttribute="height" constant="50" id="qQV-wJ-vGr"/>
                         </constraints>
                         <state key="normal" image="accept_request">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -80,11 +89,11 @@
                             <action selector="acceptRequestButton:" destination="Fkd-zY-w41" eventType="touchUpInside" id="yXW-Jr-6MP"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oce-x6-9wn" userLabel="DeclineRequestButton">
-                        <rect key="frame" x="272" y="15" width="30" height="30"/>
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oce-x6-9wn" userLabel="DeclineRequestButton">
+                        <rect key="frame" x="265" y="5" width="40" height="50"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="HA6-Tg-tCR"/>
-                            <constraint firstAttribute="width" constant="30" id="sKi-EV-h2w"/>
+                            <constraint firstAttribute="height" constant="50" id="HA6-Tg-tCR"/>
+                            <constraint firstAttribute="width" constant="40" id="sKi-EV-h2w"/>
                         </constraints>
                         <state key="normal" image="decline_request">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -100,10 +109,10 @@
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="I0K-2R-VCS"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="JUd-I3-zRI"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Lyo-Wh-Jh3"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="oce-x6-9wn" secondAttribute="trailing" constant="10" id="NE6-Px-r8s"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="oce-x6-9wn" secondAttribute="trailing" constant="7" id="NE6-Px-r8s"/>
                     <constraint firstItem="Qfv-S6-xGF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qrc-fe-ubT" secondAttribute="trailing" constant="10" id="OG6-iT-Ngo"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Tbq-Fr-1Wq"/>
-                    <constraint firstItem="oce-x6-9wn" firstAttribute="leading" secondItem="Qfv-S6-xGF" secondAttribute="trailing" constant="10" id="XRT-wN-BYQ"/>
+                    <constraint firstItem="oce-x6-9wn" firstAttribute="leading" secondItem="Qfv-S6-xGF" secondAttribute="trailing" id="XRT-wN-BYQ"/>
                     <constraint firstAttribute="centerY" secondItem="oce-x6-9wn" secondAttribute="centerY" id="YNn-5d-tcW"/>
                     <constraint firstItem="0ev-Vb-nvf" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="10" id="cHk-uR-8aS"/>
                     <constraint firstItem="x4I-ND-leN" firstAttribute="top" secondItem="Gg3-5A-O2D" secondAttribute="bottom" constant="2" id="dIs-4Q-DKg"/>
@@ -132,6 +141,7 @@
                 <outlet property="acceptButton" destination="Qfv-S6-xGF" id="HxR-FO-YGB"/>
                 <outlet property="declineButton" destination="oce-x6-9wn" id="iNG-dP-7Xp"/>
                 <outlet property="followButton" destination="CjO-Mj-ZGk" id="2z7-6D-XXX"/>
+                <outlet property="followButtonHeightConstraint" destination="BCk-bk-V7w" id="VHR-so-ncs"/>
                 <outlet property="levelLabel2" destination="Qrc-fe-ubT" id="gA7-RL-zOV"/>
                 <outlet property="nb_mutual_friends2" destination="x4I-ND-leN" id="10z-dA-ZYY"/>
                 <outlet property="profilePic2" destination="0ev-Vb-nvf" id="fj8-2c-M4X"/>
@@ -141,9 +151,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="accept_request" width="63" height="60"/>
-        <image name="decline_request" width="63" height="60"/>
-        <image name="exampleProfilePic" width="94" height="92"/>
-        <image name="follow_button.png" width="227" height="90"/>
+        <image name="accept_request" width="40" height="50"/>
+        <image name="decline_request" width="40" height="50"/>
+        <image name="follow_button.png" width="227" height="180"/>
     </resources>
 </document>

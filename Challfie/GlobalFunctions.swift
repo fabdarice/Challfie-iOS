@@ -58,4 +58,6 @@ class GlobalFunctions {
         controller.presentViewController(alert, animated: true, completion: nil)
     }
     
+    
+    
 }

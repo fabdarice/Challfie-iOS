@@ -143,8 +143,6 @@ SWIFT_CLASS("_TtC8Challfie7AlertVC")
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)sideMenuWillOpen;
-- (void)sideMenuWillClose;
 - (void)toggleSideMenu;
 - (void)hideSideMenu;
 - (void)showSideMenu;
@@ -178,6 +176,7 @@ SWIFT_CLASS("_TtC8Challfie11AppDelegate")
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState)state error:(NSError *)error;
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -385,6 +384,7 @@ SWIFT_CLASS("_TtC8Challfie18FacebookUsernameVC")
 @property (nonatomic, weak) IBOutlet UILabel * usernameHelperLabel;
 @property (nonatomic, weak) IBOutlet UITextField * usernameTextField;
 @property (nonatomic, weak) IBOutlet UIButton * setUsernameButton;
+@property (nonatomic, weak) IBOutlet UILabel * eulaLabel;
 - (void)viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void)viewWillDisappear:(BOOL)animated;
@@ -394,6 +394,42 @@ SWIFT_CLASS("_TtC8Challfie18FacebookUsernameVC")
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 - (IBAction)validateUsernameButton:(id)sender;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie17FlagContentTVCell")
+@interface FlagContentTVCell : UITableViewCell
+@property (nonatomic, weak) IBOutlet UIImageView * userProfileImageView;
+@property (nonatomic, weak) IBOutlet UIImageView * selfieImageView;
+@property (nonatomic, weak) IBOutlet UILabel * usernameLabel;
+@property (nonatomic, weak) IBOutlet UILabel * flagNumberLabel;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie13FlagContentVC")
+@interface FlagContentVC : UIViewController <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, ENSideMenuDelegate>
+@property (nonatomic, weak) IBOutlet UITableView * tableView;
+@property (nonatomic) UIActivityIndicatorView * loadingIndicator;
+@property (nonatomic) NSInteger page;
+@property (nonatomic, copy) NSArray * flag_selfie_array;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)loadData;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)_ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)shouldRecognizeSimultaneouslyWithGestureRecognizer;
+- (void)toggleSideMenu;
+- (void)hideSideMenu;
+- (void)showSideMenu;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
@@ -412,6 +448,7 @@ SWIFT_CLASS("_TtC8Challfie16ForgotPasswordVC")
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class FriendVC;
 
 SWIFT_CLASS("_TtC8Challfie12FriendTVCell")
 @interface FriendTVCell : UITableViewCell
@@ -420,8 +457,10 @@ SWIFT_CLASS("_TtC8Challfie12FriendTVCell")
 @property (nonatomic, weak) IBOutlet UILabel * usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel * nb_mutual_friends;
 @property (nonatomic, weak) IBOutlet UIButton * relationshipButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * relationshipButtonHeightConstraint;
 @property (nonatomic) UITableView * tableView;
 @property (nonatomic) NSIndexPath * indexPath;
+@property (nonatomic) FriendVC * friendVC;
 - (void)loadItem:(NSInteger)friends_tab;
 - (IBAction)relationshipButton:(UIButton *)sender;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
@@ -440,6 +479,7 @@ SWIFT_CLASS("_TtC8Challfie19FriendRequestTVCell")
 @property (nonatomic, weak) IBOutlet UIButton * followButton;
 @property (nonatomic, weak) IBOutlet UIButton * acceptButton;
 @property (nonatomic, weak) IBOutlet UIButton * declineButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * followButtonHeightConstraint;
 - (void)loadItem:(NSInteger)friends_tab;
 - (IBAction)acceptRequestButton:(UIButton *)sender;
 - (IBAction)declineRequestButton:(UIButton *)sender;
@@ -469,6 +509,9 @@ SWIFT_CLASS("_TtC8Challfie8FriendVC")
 @property (nonatomic) NSInteger following_page;
 @property (nonatomic) NSInteger followers_page;
 @property (nonatomic) NSInteger friends_tab;
+@property (nonatomic) BOOL suggestions_first_time;
+@property (nonatomic) BOOL following_first_time;
+@property (nonatomic) BOOL followers_first_time;
 - (void)viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void)loadRequestData:(BOOL)pagination;
@@ -488,8 +531,6 @@ SWIFT_CLASS("_TtC8Challfie8FriendVC")
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)sideMenuWillOpen;
-- (void)sideMenuWillClose;
 - (void)toggleSideMenu;
 - (void)hideSideMenu;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
@@ -498,10 +539,165 @@ SWIFT_CLASS("_TtC8Challfie8FriendVC")
 @end
 
 
+SWIFT_CLASS("_TtC8Challfie20GuideApproveSelfieVC")
+@interface GuideApproveSelfieVC : UIViewController
+@property (nonatomic, weak) IBOutlet UILabel * titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel * descriptionLabel;
+@property (nonatomic, weak) IBOutlet UIImageView * selfieImageView;
+@property (nonatomic, weak) IBOutlet UILabel * challengeLabel;
+@property (nonatomic, weak) IBOutlet UIImageView * challengeApprovedImageView;
+@property (nonatomic, weak) IBOutlet UIButton * skipTutorialButton;
+@property (nonatomic, weak) IBOutlet UIView * selfieLayoutView;
+@property (nonatomic, weak) IBOutlet UIButton * nextPageButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * descriptionBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * nextPageVerticalConstraint;
+@property (nonatomic) BOOL from_facebook;
+@property (nonatomic) UIImage * selfie;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (IBAction)skipTutorialAction:(id)sender;
+- (IBAction)nextPageAction:(id)sender;
+- (void)approveImageFadeIn;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie11GuideBookVC")
+@interface GuideBookVC : UIViewController
+@property (nonatomic, weak) IBOutlet UILabel * titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel * descriptionLabel;
+@property (nonatomic, weak) IBOutlet UIButton * nextPageButton;
+@property (nonatomic, weak) IBOutlet UIView * bookView;
+@property (nonatomic, weak) IBOutlet UIImageView * firstBookImageView;
+@property (nonatomic, weak) IBOutlet UIImageView * secondBookImageView;
+@property (nonatomic, weak) IBOutlet UIImageView * lockImageView;
+@property (nonatomic, weak) IBOutlet UILabel * thanksLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * descriptionBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * bookViewHeightConstraint;
+@property (nonatomic) BOOL from_facebook;
+- (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
+- (IBAction)nextPageAction:(id)sender;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class NSTimer;
+
+SWIFT_CLASS("_TtC8Challfie23GuideProgressionLevelVC")
+@interface GuideProgressionLevelVC : UIViewController
+@property (nonatomic, weak) IBOutlet UILabel * titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel * descriptionLabel;
+@property (nonatomic, weak) IBOutlet UIButton * nextPageButton;
+@property (nonatomic, weak) IBOutlet UIButton * skipTutorialButton;
+@property (nonatomic, weak) IBOutlet UIView * nextBookProgressView;
+@property (nonatomic, weak) IBOutlet UILabel * percentageLabel;
+@property (nonatomic, weak) IBOutlet UILabel * nextLevelLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * nextBookViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * descriptionBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * nextPageVerticalConstraint;
+@property (nonatomic) BOOL from_facebook;
+@property (nonatomic) NSInteger percent;
+@property (nonatomic) CAShapeLayer * progressLayer;
+@property (nonatomic) NSTimer * progressTimer;
+@property (nonatomic) NSInteger progresspercentNumber;
+- (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
+- (void)updateProgress;
+- (IBAction)skipTutorialAction:(id)sender;
+- (IBAction)nextPageAction:(id)sender;
+- (void)createFullCircle;
+- (void)createProgressLayer;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie18GuideTakePictureVC")
+@interface GuideTakePictureVC : UIViewController
+@property (nonatomic, weak) IBOutlet UILabel * titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel * descriptionLabel;
+@property (nonatomic, weak) IBOutlet UIImageView * selfieImageView;
+@property (nonatomic, weak) IBOutlet UILabel * challengeLabel;
+@property (nonatomic, weak) IBOutlet UIButton * skipTutorialButton;
+@property (nonatomic, weak) IBOutlet UIButton * nextPageButton;
+@property (nonatomic, weak) IBOutlet UIImageView * challengePendingImageView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * descriptionBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * nextPageVerticalConstraint;
+@property (nonatomic) BOOL from_facebook;
+@property (nonatomic) UIImage * imageToSave;
+- (void)viewDidLoad;
+- (void)didReceiveMemoryWarning;
+- (IBAction)skipTutorialAction:(id)sender;
+- (IBAction)nextPageAction:(id)sender;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class GKImagePicker;
+
+SWIFT_CLASS("_TtC8Challfie7GuideVC")
+@interface GuideVC : UIViewController <GKImagePickerDelegate>
+@property (nonatomic, weak) IBOutlet UILabel * usernameLabel;
+@property (nonatomic, weak) IBOutlet UILabel * descriptionLabel;
+@property (nonatomic, weak) IBOutlet UIButton * skipTutorialButton;
+@property (nonatomic, weak) IBOutlet UILabel * welcomeLabel;
+@property (nonatomic, weak) IBOutlet UIButton * takeSelfieButton;
+@property (nonatomic) BOOL from_facebook;
+@property (nonatomic) BOOL use_camera;
+@property (nonatomic) UIImage * imageToSave;
+@property (nonatomic) GKImagePicker * imagePicker;
+- (void)viewDidLoad;
+- (IBAction)skipTutorialAction:(id)sender;
+- (IBAction)takeSelfieAction:(id)sender;
+- (void)showCamera;
+- (void)showPhotoLibrary;
+- (void)imagePicker:(GKImagePicker *)imagePicker pickedImage:(UIImage *)image;
+- (void)imagePickerDidCancel:(GKImagePicker *)imagePicker;
+- (UIImage *)fixOrientation:(UIImage *)img;
+- (void)createSelfie;
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIImagePickerController;
+
 SWIFT_CLASS("_TtC8Challfie7HomeTBC")
-@interface HomeTBC : UITabBarController <UITabBarControllerDelegate>
+@interface HomeTBC : UITabBarController <UITabBarControllerDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@property (nonatomic) BOOL from_facebook;
+@property (nonatomic) UIImage * imageToSave;
+@property (nonatomic) UIImagePickerController * imagePicker;
+@property (nonatomic) BOOL use_camera;
 - (void)viewDidLoad;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController;
+- (void)showCamera;
+- (void)showPhotoLibrary;
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo;
+- (UIImage *)fixOrientation:(UIImage *)img;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie14LinkFacebookVC")
+@interface LinkFacebookVC : UIViewController
+@property (nonatomic, weak) IBOutlet UILabel * linkFacebookTitle;
+@property (nonatomic, weak) IBOutlet UILabel * linkInfoLabel;
+@property (nonatomic, weak) IBOutlet UIButton * searchFacebookFriendsButton;
+@property (nonatomic, weak) IBOutlet UIButton * skipStepButton;
+@property (nonatomic) BOOL is_Facebook_linked;
+- (void)viewDidLoad;
+- (IBAction)linkFacebookAcct:(id)sender;
+- (IBAction)skipTestButton:(id)sender;
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
@@ -618,12 +814,12 @@ SWIFT_CLASS("_TtC8Challfie22MyNavigationController")
 
 
 @interface NSURLRequest (SWIFT_EXTENSION(Challfie))
-@property (nonatomic, readonly, copy) NSString * URLString;
+@property (nonatomic, readonly) NSURLRequest * URLRequest;
 @end
 
 
 @interface NSURLRequest (SWIFT_EXTENSION(Challfie))
-@property (nonatomic, readonly) NSURLRequest * URLRequest;
+@property (nonatomic, readonly, copy) NSString * URLString;
 @end
 
 
@@ -654,9 +850,13 @@ SWIFT_CLASS("_TtC8Challfie11OneSelfieVC")
 @property (nonatomic, weak) IBOutlet UIButton * approveButton;
 @property (nonatomic, weak) IBOutlet UIButton * rejectButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint * selfieImageHeightConstraint;
+@property (nonatomic, weak) IBOutlet UIView * challengeView;
+@property (nonatomic, weak) IBOutlet UIButton * viewAllCommentsButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * viewAllCommentsButtonHeightConstraints;
 @property (nonatomic) CGFloat original_footerViewBottomConstraints;
 @property (nonatomic, copy) NSArray * comments_array;
 @property (nonatomic) BOOL to_bottom;
+@property (nonatomic) BOOL is_administrator;
 - (void)viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void)viewWillDisappear:(BOOL)animated;
@@ -664,6 +864,7 @@ SWIFT_CLASS("_TtC8Challfie11OneSelfieVC")
 - (void)keyboardWillShow:(NSNotification *)notification;
 - (void)keyboardWillHide:(NSNotification *)notification;
 - (void)loadData;
+- (void)loadCommentsWithAll_comment:(BOOL)all_comment;
 - (IBAction)commentSendButton:(UIButton *)sender;
 - (void)tapGestureToProfil;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
@@ -671,6 +872,8 @@ SWIFT_CLASS("_TtC8Challfie11OneSelfieVC")
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 - (IBAction)approveButtonAction:(id)sender;
 - (IBAction)rejectButtonAction:(id)sender;
+- (IBAction)settingsButton:(id)sender;
+- (IBAction)viewAllCommentsButton:(id)sender;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
@@ -712,7 +915,6 @@ SWIFT_CLASS("_TtC8Challfie18ProfilSelfieCVCell")
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class GKImagePicker;
 @class UICollectionView;
 @class UICollectionViewLayout;
 
@@ -740,6 +942,7 @@ SWIFT_CLASS("_TtC8Challfie8ProfilVC")
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint * selfiesCollectionViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView * loadingIndicator;
 @property (nonatomic, copy) NSArray * selfies_array;
+@property (nonatomic) BOOL is_blocked;
 @property (nonatomic) NSInteger page;
 @property (nonatomic) BOOL is_current_user;
 @property (nonatomic, readonly, copy) NSString * reuseIdentifier;
@@ -749,6 +952,7 @@ SWIFT_CLASS("_TtC8Challfie8ProfilVC")
 - (void)loadData;
 - (void)follow_user;
 - (void)log_out;
+- (void)btn_administrator;
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
@@ -768,6 +972,44 @@ SWIFT_CLASS("_TtC8Challfie8ProfilVC")
 @end
 
 
+SWIFT_CLASS("_TtC8Challfie13RankingTVCell")
+@interface RankingTVCell : UITableViewCell
+@property (nonatomic, weak) IBOutlet UIImageView * profilPicImageView;
+@property (nonatomic, weak) IBOutlet UILabel * usernameLabel;
+@property (nonatomic, weak) IBOutlet UILabel * levelLabel;
+@property (nonatomic, weak) IBOutlet UILabel * progressLabel;
+@property (nonatomic, weak) IBOutlet UILabel * rankLabel;
+@property (nonatomic) NSIndexPath * index;
+- (void)loadItem;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie9RankingVC")
+@interface RankingVC : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, weak) IBOutlet UITableView * tableView;
+@property (nonatomic, weak) IBOutlet UIView * tableHeaderView;
+@property (nonatomic, weak) IBOutlet UILabel * UsernameColumnLabel;
+@property (nonatomic, weak) IBOutlet UILabel * LevelColumnLabel;
+@property (nonatomic, weak) IBOutlet UILabel * progressColumnLabel;
+@property (nonatomic) NSInteger page;
+@property (nonatomic, copy) NSArray * users_array;
+@property (nonatomic) UIActivityIndicatorView * loadingIndicator;
+- (void)viewDidLoad;
+- (void)loadData:(BOOL)pagination;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 SWIFT_CLASS("_TtC8Challfie10RegisterVC")
 @interface RegisterVC : UIViewController <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UILabel * passwordHelperLabel;
@@ -778,12 +1020,13 @@ SWIFT_CLASS("_TtC8Challfie10RegisterVC")
 @property (nonatomic, weak) IBOutlet UITextField * lastnameTextField;
 @property (nonatomic, weak) IBOutlet UIView * registerView;
 @property (nonatomic, weak) IBOutlet UILabel * createNewAccountLabel;
+@property (nonatomic, weak) IBOutlet UILabel * eulaLabel;
 - (void)viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void)viewWillDisappear:(BOOL)animated;
 - (void)keyboardDidShow:(NSNotification *)notification;
 - (void)keyboardDidHide:(NSNotification *)notification;
-- (IBAction)createAccountButton:(UIButton *)sender;
+- (IBAction)createAccountButton:(id)sender;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
@@ -814,7 +1057,7 @@ SWIFT_CLASS("_TtC8Challfie12SearchUserVC")
 @class UISwitch;
 
 SWIFT_CLASS("_TtC8Challfie13TakePictureVC")
-@interface TakePictureVC : UIViewController <UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, GKImagePickerDelegate>
+@interface TakePictureVC : UIViewController <UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 @property (nonatomic, weak) IBOutlet UIScrollView * scrollView;
 @property (nonatomic, weak) IBOutlet UIView * contentView;
 @property (nonatomic, weak) IBOutlet UIImageView * cameraView;
@@ -831,14 +1074,13 @@ SWIFT_CLASS("_TtC8Challfie13TakePictureVC")
 @property (nonatomic, weak) IBOutlet UISwitch * shareFacebookSwitch;
 @property (nonatomic, weak) IBOutlet UILabel * privacyLabel;
 @property (nonatomic, weak) IBOutlet UILabel * facebookShareLabel;
-@property (nonatomic) BOOL photo_taken;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView * activityIndicator;
 @property (nonatomic) BOOL message_presence;
 @property (nonatomic, copy) NSArray * books_array;
 @property (nonatomic, copy) NSArray * challenges_array;
-@property (nonatomic) BOOL use_camera;
 @property (nonatomic) UIImage * imageToSave;
 @property (nonatomic) BOOL isFacebookLinked;
-@property (nonatomic) GKImagePicker * imagePicker;
+@property (nonatomic) BOOL isPublishPermissionEnabled;
 - (void)viewDidLoad;
 - (void)viewWillDisappear:(BOOL)animated;
 - (void)viewWillAppear:(BOOL)animated;
@@ -847,17 +1089,13 @@ SWIFT_CLASS("_TtC8Challfie13TakePictureVC")
 - (void)keyboardDidHide:(NSNotification *)notification;
 - (void)loadData;
 - (void)addFacebookLink;
+- (void)updateFacebookPublishPermissions;
 - (void)dismissKeyboard;
 - (void)createSelfie;
-- (void)retakePicture;
-- (void)showCamera;
-- (void)showPhotoLibrary;
+- (void)cancelTakePicture;
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText;
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar;
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;
-- (void)imagePicker:(GKImagePicker *)imagePicker pickedImage:(UIImage *)image;
-- (void)imagePickerDidCancel:(GKImagePicker *)imagePicker;
-- (UIImage *)fixOrientation:(UIImage *)img;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
@@ -877,6 +1115,36 @@ SWIFT_CLASS("_TtC8Challfie24TermsTableViewController")
 @interface TermsTableViewController : UITableViewController
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (instancetype)initWithStyle:(UITableViewStyle)style OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class TestVC;
+
+SWIFT_CLASS("_TtC8Challfie10TestCellVC")
+@interface TestCellVC : UITableViewCell
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * selfieHeightConstraint;
+@property (nonatomic, weak) IBOutlet UIImageView * selfieImageView;
+@property (nonatomic) TestVC * tableViewController;
+@property (nonatomic) NSIndexPath * indexPath;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie6TestVC")
+@interface TestVC : UITableViewController
+@property (nonatomic, copy) NSArray * selfies_array;
+@property (nonatomic) NSInteger page;
+- (void)viewDidLoad;
+- (void)loadData;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -907,20 +1175,25 @@ SWIFT_CLASS("_TtC8Challfie21TimelineTableViewCell")
 @property (nonatomic, weak) IBOutlet UIButton * disapproveButton;
 @property (nonatomic, weak) IBOutlet UIImageView * challengeStatusImage;
 @property (nonatomic, weak) IBOutlet UIButton * numberCommentsButton;
+@property (nonatomic, weak) IBOutlet UIView * challengeView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint * selfieHeightConstraint;
 @property (nonatomic) TimelineVC * timelineVC;
+@property (nonatomic) NSIndexPath * indexPath;
 - (IBAction)approveButton:(UIButton *)sender;
 - (IBAction)disapproveButton:(UIButton *)sender;
 - (IBAction)commentButton:(UIButton *)sender;
 - (IBAction)numberCommentsButton:(id)sender;
 - (void)tapGestureToProfil;
 - (void)tapGestureToCommenterProfil;
+- (void)tapGestureToUserApprovalList;
+- (void)tapGestureToUserRejectList;
+- (IBAction)settingsButton:(id)sender;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class NSTimer;
 @class UIProgressView;
 
 SWIFT_CLASS("_TtC8Challfie10TimelineVC")
@@ -932,73 +1205,43 @@ SWIFT_CLASS("_TtC8Challfie10TimelineVC")
 @property (nonatomic, weak) IBOutlet UILabel * uploadSelfieLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint * tableViewTopConstraint;
 @property (nonatomic, weak) IBOutlet UIButton * retryButton;
+@property (nonatomic, weak) IBOutlet UIButton * newDataButton;
 @property (nonatomic) UIActivityIndicatorView * loadingIndicator;
 @property (nonatomic, copy) NSArray * selfies_array;
-@property (nonatomic, copy) NSArray * selfies_array_id;
+@property (nonatomic, copy) NSArray * itemHeights;
 @property (nonatomic) NSInteger page;
 @property (nonatomic) UIRefreshControl * refreshControl;
 @property (nonatomic) NSTimer * progressTimer;
 @property (nonatomic) float progressData;
 @property (nonatomic) BOOL first_time;
+@property (nonatomic) BOOL hasNewData;
+@property (nonatomic) CGFloat lastContentOffset;
+@property (nonatomic) BOOL disableBackgroundRefresh;
 - (void)viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void)viewDidAppear:(BOOL)animated;
 - (void)updateProgress;
 - (void)refreshInvoked:(id)sender;
+- (IBAction)newDataAction:(id)sender;
 - (void)refreshWithActionFromInit:(BOOL)actionFromInit;
 - (void)loadData;
+- (void)backgroundRefresh;
+- (void)fetchDataInBackground:(void (^)(UIBackgroundFetchResult))completionHandler;
 - (void)display_empty_message;
 - (void)tapGestureToSearchPage;
 - (IBAction)closeUploadSelfieView:(UIButton *)sender;
 - (IBAction)retryUploadSelfie:(UIButton *)sender;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)_ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)shouldRecognizeSimultaneouslyWithGestureRecognizer;
 - (void)toggleSideMenu;
 - (void)hideSideMenu;
 - (void)showSideMenu;
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
-- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
-- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
-@end
-
-@class TutorialVC;
-
-SWIFT_CLASS("_TtC8Challfie21TutorialPageContentVC")
-@interface TutorialPageContentVC : UIViewController
-@property (nonatomic, weak) IBOutlet UILabel * stepLabel;
-@property (nonatomic, weak) IBOutlet UIImageView * backgroundImageView;
-@property (nonatomic, weak) IBOutlet UIImageView * mainImageView;
-@property (nonatomic, weak) IBOutlet UILabel * messageLabel;
-@property (nonatomic, weak) IBOutlet UIButton * skipButton;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint * stepTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint * skipBottomConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint * imageHeightConstraint;
-@property (nonatomic) NSInteger itemIndex;
-@property (nonatomic) TutorialVC * tutorialVC;
-- (void)viewDidLoad;
-- (IBAction)skipAction:(id)sender;
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
-- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
-- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
-@end
-
-
-SWIFT_CLASS("_TtC8Challfie10TutorialVC")
-@interface TutorialVC : UIViewController <UIPageViewControllerDataSource>
-@property (nonatomic) UIPageViewController * pageViewController;
-@property (nonatomic) NSInteger numberOfPages;
-@property (nonatomic) BOOL from_facebook;
-- (void)viewDidLoad;
-- (void)createPageViewController;
-- (void)setupPageControl;
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController;
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController;
-- (TutorialPageContentVC *)getTutorialPageContentVC:(NSInteger)itemIndex;
-- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController;
-- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController;
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
@@ -1058,6 +1301,30 @@ SWIFT_CLASS("_TtC8Challfie10TutorialVC")
 - (void)showSideMenuView;
 - (id <ENSideMenuProtocol>)sideMenuController;
 - (id <ENSideMenuProtocol>)topMostController;
+@end
+
+
+SWIFT_CLASS("_TtC8Challfie18UserApprovalListVC")
+@interface UserApprovalListVC : UITableViewController
+@property (nonatomic, copy) NSString * selfie_id;
+@property (nonatomic) NSInteger page;
+@property (nonatomic, copy) NSArray * user_array;
+@property (nonatomic) BOOL is_approval_list;
+@property (nonatomic) UIActivityIndicatorView * loadingIndicator;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)didReceiveMemoryWarning;
+- (void)loadData:(BOOL)pagination;
+- (void)display_empty_message;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (instancetype)initWithStyle:(UITableViewStyle)style OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
 #pragma clang diagnostic pop

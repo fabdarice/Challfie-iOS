@@ -10,7 +10,7 @@ import Foundation
 //import Alamofire
 
 class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, ENSideMenuDelegate {
-    @IBOutlet weak var tableView: UITableView!    
+    @IBOutlet weak var tableView: UITableView!
     
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     var page = 1
@@ -65,7 +65,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         
         // Set the height of a cell dynamically
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 100.0
+        self.tableView.estimatedRowHeight = 100.0                
         
         // Add right swipe gesture hide Side Menu
         var ensideNavBar = self.navigationController as MyNavigationController
@@ -95,15 +95,17 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         self.refresh(actionFromInit: true)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {        
         super.viewWillAppear(animated)
         
         // Display tabBarController
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
-                
-        // Refresh the page if not the first time
-        if self.first_time == false {
+        
+        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+        
+        // Refresh the page if not the first time and a badge exists
+        if self.first_time == false && alert_tabBarItem.badgeValue != nil {
             refresh(actionFromInit: false)
         }
         
@@ -116,6 +118,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         
         self.first_time = false
     }
+    
+    
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -199,6 +203,13 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                             var author: User = User.init(json: json["notifications"][i]["author"])
                             alert.author = author
                             
+                            if alert.type_notification == "block_unlocked" && alert.read == false {
+                                println("SHOW POP-UP")
+                                var popViewController : PopUpViewControllerSwift = PopUpViewControllerSwift(nibName: "PopUpViewController", bundle: nil)
+                                popViewController.title = "This is a popup view"
+                                popViewController.showInView(self.view, withImage: UIImage(named: "typpzDemo"), withMessage: "You just triggered a great popup window", animated: true)
+                            }
+                            
                             self.alerts_array.append(alert)
                             self.alerts_array_id.append(alert.id)
                             
@@ -221,6 +232,14 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 self.refreshControl.endRefreshing()
                 self.refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull_to_refresh", comment: "Pull down to refresh"))
                 self.display_empty_message()
+                
+                if actionFromInit == true {
+                    // Register for Push Notitications, if running iOS 8
+                    let app = UIApplication.sharedApplication()
+                    let notificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
+                    let settings = UIUserNotificationSettings(forTypes: notificationType, categories: nil)
+                    app.registerUserNotificationSettings(settings)
+                }
         }
         
         
@@ -367,45 +386,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     }
     
     // MARK: - ENSideMenu Delegate
-    func sideMenuWillOpen() {
-        // Add Tap gesture to Hide Side Menu
-        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
-        self.tableView.addGestureRecognizer(tapGesture)
 
-    }
-    
-    func sideMenuWillClose() {
-        // Remove Tap gesture to Hide Side Menu
-        if let recognizers = self.tableView.gestureRecognizers {
-            for recognizer in recognizers {
-                self.tableView.removeGestureRecognizer(recognizer as UIGestureRecognizer)
-            }
-        }
-        
-        // Add right swipe gesture show Side Menu
-        var ensideNavBar = self.navigationController as MyNavigationController
-        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
-        
-        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer.delegate = self
-        self.tableView.addGestureRecognizer(rightSwipeGestureRecognizer)
-        let rightSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer2)
-        
-        // Add left swipe gesture hide Side Menu
-        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer.delegate = self
-        self.tableView.addGestureRecognizer(leftSwipeGestureRecognizer)
-        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer2.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
-    }
-    
     func toggleSideMenu() {
         toggleSideMenuView()
     }

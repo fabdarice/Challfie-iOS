@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
+class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var bookNameLabel: UILabel!
     @IBOutlet weak var bookImage: UIImageView!
     @IBOutlet weak var lockerImage: UIImageView!
@@ -20,6 +20,10 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     
     var itemIndex: Int = 0
+    var imageToSave: UIImage!
+    var imagePicker: UIImagePickerController!
+    var use_camera: Bool = true
+    var challenge_selected : String = ""
     var book: Book! {
         didSet {
             if let imageView = self.bookImage {
@@ -43,6 +47,8 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         self.bookNameLabel.text = self.book.name
         
         // Book Cover Image
+        self.bookImage.contentMode = UIViewContentMode.ScaleAspectFit
+        
         let bookImageURL:NSURL = NSURL(string: self.book.show_book_pic())!
         self.bookImage.hnk_setImageFromURL(bookImageURL, success: { (book_image: UIImage) in
             //self.bookImage.image = book_image
@@ -103,10 +109,12 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         })
         
         
+        
         self.numberOfChallenges.font = UIFont.italicSystemFontOfSize(14.0)
         
         // Set Difficulty on Separator
         self.difficultyLabel.text = NSLocalizedString("difficulty", comment: "Difficulty")
+        
         
         // Add constraints to force vertical scrolling of UIScrollView
         // Basically set the leading and trailing of contentView to the View's one (instead of the scrollView)
@@ -172,6 +180,12 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         cell.layoutMargins = UIEdgeInsetsZero
         cell.separatorInset = UIEdgeInsetsZero
         
+        // Background of Selected Cell of TableViewCell
+        let selectionView = UIView()
+        selectionView.backgroundColor = MP_HEX_RGB("32A8C9")
+        cell.selectedBackgroundView = selectionView
+
+        
         // Update Cell Constraints
         cell.setNeedsUpdateConstraints()
         cell.updateConstraintsIfNeeded()
@@ -179,4 +193,118 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         
         return cell
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var cell : ChallengeTVCell = tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as ChallengeTVCell
+        
+        self.challenge_selected = cell.challenge.description
+        
+        // Show Pop-op to options to choose between camera and photo library
+        var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
+            self.use_camera = true
+            self.showCamera()
+        }
+        let twoAction = UIAlertAction(title: NSLocalizedString("choose_from_gallery", comment: "Choose From Your Gallery"), style: .Default) { (_) in
+            self.use_camera = false
+            self.showPhotoLibrary()
+        }
+        let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
+        
+        alert.addAction(oneAction)
+        alert.addAction(twoAction)
+        alert.addAction(thirdAction)
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+
+    }
+    
+    // MARK: - When the user is taking a picture from the device camera
+    func showCamera() {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker.delegate = self
+            self.imagePicker.sourceType = .Camera
+            self.imagePicker.cameraDevice = UIImagePickerControllerCameraDevice.Front
+            
+            self.imagePicker.allowsEditing = false
+            
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        } else {
+            GlobalFunctions().displayAlert(title: "No Camera Found", message: " ", controller: self)
+        }
+    }
+    
+    // MARK: - When the user is selecting a picture from the gallery
+    func showPhotoLibrary() {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)){
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker.delegate = self
+            
+            self.imagePicker.allowsEditing = false
+            self.imagePicker.sourceType = .PhotoLibrary
+            
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        } else {
+            GlobalFunctions().displayAlert(title: "No access to photo library", message: " ", controller: self)
+        }
+    }
+    
+    // MARK: - UIImagePickerController Delegate methods
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        
+        if let pickedImage = image {
+            self.imageToSave = pickedImage
+            
+            // Save to Challfie Album
+            if self.use_camera == true {
+                self.imageToSave = self.fixOrientation(image)
+                UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
+                // Push to TakePictureVC
+                if let allTabViewControllers = self.tabBarController?.viewControllers {
+                    var navController:UINavigationController = allTabViewControllers[2] as UINavigationController
+                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
+                    takePictureVC.imageToSave = self.imageToSave
+                    takePictureVC.challenge_selected = self.challenge_selected
+                    self.tabBarController?.selectedViewController = navController
+                    picker.dismissViewControllerAnimated(true, completion: nil)
+                }
+            } else {
+                self.hidesBottomBarWhenPushed = true
+                var photoLibraryPreviewVC = PhotoLibraryPreviewVC(nibName: "PhotoLibraryPreview", bundle: nil)
+                photoLibraryPreviewVC.imageToSave = self.imageToSave
+                photoLibraryPreviewVC.homeTabBarController = self.tabBarController as HomeTBC
+                photoLibraryPreviewVC.imagePicker = picker
+                photoLibraryPreviewVC.challenge_selected = self.challenge_selected
+                picker.pushViewController(photoLibraryPreviewVC, animated: true)
+            }
+        }
+        
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func fixOrientation(img:UIImage) -> UIImage {
+        if (img.imageOrientation == UIImageOrientation.Up) {
+            return img;
+        }
+        UIGraphicsBeginImageContextWithOptions(img.size, false, img.scale);
+        let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
+        img.drawInRect(rect)
+        
+        var normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return normalizedImage;
+    }
+    
 }

@@ -12,7 +12,7 @@ import MobileCoreServices
 
 //UIImagePickerControllerDelegate
 //UINavigationControllerDelegate
-class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, GKImagePickerDelegate {
+class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!    
@@ -30,16 +30,15 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     @IBOutlet weak var shareFacebookSwitch: UISwitch!
     @IBOutlet weak var privacyLabel: UILabel!
     @IBOutlet weak var facebookShareLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var photo_taken: Bool = false
     var message_presence: Bool = false
     var books_array : [Book] = []
     var challenges_array: [[Challenge]] = []
-    var use_camera: Bool = true
     var imageToSave: UIImage!
     var isFacebookLinked: Bool = false
     var isPublishPermissionEnabled: Bool = false
-    var imagePicker: GKImagePicker!
+    var challenge_selected: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +49,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         self.navigationController?.navigationBar.translucent = false
         
         // add NavigationItem
-        let backItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Reply, target: self, action: "retakePicture")
+        let backItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Reply, target: self, action: "cancelTakePicture")
         let doneItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "createSelfie")
         backItem.tintColor = MP_HEX_RGB("FFFFFF")
         doneItem.tintColor = MP_HEX_RGB("5BD9FC")
@@ -71,6 +70,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         // UIView That contains the Image
         self.cameraView.layer.borderColor = MP_HEX_RGB("C4C4C4").CGColor
         self.cameraView.layer.borderWidth = 1.0
+        self.cameraView.contentMode = UIViewContentMode.ScaleAspectFit
         
         // UIView that contains Settings
         self.settingView.layer.borderColor = MP_HEX_RGB("C4C4C4").CGColor
@@ -131,6 +131,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         // set action that is being used when the switch is ON
         self.shareFacebookSwitch.addTarget(self, action: "addFacebookLink", forControlEvents: UIControlEvents.ValueChanged)
         
+        //activityIndicator
+        //self.activityIndicator.hidesWhenStopped = true
+        
         
         // Add constraints to force vertical scrolling of UIScrollView
         // Basically set the leading and trailing of contentView to the View's one (instead of the scrollView)
@@ -144,9 +147,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         self.searchBar.delegate = self
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
-        
-        self.loadData()
 
     }
     
@@ -169,13 +169,18 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
         statusBarViewBackground?.hidden = true
         
-        if self.photo_taken == false {
-            if self.use_camera == true {
-                self.showCamera()
-            } else {
-                self.showPhotoLibrary()
-            }
-        }
+        self.cameraView.image = self.imageToSave
+        self.shareFacebookSwitch.on = false
+        self.message_presence = false
+        self.messageTextView.text = NSLocalizedString("add_message", comment: "Add a message..")
+        self.messageTextView.textColor = UIColor.lightGrayColor()
+        self.messageTextView.font = UIFont.italicSystemFontOfSize(13.0)
+        
+        self.searchBar.text = self.challenge_selected
+        
+        self.books_array.removeAll(keepCapacity: false)
+        self.challenges_array.removeAll(keepCapacity: false)
+        self.loadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -201,10 +206,14 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
         ]
         
+        self.activityIndicator.startAnimating()
+        
+        
         request(.POST, ApiLink.challenges_list, parameters: parameters, encoding: .JSON)
             .responseJSON { (_, _, mydata, _) in
                 if (mydata == nil) {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    self.activityIndicator.stopAnimating()
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)                    
@@ -214,7 +223,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                     
                     // Check if Publish Action has already been authorized
                     self.isPublishPermissionEnabled = json["meta"]["isPublishPermissionEnabled"].boolValue
-
                     
                     if json["challenges"].count != 0 {
                         for var i:Int = 0; i < json["challenges"].count; i++ {
@@ -231,12 +239,14 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                             }
                             self.books_array.append(book)
                         }
+
+                        
                         self.tableView.reloadData()
                         
                         // Set the height of tableView dynamically based on the height of each cell
                         // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
                         var tableView_newHeight: CGFloat = 0.0
-                        for var i:Int = 0; i < self.books_array.count; i++ {                            
+                        for var i:Int = 0; i < self.books_array.count; i++ {
                             // Add Header Height
                             if let headerHeight = self.tableView.delegate?.tableView!(self.tableView, heightForHeaderInSection: i) {
                                 tableView_newHeight += headerHeight
@@ -247,10 +257,13 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                             }
                         }
                         self.tableViewHeightConstraint.constant = tableView_newHeight
+                        self.activityIndicator.stopAnimating()
+                        
+                        if self.challenge_selected != "" {
+                            self.searchBarSearchButtonClicked(self.searchBar)
+                        }
+
                     }
-                    
-                    
-                    
                 }
         }
     }
@@ -262,15 +275,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                 if self.isPublishPermissionEnabled == false && self.isFacebookLinked == true {
                     FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
                         (session:FBSession!, state:FBSessionState, error:NSError!) in
-                        //let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-                        // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-                        //appDelegate.sessionStateChanged(session, state: state, error: error)
-                        println ("ENTER")
+
                         if FBSession.activeSession().isOpen {
-                            println ("session Is Open")
-                            println(FBSession.activeSession().permissions)
                             if contains(FBSession.activeSession().permissions  as [String], "publish_actions") == false {
-                                println ("NO PERMISSION")
                                 FBSession.activeSession().requestNewPublishPermissions(["publish_actions"], defaultAudience: FBSessionDefaultAudience.Friends, completionHandler: {(session:FBSession!, error:NSError!) in
                                     if (error != nil) {
                                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -282,15 +289,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                             } else {
                                 self.updateFacebookPublishPermissions()
                             }
-                        } else {
-                        //    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                            //self.shareFacebookSwitch.on = false
-                            println("SESSION OFF")
                         }
-                    
                     })
                 } else {
-                    println ("ENTER NO ACCOUNT YET")
                     FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends", "publish_actions"], allowLoginUI: true, completionHandler: {
                         (session:FBSession!, state:FBSessionState, error:NSError!) in
                         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
@@ -339,7 +340,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                                     self.isFacebookLinked = true
                                                     self.isPublishPermissionEnabled = true
                                                 }
-                                                println ("ENTER NO ACCOUNT YET - OK FINAL")
                                             }
                                     }
                                     
@@ -378,7 +378,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                         self.isPublishPermissionEnabled = true
                     }
                 }
-                println("ENTER GOOD MAN!")
         }
     }
     
@@ -417,8 +416,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         let selectedIndexPath: NSIndexPath = self.tableView.indexPathForSelectedRow()!
         var selected_challenge: Challenge = self.books_array[selectedIndexPath.section].challenges_array[selectedIndexPath.row]
         
-        //let imageData = UIImagePNGRepresentation(self.imageToSave)
-
         let imageData = UIImageJPEGRepresentation(self.imageToSave, 0.9)
 
         var is_private: String = ""
@@ -451,27 +448,26 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
      
         // Switch to Timeline Tab
         if let viewControllers = self.tabBarController?.viewControllers {
-            //let navController = viewControllers[0] as UINavigationController
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var timelienNavController:MyNavigationController = mainStoryboard.instantiateViewControllerWithIdentifier("navigationTimelineID") as MyNavigationController
+            let navController = viewControllers[0] as UINavigationController
+            var timelineVC: TimelineVC = navController.viewControllers[0] as TimelineVC
             
-            
-            ERRROR HERE
-            var timelineVC: TimelineVC = timelienNavController.viewControllers[0] as TimelineVC
-            timelineVC.uploadSelfieView.hidden = false
-            // Background
-            timelineVC.uploadSelfieView.backgroundColor = MP_HEX_RGB("FFFFFF")
-            // Border color
-            timelineVC.uploadSelfieView.layer.borderColor = MP_HEX_RGB("85BBCC").CGColor
-            timelineVC.uploadSelfieView.layer.borderWidth = 1.0
-            timelineVC.uploadSelfieImage.image = self.imageToSave
-            timelineVC.tableViewTopConstraint.constant = 50.0
-            timelineVC.uploadSelfieLabel.text = NSLocalizedString("uploading_selfie", comment: "Uploading Selfie...")
-            timelineVC.uploadSelfieLabel.textColor = UIColor.blackColor()
-            timelineVC.retryButton.hidden = true
-            timelineVC.progressData = 0.1
-            timelineVC.progressView.progress = 0.1
-            
+            if timelineVC.view != nil {
+                timelineVC.uploadSelfieView.hidden = false
+                // Background
+                timelineVC.uploadSelfieView.backgroundColor = MP_HEX_RGB("FFFFFF")
+                // Border color
+                timelineVC.uploadSelfieView.layer.borderColor = MP_HEX_RGB("85BBCC").CGColor
+                timelineVC.uploadSelfieView.layer.borderWidth = 1.0
+                timelineVC.uploadSelfieImage.image = self.imageToSave
+                timelineVC.tableViewTopConstraint.constant = 50.0
+                timelineVC.uploadSelfieLabel.text = NSLocalizedString("uploading_selfie", comment: "Uploading Selfie...")
+                timelineVC.uploadSelfieLabel.textColor = UIColor.blackColor()
+                timelineVC.retryButton.hidden = true
+                timelineVC.progressData = 0.1
+                timelineVC.progressView.progress = 0.1
+            }
+
+        
             var manager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager()
             manager.POST(ApiLink.create_selfie, parameters: parameters, constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
                 formData.appendPartWithFileData(imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpeg", mimeType: "image/jpeg")
@@ -486,88 +482,47 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                         self.messageTextView.textColor = UIColor.lightGrayColor()
                         self.messageTextView.font = UIFont.italicSystemFontOfSize(13.0)
                         self.message_presence = false
-                        timelineVC.progressView.progress = 1.0
-                        timelineVC.progressData = 1.0
-                        timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_completed", comment: "Upload Completed")
+                        if timelineVC.view != nil {
+                            timelineVC.progressView.progress = 1.0
+                            timelineVC.progressData = 1.0
+                            timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_completed", comment: "Upload Completed")
+                        }
                         
                         UIView.transitionWithView(timelineVC.uploadSelfieView, duration: 0.6, options: UIViewAnimationOptions.CurveEaseOut, animations: {
                                 timelineVC.uploadSelfieView.hidden = true
                             }, completion: { (finished: Bool) -> Void in
-                                timelineVC.tableViewTopConstraint.constant = 0.0
-                                timelineVC.refresh(actionFromInit: false)
-                        })                        
+                                if timelineVC.view != nil {
+                                    timelineVC.tableViewTopConstraint.constant = 0.0
+                                    timelineVC.refresh(actionFromInit: false)
+                                }
+                        })
                     } else {
+                        if timelineVC.view != nil {
+                            timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
+                            timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
+                            timelineVC.retryButton.hidden = false
+                        }
+                    }
+                }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
+                    if timelineVC.view != nil {
                         timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
                         timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
                         timelineVC.retryButton.hidden = false
                     }
-                }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
-                    timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
-                    timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
-                    timelineVC.retryButton.hidden = false
             })
+            if timelineVC.view != nil {
+                timelineVC.disableBackgroundRefresh = true
+            }
             self.tabBarController?.selectedIndex = 0
         }
         
     }
     
-    // Cancel selfie and retake Picture
-    func retakePicture() {
-        self.photo_taken = false
-        if self.use_camera {
-            self.showCamera()
-        } else {
-            self.showPhotoLibrary()
-        }
-        
+    // Cancel taking a selfie
+    func cancelTakePicture() {
+        self.tabBarController?.selectedIndex = 0
     }
     
-    // When the user is taking a picture from the device camera
-    func showCamera() {
-        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
-            // Add Background for status bar
-            let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
-            statusBarViewBackground?.hidden = true
-            self.imagePicker = GKImagePicker()
-            self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)
-           // self.imagePicker.cropSize = CGSizeMake(300.0, 300.0)
-            self.imagePicker.delegate = self
-            self.imagePicker.resizeableCropArea = false
-
-            //set the source type
-            self.imagePicker.imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDevice.Front
-            
-            self.presentViewController(self.imagePicker.imagePickerController, animated: true, completion: nil)            
-        }
-        else{
-            GlobalFunctions().displayAlert(title: "No Camera Found", message: " ", controller: self)
-        }
-    }
-    
-    // When the user is selecting a picture from the gallery
-    func showPhotoLibrary() {
-        // Add Background for status bar
-        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
-        statusBarViewBackground?.hidden = true
-        
-        self.imagePicker = GKImagePicker()
-        self.imagePicker.cropSize = CGSizeMake(UIScreen.mainScreen().bounds.width - 30, UIScreen.mainScreen().bounds.width - 30)
-        //self.imagePicker.cropSize = CGSizeMake(300.0, 300.0)
-        self.imagePicker.delegate = self
-        self.imagePicker.resizeableCropArea = false
-        
-        //set the source type
-        self.imagePicker.imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        
-        self.presentViewController(self.imagePicker.imagePickerController, animated: true, completion: nil)
-        
-        //var picker = UIImagePickerController()
-        //picker.delegate = self
-        //picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        //picker.allowsEditing = true
-        //self.presentViewController(picker, animated: true, completion: nil)
-    }
     
 
     // MARK: - UISearchBarDelegate, UISearchDisplayDelegate
@@ -622,47 +577,50 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     // Dismiss Keyboard when Search Button has been clicked on
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.searchBar.resignFirstResponder()
-    }
-    
-    // MARK: - GKImagePicker Delegate Methods
-    func imagePicker(imagePicker: GKImagePicker!, pickedImage image: UIImage!) {
-        self.photo_taken = true
-        self.imageToSave = image
+        if searchBar.text.isEmpty {
+            for var i = 0; i < self.books_array.count; i++ {
+                self.books_array[i].challenges_array = self.challenges_array[i]
+            }
+        } else {
+            for var i = 0; i < self.books_array.count; i++ {
+                self.books_array[i].challenges_array.removeAll(keepCapacity: false)
+                for var j = 0; j < self.challenges_array[i].count; j++
+                {
+                    var currentString = self.challenges_array[i][j].description as String
+                    if currentString.lowercaseString.rangeOfString(searchBar.text.lowercaseString) != nil {
+                        self.books_array[i].challenges_array.append(self.challenges_array[i][j])
+                    }
+                }
+            }
+        }
+        self.tableView.reloadData()
         
-        if self.use_camera == true {
-            self.imageToSave = self.fixOrientation(image)
-            UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
+        var indexPath : NSIndexPath!
+        
+        // Set the height of tableView dynamically based on the height of each cell
+        // Couldn't do it in cellForRowAtIndexPath as it returns the original height of the cell
+        var tableView_newHeight: CGFloat = 0.0
+        for var i:Int = 0; i < self.books_array.count; i++ {
+            // Add Header Height
+            if let headerHeight = self.tableView.delegate?.tableView!(self.tableView, heightForHeaderInSection: i) {
+                tableView_newHeight += headerHeight
+            }
+            
+            for var j:Int = 0; j < self.books_array[i].challenges_array.count; j++ {
+                indexPath = NSIndexPath(forRow: j, inSection: i)
+                tableView_newHeight += self.tableView.rectForRowAtIndexPath(indexPath).size.height
+            }
+        }
+        if tableView_newHeight < 400.0 {
+            tableView_newHeight = 400.0
         }
         
-        self.cameraView.image = self.imageToSave
+        self.tableViewHeightConstraint.constant = tableView_newHeight
         
-        self.shareFacebookSwitch.on = false
-        self.message_presence = false
-        self.messageTextView.text = NSLocalizedString("add_message", comment: "Add a message..")
-        self.messageTextView.textColor = UIColor.lightGrayColor()
-        self.messageTextView.font = UIFont.italicSystemFontOfSize(13.0)
-        
-        imagePicker.imagePickerController.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func imagePickerDidCancel(imagePicker: GKImagePicker!) {
-        imagePicker.imagePickerController.dismissViewControllerAnimated(true, completion: nil)
-        self.tabBarController?.selectedIndex = 0
-    }
-    
-    
-    func fixOrientation(img:UIImage) -> UIImage {
-        if (img.imageOrientation == UIImageOrientation.Up) {
-            return img;
+        if self.challenge_selected != "" {
+            self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
         }
-        UIGraphicsBeginImageContextWithOptions(img.size, false, img.scale);
-        let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
-        img.drawInRect(rect)
-        
-        var normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
-        return normalizedImage;
-    }
+    }        
     
     //MARK: - UITABLEVIEW DELEGATE
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -684,9 +642,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        // Add Header for the "Friends Suggestions Tab"
-        // One Header for "Pending Request"
-        // One HEader for "Friends Suggestions"
         var headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 20.0))
         headerView.backgroundColor = MP_HEX_RGB("30768A")
         var headerLabel = UILabel(frame: CGRectMake(15.0, 5.0, tableView.frame.width, 17.0))
@@ -695,7 +650,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         
         headerLabel.text = self.books_array[section].name
         headerView.addSubview(headerLabel)
-        
         
         return headerView
     }
@@ -723,7 +677,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var selectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
-        selectedCell.contentView.backgroundColor = MP_HEX_RGB("f3c378")
+        selectedCell.contentView.backgroundColor = MP_HEX_RGB("FAE0B1")
     }
     
     

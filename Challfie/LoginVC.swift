@@ -20,9 +20,6 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var registerButton: UIButton!
     
-    @IBOutlet weak var credentialsBottomConstraint: NSLayoutConstraint!
-
-    
     var first_facebook_login: Bool = false
     
     override func viewDidLoad() {
@@ -40,18 +37,20 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
         // Login Button Layer
         self.loginButton.layer.borderColor = MP_HEX_RGB("145466").CGColor
         self.loginButton.layer.borderWidth = 1.0
+        self.loginButton.setTitle(NSLocalizedString("log_in", comment: "Log in"), forState: UIControlState.Normal)
         
         // Login TextField Styke
         self.loginTextField.textColor = MP_HEX_RGB("000000")
+        self.loginTextField.placeholder = NSLocalizedString("Username", comment: "Username")
         
         // Password Text Field Style
         self.passwordTextField.textColor = MP_HEX_RGB("000000")
-        
-        // self.registerButton.setTitleColor(MP_HEX_RGB("30768A"), forState: UIControlState.Normal)
+        self.passwordTextField.placeholder = NSLocalizedString("Password", comment: "Password")
         
         // Hide Password in TextField with *****
         self.passwordTextField.secureTextEntry = true
         
+        self.forgotPasswordButton.setTitle(NSLocalizedString("forgot_password", comment: "Forgot your password?"), forState: .Normal)
 
         // Set Textfield Delegate for hiding keyboard
         self.loginTextField.delegate = self;
@@ -60,6 +59,9 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
         // Facebook Login
         self.facebookLoginView.delegate = self
         self.facebookLoginView.readPermissions = ["public_profile", "email", "user_friends"]
+        
+        // Register new account Btn
+        self.registerButton.setTitle(NSLocalizedString("register_new_account", comment: "Register new account"), forState: .Normal)
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -77,6 +79,8 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    
+    // MARK: - Show or Hide Keyboard
     func keyboardDidShow(notification: NSNotification) {
         UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.credentialView.transform = CGAffineTransformMakeTranslation(0.0, -60.0)}, completion: nil)
     }
@@ -85,6 +89,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
         UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {self.credentialView.transform = CGAffineTransformMakeTranslation(0.0, 0.0)}, completion: nil)
     }
     
+    // MARK: - login Action
     @IBAction func loginAction(sender: UIButton) {
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         //let deviceToken = appDelegate.deviceToken
@@ -121,7 +126,11 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                         
                         // Save login and auth_token to the iOS Keychain
                         KeychainWrapper.setString(login, forKey: kSecAttrAccount)
-                        KeychainWrapper.setString(auth_token, forKey: kSecValueData)
+                        KeychainWrapper.setString(auth_token, forKey: kSecValueData)                        
+                        
+                        // Activate the Background Fetch Mode to Interval Minimum
+                        UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                            UIApplicationBackgroundFetchIntervalMinimum)
                         
                         self.performSegueWithIdentifier("homeSegue", sender: self)
                     }
@@ -136,9 +145,11 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
     }
     
     
-    // UITextFieldDelegate Delegate
+    // MARK: - UITextFieldDelegate Delegate
     func textFieldShouldReturn(textField: UITextField!) -> Bool {
-        textField.resignFirstResponder()
+        if textField == self.loginTextField {
+            self.passwordTextField.becomeFirstResponder()
+        }
         
         if textField == self.passwordTextField {
             self.loginAction(self.registerButton)
@@ -173,19 +184,30 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
             let fbAccessToken = FBSession.activeSession().accessTokenData.accessToken
             let fbTokenExpiresAt = FBSession.activeSession().accessTokenData.expirationDate.timeIntervalSince1970
             let userProfileImage = "http://graph.facebook.com/\(user.objectID)/picture?type=large"
+            var email = ""
+            var facebook_locale: String = "en_US"
+            
+            if user.objectForKey("email") == nil {
+                email = user.objectID + "@facebook.com"
+            } else {
+                user.objectForKey("email")
+            }
+            
+            if user.objectForKey("locale") != nil {
+                facebook_locale = user.objectForKey("locale") as String
+            }
             
             let parameters:[String: AnyObject] = [
                 "uid": user.objectID,
                 "login": user.name,
-                "email": user.objectForKey("email"),
+                "email": email,
                 "firstname": user.first_name,
                 "lastname": user.last_name,
                 "profilepic": userProfileImage,
                 "fbtoken": fbAccessToken,
                 "fbtoken_expires_at": fbTokenExpiresAt,
-                "fb_locale": user.objectForKey("locale")
+                "fb_locale": facebook_locale
             ]
-            
             
             request(.POST, ApiLink.facebook_register, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in

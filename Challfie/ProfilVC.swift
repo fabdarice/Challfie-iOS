@@ -280,25 +280,70 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         }
     }
     
-    
+    // MARK: - Follow User Button
     func follow_user() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_pending"), style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("f3c378")
+        self.user.is_following = true
+        self.user.is_pending = true
+        
         let parameters = [
             "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
             "user_id": self.user.id.description
         ]
         
-        request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_pending"), style: UIBarButtonItemStyle.Plain, target: self, action: nil)
-        self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("f3c378")
-        self.user.is_following = true
-        self.user.is_pending = true
-        self.selfiesCollectionView.reloadData()
+        request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+            if (mydata == nil) {
+                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_follow"), style: UIBarButtonItemStyle.Plain, target: self, action: "follow_user")
+                self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("5BD9FC")
+                self.user.is_following = false
+                self.user.is_pending = false
+            } else {
+                //Convert to SwiftJSON
+                var json = JSON_SWIFTY(mydata!)
+                if (json["success"].intValue == 1) {
+                    self.selfiesCollectionView.reloadData()
+                    // Set so it will Refresh Following Tab when visiting
+                    if let allTabViewControllers = self.tabBarController?.viewControllers {
+                        var navController:UINavigationController = allTabViewControllers[3] as UINavigationController
+                        var friendsVC: FriendVC = navController.viewControllers[0] as FriendVC
+                        friendsVC.following_first_time = true
+                        friendsVC.suggestions_first_time = true
+                    }
+                } else {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_follow"), style: UIBarButtonItemStyle.Plain, target: self, action: "follow_user")
+                    self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("5BD9FC")
+                    self.user.is_following = false
+                    self.user.is_pending = false
+                }
+            }
+        }
+        
+        
     }
     
+    // MARK: - Log out Button
     func log_out() {
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let oneAction = UIAlertAction(title: NSLocalizedString("Log_out", comment: "Log out"), style: UIAlertActionStyle.Destructive) { (_) in
+            
+            // Desactive Device so it can't receive push notifications
+            let login = KeychainWrapper.stringForKey(kSecAttrAccount)
+            let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+            if (login != nil && auth_token != nil) {
+                let parameters:[String: AnyObject] = [
+                    "login": login!,
+                    "auth_token": auth_token!,
+                    "type_device": "0",
+                    "active": "0"
+                ]
+                // update deviceToken
+                request(.POST, ApiLink.create_or_update_device, parameters: parameters, encoding: .JSON)
+            }
+            
             KeychainWrapper.removeObjectForKey(kSecAttrAccount)
             KeychainWrapper.removeObjectForKey(kSecValueData)
             if let facebookSession = FBSession.activeSession() {
@@ -308,6 +353,13 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             }
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as LoginVC
+            
+            // Desactive the Background Fetch Mode
+            UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                UIApplicationBackgroundFetchIntervalNever)
+            
+            
+            
             self.presentViewController(loginViewController, animated: true, completion: nil)
         }
         let twoAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
@@ -317,6 +369,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    // MARK: - Administrator Page Button
     func btn_administrator() {
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let oneAction = UIAlertAction(title: "Flag Content List", style: UIAlertActionStyle.Destructive) { (_) in
@@ -334,7 +387,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     }
     
     
-    // UICollectionView Datasource and Delegate
+    // MARK: - UICollectionView Datasource and Delegate
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         //return numberofRow
         return 1
@@ -420,7 +473,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     }
     
     
-    // When the user is taking a picture from the device camera
+    // MARK: - When the user is taking a picture from the device camera
     func showCamera() {
         if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
             // Add Background for status bar
@@ -442,7 +495,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         }
     }
     
-    // When the user is selecting a picture from the gallery
+    // MARK: - When the user is selecting a picture from the gallery
     func showPhotoGallery() {
         // Add Background for status bar
         let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="chint___.ttf">
+            <string>ChinacatThin</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GuideTakePictureVC" customModule="Challfie" customModuleProvider="target">
+            <connections>
+                <outlet property="challengeLabel" destination="6mp-7I-Uv3" id="Bif-gl-d31"/>
+                <outlet property="challengePendingImageView" destination="AqS-hA-Jgu" id="pns-iK-G4o"/>
+                <outlet property="descriptionBottomConstraint" destination="fhi-Kj-I6j" id="uL8-Tx-HEH"/>
+                <outlet property="descriptionLabel" destination="cEk-Ll-Dm1" id="nfd-Cd-a7y"/>
+                <outlet property="nextPageButton" destination="uEb-Cg-mQJ" id="5jV-Vd-7Tz"/>
+                <outlet property="nextPageVerticalConstraint" destination="aff-9W-yFv" id="CPG-vT-GMx"/>
+                <outlet property="selfieImageView" destination="zM7-Vz-lnG" id="YiA-4l-a4x"/>
+                <outlet property="skipTutorialButton" destination="S2r-zO-TxU" id="Aqz-gy-kak"/>
+                <outlet property="titleLabel" destination="Uz5-og-tFE" id="04x-Sj-a7d"/>
+                <outlet property="view" destination="iN0-l3-epB" id="P3O-LN-sFe"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challfie_general_background" translatesAutoresizingMaskIntoConstraints="NO" id="eV1-2Y-bCl" userLabel="backgroundImage">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S2r-zO-TxU" userLabel="skipGuideButton">
+                    <rect key="frame" x="116" y="520" width="87" height="28"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="13"/>
+                    <state key="normal" title="Skip the tutorial">
+                        <color key="titleColor" red="0.40000000596046448" green="0.80000001192092896" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="skipTutorialAction:" destination="-1" eventType="touchUpInside" id="a2n-MS-eCl"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your selfie's status is currently &quot;Pending&quot;. Your followers will either approve or reject your selfie." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEk-Ll-Dm1" userLabel="descriptionLabel">
+                    <rect key="frame" x="20" y="69" width="280" height="50"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uEb-Cg-mQJ" userLabel="nextPageButton">
+                    <rect key="frame" x="35" y="429" width="250" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="2l6-gZ-L4s"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" title="Next (2/5) : Get your selfie approved">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="nextPageAction:" destination="-1" eventType="touchUpInside" id="A1p-AH-nXF"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38R-UR-SN8" userLabel="selfieLayoutView">
+                    <rect key="frame" x="50" y="159" width="220" height="250"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zM7-Vz-lnG" userLabel="selfieImageView">
+                            <rect key="frame" x="10" y="10" width="200" height="200"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="200" id="LEc-sI-nuV"/>
+                                <constraint firstAttribute="height" constant="200" id="gts-CA-Pao"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Challenge : Take a selfie" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6mp-7I-Uv3" userLabel="challengeLabel">
+                            <rect key="frame" x="35" y="220" width="150" height="17"/>
+                            <fontDescription key="fontDescription" name="ChinacatThin" family="Chinacat" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challenge_pending.png" translatesAutoresizingMaskIntoConstraints="NO" id="AqS-hA-Jgu" userLabel="challengePendingImageVIew">
+                            <rect key="frame" x="146" y="-7" width="77" height="65"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="65" id="4RA-OF-LiY"/>
+                                <constraint firstAttribute="width" constant="77" id="H1p-7f-fG5"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="6mp-7I-Uv3" secondAttribute="centerX" id="8Af-bJ-cnK"/>
+                        <constraint firstItem="AqS-hA-Jgu" firstAttribute="top" secondItem="38R-UR-SN8" secondAttribute="top" constant="-7" id="Bdm-4Z-orh"/>
+                        <constraint firstAttribute="height" constant="250" id="Ccz-pa-Csk"/>
+                        <constraint firstAttribute="trailing" secondItem="AqS-hA-Jgu" secondAttribute="trailing" constant="-3" id="PTn-E2-SoH"/>
+                        <constraint firstItem="zM7-Vz-lnG" firstAttribute="top" secondItem="38R-UR-SN8" secondAttribute="top" constant="10" id="WrR-zL-wqF"/>
+                        <constraint firstAttribute="width" constant="220" id="aDQ-U9-uH7"/>
+                        <constraint firstAttribute="centerX" secondItem="zM7-Vz-lnG" secondAttribute="centerX" id="ilg-p3-22f"/>
+                        <constraint firstItem="6mp-7I-Uv3" firstAttribute="top" secondItem="zM7-Vz-lnG" secondAttribute="bottom" constant="10" id="wqP-lJ-19W"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulation on taking your first Challfie!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uz5-og-tFE" userLabel="titleLabel">
+                    <rect key="frame" x="20" y="21.5" width="280" height="37.5"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                    <color key="textColor" red="1" green="0.80000001192092896" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="S2r-zO-TxU" secondAttribute="bottom" constant="20" id="2ss-Uq-HfV"/>
+                <constraint firstItem="S2r-zO-TxU" firstAttribute="top" relation="greaterThanOrEqual" secondItem="uEb-Cg-mQJ" secondAttribute="bottom" constant="10" id="3Fj-0g-Gun"/>
+                <constraint firstAttribute="trailing" secondItem="cEk-Ll-Dm1" secondAttribute="trailing" constant="20" id="8p0-fG-fgp"/>
+                <constraint firstAttribute="centerY" secondItem="38R-UR-SN8" secondAttribute="centerY" id="ABz-z9-7CQ"/>
+                <constraint firstAttribute="trailing" secondItem="eV1-2Y-bCl" secondAttribute="trailing" id="H7D-Nn-dtd"/>
+                <constraint firstAttribute="centerX" secondItem="uEb-Cg-mQJ" secondAttribute="centerX" id="Iso-jh-DHb"/>
+                <constraint firstItem="eV1-2Y-bCl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="JwI-Rr-WOA"/>
+                <constraint firstItem="cEk-Ll-Dm1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="TZH-v4-O0W"/>
+                <constraint firstAttribute="centerX" secondItem="S2r-zO-TxU" secondAttribute="centerX" id="a9S-Mh-6MX"/>
+                <constraint firstItem="uEb-Cg-mQJ" firstAttribute="top" secondItem="38R-UR-SN8" secondAttribute="bottom" constant="20" id="aff-9W-yFv"/>
+                <constraint firstItem="cEk-Ll-Dm1" firstAttribute="top" secondItem="Uz5-og-tFE" secondAttribute="bottom" constant="10" id="aqv-Kg-8bo"/>
+                <constraint firstAttribute="trailing" secondItem="uEb-Cg-mQJ" secondAttribute="trailing" constant="35" id="c3D-Ah-Chm"/>
+                <constraint firstItem="38R-UR-SN8" firstAttribute="top" secondItem="cEk-Ll-Dm1" secondAttribute="bottom" constant="40" id="fhi-Kj-I6j"/>
+                <constraint firstItem="Uz5-og-tFE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="hlu-1k-7la"/>
+                <constraint firstAttribute="centerX" secondItem="38R-UR-SN8" secondAttribute="centerX" id="jXj-gO-dor"/>
+                <constraint firstAttribute="trailing" secondItem="Uz5-og-tFE" secondAttribute="trailing" constant="20" id="m5p-j1-m0o"/>
+                <constraint firstItem="eV1-2Y-bCl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="sIl-BG-aQR"/>
+                <constraint firstItem="uEb-Cg-mQJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="35" id="uGe-hY-S4H"/>
+                <constraint firstAttribute="bottom" secondItem="eV1-2Y-bCl" secondAttribute="bottom" id="z6R-ev-zen"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="154"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="challenge_pending.png" width="457" height="415"/>
+        <image name="challfie_general_background" width="400" height="700"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

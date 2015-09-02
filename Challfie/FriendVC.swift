@@ -17,7 +17,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     @IBOutlet weak var followersButton: UIButton!
     @IBOutlet weak var linkFacebookButton: UIButton!
     @IBOutlet weak var friendsTab_FriendsTV_constraints: NSLayoutConstraint!
-    
+
     var suggestions_array: [Friend] = []
     var following_array: [Friend] = []
     var followers_array: [Friend] = []
@@ -28,10 +28,14 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     var followers_page = 1
     var friends_tab = 1
     
+    var suggestions_first_time: Bool = true
+    var following_first_time: Bool = true
+    var followers_first_time: Bool = true
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Styling the navigationController
         self.navigationController?.navigationBar.barTintColor = MP_HEX_RGB("30768A")
         self.navigationController?.navigationBar.tintColor = MP_HEX_RGB("FFFFFF")
@@ -113,6 +117,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         self.navigationController?.hidesBarsOnSwipe = false
     }
 
+    
+    // MARK: - function to load/fetch data from server
     func loadRequestData(pagination: Bool) {
         if pagination == true {
             self.loadingIndicator.startAnimating()
@@ -142,7 +148,9 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         loadingActivityView.removeFromSuperview()
                     }
                 }
-                if (mydata != nil) {
+                if (mydata == nil) {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
                     
@@ -284,15 +292,25 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         }
     }
     
+    // MARK: - action on each tab
     @IBAction func suggestionsTab(sender: AnyObject) {
         self.suggestionsButton.setBackgroundImage(UIImage(named: "friendsTab_selected_background"), forState: UIControlState.Normal)
         self.followingButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         self.followersButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         self.friends_tab = 1
-        self.suggestions_array.removeAll(keepCapacity: false)
-        self.request_array.removeAll(keepCapacity: false)
-        self.suggestions_page = 1
-        self.loadRequestData(false)
+        
+        
+        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+        
+        if self.suggestions_first_time == true || friend_tabBarItem.badgeValue != nil {
+            self.suggestions_page = 1
+            self.suggestions_array.removeAll(keepCapacity: false)
+            self.request_array.removeAll(keepCapacity: false)
+            self.loadRequestData(false)
+            self.suggestions_first_time = false
+        } else {
+            self.tableView.reloadData()
+        }
     }
     
     @IBAction func followingTab(sender: UIButton) {
@@ -300,9 +318,16 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         self.suggestionsButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         self.followersButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         self.friends_tab = 2
-        self.following_array.removeAll(keepCapacity: false)
-        self.following_page = 1
-        self.loadData(false)
+        
+        if self.following_first_time == true {
+            self.following_page = 1
+            self.following_array.removeAll(keepCapacity: false)
+            self.loadData(false)
+            self.following_first_time = false
+            
+        } else {
+            self.tableView.reloadData()
+        }
     }
     
     @IBAction func followersTab(sender: UIButton) {
@@ -310,11 +335,18 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         self.suggestionsButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         self.followingButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         self.friends_tab = 3
-        self.followers_array.removeAll(keepCapacity: false)
-        self.followers_page = 1
-        self.loadData(false)
+        
+        if self.followers_first_time == true {
+            self.followers_page = 1
+            self.followers_array.removeAll(keepCapacity: false)
+            self.loadData(false)
+            self.followers_first_time = false
+        } else {
+            self.tableView.reloadData()
+        }
     }
     
+    // MARK: - action "Link Facebook" button
     @IBAction func linkFacebook(sender: AnyObject) {
         FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
             (session:FBSession!, state:FBSessionState, error:NSError!) in
@@ -374,7 +406,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         })
     }
     
-    
+    // MARK: - Display Message if Empty
     func display_empty_message() {
         var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
         messageLabel.textColor = MP_HEX_RGB("000000")
@@ -416,7 +448,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         }
     }
     
-    // Function to push to Search Page
+    // MARK: - Tap Gesture to push to Search Page
     func tapGestureToSearchPage() {
         var globalFunctions = GlobalFunctions()
         globalFunctions.tapGestureToSearchPage(self, backBarTitle: NSLocalizedString("Friends_tab", comment: "Friends"))
@@ -519,6 +551,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             }
         }
         
+        cell.friendVC = self
         cell.friend = friend
         cell.indexPath = indexPath
         cell.tableView = self.tableView
@@ -549,6 +582,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        // Delete Following/Follower or Decline Follower's Request
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             var cell : FriendTVCell = tableView.cellForRowAtIndexPath(indexPath) as FriendTVCell
             let parameters = [
@@ -558,19 +593,53 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             ]
             if self.friends_tab == 1 {
                 self.request_array.removeAtIndex(indexPath.row)
-                request(.POST, ApiLink.remove_follower, parameters: parameters, encoding: .JSON)
+                request(.POST, ApiLink.remove_follower, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+                    if (mydata == nil) {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    } else {
+                        //Convert to SwiftJSON
+                        var json = JSON_SWIFTY(mydata!)
+                        if (json["success"].intValue == 0) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        }
+                    }
+                }
             }
             if self.friends_tab == 2 {
                 // Swipe to remove a following relationship
                 self.following_array.removeAtIndex(indexPath.row)
-                request(.POST, ApiLink.unfollow, parameters: parameters, encoding: .JSON)
+                request(.POST, ApiLink.unfollow, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+                    if (mydata == nil) {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    } else {
+                        //Convert to SwiftJSON
+                        var json = JSON_SWIFTY(mydata!)
+                        if (json["success"].intValue == 0) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        }
+                    }
+                }
+                // Refresh all 2 Tabs
+                self.suggestions_first_time = true
+                self.followers_first_time = true
             }
             if self.friends_tab == 3 {
                 // Swipe to remove a follower relationship
                 self.followers_array.removeAtIndex(indexPath.row)                
-                request(.POST, ApiLink.remove_follower, parameters: parameters, encoding: .JSON)
+                request(.POST, ApiLink.remove_follower, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+                    if (mydata == nil) {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    } else {
+                        //Convert to SwiftJSON
+                        var json = JSON_SWIFTY(mydata!)
+                        if (json["success"].intValue == 0) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        }
+                    }
+                }
             }
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            tableView.reloadData()
         }
     }
     
@@ -603,32 +672,6 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     }
     
     // MARK: - ENSideMenu Delegate
-    func sideMenuWillOpen() {
-        // Add Tap gesture to Hide Side Menu
-        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
-        self.tableView.addGestureRecognizer(tapGesture)
-        
-        // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as MyNavigationController
-        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
-        
-        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Left
-        self.tableView.addGestureRecognizer(leftSwipeGestureRecognizer)
-        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Left
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
-    }
-    
-    func sideMenuWillClose() {
-        // Remove Tap gesture to Hide Side Menu
-        if let recognizers = self.tableView.gestureRecognizers {
-            for recognizer in recognizers {
-                self.tableView.removeGestureRecognizer(recognizer as UIGestureRecognizer)
-            }
-        }               
-    }
-    
     func toggleSideMenu() {
         toggleSideMenuView()
     }

@@ -24,7 +24,7 @@ extension UILabel {
                 case "iPhone 5c": sizeScale = 0.9
                 case "iPhone 5s": sizeScale = 0.9
                 case "iPhone 6" : sizeScale = 1.0
-                case "iPhone 6 Plus" : sizeScale = 2.0
+                case "iPhone 6 Plus" : sizeScale = 1.1
                 default:
                     sizeScale = 1.0
                 }

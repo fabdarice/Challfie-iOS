@@ -1,6 +1,6 @@
 dependencies: \
   /Users/fcheng/workspace/mobileapp/Challfie/Pods/Target\ Support\ Files/Pods-AFNetworking/Pods-AFNetworking-prefix.pch \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/Darwin-1SOUQYUXM4RM0.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/Darwin-1SOUQYUXM4RM0.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/sys/cdefs.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/sys/_symbol_aliasing.h \
@@ -427,7 +427,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/sys/vcmd.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/libc.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/sysexits.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/MachO-19TCSPDEE4V6P.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/MachO-19TCSPDEE4V6P.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/mach-o/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/mach-o/arch.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/mach-o/compact_unwind_encoding.h \
@@ -442,7 +442,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/mach-o/reloc.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/mach-o/stab.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/mach-o/swap.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/ObjectiveC-302YWHE48XP22.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/ObjectiveC-302YWHE48XP22.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/objc/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/objc/List.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/objc/message.h \
@@ -459,13 +459,13 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/objc/objc-sync.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/objc/Object.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/objc/Protocol.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/os-1SOUQYUXM4RM0.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/os-1SOUQYUXM4RM0.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/os/base.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/os/object.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/dispatch/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/simd/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/os/activity.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/Dispatch-W9WZXRV3RZBZ.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/Dispatch-W9WZXRV3RZBZ.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/dispatch/dispatch.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/dispatch/base.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/dispatch/time.h \
@@ -479,7 +479,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/dispatch/data.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/dispatch/io.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/dispatch/introspection.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/CoreFoundation-2I3TRZ4JXJOE9.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/CoreFoundation-2I3TRZ4JXJOE9.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreFoundation.framework/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/usr/include/assert.h \
@@ -525,7 +525,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFStringTokenizer.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFFileDescriptor.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFPlugInCOM.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/Security-1KDZGPBJ8MZ3G.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/Security-1KDZGPBJ8MZ3G.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Security.framework/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Security.framework/Headers/Security.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Security.framework/Headers/SecBase.h \
@@ -541,7 +541,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Security.framework/Headers/SecTrust.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Security.framework/Headers/CipherSuite.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/CFNetwork-1Z9OS6UQGTGOD.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/CFNetwork-1Z9OS6UQGTGOD.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFNetwork.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFNetworkDefs.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFNetworkErrors.h \
@@ -554,7 +554,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFHTTPAuthentication.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFNetDiagnostics.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFProxySupport.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/Foundation-PNFYWITLP4HB.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/Foundation-PNFYWITLP4HB.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Foundation.framework/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSObjCRuntime.h \
@@ -666,7 +666,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSURLSession.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSUserActivity.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSUUID.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/CoreGraphics-1Z9OS6UQGTGOD.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/CoreGraphics-1Z9OS6UQGTGOD.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGBase.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGAffineTransform.h \
@@ -697,7 +697,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFContext.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFOperatorTable.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFScanner.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/OpenGLES-2DEWKGPFJ6WE9.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/OpenGLES-2DEWKGPFJ6WE9.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/OpenGLES.framework/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/EAGL.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/EAGLDrawable.h \
@@ -708,7 +708,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/ES2/glext.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/ES3/gl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/ES3/glext.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/CoreVideo-WD9J57RTSJ9C.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/CoreVideo-WD9J57RTSJ9C.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreVideo.framework/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CoreVideo.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVReturn.h \
@@ -721,7 +721,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVOpenGLESTextureCache.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVPixelFormatDescription.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVHostTime.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/CoreImage-1Z9OS6UQGTGOD.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/CoreImage-1Z9OS6UQGTGOD.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIColor.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImageDefines.h \
@@ -732,7 +732,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIDetector.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIFeature.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIKernel.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/CoreText-1Z9OS6UQGTGOD.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/CoreText-1Z9OS6UQGTGOD.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTDefines.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFont.h \
@@ -754,7 +754,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTTextTab.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/SFNTLayoutTypes.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/SFNTTypes.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/QuartzCore-2KW42MB15Y9JV.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/QuartzCore-2KW42MB15Y9JV.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/QuartzCore.framework/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAAnimation.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CALayer.h \
@@ -778,7 +778,7 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAValueFunction.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CoreAnimation.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.h \
-  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/227XAG3GDF9BC/UIKit-2X95M2Q1NPNPL.pcm \
+  /Users/fcheng/workspace/mobileapp/Challfie/build/ModuleCache/2W9V3JSVVJLB/UIKit-2X95M2Q1NPNPL.pcm \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/UIKit.framework/module.map \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKitDefines.h \

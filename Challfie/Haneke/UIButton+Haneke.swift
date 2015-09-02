@@ -37,6 +37,9 @@ public extension UIButton {
     }
     
     public func hnk_setImageFromFetcher(fetcher : HNKFetcher<UIImage>, state : UIControlState = .Normal, placeholder : UIImage? = nil, format : HNKFormat<UIImage>? = nil, failure fail : ((NSError?) -> ())? = nil, success succeed : ((UIImage) -> ())? = nil){
+        // Custom Fix FAB
+        self.setImage(placeholder, forState: state)
+        
         self.hnk_cancelSetImage()
         self.hnk_imageFetcher = fetcher
         
@@ -44,9 +47,10 @@ public extension UIButton {
         
         if didSetImage { return }
         
-        if let placeholder = placeholder {
-            self.setImage(placeholder, forState: state)
-        }
+        // CUstom Fix FAB
+//        if let placeholder = placeholder {
+//            self.setImage(placeholder, forState: state)
+//        }
     }
     
     public func hnk_cancelSetImage() {

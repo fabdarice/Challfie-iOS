@@ -15,12 +15,14 @@ class FriendTVCell : UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var nb_mutual_friends: UILabel!
     @IBOutlet weak var relationshipButton: UIButton!
+    @IBOutlet weak var relationshipButtonHeightConstraint: NSLayoutConstraint!
     
     var friends_tab: Int!
     var friend: Friend!
     var not_following: Bool!
     var tableView: UITableView!
     var indexPath: NSIndexPath!
+    var friendVC: FriendVC!
     
     func loadItem(friends_tab: Int) {
         // Username
@@ -73,6 +75,7 @@ class FriendTVCell : UITableViewCell {
         self.friends_tab =  friends_tab
         if friends_tab == 1 {
         // SUGGESTIONS
+            self.relationshipButtonHeightConstraint.constant = 60
             self.relationshipButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
         }
 
@@ -80,32 +83,41 @@ class FriendTVCell : UITableViewCell {
         // FOLLOWING
             if friend.is_pending == true {
                 // Pending Request
+                self.relationshipButtonHeightConstraint.constant = 30
                 self.relationshipButton.setImage(UIImage(named: "pending_button"), forState: UIControlState.Normal)
             } else {
                 // Following
+                self.relationshipButtonHeightConstraint.constant = 30
                 self.relationshipButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
             }
             
         }
 
         if (friends_tab == 3 || friends_tab == 4) {
-        // FOLLOWERS
+        // FOR FOLLOWERS OR "SEARCH USER" OR "USERAPPROVAL LIST" 
             // Check if it's current_user
             if friend.username == KeychainWrapper.stringForKey(kSecAttrAccount)! {
                 self.relationshipButton.hidden = true
             } else {
                 self.relationshipButton.hidden = false
                 if friend.is_following == true {
+                    self.relationshipButtonHeightConstraint.constant = 30
                     self.relationshipButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
-                    not_following = false
+                    self.not_following = false
                 } else {
-                    not_following = true
+                    self.not_following = true
+                    self.relationshipButtonHeightConstraint.constant = 60
                     self.relationshipButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
                 }
             }
         }
         
+        if (friends_tab == 5) {
+            
+        }
+        
         self.relationshipButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        
     }
     
     @IBAction func relationshipButton(sender: UIButton) {
@@ -115,21 +127,72 @@ class FriendTVCell : UITableViewCell {
             "user_id": self.friend.id.description
         ]
         
+        self.relationshipButtonHeightConstraint.constant = 30
+        self.relationshipButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
+        self.friend.is_following = true
+        self.friend.is_pending = true
+        
         if friends_tab == 1 {
             // SUGGESTIONS
-            request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
-            self.relationshipButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
-            self.friend.is_following = true
-            self.friend.is_pending = true
+            request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+                if (mydata == nil) {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                    self.relationshipButtonHeightConstraint.constant = 60
+                    self.relationshipButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
+                    self.friend.is_following = false
+                    self.friend.is_pending = false
+                } else {
+                    //Convert to SwiftJSON
+                    var json = JSON_SWIFTY(mydata!)
+                    if (json["success"].intValue == 1) {
+                        // Refresh all 3 tabs
+                        
+                        if self.friendVC != nil {
+                            self.friendVC.suggestions_first_time = true
+                            self.friendVC.following_first_time = true
+                            self.friendVC.followers_first_time = true
+                        }
+                    } else {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                        self.relationshipButtonHeightConstraint.constant = 60
+                        self.relationshipButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
+                        self.friend.is_following = false
+                        self.friend.is_pending = false
+                    }
+                }
+            }
         }
                 
         if (friends_tab == 3 || friends_tab == 4) {
             // FOLLOWERS
-            if not_following == true {
-                request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
-                self.relationshipButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
-                self.friend.is_following = true
-                self.friend.is_pending = true
+            if self.not_following == true {
+                request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+                    if (mydata == nil) {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                        self.relationshipButtonHeightConstraint.constant = 60
+                        self.relationshipButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
+                        self.friend.is_following = false
+                        self.friend.is_pending = false
+                    } else {
+                        //Convert to SwiftJSON
+                        var json = JSON_SWIFTY(mydata!)
+                        if (json["success"].intValue == 1) {
+                            // Refresh all 3 tabs
+                            if self.friendVC != nil {
+                                self.friendVC.suggestions_first_time = true
+                                self.friendVC.following_first_time = true
+                                self.friendVC.followers_first_time = true
+                            }
+                        } else {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                            self.relationshipButtonHeightConstraint.constant = 60
+                            self.relationshipButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
+                            self.friend.is_following = false
+                            self.friend.is_pending = false
+                        }
+                    }
+                }
+   
             }
         }
         

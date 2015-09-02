@@ -18,16 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        // Register for Push Notitications, if running iOS 8
-        if application.respondsToSelector("registerUserNotificationSettings:") {
-            let notificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
-            let settings = UIUserNotificationSettings(forTypes: notificationType, categories: nil)
-            application.registerUserNotificationSettings(settings)
-        } else {
-            // Register for Push Notifications before iOS 8
-            application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
-        }
-        
         //KeychainWrapper.removeObjectForKey(kSecAttrAccount)
         //KeychainWrapper.removeObjectForKey(kSecValueData)
         
@@ -38,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as LoginVC
         var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as HomeTBC
-        //var myNavigationController:MyNavigationController = mainStoryboard.instantiateViewControllerWithIdentifier("navigationTimelineID") as MyNavigationController
+        //var guideVC:GuideVC = mainStoryboard.instantiateViewControllerWithIdentifier("guideVC") as GuideVC
         
         var facebookUsernameViewController:FacebookUsernameVC = mainStoryboard.instantiateViewControllerWithIdentifier("facebookUsernameVC") as FacebookUsernameVC
 
@@ -62,9 +52,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         if (json["success"].intValue == 1) {
                             let username_activated: Bool = json["username_activated"].boolValue
                             
+                            // Activate the Background Fetch Mode to Interval Minimum
+                            UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                                UIApplicationBackgroundFetchIntervalMinimum)
+                            
                             if username_activated == true {
                                 self.window?.rootViewController = homeTableViewController
-                                //self.window?.rootViewController = tutorialVC
+                                //self.window?.rootViewController = guideVC
                             } else {
                                 self.window?.rootViewController = facebookUsernameViewController
                             }
@@ -128,6 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        println("ENTER didRegisterForRemoteNotificationsWithDeviceToken")
         var deviceTokenStr = NSString(format: "%@", deviceToken)
         let login = KeychainWrapper.stringForKey(kSecAttrAccount)
         let auth_token = KeychainWrapper.stringForKey(kSecValueData)
@@ -135,7 +130,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let parameters:[String: AnyObject] = [
                 "login": login!,
                 "auth_token": auth_token!,
-                "device_token": deviceTokenStr
+                "device_token": deviceTokenStr,
+                "type_device": "0",
+                "active": "1"
             ]
             
             // update deviceToken
@@ -148,25 +145,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        println("didReceiveRemoteNotification")
     }
 
-    
-/*
-    - (BOOL)application:(UIApplication *)application
-    openURL:(NSURL *)url
-    sourceApplication:(NSString *)sourceApplication
-    annotation:(id)annotation {
-    
-    // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
-    BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
-    
-    // You can add your app-specific url handling code here if needed
-    
-    return wasHandled;
-    }
-*/
-    
     // MARK: - Facebook Login to handle callback
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
         let facebookCallHandled = FBAppCall.handleOpenURL(url, sourceApplication: sourceApplication)
@@ -177,6 +157,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func sessionStateChanged(session:FBSession, state:FBSessionState, error:NSError?) {
+        
+    }
+    
+    // MARK: - Fetch Data In Background Mode
+    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        
+        println("ENTER performFetchWithCompletionHandler")
+        if let homeTableViewController:HomeTBC = self.window?.rootViewController as? HomeTBC {
+            // Fetch Data of Timeline Tab
+            if let allTabViewControllers = homeTableViewController.viewControllers {
+                var navController:UINavigationController = allTabViewControllers[0] as UINavigationController
+                var timelineVC: TimelineVC = navController.viewControllers[0] as TimelineVC
+                
+                timelineVC.fetchDataInBackground({(result) in completionHandler(result) })
+            }
+        }
+        
         
     }
 

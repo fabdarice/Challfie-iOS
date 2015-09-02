@@ -19,6 +19,7 @@ class User {
     var created_at: String!
     var book_tier: Int!
     var book_level: String!
+    var book_image: String!
     var is_facebook_picture: Bool!
     // Variable to check if the current_user has a following relationship (pending or not) with self.user
     var is_following: Bool!
@@ -29,6 +30,7 @@ class User {
     var progression: Int!
     var administrator: Int!
     var blocked: Bool!
+    var is_current_user: Bool!
     
     init(json: JSON_SWIFTY) {
         self.id = json["id"].intValue
@@ -41,6 +43,7 @@ class User {
         self.profile_pic = json["avatar"].stringValue
         self.book_tier = json["book_tier"].intValue
         self.book_level = json["book_level"].stringValue
+        self.book_image = json["book_image"].stringValue
         self.is_facebook_picture = json["is_facebook_picture"].boolValue
         self.is_following = json["is_following"].boolValue
         self.is_pending = json["is_pending"].boolValue
@@ -49,6 +52,7 @@ class User {
         self.progression = json["progression"].intValue
         self.administrator = json["administrator"].intValue
         self.blocked = json["blocked"].boolValue
+        self.is_current_user = json["is_current_user"].boolValue
     }
     
     func show_profile_pic() -> String {
@@ -63,6 +67,18 @@ class User {
             }
             return profile_pic_url
         }
+        
+    }
+    
+    func show_book_image() -> String {
+        
+        var book_url: String!
+        if ApiLink.host == "https://challfie.com" {
+            book_url = self.book_image
+        } else {
+            book_url = ApiLink.host + self.book_image
+        }
+        return book_url
         
     }
 }

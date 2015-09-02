@@ -124,8 +124,8 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "facebookregisterSegue") {
-            var tutorialVC: TutorialVC = segue.destinationViewController as TutorialVC
-            tutorialVC.from_facebook = true
+            var guideVC: GuideVC = segue.destinationViewController as GuideVC
+            guideVC.from_facebook = true
         }
     }
 }

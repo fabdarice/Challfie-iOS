@@ -15,6 +15,18 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var UsernameColumnLabel: UILabel!
     @IBOutlet weak var LevelColumnLabel: UILabel!
     @IBOutlet weak var progressColumnLabel: UILabel!
+    @IBOutlet weak var rankColumnLabel: UILabel!
+    @IBOutlet weak var friendsRankButton: UIButton!
+    @IBOutlet weak var allUsersRankButton: UIButton!
+    
+    @IBOutlet weak var currentUserView: UIView!
+    
+    @IBOutlet weak var currentUsernameLabel: UILabel!
+    @IBOutlet weak var currentUserRankLabel: UILabel!
+    @IBOutlet weak var currentUserProfilPicImageView: UIImageView!
+    @IBOutlet weak var currentUserProgressLabel: UILabel!
+    @IBOutlet weak var currentUserLevelLabel: UILabel!
+    
     
     var page = 1
     var users_array : [User] = []
@@ -33,7 +45,14 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         let statusBarViewBackground = UIView(frame: CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, 20.0))
         statusBarViewBackground.backgroundColor = MP_HEX_RGB("30768A")
         UIApplication.sharedApplication().keyWindow?.addSubview(statusBarViewBackground)
-                        
+        
+        self.rankColumnLabel.text = NSLocalizedString("rank", comment: "Rank")
+        self.UsernameColumnLabel.text = NSLocalizedString("user", comment: "User")
+        self.LevelColumnLabel.text = NSLocalizedString("level", comment: "Level")
+        self.progressColumnLabel.text = NSLocalizedString("progress", comment: "Progress")
+        self.friendsRankButton.setTitle(NSLocalizedString("my_friends", comment: "My Friends"), forState: .Normal)
+        self.allUsersRankButton.setTitle(NSLocalizedString("all_users", comment: "All Users"),  forState: .Normal)
+        
         // Add Bottom the loading Indicator
         self.loadingIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 44)
         self.loadingIndicator.tintColor = MP_HEX_RGB("30768A")
@@ -54,9 +73,14 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 60.0
         
+        //self.currentUserView.backgroundColor = MP_HEX_RGB("FAE0B1")
+        self.currentUserView.layer.borderWidth = 1.0
+        self.currentUserView.layer.borderColor = MP_HEX_RGB("000000").CGColor
+
         self.loadData(false)
     }
     
+    // MARK: - Load/Fetch Data
     func loadData(pagination: Bool) {
         if pagination == true {
             self.loadingIndicator.startAnimating()
@@ -65,7 +89,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
             // -49 because of the height of the Tabbar ; -40 because of navigationController
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
             loadingActivityVC.view.frame = newframe
             
             self.view.addSubview(loadingActivityVC.view)
@@ -87,21 +111,57 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                         loadingActivityView.removeFromSuperview()
                     }
                 }
-                
                 if (mydata == nil) {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
+
+                    // Set Current_user row
+                    var current_user = User.init(json: json["current_user"][0])
+                    self.currentUserRankLabel.text = json["current_rank"].stringValue
+                    // Username
+                    self.currentUsernameLabel.text = current_user.username
+                    self.currentUsernameLabel.textColor = MP_HEX_RGB("3E9AB5")
                     
+                    // Level
+                    self.currentUserLevelLabel.text = current_user.book_level
+                    
+                    // Progression
+                    self.currentUserProgressLabel.text = current_user.progression.description + "%"
+                    
+                    // User Profile Picture
+                    if current_user.show_profile_pic() != "missing" {
+                        let profilePicURL:NSURL = NSURL(string: current_user.show_profile_pic())!
+                        self.currentUserProfilPicImageView.hnk_setImageFromURL(profilePicURL)
+                    } else {
+                        self.currentUserProfilPicImageView.image = UIImage(named: "missing_user")
+                    }
+                    self.currentUserProfilPicImageView.layer.cornerRadius = self.currentUserProfilPicImageView.frame.size.width / 2
+                    self.currentUserProfilPicImageView.clipsToBounds = true
+                    self.currentUserProfilPicImageView.layer.borderWidth = 2.0
+                    self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
+                    
+                    if current_user.book_tier == 1 {
+                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("0095AE").CGColor;
+                        //self.currentUserLevelLabel.textColor = MP_HEX_RGB("0095AE")
+                    }
+                    if current_user.book_tier == 2 {
+                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("63B54A").CGColor;
+                        //self.currentUserLevelLabel.textColor = MP_HEX_RGB("63B54A")
+                    }
+                    if current_user.book_tier == 3 {
+                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("8258E5").CGColor;
+                        //self.currentUserLevelLabel.textColor = MP_HEX_RGB("8258E5")
+                    }
+                   
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
                             var user = User.init(json: json["users"][i])
                             self.users_array.append(user)
                         }
+                        self.page += 1
                     }
-                    self.page += 1
-                    
                     self.tableView.reloadData()                    
                 }
                 self.tableView.tableFooterView = nil
@@ -154,6 +214,12 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         profilVC.user = cell.user
         
         self.navigationController?.pushViewController(profilVC, animated: true)
+    }
+    
+    
+    @IBAction func allUsersRankAction(sender: AnyObject) {
+        var rankingAllusersVC = RankingAllUsersVC(nibName: "RankingAllUsers", bundle: nil)
+        self.navigationController?.pushViewController(rankingAllusersVC, animated: true)
     }
 
 }

@@ -9,14 +9,28 @@
 // Account Creation
 
 Account_creation_failed = "Échec lors de la création de compte";
+new_account_title = "Créer un nouveau compte";
 Username = "Identifiant";
 Firstname = "Prénom";
 Lastname = "Nom";
 Password = "Mot de passe";
+Password_helper = "* mot de passe doit contenir minimum 8 caractères";
+Create_account = "Créer mon compte";
+Email = "Email";
 eula = "la création de ton compte implique que tu consens aux modalités et conditions de services";
+already_an_account = "Déjà membre de Challfie?";
 
 // Login Page
 Authentication_failed = "Connexion échouée";
+forgot_password = "Mot de passe oublié?";
+register_new_account = "Créer un nouveau compte";
+log_in = "Se connecter";
+
+// Tabbar Title
+tab_timeline = "FIL D'ACTU";
+tab_challenge = "CHALLENGE";
+tab_friends = "AMIS";
+tab_alert = "ALERTE";
 
 // General
 Pull_to_refresh = "Tire vers le bas pour rafraichir";
@@ -26,6 +40,9 @@ confirm = "Valider";
 
 // Forgot Password Page
 Email_sent = "Email envoyé";
+forgot_password_title = "J'ai oublié mon mot de passe";
+sign_in_challfie = "Se connecter sur Challfie";
+send_reset_password = "Réinitialiser mon mot de passe";
 
 // Facebook Choose Username Page
 choose_username = "Choisis ton identifiant";
@@ -50,8 +67,11 @@ flag_as_inappropriate = "Merci. Le contenu de ce selfie a été signalé comme �
 report_selfie = "Signaler Selfie";
 report_inappropriate_content = "Signaler du contenu inapproprié";
 delete_selfie = "Supprimer selfie";
-delete_selfie_confiration = "Es-tu certain de vouloir supprimer ce selfie? Il sera supprimé de manière permanente de votre compte.";
+delete_selfie_confiration = "Es-tu certain de vouloir supprimer ce selfie? Il sera caché de manière permanente de ton compte.";
 delete = "Supprimer";
+is_deleted = "Ce selfie a été supprimé.";
+user_list_approval = "Approuvé par";
+user_list_reject = "Rejeté par";
 
 
 // Comment
@@ -74,10 +94,10 @@ Mutual_friends = " amis en commun";
 Mutual_friend = " ami en commun";
 Number_followers = " abonnés";
 Number_follower = " abonné";
-Friend_request = "Demande d'ami";
+Friend_request = "Demande d'abonnement";
 Friends_suggestions = "Suggestions d'amis";
 Friends_no_results = "Aucun résultat trouvé..";
-Search_facebook_friends = "Rechercher vos amis Facebook";
+Search_facebook_friends = "Rechercher tes amis Facebook";
 
 // Profil Page
 no_selfies = "Cet utilisateur n'a pas encore pris de selfie challenge..";
@@ -94,7 +114,7 @@ profil_blocked = "Ton compte a été bloqué par un administrateur. Merci de nou
 
 // Challenge Page
 book_of_challenges = "Livre de challenges";
-book_is_locked = "Débloque ce livre en ayant vos Challfies approuvés par vos amis.";
+book_is_locked = "Débloque ce livre en ayant tes Challfies approuvés par tes amis.";
 book_locked = "Livre bloqué";
 difficulty = "Difficulté";
 next_level = "Prochain niveau";
@@ -141,12 +161,7 @@ about_us_text_three = "N'attends plus et prends ton premier Challfie !!";
 
 // Tutorial Page
 step = "ÉTAPE";
-skip_tutorial = "Passer le tutoriel";
 get_started = "Démarrer";
-tutorial_step_one = "Choisis un challenge parmi une centaine d'idées fun à découvrir";
-tutorial_step_two = "Complète ton challenge en prenant le selfie correspondant.";
-tutorial_step_three = "Obtiens l'approbation de ton selfie challenge par tes amis";
-tutorial_step_four = "Gagne des points pour chaque Challfie approuvé et monte de niveau pour débloquer de nouveaux challenges";
 
 // Link Facebook Tutorial Page
 link_facebook_title = "Associe ton compte Facebook *";
@@ -155,7 +170,14 @@ link_facebook_button = "Recherche tes amis Facebook";
 skip_link_facebook_step = "Passer cette étape";
 
 // Ranking Page
-ranking_title = "Classement";
+ranking_title = "Classement - Mes Amis";
+ranking_all_users_title = "Classement - Général";
+user = "Utilisateur";
+rank = "Rang";
+level = "Niveau";
+progress = "%";
+my_friends = "Mes Amis";
+all_users = "Général";
 
 // Admin
 block_selfie = "Block selfie";
@@ -165,4 +187,28 @@ block_user_notification = "User has been blocked";
 clear_flag = "Clear selfie flags";
 clear_flag_notification = "Flags have been cleared for this Selfie";
 
+// Tutorial
+skip_tutorial = "Passer le tutorial";
+take_a_selfie = "Challenge : Prendre un selfie";
+thanks_tutorial = "Merci à toi de faire parti de la Challfie family! Amuses toi bien et prends plein de selfies!";
+
+tutorial_one_title = "Bienvenue";
+tutorial_two_title = "Félicitation pour ton premier Challfie!";
+tutorial_three_title = "Ton selfie challenge a été approuvé!";
+tutorial_four_title = "Système de points";
+tutorial_five_title = "Monter de niveau";
+
+tutorial_one_description = "Le concept de Challfie est de compléter des challenges en prenant des selfies. \n\nPuisque c'est ta première fois, complétons ensemble un simple challenge : \"Prendre un selfie\".";
+tutorial_two_description = "Le statut de ton selfie est pour le moment \"en attente\". \nTes abonnés vont soit l'approuvé, soit le rejeté.";
+tutorial_three_description = "Parce que nous sommes suuuuper sympa, nous avons approuvé ton premier Challfie. \nLes prochaines fois, tu auras besoin d'un minimum de 5 votes avec >75% d'approbation.";
+tutorial_four_description = "Tu gagnes des points pour chaque Challfie approuvé. Plus le challenge est difficile à réaliser, plus il rapportera de points.";
+tutorial_five_description = "Lorsque tu auras cumulé assez de points, tu monteras de niveau et débloqueras des nouveaux challenges.";
+
+tutorial_one_button = "Compléter le challenge";
+tutorial_two_button = "Suivant (2/5) : Approbation du Challfie";
+tutorial_three_button = "Suivant (3/5) : Gagne des points";
+tutorial_four_button = "Suivant (4/5) : Monte de niveau";
+tutorial_five_button = "C'est Parti!";
+
+first_challfie = "Mon premier Challfie!!";
 

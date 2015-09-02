@@ -14,7 +14,6 @@ class MyNavigationController: ENSideMenuNavigationController, ENSideMenuDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
         var menuTVC = MyMenuTableViewController()
         menuTVC.navController = self
                         

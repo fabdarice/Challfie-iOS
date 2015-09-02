@@ -38,17 +38,18 @@ public extension UIImageView {
         failure fail : ((NSError?) -> ())? = nil,
         success succeed : ((UIImage) -> ())? = nil) {
 
+        // CUSTOM FAB FIX
+        self.image = placeholder
+            
         self.hnk_cancelSetImage()
-        
         self.hnk_fetcher = fetcher
-        
-            let didSetImage = self.hnk_fetchImageForFetcher(fetcher, format: format, failure: fail, success: succeed)
-        
+        let didSetImage = self.hnk_fetchImageForFetcher(fetcher, format: format, failure: fail, success: succeed)
         if didSetImage { return }
      
-        if let placeholder = placeholder {
-            self.image = placeholder
-        }
+        // CUSTOM FAB FIX
+        //if let placeholder = placeholder {
+        //    self.image = placeholder
+        //}
     }
     
     public func hnk_cancelSetImage() {

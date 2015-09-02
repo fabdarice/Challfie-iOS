@@ -8,9 +8,13 @@
 
 import Foundation
 
-class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelegate {
+class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     //var new_alert_nb:Int! = 0
+    var from_facebook: Bool = false
+    var imageToSave: UIImage!
+    var imagePicker: UIImagePickerController!
+    var use_camera: Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +31,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: MP_HEX_RGB("A8A7A7")], forState:.Normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: MP_HEX_RGB("30768A")], forState:.Selected)
 
+        
         // Set Color for unselected image item
         for item in self.tabBar.items as [UITabBarItem] {
             if let image = item.image {
@@ -34,10 +39,30 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
             }
         }
         
-        var camera_tabBarItem : UITabBarItem = self.tabBar.items?[2] as UITabBarItem
-        camera_tabBarItem.title = nil
-        camera_tabBarItem.image = UIImage(named: "tabBar_camera")?.imageWithRenderingMode(.AlwaysOriginal)
-        camera_tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0)
+        // Load all views + set Title of UITabBarItem
+        var i = 0
+        for viewController in self.viewControllers!
+        {
+            viewController.view
+            var navController:UINavigationController = viewController as UINavigationController
+            switch i {
+            case 0 : navController.tabBarItem.title = NSLocalizedString("tab_timeline", comment: "Timeline")
+            case 1 : navController.tabBarItem.title = NSLocalizedString("tab_challenge", comment: "Challenge")
+            case 2 :
+                navController.tabBarItem.title = nil
+                navController.tabBarItem.image = UIImage(named: "tabBar_camera")?.imageWithRenderingMode(.AlwaysOriginal)
+                navController.tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0)
+            case 3 : navController.tabBarItem.title = NSLocalizedString("tab_friends", comment: "Friends")
+            case 4 : navController.tabBarItem.title = NSLocalizedString("tab_alert", comment: "Alert")
+            default: navController.tabBarItem.title = ""
+            }
+            i += 1
+        }
+        
+        if self.from_facebook == true {            
+            // Show Friend's Tab
+            self.selectedIndex = 3
+        }
         
     }
     
@@ -46,21 +71,18 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         // Show popup for "camera Tab" instead of showing the viewcontroller directly
         if let selectedViewController = tabBarController.viewControllers {
             if (viewController == selectedViewController[2] as NSObject) {
-
                 let navController = viewController as UINavigationController
                 var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
                 
-                // Show Pop-op to options to choose between camera and photo library on iOS 8
-                var alert = UIAlertController(title: nil, message: NSLocalizedString("add_a_new_selfie", comment: "Add a new challfie"), preferredStyle: UIAlertControllerStyle.ActionSheet)
+                // Show Pop-op to options to choose between camera and photo library
+                var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
                 let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
-                        takePictureVC.use_camera = true
-                        takePictureVC.photo_taken = false
-                        tabBarController.selectedViewController = navController
+                        self.use_camera = true
+                        self.showCamera()
                     }
                 let twoAction = UIAlertAction(title: NSLocalizedString("choose_from_gallery", comment: "Choose From Your Gallery"), style: .Default) { (_) in
-                        takePictureVC.use_camera = false
-                        takePictureVC.photo_taken = false
-                        tabBarController.selectedViewController = navController
+                        self.use_camera = false
+                        self.showPhotoLibrary()
                     }
                 let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
                 
@@ -74,6 +96,94 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
             }
         }
         return true
+    }
+    
+    
+    
+    // MARK: - When the user is taking a picture from the device camera
+    func showCamera() {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker.delegate = self
+            self.imagePicker.sourceType = .Camera
+            self.imagePicker.cameraDevice = UIImagePickerControllerCameraDevice.Front
+            
+            self.imagePicker.allowsEditing = false
+            
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        } else {
+            GlobalFunctions().displayAlert(title: "No Camera Found", message: " ", controller: self)
+        }
+    }
+    
+    // MARK: - When the user is selecting a picture from the gallery
+    func showPhotoLibrary() {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)){
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker.delegate = self
+            
+            self.imagePicker.allowsEditing = false
+            self.imagePicker.sourceType = .PhotoLibrary
+            
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        } else {
+            GlobalFunctions().displayAlert(title: "No access to photo library", message: " ", controller: self)
+        }
+    }
+    
+    // MARK: - UIImagePickerController Delegate methods
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        
+        if let pickedImage = image {
+            self.imageToSave = pickedImage
+            
+            // Save to Challfie Album
+            if self.use_camera == true {
+                self.imageToSave = self.fixOrientation(image)
+                UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
+                // Push to TakePictureVC
+                if let allTabViewControllers = self.viewControllers {
+                    var navController:UINavigationController = allTabViewControllers[2] as UINavigationController
+                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
+                    takePictureVC.imageToSave = self.imageToSave
+                    self.selectedViewController = navController
+                    picker.dismissViewControllerAnimated(true, completion: nil)
+                }
+            } else {
+                self.hidesBottomBarWhenPushed = true
+                var photoLibraryPreviewVC = PhotoLibraryPreviewVC(nibName: "PhotoLibraryPreview", bundle: nil)
+                photoLibraryPreviewVC.imageToSave = self.imageToSave
+                photoLibraryPreviewVC.homeTabBarController = self
+                photoLibraryPreviewVC.imagePicker = picker
+                picker.pushViewController(photoLibraryPreviewVC, animated: true)
+            }
+        }
+
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func fixOrientation(img:UIImage) -> UIImage {
+        if (img.imageOrientation == UIImageOrientation.Up) {
+            return img;
+        }
+        UIGraphicsBeginImageContextWithOptions(img.size, false, img.scale);
+        let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
+        img.drawInRect(rect)
+        
+        var normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return normalizedImage;
     }
     
 }

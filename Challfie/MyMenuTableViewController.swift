@@ -63,7 +63,7 @@ class MyMenuTableViewController: UITableViewController {
             cell!.backgroundColor = UIColor.clearColor()
         }
         var imageView : UIImageView = UIImageView(frame: CGRectMake(10.0, 10.0, 20.0, 20.0))
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
         
         var textLabel : UILabel = UILabel(frame: CGRectMake(40.0, 10.0, cell!.frame.size.width - 7 - 20, 20.0))
         textLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
@@ -208,7 +208,7 @@ class MyMenuTableViewController: UITableViewController {
                         // Push to OneSelfieVC
                         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
                         profilVC.user = current_user
-                        
+                        self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
                         self.navController.pushViewController(profilVC, animated: true)
                         selectedCell.contentView.backgroundColor = UIColor.clearColor()
                     }
@@ -238,7 +238,8 @@ class MyMenuTableViewController: UITableViewController {
             // Rank
             if indexPath.row == 1 {
                 var rankingVC = RankingVC(nibName: "Ranking" , bundle: nil)
-                self.navController.pushViewController(rankingVC, animated: true)
+                self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                self.navController.pushViewController(rankingVC, animated: true)                
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
             break
@@ -275,6 +276,20 @@ class MyMenuTableViewController: UITableViewController {
             break
         case 3:
             // Log Out
+            // Desactive Device so it can't receive push notifications
+            let login = KeychainWrapper.stringForKey(kSecAttrAccount)
+            let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+            if (login != nil && auth_token != nil) {
+                let parameters:[String: AnyObject] = [
+                    "login": login!,
+                    "auth_token": auth_token!,
+                    "type_device": "0",
+                    "active": "0"
+                ]
+                // update deviceToken
+                request(.POST, ApiLink.create_or_update_device, parameters: parameters, encoding: .JSON)
+            }
+            
             KeychainWrapper.removeObjectForKey(kSecAttrAccount)
             KeychainWrapper.removeObjectForKey(kSecValueData)
             if let facebookSession = FBSession.activeSession() {
@@ -283,6 +298,9 @@ class MyMenuTableViewController: UITableViewController {
                 FBSession.setActiveSession(nil)
             }
             var loginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as LoginVC
+            // Desactive the Background Fetch Mode
+            UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                UIApplicationBackgroundFetchIntervalNever)
             self.navController.presentViewController(loginVC, animated: true, completion: nil)
             break
         default:

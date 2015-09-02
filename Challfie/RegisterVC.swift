@@ -21,12 +21,29 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var registerView: UIView!
     @IBOutlet weak var createNewAccountLabel: UILabel!    
     @IBOutlet weak var eulaLabel: UILabel!
-    
+    @IBOutlet weak var alreadyAccount: UIButton!
+    @IBOutlet weak var passwordHelper: UILabel!    
+    @IBOutlet weak var createAccountButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = MP_HEX_RGB("FFFFFF")
+
+        self.usernameTextField.placeholder = NSLocalizedString("Username", comment: "Username")
+        self.passwordTextField.placeholder = NSLocalizedString("Password", comment: "Password") + " *"
+        self.emailTextField.placeholder = NSLocalizedString("Email", comment: "Email")
+        self.firstnameTextField.placeholder = NSLocalizedString("Firstname", comment: "First name")
+        self.lastnameTextField.placeholder = NSLocalizedString("Lastname", comment: "Last name")
+        self.createNewAccountLabel.text = NSLocalizedString("new_account_title", comment: "New account on Challfie")
+        self.createAccountButton.setTitle(NSLocalizedString("Create_account", comment: "Create Account"), forState: .Normal)
+        self.passwordHelperLabel.text = NSLocalizedString("Password_helper", comment: "* Password must be at least 8 characters long")
+        self.alreadyAccount.setTitle(NSLocalizedString("Create_account", comment: "Create Account"), forState: .Normal)
+        
+        // Eula
+        self.eulaLabel.text = NSLocalizedString("eula", comment: "by signing up for this account, you agree to the terms and conditions")
+        self.eulaLabel.font = UIFont.italicSystemFontOfSize(10.0)
+        
         
         // password Helper Style
         self.passwordHelperLabel.font = UIFont.italicSystemFontOfSize(10.0)
@@ -41,9 +58,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         // Hide Password in TextField with *****
         self.passwordTextField.secureTextEntry = true
         
-        // Eula
-        self.eulaLabel.text = NSLocalizedString("eula", comment: "by signing up for this account, you agree to the terms and conditions")
-        self.eulaLabel.font = UIFont.italicSystemFontOfSize(10.0)
+        
         
     }
     
@@ -71,7 +86,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     }
     
     
-    @IBAction func createAccountButton(sender: UIButton) {
+    @IBAction func createAccountButton(sender: AnyObject) {
         // add loadingIndicator pop-up
         var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
@@ -129,7 +144,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                         KeychainWrapper.setString(login, forKey: kSecAttrAccount)
                         KeychainWrapper.setString(auth_token, forKey: kSecValueData)
                         
-                        // Modal to Timeline TabBarViewCOntroller
+                        // Modal to GuideVC
                         //self.performSegueWithIdentifier("homeSegue2", sender: self)
                         self.performSegueWithIdentifier("registerSegue", sender: self)
 
@@ -140,7 +155,22 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     
     
     func textFieldShouldReturn(textField: UITextField!) -> Bool {
-        textField.resignFirstResponder()
+        if textField == self.usernameTextField {
+            self.passwordTextField.becomeFirstResponder()
+        }
+        if textField == self.passwordTextField {
+            self.emailTextField.becomeFirstResponder()
+        }
+        if textField == self.emailTextField {
+            self.firstnameTextField.becomeFirstResponder()
+        }
+        if textField == self.firstnameTextField {
+            self.lastnameTextField.becomeFirstResponder()
+        }
+        if textField == self.lastnameTextField {
+            self.createAccountButton(self)
+        }
+        
         return true;
     }
     

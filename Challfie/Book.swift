@@ -16,6 +16,10 @@ class Book {
     var tier: Int!
     var challenges_array: [Challenge]!
     
+    init() {
+        
+    }
+    
     init(json: JSON_SWIFTY) {
         self.id = json["id"].intValue
         self.name = json["name"].stringValue

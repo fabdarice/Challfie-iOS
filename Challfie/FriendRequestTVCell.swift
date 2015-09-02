@@ -17,7 +17,7 @@ class FriendRequestTVCell : FriendTVCell {
     @IBOutlet weak var followButton: UIButton!    
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var declineButton: UIButton!
-    
+    @IBOutlet weak var followButtonHeightConstraint: NSLayoutConstraint!
     
     override func loadItem(friends_tab: Int) {
         
@@ -67,21 +67,44 @@ class FriendRequestTVCell : FriendTVCell {
     }
     
     @IBAction func acceptRequestButton(sender: UIButton) {
+        self.followButton.hidden = false
+        self.acceptButton.hidden = true
+        self.declineButton.hidden = true
+        
         let parameters = [
             "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
             "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
             "user_id": self.friend.id.description
         ]
-        request(.POST, ApiLink.accept_request, parameters: parameters, encoding: .JSON)
-        self.followButton.hidden = false
-        self.acceptButton.hidden = true
-        self.declineButton.hidden = true
-        if self.not_following == true {
-            self.followButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
-        } else {
-            self.followButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
+        request(.POST, ApiLink.accept_request, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+            if (mydata == nil) {
+                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                self.followButton.hidden = true
+                self.acceptButton.hidden = false
+                self.declineButton.hidden = false
+            } else {
+                //Convert to SwiftJSON
+                var json = JSON_SWIFTY(mydata!)
+                if (json["success"].intValue == 1) {
+                    // Refresh all 3 tabs
+                    self.friendVC.suggestions_first_time = true
+                    self.friendVC.following_first_time = true
+                    self.friendVC.followers_first_time = true
+                    if self.not_following == true {
+                        self.followButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
+                        self.followButtonHeightConstraint.constant = 60
+                    } else {
+                        self.followButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
+                        self.followButtonHeightConstraint.constant = 30
+                    }
+                } else {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                    self.followButton.hidden = true
+                    self.acceptButton.hidden = false
+                    self.declineButton.hidden = false
+                }
+            }
         }
-        
     }
     
     
@@ -92,15 +115,42 @@ class FriendRequestTVCell : FriendTVCell {
     }
     
     @IBAction func followButton(sender: UIButton) {
+        self.followButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
+        self.followButtonHeightConstraint.constant = 30
+        
         if self.not_following == true {
             let parameters = [
                 "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
                 "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
                 "user_id": self.friend.id.description
             ]
-            request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON)
-            self.followButton.setImage(UIImage(named: "following_button"), forState: UIControlState.Normal)
             self.not_following = false
+            
+            request(.POST, ApiLink.follow, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
+                if (mydata == nil) {
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                    self.followButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
+                    self.not_following = true
+                    self.followButtonHeightConstraint.constant = 60
+                } else {
+                    //Convert to SwiftJSON
+                    var json = JSON_SWIFTY(mydata!)
+                    if (json["success"].intValue == 1) {
+                        // Refresh all 3 Tabs
+                        self.friendVC.suggestions_first_time = true
+                        self.friendVC.following_first_time = true
+                        self.friendVC.followers_first_time = true
+                    } else {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.friendVC)
+                        self.followButton.setImage(UIImage(named: "follow_button"), forState: UIControlState.Normal)
+                        self.not_following = true
+                        self.followButtonHeightConstraint.constant = 60
+                    }
+                }
+            }
+            
+            
+            
         }
     }
     

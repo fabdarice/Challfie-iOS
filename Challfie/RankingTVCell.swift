@@ -21,10 +21,13 @@ class RankingTVCell : UITableViewCell {
     
     func loadItem() {
         
+        var login = KeychainWrapper.stringForKey(kSecAttrAccount)
         
         // Check if It's current_user
-        if self.user.username == KeychainWrapper.stringForKey(kSecAttrAccount)! {
-            self.contentView.backgroundColor = MP_HEX_RGB("ffd27f")
+        if self.user.is_current_user == true {
+            self.contentView.backgroundColor = MP_HEX_RGB("FCF2DE")
+        } else {
+            self.contentView.backgroundColor = MP_HEX_RGB("FFFFFF")
         }
         
         // Rank LAbel
@@ -52,14 +55,18 @@ class RankingTVCell : UITableViewCell {
         self.profilPicImageView.clipsToBounds = true
         self.profilPicImageView.layer.borderWidth = 2.0
         self.profilPicImageView.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
+        
         if self.user.book_tier == 1 {
-            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
+            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("0095AE").CGColor;
+            //self.levelLabel.textColor = MP_HEX_RGB("0095AE")
         }
         if self.user.book_tier == 2 {
-            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
+            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("63B54A").CGColor;
+            //self.levelLabel.textColor = MP_HEX_RGB("63B54A")
         }
         if self.user.book_tier == 3 {
-            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
+            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("8258E5").CGColor;
+            //self.levelLabel.textColor = MP_HEX_RGB("8258E5")
         }
 
     }

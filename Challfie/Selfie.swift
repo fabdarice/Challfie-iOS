@@ -26,6 +26,7 @@ class Selfie {
     var last_comment: Comment!
     var flag_count: Int!
     var blocked: Bool!
+    var ratio_photo: CGFloat!
     
     init(id: Int) {
         self.id = id
@@ -46,7 +47,10 @@ class Selfie {
         self.user_vote_status = json["status_vote"].intValue
         self.flag_count = json["flag_count"].intValue
         self.blocked = json["blocked"].boolValue
+        self.ratio_photo =  CGFloat(json["ratio_photo"].floatValue)
     }
+    
+    
     
     func show_selfie_pic() -> String {
         var selfie_url: String!
@@ -57,5 +61,10 @@ class Selfie {
         }
         return selfie_url
     }
-    
+}
+
+extension Selfie: Equatable {}
+
+func ==(lhs: Selfie, rhs: Selfie) -> Bool {
+    return lhs.id == rhs.id
 }
