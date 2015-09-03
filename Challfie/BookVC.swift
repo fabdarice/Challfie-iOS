@@ -85,6 +85,8 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
                     //Convert to SwiftJSON
                     var json = JSON_SWIFTY(mydata!)
                     
+                    println(json)
+                    
                     if json["books"].count != 0 {
                         for var i:Int = 0; i < json["books"].count; i++ {
                             var book = Book.init(json: json["books"][i])

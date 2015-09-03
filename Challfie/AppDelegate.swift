@@ -92,6 +92,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.makeKeyAndVisible()
         
+        // Siren is a singleton
+        let siren = Siren.sharedInstance
+        
+        // Required: Your app's iTunes App Store ID
+        siren.appID = "974913351"
+        
+        // Optional: Defaults to .Option
+        siren.alertType = .Option
+        
+        /*
+        Replace .Immediately with .Daily or .Weekly to specify a maximum daily or weekly frequency for version
+        checks.
+        */
+        siren.checkVersion(.Immediately)
+        
         return true
     }
 
@@ -107,10 +122,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        /*
+        Useful if user returns to your app from the background after being sent to the
+        App Store, but doesn't update their app before coming back to your app.
+        
+        ONLY USE WITH SirenAlertType.Force
+        */
+        
+        Siren.sharedInstance.checkVersion(.Immediately)
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        /*
+        Perform daily (.Daily) or weekly (.Weekly) checks for new version of your app.
+        Useful if user returns to your app from the background after extended period of time.
+        Place in applicationDidBecomeActive(_:).   */
+        
+        Siren.sharedInstance.checkVersion(.Daily)
     }
 
     func applicationWillTerminate(application: UIApplication) {

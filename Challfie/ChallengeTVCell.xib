@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a Selfie" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="cP6-u6-IhB" userLabel="challengeLabel">
-                        <rect key="frame" x="15" y="10" width="73" height="16.5"/>
+                        <rect key="frame" x="35" y="10" width="73" height="16.5"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                         <color key="textColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -22,10 +22,10 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star_intermediate" translatesAutoresizingMaskIntoConstraints="NO" id="U9W-WG-e8X" userLabel="difficultyImageView">
-                        <rect key="frame" x="226" y="8" width="80" height="20"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star_intermediate" translatesAutoresizingMaskIntoConstraints="NO" id="U9W-WG-e8X" userLabel="difficultyImageView">
+                        <rect key="frame" x="236" y="11" width="80" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="M8t-R9-cd0"/>
+                            <constraint firstAttribute="height" constant="15" id="M8t-R9-cd0"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="WS5-ik-bRX"/>
                             <constraint firstAttribute="width" constant="80" id="Xfc-9p-tfd"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="sGc-ZM-vbH"/>
@@ -37,20 +37,31 @@
                             </mask>
                         </variation>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Y8-GI-2Wu" userLabel="challengeCompleteImageView">
+                        <rect key="frame" x="5" y="6" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="fjU-MR-Cep"/>
+                            <constraint firstAttribute="height" constant="25" id="sgh-e5-I6Y"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="cP6-u6-IhB" firstAttribute="top" secondItem="IeN-eJ-vPA" secondAttribute="top" constant="10" id="5S6-WX-O6l"/>
                     <constraint firstItem="U9W-WG-e8X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cP6-u6-IhB" secondAttribute="trailing" constant="10" id="8nF-XX-HOv"/>
                     <constraint firstItem="cP6-u6-IhB" firstAttribute="leading" secondItem="IeN-eJ-vPA" secondAttribute="leading" constant="15" id="Ijn-FA-oS0"/>
+                    <constraint firstAttribute="centerY" secondItem="5Y8-GI-2Wu" secondAttribute="centerY" id="T4R-vR-DUc"/>
                     <constraint firstItem="U9W-WG-e8X" firstAttribute="top" secondItem="IeN-eJ-vPA" secondAttribute="topMargin" constant="5" id="USA-lT-QlE"/>
-                    <constraint firstAttribute="trailing" secondItem="U9W-WG-e8X" secondAttribute="trailing" constant="15" id="VXE-4P-FBw"/>
+                    <constraint firstAttribute="trailing" secondItem="U9W-WG-e8X" secondAttribute="trailing" constant="5" id="VXE-4P-FBw"/>
+                    <constraint firstItem="5Y8-GI-2Wu" firstAttribute="leading" secondItem="IeN-eJ-vPA" secondAttribute="leading" constant="5" id="ZTC-X3-jTq"/>
                     <constraint firstAttribute="centerY" secondItem="U9W-WG-e8X" secondAttribute="centerY" id="awG-g0-DfN"/>
+                    <constraint firstItem="cP6-u6-IhB" firstAttribute="leading" secondItem="5Y8-GI-2Wu" secondAttribute="trailing" constant="5" id="egC-Pe-5qA"/>
                     <constraint firstItem="U9W-WG-e8X" firstAttribute="trailing" secondItem="IeN-eJ-vPA" secondAttribute="trailingMargin" constant="15" id="fYG-fe-JhS"/>
                     <constraint firstAttribute="bottom" secondItem="cP6-u6-IhB" secondAttribute="bottom" constant="10" id="ja5-aj-Bn4"/>
                     <constraint firstAttribute="bottomMargin" secondItem="U9W-WG-e8X" secondAttribute="bottom" constant="5" id="mVI-jJ-P2l"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="Ijn-FA-oS0"/>
                         <exclude reference="USA-lT-QlE"/>
                         <exclude reference="fYG-fe-JhS"/>
                         <exclude reference="mVI-jJ-P2l"/>
@@ -59,6 +70,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="challengeCompleteImageView" destination="5Y8-GI-2Wu" id="rNb-ZF-ubB"/>
                 <outlet property="challengeLabel" destination="cP6-u6-IhB" id="SK3-KW-Z5v"/>
                 <outlet property="difficultyImageView" destination="U9W-WG-e8X" id="41C-p9-qwx"/>
             </connections>

@@ -13,6 +13,7 @@ class ChallengeTVCell : UITableViewCell {
     
     @IBOutlet weak var challengeLabel: UILabel!
     @IBOutlet weak var difficultyImageView: UIImageView!
+    @IBOutlet weak var challengeCompleteImageView: UIImageView!
     
     var challenge: Challenge!
     
@@ -21,6 +22,14 @@ class ChallengeTVCell : UITableViewCell {
         self.challengeLabel.text = self.challenge.description
         self.challengeLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         self.challengeLabel.sizeToFit()
+        
+        if challenge.complete_status == 1 {
+            self.challengeCompleteImageView.image = UIImage(named: "accept_request")
+        } else if challenge.complete_status == 2 {
+            self.challengeCompleteImageView.image = UIImage(named: "decline_request")
+        } else {
+            self.challengeCompleteImageView.image = nil
+        }
         
         switch self.challenge.difficulty {
         case 1 : self.difficultyImageView.image = UIImage(named: "star_very_easy")

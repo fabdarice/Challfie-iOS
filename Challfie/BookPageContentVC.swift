@@ -182,7 +182,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         
         // Background of Selected Cell of TableViewCell
         let selectionView = UIView()
-        selectionView.backgroundColor = MP_HEX_RGB("32A8C9")
+        selectionView.backgroundColor = MP_HEX_RGB("3993ad")
         cell.selectedBackgroundView = selectionView
 
         

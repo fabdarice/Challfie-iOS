@@ -102,7 +102,7 @@
                                     <rect key="frame" x="0.0" y="155" width="320" height="25"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Challenge" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRb-7b-Ejo" userLabel="ChallengeLabel">
-                                            <rect key="frame" x="15" y="4.5" width="62.5" height="16.5"/>
+                                            <rect key="frame" x="35" y="4.5" width="62.5" height="16.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -111,7 +111,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Difficulty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yiR-QQ-1eU" userLabel="DifficultyLabel">
-                                            <rect key="frame" x="225" y="4.5" width="80" height="16.5"/>
+                                            <rect key="frame" x="235" y="4.5" width="80" height="16.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="80" id="bNL-ip-SB1"/>
                                             </constraints>
@@ -125,9 +125,9 @@
                                     </subviews>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstItem="ZRb-7b-Ejo" firstAttribute="leading" secondItem="6Xd-ez-bDV" secondAttribute="leading" constant="15" id="5Jl-Ft-biC"/>
+                                        <constraint firstItem="ZRb-7b-Ejo" firstAttribute="leading" secondItem="6Xd-ez-bDV" secondAttribute="leading" constant="35" id="5Jl-Ft-biC"/>
                                         <constraint firstAttribute="height" constant="25" id="69b-oU-fOT"/>
-                                        <constraint firstAttribute="trailing" secondItem="yiR-QQ-1eU" secondAttribute="trailing" constant="15" id="QiQ-OE-ezD"/>
+                                        <constraint firstAttribute="trailing" secondItem="yiR-QQ-1eU" secondAttribute="trailing" constant="5" id="QiQ-OE-ezD"/>
                                         <constraint firstAttribute="centerY" secondItem="ZRb-7b-Ejo" secondAttribute="centerY" id="XVK-Tn-eE9"/>
                                         <constraint firstAttribute="centerY" secondItem="yiR-QQ-1eU" secondAttribute="centerY" id="iL5-Pk-7Zg"/>
                                     </constraints>
