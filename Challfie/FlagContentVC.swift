@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate,ENSideMenuDelegate  {
     
@@ -57,7 +59,7 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         self.tableView.estimatedRowHeight = 100.0
         
         // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideNavBar = self.navigationController as! MyNavigationController
         var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
         
         let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
@@ -106,8 +108,8 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     func loadData() {
         self.loadingIndicator.startAnimating()
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "page": self.page.description
         ]
         
@@ -117,7 +119,7 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["administrators"].count != 0 {
                         for var i:Int = 0; i < json["administrators"].count; i++ {
@@ -138,7 +140,7 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     // MARK: - tableView Delegate
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //
-        var cell: FlagContentTVCell = tableView.dequeueReusableCellWithIdentifier("FlagContentCell") as FlagContentTVCell
+        var cell: FlagContentTVCell = tableView.dequeueReusableCellWithIdentifier("FlagContentCell") as! FlagContentTVCell
         
         var selfie: Selfie = self.flag_selfie_array[indexPath.row]
         cell.loadItem(selfie)

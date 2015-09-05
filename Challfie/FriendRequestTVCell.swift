@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class FriendRequestTVCell : FriendTVCell {
     @IBOutlet weak var profilePic2: UIImageView!
@@ -72,8 +73,8 @@ class FriendRequestTVCell : FriendTVCell {
         self.declineButton.hidden = true
         
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "user_id": self.friend.id.description
         ]
         request(.POST, ApiLink.accept_request, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
@@ -84,7 +85,7 @@ class FriendRequestTVCell : FriendTVCell {
                 self.declineButton.hidden = false
             } else {
                 //Convert to SwiftJSON
-                var json = JSON_SWIFTY(mydata!)
+                var json = JSON(mydata!)
                 if (json["success"].intValue == 1) {
                     // Refresh all 3 tabs
                     self.friendVC.suggestions_first_time = true
@@ -120,8 +121,8 @@ class FriendRequestTVCell : FriendTVCell {
         
         if self.not_following == true {
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "user_id": self.friend.id.description
             ]
             self.not_following = false
@@ -134,7 +135,7 @@ class FriendRequestTVCell : FriendTVCell {
                     self.followButtonHeightConstraint.constant = 60
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     if (json["success"].intValue == 1) {
                         // Refresh all 3 Tabs
                         self.friendVC.suggestions_first_time = true

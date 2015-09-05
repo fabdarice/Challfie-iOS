@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0EA943381C1E99E09CCCA9B0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC8B9A79BD9A5B609E9DB92 /* libPods.a */; };
-		87019B921AB3B3FE007526C6 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87019B911AB3B3FE007526C6 /* Alamofire.swift */; };
+		017512A85EC274E6E1D66982 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AFB8CA89D289A76211EC510 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8719D23A1ADF84E8002273B4 /* Ranking.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8719D2391ADF84E8002273B4 /* Ranking.xib */; };
 		8719D23C1ADF855C002273B4 /* RankingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8719D23B1ADF855C002273B4 /* RankingVC.swift */; };
 		87203E711A19EC8000A168D4 /* TimelineCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87203E701A19EC8000A168D4 /* TimelineCustomCell.xib */; };
@@ -17,7 +16,6 @@
 		872145701A682D5B00369FB1 /* SearchUserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721456F1A682D5B00369FB1 /* SearchUserVC.swift */; };
 		872791A31A6B1B9E0012DE69 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872791A21A6B1B9E0012DE69 /* GlobalFunctions.swift */; };
 		8728209A1A1320D10010AB75 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872820991A1320D10010AB75 /* KeychainService.swift */; };
-		8728209F1A132D1C0010AB75 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8728209E1A132D1C0010AB75 /* SwiftyJSON.swift */; };
 		872820A11A13548F0010AB75 /* HomeTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872820A01A13548F0010AB75 /* HomeTBC.swift */; };
 		872820A51A143F110010AB75 /* TimelineVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872820A41A143F110010AB75 /* TimelineVC.swift */; };
 		872820A71A149B7C0010AB75 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872820A61A149B7C0010AB75 /* ForgotPasswordVC.swift */; };
@@ -35,6 +33,7 @@
 		87314F7C1A42B37700D75C4D /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87314F7B1A42B37700D75C4D /* Friend.swift */; };
 		873281831A5D10CA00B99429 /* BookPageContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873281821A5D10CA00B99429 /* BookPageContentVC.swift */; };
 		873281871A5D123300B99429 /* BookPageContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 873281861A5D123300B99429 /* BookPageContent.xib */; };
+		87362EB21B9A44FA0023DEE8 /* Haneke.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 87362EAA1B9A44B00023DEE8 /* Haneke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		873681611A3523AE004E6897 /* OneSelfie.xib in Resources */ = {isa = PBXBuildFile; fileRef = 873681601A3523AE004E6897 /* OneSelfie.xib */; };
 		873F1BD81B944516008051EB /* GKCropBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 873F1BC41B944516008051EB /* GKCropBorderView.m */; };
 		873F1BD91B944516008051EB /* GKImageCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 873F1BC61B944516008051EB /* GKImageCropOverlayView.m */; };
@@ -117,25 +116,6 @@
 		87B48B431B3DF11900E088A9 /* FlagContentTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */; };
 		87CA93B41A5A2C4F004D72FE /* ProfilHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */; };
 		87D186DD1A840D6300D5C767 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87D186DC1A840D6300D5C767 /* FacebookSDK.framework */; };
-		87D2CFF71AB3BDA7008CDC89 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFE31AB3BDA7008CDC89 /* Cache.swift */; };
-		87D2CFF81AB3BDA7008CDC89 /* CGSize+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFE41AB3BDA7008CDC89 /* CGSize+Swift.swift */; };
-		87D2CFF91AB3BDA7008CDC89 /* CryptoSwiftMD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFE51AB3BDA7008CDC89 /* CryptoSwiftMD5.swift */; };
-		87D2CFFA1AB3BDA7008CDC89 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFE61AB3BDA7008CDC89 /* Data.swift */; };
-		87D2CFFB1AB3BDA7008CDC89 /* DiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFE71AB3BDA7008CDC89 /* DiskCache.swift */; };
-		87D2CFFC1AB3BDA7008CDC89 /* DiskFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFE81AB3BDA7008CDC89 /* DiskFetcher.swift */; };
-		87D2CFFD1AB3BDA7008CDC89 /* Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFE91AB3BDA7008CDC89 /* Fetch.swift */; };
-		87D2CFFE1AB3BDA7008CDC89 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFEA1AB3BDA7008CDC89 /* Fetcher.swift */; };
-		87D2CFFF1AB3BDA7008CDC89 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFEB1AB3BDA7008CDC89 /* Format.swift */; };
-		87D2D0001AB3BDA7008CDC89 /* Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFED1AB3BDA7008CDC89 /* Haneke.swift */; };
-		87D2D0011AB3BDA7008CDC89 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87D2CFEE1AB3BDA7008CDC89 /* Info.plist */; };
-		87D2D0021AB3BDA7008CDC89 /* NetworkFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFEF1AB3BDA7008CDC89 /* NetworkFetcher.swift */; };
-		87D2D0031AB3BDA7008CDC89 /* NSFileManager+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFF01AB3BDA7008CDC89 /* NSFileManager+Haneke.swift */; };
-		87D2D0041AB3BDA7008CDC89 /* NSHTTPURLResponse+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFF11AB3BDA7008CDC89 /* NSHTTPURLResponse+Haneke.swift */; };
-		87D2D0051AB3BDA7008CDC89 /* String+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFF21AB3BDA7008CDC89 /* String+Haneke.swift */; };
-		87D2D0061AB3BDA7008CDC89 /* UIButton+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFF31AB3BDA7008CDC89 /* UIButton+Haneke.swift */; };
-		87D2D0071AB3BDA7008CDC89 /* UIImage+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFF41AB3BDA7008CDC89 /* UIImage+Haneke.swift */; };
-		87D2D0081AB3BDA7008CDC89 /* UIImageView+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFF51AB3BDA7008CDC89 /* UIImageView+Haneke.swift */; };
-		87D2D0091AB3BDA7008CDC89 /* UIView+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2CFF61AB3BDA7008CDC89 /* UIView+Haneke.swift */; };
 		87D35A521B87A7B300F41821 /* GuideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D35A511B87A7B300F41821 /* GuideVC.swift */; };
 		87D35A541B87B3B600F41821 /* GuideTakePictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D35A531B87B3B600F41821 /* GuideTakePictureVC.swift */; };
 		87D35A561B87B41C00F41821 /* GuideTakePicture.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87D35A551B87B41C00F41821 /* GuideTakePicture.xib */; };
@@ -156,6 +136,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		87362EA91B9A44B00023DEE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87362EA31B9A44B00023DEE8 /* Haneke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A095C9561980418C00CD0F4C;
+			remoteInfo = Haneke;
+		};
+		87362EAB1B9A44B00023DEE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87362EA31B9A44B00023DEE8 /* Haneke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A095C9611980418C00CD0F4C;
+			remoteInfo = HanekeTests;
+		};
+		87362EAD1B9A44B00023DEE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87362EA31B9A44B00023DEE8 /* Haneke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A0026E9A19C9BFBC004DE0C6;
+			remoteInfo = HanekeDemo;
+		};
+		87362EAF1B9A44BD0023DEE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87362EA31B9A44B00023DEE8 /* Haneke.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A095C9551980418C00CD0F4C;
+			remoteInfo = Haneke;
+		};
 		87904FBB1A0C9FF2004FD75E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 87904F9D1A0C9FF2004FD75E /* Project object */;
@@ -166,6 +174,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		87362EB11B9A44E70023DEE8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				87362EB21B9A44FA0023DEE8 /* Haneke.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		87A970411A11E5EA00C74796 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -180,7 +198,7 @@
 
 /* Begin PBXFileReference section */
 		496CFF2BC884CAF70341ADFB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		87019B911AB3B3FE007526C6 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
+		6AFB8CA89D289A76211EC510 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8719D2391ADF84E8002273B4 /* Ranking.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Ranking.xib; sourceTree = "<group>"; };
 		8719D23B1ADF855C002273B4 /* RankingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingVC.swift; sourceTree = "<group>"; };
 		87203E701A19EC8000A168D4 /* TimelineCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineCustomCell.xib; sourceTree = "<group>"; };
@@ -189,7 +207,6 @@
 		8721456F1A682D5B00369FB1 /* SearchUserVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchUserVC.swift; sourceTree = "<group>"; };
 		872791A21A6B1B9E0012DE69 /* GlobalFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		872820991A1320D10010AB75 /* KeychainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
-		8728209E1A132D1C0010AB75 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		872820A01A13548F0010AB75 /* HomeTBC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTBC.swift; sourceTree = "<group>"; };
 		872820A41A143F110010AB75 /* TimelineVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineVC.swift; sourceTree = "<group>"; };
 		872820A61A149B7C0010AB75 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
@@ -207,6 +224,7 @@
 		87314F7B1A42B37700D75C4D /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		873281821A5D10CA00B99429 /* BookPageContentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookPageContentVC.swift; sourceTree = "<group>"; };
 		873281861A5D123300B99429 /* BookPageContent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookPageContent.xib; sourceTree = "<group>"; };
+		87362EA31B9A44B00023DEE8 /* Haneke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Haneke.xcodeproj; path = "../../../Downloads/HanekeSwift-master/Haneke.xcodeproj"; sourceTree = "<group>"; };
 		873681601A3523AE004E6897 /* OneSelfie.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OneSelfie.xib; sourceTree = "<group>"; };
 		873F1BC31B944516008051EB /* GKCropBorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKCropBorderView.h; sourceTree = "<group>"; };
 		873F1BC41B944516008051EB /* GKCropBorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKCropBorderView.m; sourceTree = "<group>"; };
@@ -315,26 +333,6 @@
 		87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagContentTVCell.swift; sourceTree = "<group>"; };
 		87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilHeader.xib; sourceTree = "<group>"; };
 		87D186DC1A840D6300D5C767 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		87D2CFE31AB3BDA7008CDC89 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
-		87D2CFE41AB3BDA7008CDC89 /* CGSize+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Swift.swift"; sourceTree = "<group>"; };
-		87D2CFE51AB3BDA7008CDC89 /* CryptoSwiftMD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoSwiftMD5.swift; sourceTree = "<group>"; };
-		87D2CFE61AB3BDA7008CDC89 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
-		87D2CFE71AB3BDA7008CDC89 /* DiskCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCache.swift; sourceTree = "<group>"; };
-		87D2CFE81AB3BDA7008CDC89 /* DiskFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskFetcher.swift; sourceTree = "<group>"; };
-		87D2CFE91AB3BDA7008CDC89 /* Fetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetch.swift; sourceTree = "<group>"; };
-		87D2CFEA1AB3BDA7008CDC89 /* Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
-		87D2CFEB1AB3BDA7008CDC89 /* Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
-		87D2CFEC1AB3BDA7008CDC89 /* Haneke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Haneke.h; sourceTree = "<group>"; };
-		87D2CFED1AB3BDA7008CDC89 /* Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Haneke.swift; sourceTree = "<group>"; };
-		87D2CFEE1AB3BDA7008CDC89 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		87D2CFEF1AB3BDA7008CDC89 /* NetworkFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkFetcher.swift; sourceTree = "<group>"; };
-		87D2CFF01AB3BDA7008CDC89 /* NSFileManager+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFileManager+Haneke.swift"; sourceTree = "<group>"; };
-		87D2CFF11AB3BDA7008CDC89 /* NSHTTPURLResponse+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSHTTPURLResponse+Haneke.swift"; sourceTree = "<group>"; };
-		87D2CFF21AB3BDA7008CDC89 /* String+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Haneke.swift"; sourceTree = "<group>"; };
-		87D2CFF31AB3BDA7008CDC89 /* UIButton+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Haneke.swift"; sourceTree = "<group>"; };
-		87D2CFF41AB3BDA7008CDC89 /* UIImage+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Haneke.swift"; sourceTree = "<group>"; };
-		87D2CFF51AB3BDA7008CDC89 /* UIImageView+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Haneke.swift"; sourceTree = "<group>"; };
-		87D2CFF61AB3BDA7008CDC89 /* UIView+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Haneke.swift"; sourceTree = "<group>"; };
 		87D35A511B87A7B300F41821 /* GuideVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuideVC.swift; sourceTree = "<group>"; };
 		87D35A531B87B3B600F41821 /* GuideTakePictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuideTakePictureVC.swift; sourceTree = "<group>"; };
 		87D35A551B87B41C00F41821 /* GuideTakePicture.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GuideTakePicture.xib; sourceTree = "<group>"; };
@@ -354,7 +352,6 @@
 		87EE9AD51B8D000200A4F5B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/new_data.png; sourceTree = "<group>"; };
 		87EE9AD71B8D000300A4F5B5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/new_data.png; sourceTree = "<group>"; };
 		8E2A5632A55B6B4CF073AD9B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		ECC8B9A79BD9A5B609E9DB92 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,7 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87D186DD1A840D6300D5C767 /* FacebookSDK.framework in Frameworks */,
-				0EA943381C1E99E09CCCA9B0 /* libPods.a in Frameworks */,
+				017512A85EC274E6E1D66982 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,7 +377,7 @@
 		00BC09B0A38BA7C942B28EBB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				ECC8B9A79BD9A5B609E9DB92 /* libPods.a */,
+				6AFB8CA89D289A76211EC510 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -422,6 +419,16 @@
 				87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */,
 			);
 			name = TableViewCell;
+			sourceTree = "<group>";
+		};
+		87362EA41B9A44B00023DEE8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				87362EAA1B9A44B00023DEE8 /* Haneke.framework */,
+				87362EAC1B9A44B00023DEE8 /* HanekeTests.xctest */,
+				87362EAE1B9A44B00023DEE8 /* HanekeDemo.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		8736815F1A3520AD004E6897 /* Custom Cell */ = {
@@ -577,6 +584,7 @@
 				87904FA61A0C9FF2004FD75E /* Products */,
 				58EAC5C04DBDA3EE680EE63F /* Pods */,
 				00BC09B0A38BA7C942B28EBB /* Frameworks */,
+				87362EA31B9A44B00023DEE8 /* Haneke.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -642,15 +650,12 @@
 				878849AB1B96E89B00DE6200 /* Siren */,
 				873F1BC21B944516008051EB /* GKClasses */,
 				873F1BCF1B944516008051EB /* GKImages */,
-				87D2CFE21AB3BDA7008CDC89 /* Haneke */,
 				87D186DC1A840D6300D5C767 /* FacebookSDK.framework */,
 				87904FD01A0CACEA004FD75E /* MPColorTools.h */,
 				87904FD21A0CAD15004FD75E /* MPColorTools.m */,
 				872820991A1320D10010AB75 /* KeychainService.swift */,
-				8728209E1A132D1C0010AB75 /* SwiftyJSON.swift */,
 				874A15951A9752410050FF5C /* ENSideMenu.swift */,
 				874A15971A97525B0050FF5C /* ENSideMenuNavigationController.swift */,
-				87019B911AB3B3FE007526C6 /* Alamofire.swift */,
 				87721E081B958DC0003032A7 /* PopUpViewControllerSwift.swift */,
 			);
 			name = VendorLib;
@@ -685,33 +690,6 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
-		87D2CFE21AB3BDA7008CDC89 /* Haneke */ = {
-			isa = PBXGroup;
-			children = (
-				87D2CFE31AB3BDA7008CDC89 /* Cache.swift */,
-				87D2CFE41AB3BDA7008CDC89 /* CGSize+Swift.swift */,
-				87D2CFE51AB3BDA7008CDC89 /* CryptoSwiftMD5.swift */,
-				87D2CFE61AB3BDA7008CDC89 /* Data.swift */,
-				87D2CFE71AB3BDA7008CDC89 /* DiskCache.swift */,
-				87D2CFE81AB3BDA7008CDC89 /* DiskFetcher.swift */,
-				87D2CFE91AB3BDA7008CDC89 /* Fetch.swift */,
-				87D2CFEA1AB3BDA7008CDC89 /* Fetcher.swift */,
-				87D2CFEB1AB3BDA7008CDC89 /* Format.swift */,
-				87D2CFEC1AB3BDA7008CDC89 /* Haneke.h */,
-				87D2CFED1AB3BDA7008CDC89 /* Haneke.swift */,
-				87D2CFEE1AB3BDA7008CDC89 /* Info.plist */,
-				87D2CFEF1AB3BDA7008CDC89 /* NetworkFetcher.swift */,
-				87D2CFF01AB3BDA7008CDC89 /* NSFileManager+Haneke.swift */,
-				87D2CFF11AB3BDA7008CDC89 /* NSHTTPURLResponse+Haneke.swift */,
-				87D2CFF21AB3BDA7008CDC89 /* String+Haneke.swift */,
-				87D2CFF31AB3BDA7008CDC89 /* UIButton+Haneke.swift */,
-				87D2CFF41AB3BDA7008CDC89 /* UIImage+Haneke.swift */,
-				87D2CFF51AB3BDA7008CDC89 /* UIImageView+Haneke.swift */,
-				87D2CFF61AB3BDA7008CDC89 /* UIView+Haneke.swift */,
-			);
-			path = Haneke;
-			sourceTree = "<group>";
-		};
 		87DAA1491A89F77100D7330A /* CustomDevice */ = {
 			isa = PBXGroup;
 			children = (
@@ -734,10 +712,13 @@
 				87904FA31A0C9FF2004FD75E /* Resources */,
 				87A970411A11E5EA00C74796 /* Copy Frameworks */,
 				3751709384D05D2AB9842D04 /* Copy Pods Resources */,
+				87362EB11B9A44E70023DEE8 /* CopyFiles */,
+				BD132A59EE2BD1EAA716C96B /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				87362EB01B9A44BD0023DEE8 /* PBXTargetDependency */,
 			);
 			name = Challfie;
 			productName = Challfie;
@@ -799,6 +780,12 @@
 			mainGroup = 87904F9C1A0C9FF2004FD75E;
 			productRefGroup = 87904FA61A0C9FF2004FD75E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 87362EA41B9A44B00023DEE8 /* Products */;
+					ProjectRef = 87362EA31B9A44B00023DEE8 /* Haneke.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				87904FA41A0C9FF2004FD75E /* Challfie */,
@@ -806,6 +793,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		87362EAA1B9A44B00023DEE8 /* Haneke.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Haneke.framework;
+			remoteRef = 87362EA91B9A44B00023DEE8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		87362EAC1B9A44B00023DEE8 /* HanekeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HanekeTests.xctest;
+			remoteRef = 87362EAB1B9A44B00023DEE8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		87362EAE1B9A44B00023DEE8 /* HanekeDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = HanekeDemo.app;
+			remoteRef = 87362EAD1B9A44B00023DEE8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		87904FA31A0C9FF2004FD75E /* Resources */ = {
@@ -862,7 +873,6 @@
 				87904FB51A0C9FF2004FD75E /* LaunchScreen.xib in Resources */,
 				87EE9AD41B8D000200A4F5B5 /* new_data.png in Resources */,
 				8781BEEE1A451F7B0055EFBD /* pending_button.png in Resources */,
-				87D2D0011AB3BDA7008CDC89 /* Info.plist in Resources */,
 				87B053871A2B292C000B5A60 /* sign_in_OR_label.png in Resources */,
 				87314F701A414C8C00D75C4D /* FriendTVCell.xib in Resources */,
 				87B198C21A8C96E700299627 /* LoadingActivity.xib in Resources */,
@@ -911,6 +921,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		BD132A59EE2BD1EAA716C96B /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -920,15 +945,12 @@
 			files = (
 				87E298721A3173FE00DEF385 /* ChallengeVC.swift in Sources */,
 				872820AE1A15FAF90010AB75 /* User.swift in Sources */,
-				87D2D0021AB3BDA7008CDC89 /* NetworkFetcher.swift in Sources */,
 				87B48B431B3DF11900E088A9 /* FlagContentTVCell.swift in Sources */,
-				87D2D0071AB3BDA7008CDC89 /* UIImage+Haneke.swift in Sources */,
 				87D35A641B88435400F41821 /* GuideBookVC.swift in Sources */,
 				873F1BD81B944516008051EB /* GKCropBorderView.m in Sources */,
 				87314F7C1A42B37700D75C4D /* Friend.swift in Sources */,
 				87904FAD1A0C9FF2004FD75E /* LoginVC.swift in Sources */,
 				873F1BD91B944516008051EB /* GKImageCropOverlayView.m in Sources */,
-				87D2D0091AB3BDA7008CDC89 /* UIView+Haneke.swift in Sources */,
 				874A159C1A9768A60050FF5C /* MyMenuTableViewController.swift in Sources */,
 				872145701A682D5B00369FB1 /* SearchUserVC.swift in Sources */,
 				8728E86A1A2FF6D4005EE17D /* OneSelfieVC.swift in Sources */,
@@ -936,26 +958,18 @@
 				872820B01A160FFC0010AB75 /* Book.swift in Sources */,
 				872820AC1A15CD210010AB75 /* Challenge.swift in Sources */,
 				873F1BDC1B944516008051EB /* GKImagePicker.m in Sources */,
-				87D2CFF81AB3BDA7008CDC89 /* CGSize+Swift.swift in Sources */,
 				8771D4F31A0F24CF00233DD4 /* RegisterVC.swift in Sources */,
-				87D2CFFB1AB3BDA7008CDC89 /* DiskCache.swift in Sources */,
-				87D2D0031AB3BDA7008CDC89 /* NSFileManager+Haneke.swift in Sources */,
 				873F1BDA1B944516008051EB /* GKImageCropView.m in Sources */,
 				8721456C1A681A1A00369FB1 /* TakePictureVC.swift in Sources */,
-				87D2D0081AB3BDA7008CDC89 /* UIImageView+Haneke.swift in Sources */,
-				87D2D0051AB3BDA7008CDC89 /* String+Haneke.swift in Sources */,
 				87DAA14B1A89FBC600D7330A /* UIDeviceExtension.swift in Sources */,
 				877874731A2EFB4C0031718E /* TimelineTableViewCell.swift in Sources */,
 				87314F751A414CE700D75C4D /* FriendTVCell.swift in Sources */,
 				8793870C1A4D285B00609934 /* ProfilVC.swift in Sources */,
 				873F1BE71B953572008051EB /* RankingAllUsersVC.swift in Sources */,
-				87D2D0061AB3BDA7008CDC89 /* UIButton+Haneke.swift in Sources */,
 				874A15A01A9B2E3A0050FF5C /* TermsTableViewController.swift in Sources */,
 				87B198C01A8C963E00299627 /* LoadingActivityVC.swift in Sources */,
-				87D2CFF91AB3BDA7008CDC89 /* CryptoSwiftMD5.swift in Sources */,
 				872DC0071A3B0BA500806FE9 /* Alert.swift in Sources */,
 				872791A31A6B1B9E0012DE69 /* GlobalFunctions.swift in Sources */,
-				87D2CFFF1AB3BDA7008CDC89 /* Format.swift in Sources */,
 				87314F771A414DB600D75C4D /* FriendVC.swift in Sources */,
 				87DAA1451A89F76A00D7330A /* UILabelExtension.swift in Sources */,
 				872820A11A13548F0010AB75 /* HomeTBC.swift in Sources */,
@@ -963,7 +977,6 @@
 				87904FD31A0CAD15004FD75E /* MPColorTools.m in Sources */,
 				872820A71A149B7C0010AB75 /* ForgotPasswordVC.swift in Sources */,
 				877ACDAF1AA52B3F00A6AB9F /* AboutUsTableViewController.swift in Sources */,
-				87D2CFF71AB3BDA7008CDC89 /* Cache.swift in Sources */,
 				8757BF901A63C7E10018B16B /* ChallengeTVCell.swift in Sources */,
 				87904FAB1A0C9FF2004FD75E /* AppDelegate.swift in Sources */,
 				872DC0041A3AF1CA00806FE9 /* AlertTVCell.swift in Sources */,
@@ -971,23 +984,16 @@
 				87B48B3F1B3B433700E088A9 /* FlagContentVC.swift in Sources */,
 				872820A51A143F110010AB75 /* TimelineVC.swift in Sources */,
 				87A5558C1A25CC99000620BF /* Comment.swift in Sources */,
-				87D2CFFE1AB3BDA7008CDC89 /* Fetcher.swift in Sources */,
 				8759E7961AE0369A00EE3D45 /* RankingTVCell.swift in Sources */,
 				87A970441A11EF6E00C74796 /* ApiLinkVariable.swift in Sources */,
 				8757BF891A6346BE0018B16B /* BookVC.swift in Sources */,
-				8728209F1A132D1C0010AB75 /* SwiftyJSON.swift in Sources */,
 				87D35A601B87FF9200F41821 /* GuideProgressionLevelVC.swift in Sources */,
 				87DA88571A477FCB008B2BF6 /* FriendRequestTVCell.swift in Sources */,
 				874A15961A9752410050FF5C /* ENSideMenu.swift in Sources */,
-				87D2D0041AB3BDA7008CDC89 /* NSHTTPURLResponse+Haneke.swift in Sources */,
 				873281831A5D10CA00B99429 /* BookPageContentVC.swift in Sources */,
-				87019B921AB3B3FE007526C6 /* Alamofire.swift in Sources */,
-				87D2CFFD1AB3BDA7008CDC89 /* Fetch.swift in Sources */,
 				87E298741A317BC200DEF385 /* AlertVC.swift in Sources */,
-				87D2D0001AB3BDA7008CDC89 /* Haneke.swift in Sources */,
 				878849BA1B96E89B00DE6200 /* Siren.swift in Sources */,
 				874101021ADEFB910096F3E9 /* LinkFacebookVC.swift in Sources */,
-				87D2CFFA1AB3BDA7008CDC89 /* Data.swift in Sources */,
 				879387151A500AFD00609934 /* ProfilSelfieCVCell.swift in Sources */,
 				8719D23C1ADF855C002273B4 /* RankingVC.swift in Sources */,
 				874A15A41A9B43770050FF5C /* ExtraPagesTVCell.swift in Sources */,
@@ -999,7 +1005,6 @@
 				873F1BDB1B944516008051EB /* GKImageCropViewController.m in Sources */,
 				874A159A1A9768790050FF5C /* MyNavigationController.swift in Sources */,
 				87A6B4B81B93D801002940F6 /* PhotoLibraryPreviewVC.swift in Sources */,
-				87D2CFFC1AB3BDA7008CDC89 /* DiskFetcher.swift in Sources */,
 				87721E091B958DC0003032A7 /* PopUpViewControllerSwift.swift in Sources */,
 				87E2987A1A31B04800DEF385 /* CommentTVCell.swift in Sources */,
 				877EAB891A9D461400D06ADC /* PrivacyTableViewController.swift in Sources */,
@@ -1019,6 +1024,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		87362EB01B9A44BD0023DEE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Haneke;
+			targetProxy = 87362EAF1B9A44BD0023DEE8 /* PBXContainerItemProxy */;
+		};
 		87904FBC1A0C9FF2004FD75E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 87904FA41A0C9FF2004FD75E /* Challfie */;

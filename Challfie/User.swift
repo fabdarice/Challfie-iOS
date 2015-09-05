@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class User {
     var id: Int!
@@ -32,7 +33,7 @@ class User {
     var blocked: Bool!
     var is_current_user: Bool!
     
-    init(json: JSON_SWIFTY) {
+    init(json: JSON) {
         self.id = json["id"].intValue
         self.created_at = json["created_at"].stringValue
         self.username = json["username"].stringValue
@@ -56,29 +57,16 @@ class User {
     }
     
     func show_profile_pic() -> String {
-        var profile_pic_url: String!
         if self.profile_pic == "/assets/missing_user.png" {
             return "missing"
         } else {
-            if ((self.is_facebook_picture == true) || (ApiLink.host == "https://challfie.com")) {
-                profile_pic_url = self.profile_pic
-            } else {
-                profile_pic_url = ApiLink.host + self.profile_pic
-            }
-            return profile_pic_url
+            return self.profile_pic
         }
         
     }
     
     func show_book_image() -> String {
-        
-        var book_url: String!
-        if ApiLink.host == "https://challfie.com" {
-            book_url = self.book_image
-        } else {
-            book_url = ApiLink.host + self.book_image
-        }
-        return book_url
+        return self.book_image
         
     }
 }

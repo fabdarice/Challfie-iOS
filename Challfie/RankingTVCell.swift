@@ -21,7 +21,7 @@ class RankingTVCell : UITableViewCell {
     
     func loadItem() {
         
-        var login = KeychainWrapper.stringForKey(kSecAttrAccount)
+        var login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
         
         // Check if It's current_user
         if self.user.is_current_user == true {

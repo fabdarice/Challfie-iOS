@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Challenge {
     var id:Int!
@@ -14,7 +15,7 @@ class Challenge {
     var difficulty: Int!
     var complete_status: Int!
     
-    init(json: JSON_SWIFTY) {
+    init(json: JSON) {
         self.id = json["id"].intValue
         self.description = json["description"].stringValue
         self.difficulty = json["difficulty"].intValue

@@ -36,9 +36,9 @@ class PhotoLibraryPreviewVC: UIViewController {
     
     @IBAction func validateAction(sender: AnyObject) {
         // Push to TakePictureVC
-        if let allTabViewControllers = homeTabBarController.viewControllers {
-            var navController:UINavigationController = allTabViewControllers[2] as UINavigationController
-            var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
+        if let allTabViewControllers = homeTabBarController.viewControllers,
+            navController:UINavigationController = allTabViewControllers[2] as? UINavigationController,
+            takePictureVC: TakePictureVC = navController.viewControllers[0] as? TakePictureVC {
             takePictureVC.imageToSave = self.imageToSave
             takePictureVC.challenge_selected = self.challenge_selected
             homeTabBarController.selectedViewController = navController

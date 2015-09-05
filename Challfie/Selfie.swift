@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Selfie {
     var id: Int!
@@ -32,7 +33,7 @@ class Selfie {
         self.id = id
     }
     
-    init(json:JSON_SWIFTY) {
+    init(json:JSON) {
         self.id = json["id"].intValue
         self.message = json["message"].stringValue
         self.photo = json["photo"].stringValue
@@ -52,14 +53,8 @@ class Selfie {
     
     
     
-    func show_selfie_pic() -> String {
-        var selfie_url: String!
-        if ApiLink.host == "https://challfie.com" {
-            selfie_url = self.photo
-        } else {
-            selfie_url = ApiLink.host + self.photo
-        }
-        return selfie_url
+    func show_selfie_pic() -> String {        
+        return self.photo
     }
 }
 

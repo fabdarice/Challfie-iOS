@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Book {
     var id: Int!
@@ -20,7 +21,7 @@ class Book {
         
     }
     
-    init(json: JSON_SWIFTY) {
+    init(json: JSON) {
         self.id = json["id"].intValue
         self.name = json["name"].stringValue
         self.cover = json["cover"].stringValue

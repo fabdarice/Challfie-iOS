@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 
 class Alert {
@@ -22,7 +23,7 @@ class Alert {
     var read: Bool!
     
     
-    init(json: JSON_SWIFTY) {
+    init(json: JSON) {
         self.id = json["id"].intValue
         self.message = json["message"].stringValue
         self.selfie_id = json["selfie_id"].intValue

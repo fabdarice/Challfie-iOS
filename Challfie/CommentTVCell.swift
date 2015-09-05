@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class CommentTVCell : UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
@@ -68,8 +69,8 @@ class CommentTVCell : UITableViewCell {
         // Push to ProfilVC of Commenter
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "user_id": self.comment.user_id
         ]
         
@@ -79,7 +80,7 @@ class CommentTVCell : UITableViewCell {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.oneSelfieVC)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     var commenter: User!
                     

@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class FriendTVCell : UITableViewCell {
     @IBOutlet weak var profilePic: UIImageView!    
@@ -96,7 +97,7 @@ class FriendTVCell : UITableViewCell {
         if (friends_tab == 3 || friends_tab == 4) {
         // FOR FOLLOWERS OR "SEARCH USER" OR "USERAPPROVAL LIST" 
             // Check if it's current_user
-            if friend.username == KeychainWrapper.stringForKey(kSecAttrAccount)! {
+            if friend.username == KeychainWrapper.stringForKey(kSecAttrAccount as String)! {
                 self.relationshipButton.hidden = true
             } else {
                 self.relationshipButton.hidden = false
@@ -122,8 +123,8 @@ class FriendTVCell : UITableViewCell {
     
     @IBAction func relationshipButton(sender: UIButton) {
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "user_id": self.friend.id.description
         ]
         
@@ -143,7 +144,7 @@ class FriendTVCell : UITableViewCell {
                     self.friend.is_pending = false
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     if (json["success"].intValue == 1) {
                         // Refresh all 3 tabs
                         
@@ -175,7 +176,7 @@ class FriendTVCell : UITableViewCell {
                         self.friend.is_pending = false
                     } else {
                         //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
+                        var json = JSON(mydata!)
                         if (json["success"].intValue == 1) {
                             // Refresh all 3 tabs
                             if self.friendVC != nil {

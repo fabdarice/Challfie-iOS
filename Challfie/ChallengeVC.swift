@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class ChallengeVC : UIViewController {
 
@@ -141,8 +142,8 @@ class ChallengeVC : UIViewController {
         
         self.loadingIndicator.startAnimating()
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!            
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!            
         ]
         
         request(.POST, ApiLink.level_progression, parameters: parameters, encoding: .JSON)
@@ -155,10 +156,10 @@ class ChallengeVC : UIViewController {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+                    var alert_tabBarItem : UITabBarItem = (self.tabBarController?.tabBar.items?[4] as? UITabBarItem)!
                     if json["new_alert_nb"] != 0 {
                         alert_tabBarItem.badgeValue = json["new_alert_nb"].stringValue
                     } else {
@@ -166,7 +167,7 @@ class ChallengeVC : UIViewController {
                     }
                     
                     // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+                    var friend_tabBarItem : UITabBarItem = (self.tabBarController?.tabBar.items?[3] as? UITabBarItem)!
                     if json["new_friends_request_nb"] != 0 {
                         friend_tabBarItem.badgeValue = json["new_friends_request_nb"].stringValue
                     } else {

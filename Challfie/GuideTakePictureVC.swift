@@ -105,14 +105,14 @@ class GuideTakePictureVC: UIViewController {
         if self.from_facebook == true {
             // Modal to Timeline TabBarViewCOntroller
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as HomeTBC
+            var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
             homeTableViewController.from_facebook = self.from_facebook
             self.presentViewController(homeTableViewController, animated: true, completion: nil)
             
         } else {
             // Modal to LinkFacebook Tutorial Page
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var linkFacebookVC:LinkFacebookVC = mainStoryboard.instantiateViewControllerWithIdentifier("linkFacebookVC") as LinkFacebookVC
+            var linkFacebookVC:LinkFacebookVC = mainStoryboard.instantiateViewControllerWithIdentifier("linkFacebookVC") as! LinkFacebookVC
             self.presentViewController(linkFacebookVC, animated: true, completion: nil)
         }
     }

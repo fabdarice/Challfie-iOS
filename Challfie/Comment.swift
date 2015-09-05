@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Comment {
     var id: Int!
@@ -14,7 +15,7 @@ class Comment {
     var username: String!
     var user_id: String!
     
-    init(json: JSON_SWIFTY) {
+    init(json: JSON) {
         self.id = json["id"].intValue
         self.message = json["message"].stringValue
         self.username = json["username"].stringValue

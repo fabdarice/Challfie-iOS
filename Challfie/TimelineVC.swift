@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
 
@@ -101,7 +102,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         timelineTableView.estimatedRowHeight = 500.0
         
         // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideNavBar = self.navigationController as! MyNavigationController
         var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
         
         let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
@@ -200,23 +201,23 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
 
         if actionFromInit == true {
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "page": self.page.description
             ]
             api_link = ApiLink.timeline
         } else {
             if selfies_array.count == 0 {
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "last_selfie_id": "-1"
                 ]
             } else {
                 let last_selfie: Selfie! = self.selfies_array.last
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "last_selfie_id": last_selfie.id.description
                 ]
             }
@@ -230,7 +231,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
 
                     if actionFromInit == false {
                         self.selfies_array.removeAll(keepCapacity: false)
@@ -261,7 +262,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     }
                     
                     // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
                     if json["meta"]["new_alert_nb"] != 0 {                        
                         alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
                     } else {
@@ -269,7 +270,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     }
                     
                     // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
                     if json["meta"]["new_friends_request_nb"] != 0 {
                         friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
                     } else {
@@ -297,8 +298,8 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         self.loadingIndicator.startAnimating()
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "page": self.page.description
         ]
         
@@ -308,7 +309,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
@@ -346,14 +347,14 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             
             if self.selfies_array.count == 0 {
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "last_selfie_id": "-1"]
             } else {
                 let last_selfie: Selfie! = self.selfies_array.last
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "last_selfie_id": last_selfie.id.description]
             }
             
@@ -361,10 +362,10 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata != nil) {
                         //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
+                        var json = JSON(mydata!)
                         
                         // Update Badge of Alert TabBarItem
-                        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+                        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
                         if json["meta"]["new_alert_nb"] != 0 {
                             alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
                         } else {
@@ -372,7 +373,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                         }
                         
                         // Update Badge of Friends TabBarItem
-                        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+                        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
                         if json["meta"]["new_friends_request_nb"] != 0 {
                             friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
                         } else {
@@ -436,15 +437,15 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         var parameters = [String: String]()
         if self.selfies_array.count == 0 {
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "last_selfie_id": "-1"
             ]
         } else {
             let last_selfie: Selfie! = self.selfies_array.last
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "last_selfie_id": last_selfie.id.description
             ]
         }
@@ -455,7 +456,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     completionHandler(UIBackgroundFetchResult.Failed)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     self.selfies_array.removeAll(keepCapacity: false)
                     //self.selfies_array_id.removeAll(keepCapacity: false)
@@ -484,7 +485,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     }
                     
                     // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
                     if json["meta"]["new_alert_nb"] != 0 {
                         alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
                     } else {
@@ -492,7 +493,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     }
                     
                     // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
                     if json["meta"]["new_friends_request_nb"] != 0 {
                         friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
                     } else {
@@ -541,9 +542,9 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     @IBAction func retryUploadSelfie(sender: UIButton) {
-        if let viewControllers = self.tabBarController?.viewControllers {
-            let navController = viewControllers[2] as UINavigationController
-            var takepictureVC = navController.viewControllers[0] as TakePictureVC
+        if let viewControllers = self.tabBarController?.viewControllers,
+        navController = viewControllers[2] as? UINavigationController,
+        takepictureVC = navController.viewControllers[0] as? TakePictureVC {
             takepictureVC.createSelfie()
             self.progressData = 0.1
             self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
@@ -557,7 +558,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TimelineTableViewCell = tableView.dequeueReusableCellWithIdentifier("TimelineCustomCell") as TimelineTableViewCell
+        var cell: TimelineTableViewCell = tableView.dequeueReusableCellWithIdentifier("TimelineCustomCell") as! TimelineTableViewCell
 
         var selfie:Selfie = self.selfies_array[indexPath.row]
         cell.timelineVC = self

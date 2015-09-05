@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class GuideVC : UIViewController, GKImagePickerDelegate {
     
@@ -25,8 +27,8 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
         super.viewDidLoad()
         println("ENTER GuideVC")
         
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
+        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
         
         self.usernameLabel.text = login
         self.welcomeLabel.text = NSLocalizedString("tutorial_one_title", comment: "Welcome")
@@ -177,8 +179,8 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
         var message: String = NSLocalizedString("first_challfie", comment: "My first Challfie!!")
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "message": message,
             "is_private": is_private,
             "is_shared_fb": is_shared_fb,
@@ -186,19 +188,34 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
             "approval_status": "1"
         ]
         
+        Alamofire.upload(Method.POST, URLString: ApiLink.create_selfie,
+            multipartFormData: { multipartFormData in
+                multipartFormData.appendBodyPart(data: parameters["login"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "login")
+                multipartFormData.appendBodyPart(data: parameters["auth_token"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "auth_token")
+                multipartFormData.appendBodyPart(data: parameters["challenge_id"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "challenge_id")
+                multipartFormData.appendBodyPart(data: parameters["message"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "message")
+                multipartFormData.appendBodyPart(data: parameters["is_private"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_private")
+                multipartFormData.appendBodyPart(data: parameters["is_shared_fb"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_shared_fb")
+                multipartFormData.appendBodyPart(data: parameters["approval_status"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "approval_status")
+                multipartFormData.appendBodyPart(data: imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpg", mimeType: "image/jpeg")
+            },
+            encodingCompletion: nil
+        )
+        
+        /*
         var manager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager()
         manager.POST(ApiLink.create_selfie, parameters: parameters, constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
             formData.appendPartWithFileData(imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpeg", mimeType: "image/jpeg")
             }, success: { (operation: AFHTTPRequestOperation!, responseObject) -> Void in
             }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
-        })
+        })*/
     }
     
     
     // MARK: - prepareForSegue method
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "homeSegue2") && (self.from_facebook == true) {
-            var tabBar: HomeTBC = segue.destinationViewController as HomeTBC
+            var tabBar: HomeTBC = segue.destinationViewController as! HomeTBC
             tabBar.selectedIndex = 3
         }
     }

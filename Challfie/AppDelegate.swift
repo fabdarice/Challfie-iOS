@@ -7,7 +7,8 @@
 //
 
 import UIKit
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,14 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
-        var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as LoginVC
-        var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as HomeTBC
-        //var guideVC:GuideVC = mainStoryboard.instantiateViewControllerWithIdentifier("guideVC") as GuideVC
+        var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
+        var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
+        var guideVC:GuideVC = mainStoryboard.instantiateViewControllerWithIdentifier("guideVC") as! GuideVC
         
-        var facebookUsernameViewController:FacebookUsernameVC = mainStoryboard.instantiateViewControllerWithIdentifier("facebookUsernameVC") as FacebookUsernameVC
+        var facebookUsernameViewController:FacebookUsernameVC = mainStoryboard.instantiateViewControllerWithIdentifier("facebookUsernameVC") as! FacebookUsernameVC
 
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
+        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
         
         var launchScreenVC = UIViewController(nibName: "LoadingLaunchScreen", bundle: nil)
         self.window?.rootViewController = launchScreenVC
@@ -48,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
                     if (mydata != nil) {
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         if (json["success"].intValue == 1) {
                             let username_activated: Bool = json["username_activated"].boolValue
                             
@@ -58,14 +59,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             
                             if username_activated == true {
                                 self.window?.rootViewController = homeTableViewController
-                                //self.window?.rootViewController = guideVC
+                                self.window?.rootViewController = guideVC
                             } else {
                                 self.window?.rootViewController = facebookUsernameViewController
                             }
                             
                         } else {
-                            KeychainWrapper.removeObjectForKey(kSecAttrAccount)
-                            KeychainWrapper.removeObjectForKey(kSecValueData)
+                            KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
+                            KeychainWrapper.removeObjectForKey(kSecValueData as String)
                             if let facebookSession = FBSession.activeSession() {
                                 facebookSession.closeAndClearTokenInformation()
                                 facebookSession.close()
@@ -75,8 +76,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             self.window?.rootViewController = loginViewController
                         }
                     } else {
-                        KeychainWrapper.removeObjectForKey(kSecAttrAccount)
-                        KeychainWrapper.removeObjectForKey(kSecValueData)
+                        KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
+                        KeychainWrapper.removeObjectForKey(kSecValueData as String)
                         if let facebookSession = FBSession.activeSession() {
                             facebookSession.closeAndClearTokenInformation()
                             facebookSession.close()
@@ -154,8 +155,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         println("ENTER didRegisterForRemoteNotificationsWithDeviceToken")
         var deviceTokenStr = NSString(format: "%@", deviceToken)
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
+        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
         if (login != nil && auth_token != nil) {
             let parameters:[String: AnyObject] = [
                 "login": login!,
@@ -196,9 +197,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         println("ENTER performFetchWithCompletionHandler")
         if let homeTableViewController:HomeTBC = self.window?.rootViewController as? HomeTBC {
             // Fetch Data of Timeline Tab
-            if let allTabViewControllers = homeTableViewController.viewControllers {
-                var navController:UINavigationController = allTabViewControllers[0] as UINavigationController
-                var timelineVC: TimelineVC = navController.viewControllers[0] as TimelineVC
+            if let allTabViewControllers = homeTableViewController.viewControllers,
+                navController:UINavigationController = allTabViewControllers[0] as? UINavigationController,
+                timelineVC: TimelineVC = navController.viewControllers[0] as? TimelineVC {
                 
                 timelineVC.fetchDataInBackground({(result) in completionHandler(result) })
             }

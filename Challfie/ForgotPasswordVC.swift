@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class ForgotPasswordVC : UIViewController, UITextFieldDelegate {
     
@@ -51,7 +52,7 @@ class ForgotPasswordVC : UIViewController, UITextFieldDelegate {
                 } else {
                 
                     //convert to SwiftJSON
-                    let json = JSON_SWIFTY(mydata!)
+                    let json = JSON(mydata!)
                     
                     if (json["success"].intValue == 0) {
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: json["message"].stringValue, controller: self)
@@ -63,12 +64,12 @@ class ForgotPasswordVC : UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true;
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true)
     }
     

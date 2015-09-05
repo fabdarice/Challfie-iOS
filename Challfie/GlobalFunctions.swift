@@ -7,15 +7,16 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class GlobalFunctions {
     
     /// Function to push to my Profil
     func tapGestureToProfil(controller: UIViewController) {
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
         ]
         
         request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
@@ -24,7 +25,7 @@ class GlobalFunctions {
                     self.displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: controller)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     var current_user: User!
                     
                     if json["user"].count != 0 {

@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 import MobileCoreServices
 
 class ProfilHeader : UICollectionReusableView {    
@@ -62,7 +63,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
         
         // Check if it's current_user
-        if user.username == KeychainWrapper.stringForKey(kSecAttrAccount)! {
+        if user.username == KeychainWrapper.stringForKey(kSecAttrAccount as String)! {
             self.is_current_user = true
         }
         
@@ -174,7 +175,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                     layout.headerReferenceSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 60.0)
                 } else {
                     // is friend
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_is_friend"), style: UIBarButtonItemStyle.Bordered, target: self, action: nil)
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_is_friend"), style: UIBarButtonItemStyle.Plain, target: self, action: nil)
                     self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("FFFFFF")
                 }
             }
@@ -229,8 +230,8 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     func loadData() {
         self.loadingIndicator.startAnimating()
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "user_id": self.user.id.description,
             "page": self.page.description
         ]
@@ -241,7 +242,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
@@ -288,8 +289,8 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.user.is_pending = true
         
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "user_id": self.user.id.description
         ]
         
@@ -302,13 +303,13 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                 self.user.is_pending = false
             } else {
                 //Convert to SwiftJSON
-                var json = JSON_SWIFTY(mydata!)
+                var json = JSON(mydata!)
                 if (json["success"].intValue == 1) {
                     self.selfiesCollectionView.reloadData()
                     // Set so it will Refresh Following Tab when visiting
-                    if let allTabViewControllers = self.tabBarController?.viewControllers {
-                        var navController:UINavigationController = allTabViewControllers[3] as UINavigationController
-                        var friendsVC: FriendVC = navController.viewControllers[0] as FriendVC
+                    if let allTabViewControllers = self.tabBarController?.viewControllers,
+                    navController:UINavigationController = allTabViewControllers[3] as? UINavigationController,
+                    friendsVC: FriendVC = navController.viewControllers[0] as? FriendVC {
                         friendsVC.following_first_time = true
                         friendsVC.suggestions_first_time = true
                     }
@@ -331,8 +332,8 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         let oneAction = UIAlertAction(title: NSLocalizedString("Log_out", comment: "Log out"), style: UIAlertActionStyle.Destructive) { (_) in
             
             // Desactive Device so it can't receive push notifications
-            let login = KeychainWrapper.stringForKey(kSecAttrAccount)
-            let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+            let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
+            let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
             if (login != nil && auth_token != nil) {
                 let parameters:[String: AnyObject] = [
                     "login": login!,
@@ -344,15 +345,15 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                 request(.POST, ApiLink.create_or_update_device, parameters: parameters, encoding: .JSON)
             }
             
-            KeychainWrapper.removeObjectForKey(kSecAttrAccount)
-            KeychainWrapper.removeObjectForKey(kSecValueData)
+            KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
+            KeychainWrapper.removeObjectForKey(kSecValueData as String)
             if let facebookSession = FBSession.activeSession() {
                 facebookSession.closeAndClearTokenInformation()
                 facebookSession.close()
                 FBSession.setActiveSession(nil)
             }
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as LoginVC
+            var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
             
             // Desactive the Background Fetch Mode
             UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
@@ -400,7 +401,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         var headerView: ProfilHeader!
         if kind == UICollectionElementKindSectionHeader {
-            headerView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "profilHeader", forIndexPath: indexPath) as ProfilHeader
+            headerView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "profilHeader", forIndexPath: indexPath) as! ProfilHeader
             headerView.headerMessageWidthConstraint.constant = 300.0
             if self.user.blocked == true {
                 headerView.headerMessageLabel.text = NSLocalizedString("profil_blocked", comment: "Your account have been blocked by an administrator. Please contact us if this was a mistake.")
@@ -424,7 +425,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell: ProfilSelfieCVCell = collectionView.dequeueReusableCellWithReuseIdentifier(self.reuseIdentifier, forIndexPath: indexPath) as ProfilSelfieCVCell
+        var cell: ProfilSelfieCVCell = collectionView.dequeueReusableCellWithReuseIdentifier(self.reuseIdentifier, forIndexPath: indexPath) as! ProfilSelfieCVCell
         cell.backgroundColor = UIColor.blackColor()
         cell.selfie = selfies_array[indexPath.row]
         cell.profilVC = self
@@ -526,43 +527,51 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil, nil)
         }
         
-        let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
-        ]
+
+        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)!
+        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)!
+
         
-        let imageData = UIImageJPEGRepresentation(imageToSave, 0.6)            
+        let imageData = UIImageJPEGRepresentation(imageToSave, 0.9)
         
-        var manager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager()
-        manager.POST(ApiLink.update_user, parameters: parameters, constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
-            formData.appendPartWithFileData(imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpeg", mimeType: "image/jpeg")
-            }, success: { (operation: AFHTTPRequestOperation!, responseObject) -> Void in
-                //convert to SwiftJSON
-                let json = JSON_SWIFTY(responseObject!)
-                self.user.profile_pic = json["user"]["avatar"].stringValue
-                
-                // User Profile Picture
-                if self.user.show_profile_pic() != "missing" {
-                    let profilePicURL:NSURL = NSURL(string: self.user.show_profile_pic())!
-                    self.profileImage.hnk_setImageFromURL(profilePicURL)
-                } else {
-                    self.profileImage.image = UIImage(named: "missing_user")
+        
+        Alamofire.upload(Method.POST, URLString: ApiLink.update_user,
+            multipartFormData: { multipartFormData in
+                multipartFormData.appendBodyPart(data: login.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "login")
+                multipartFormData.appendBodyPart(data: auth_token.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "auth_token")
+                multipartFormData.appendBodyPart(data: imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpg", mimeType: "image/jpeg")
+            },
+            encodingCompletion: { encodingResult in
+                switch encodingResult {
+                case .Success(let upload, _, _):
+                    upload.responseJSON { request, response, data, error in
+                        let json = JSON(data!)
+                        
+                        self.user.profile_pic = json["user"]["avatar"].stringValue
+                        
+                        // User Profile Picture
+                        if self.user.show_profile_pic() != "missing" {
+                            let profilePicURL:NSURL = NSURL(string: self.user.show_profile_pic())!
+                            self.profileImage.hnk_setImageFromURL(profilePicURL)
+                        } else {
+                            self.profileImage.image = UIImage(named: "missing_user")
+                        }
+                        
+                        // Remove loadingIndicator pop-up
+                        if let loadingActivityView = self.view.viewWithTag(21) {
+                            loadingActivityView.removeFromSuperview()
+                        }
+                    }
+                case .Failure(let encodingError):
+                    // Remove loadingIndicator pop-up
+                    if let loadingActivityView = self.view.viewWithTag(21) {
+                        loadingActivityView.removeFromSuperview()
+                    }
+                    
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 }
-                
-                
-                // Remove loadingIndicator pop-up
-                if let loadingActivityView = self.view.viewWithTag(21) {
-                    loadingActivityView.removeFromSuperview()
-                }
-            }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
-                
-                // Remove loadingIndicator pop-up
-                if let loadingActivityView = self.view.viewWithTag(21) {
-                    loadingActivityView.removeFromSuperview()
-                }
-                
-                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-        })
+            }
+        )
         
         // Dismiss Camera Preview
         imagePicker.imagePickerController.dismissViewControllerAnimated(true, completion: nil)

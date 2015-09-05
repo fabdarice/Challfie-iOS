@@ -7,7 +7,8 @@
 //
 
 import UIKit
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 
 class RegisterVC: UIViewController, UITextFieldDelegate {
@@ -113,7 +114,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {                
                     //convert to SwiftJSON
-                    let json = JSON_SWIFTY(mydata!)
+                    let json = JSON(mydata!)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RSPONSE FROM HTTP Request
@@ -141,8 +142,8 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                         let auth_token:String! = json["auth_token"].string
                         
                         // Save login and auth_token to the iOS Keychain
-                        KeychainWrapper.setString(login, forKey: kSecAttrAccount)
-                        KeychainWrapper.setString(auth_token, forKey: kSecValueData)
+                        KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
+                        KeychainWrapper.setString(auth_token, forKey: kSecValueData as String)
                         
                         // Modal to GuideVC
                         //self.performSegueWithIdentifier("homeSegue2", sender: self)
@@ -154,7 +155,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     }
     
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == self.usernameTextField {
             self.passwordTextField.becomeFirstResponder()
         }
@@ -174,7 +175,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         return true;
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true)
     }
     

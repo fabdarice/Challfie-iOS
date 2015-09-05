@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class UserApprovalListVC : UITableViewController {
     
@@ -89,8 +91,8 @@ class UserApprovalListVC : UITableViewController {
         }
         
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "page": self.page.description,
             "selfie_id": self.selfie_id
         ]
@@ -109,7 +111,7 @@ class UserApprovalListVC : UITableViewController {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
 
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
@@ -160,12 +162,12 @@ class UserApprovalListVC : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as FriendTVCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
         
         // Set so it will Refresh Following Tab when visiting
-        if let allTabViewControllers = self.tabBarController?.viewControllers {
-            var navController:UINavigationController = allTabViewControllers[3] as UINavigationController
-            var friendsVC: FriendVC = navController.viewControllers[0] as FriendVC
+        if let allTabViewControllers = self.tabBarController?.viewControllers,
+            navController:UINavigationController = allTabViewControllers[3] as? UINavigationController,
+            friendsVC: FriendVC = navController.viewControllers[0] as? FriendVC {
             cell.friendVC = friendsVC
         }
         
@@ -204,7 +206,7 @@ class UserApprovalListVC : UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as FriendTVCell
+        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
         
         // Push to ProfilVC of the selected Row
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)

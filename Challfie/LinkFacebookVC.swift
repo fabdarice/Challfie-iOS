@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class LinkFacebookVC: UIViewController {
     
@@ -35,7 +37,7 @@ class LinkFacebookVC: UIViewController {
     @IBAction func linkFacebookAcct(sender: AnyObject) {
         FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
                 (session:FBSession!, state:FBSessionState, error:NSError!) in
-                let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
                 appDelegate.sessionStateChanged(session, state: state, error: error)
                 if FBSession.activeSession().isOpen {
@@ -48,17 +50,17 @@ class LinkFacebookVC: UIViewController {
                             loadingActivityVC.view.tag = 21            
                             self.view.addSubview(loadingActivityVC.view)
                             
-                            let user_uid: String = user.objectForKey("id") as String
-                            let user_lastname = user.objectForKey("last_name") as String
-                            let user_firstname = user.objectForKey("first_name") as String
-                            let user_locale = user.objectForKey("locale") as String
+                            let user_uid: String = user.objectForKey("id") as! String
+                            let user_lastname = user.objectForKey("last_name") as! String
+                            let user_firstname = user.objectForKey("first_name") as! String
+                            let user_locale = user.objectForKey("locale") as! String
                             
                             let fbAccessToken = FBSession.activeSession().accessTokenData.accessToken
                             let fbTokenExpiresAt = FBSession.activeSession().accessTokenData.expirationDate.timeIntervalSince1970
                             
                             let parameters:[String: AnyObject] = [
-                                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                                 "uid": user_uid,
                                 "firstname": user_firstname,
                                 "lastname": user_lastname,
@@ -78,7 +80,7 @@ class LinkFacebookVC: UIViewController {
                                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                     } else {
                                         //convert to SwiftJSON
-                                        let json = JSON_SWIFTY(mydata!)
+                                        let json = JSON(mydata!)
                                         
                                         if (json["success"].intValue == 0) {
                                             // ERROR RESPONSE FROM HTTP Request
@@ -106,7 +108,7 @@ class LinkFacebookVC: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "homeSegueFromFacebook") && (self.is_Facebook_linked == true) {
-            var tabBar: HomeTBC = segue.destinationViewController as HomeTBC
+            var tabBar: HomeTBC = segue.destinationViewController as! HomeTBC
             tabBar.selectedIndex = 3
         }
     }

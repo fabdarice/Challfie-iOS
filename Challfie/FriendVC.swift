@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ENSideMenuDelegate {
     
@@ -89,7 +90,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         self.tableView.estimatedRowHeight = 60.0
         
         // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideNavBar = self.navigationController as! MyNavigationController
         var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
         
         
@@ -101,7 +102,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+        var friend_tabBarItem : UITabBarItem = (self.tabBarController?.tabBar.items?[3] as? UITabBarItem)!
         
         if friend_tabBarItem.badgeValue != nil || self.friends_tab == 1 {
             // set the suggestions Tab to be displayed by default
@@ -133,8 +134,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         }
         
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "page": self.suggestions_page.description
         ]
         
@@ -152,7 +153,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["request"].count != 0 {
                         for var i:Int = 0; i < json["request"].count; i++ {
@@ -170,7 +171,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     self.tableView.reloadData()
                     
                     // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
                     if json["new_alert_nb"] != 0 {
                         alert_tabBarItem.badgeValue = json["new_alert_nb"].stringValue
                     } else {
@@ -178,7 +179,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     }
                     
                     // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
                     if json["new_friends_request_nb"] != 0 {
                         friend_tabBarItem.badgeValue = json["new_friends_request_nb"].stringValue
                     } else {
@@ -228,8 +229,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         }
         
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "page": page.description
         ]
         
@@ -247,7 +248,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
@@ -271,7 +272,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     self.tableView.reloadData()
                     
                     // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
                     if json["meta"]["new_alert_nb"] != 0 {
                         alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
                     } else {
@@ -279,7 +280,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     }
                     
                     // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
                     if json["meta"]["new_friends_request_nb"] != 0 {
                         friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
                     } else {
@@ -300,7 +301,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         self.friends_tab = 1
         
         
-        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
         
         if self.suggestions_first_time == true || friend_tabBarItem.badgeValue != nil {
             self.suggestions_page = 1
@@ -350,7 +351,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     @IBAction func linkFacebook(sender: AnyObject) {
         FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
             (session:FBSession!, state:FBSessionState, error:NSError!) in
-                let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
                 appDelegate.sessionStateChanged(session, state: state, error: error)
                 if FBSession.activeSession().isOpen {
@@ -358,17 +359,17 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         if (error != nil) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
-                            let user_uid: String = user.objectForKey("id") as String
-                            let user_lastname = user.objectForKey("last_name") as String
-                            let user_firstname = user.objectForKey("first_name") as String
-                            let user_locale = user.objectForKey("locale") as String
+                            let user_uid: String = user.objectForKey("id") as! String
+                            let user_lastname = user.objectForKey("last_name") as! String
+                            let user_firstname = user.objectForKey("first_name") as! String
+                            let user_locale = user.objectForKey("locale") as! String
                             
                             let fbAccessToken = FBSession.activeSession().accessTokenData.accessToken
                             let fbTokenExpiresAt = FBSession.activeSession().accessTokenData.expirationDate.timeIntervalSince1970
                             
                             let parameters:[String: AnyObject] = [
-                                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                                 "uid": user_uid,
                                 "firstname": user_firstname,
                                 "lastname": user_lastname,
@@ -384,7 +385,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                     } else {
                                         //convert to SwiftJSON
-                                        let json = JSON_SWIFTY(mydata!)
+                                        let json = JSON(mydata!)
                                         
                                         if (json["success"].intValue == 0) {
                                             // ERROR RESPONSE FROM HTTP Request
@@ -532,12 +533,12 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as FriendTVCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
         
         var friend: Friend!
         if self.friends_tab == 1 {
             if indexPath.section == 0 {
-                cell = tableView.dequeueReusableCellWithIdentifier("FriendRequestCell") as FriendRequestTVCell
+                cell = tableView.dequeueReusableCellWithIdentifier("FriendRequestCell") as! FriendRequestTVCell
                 friend = self.request_array[indexPath.row]
             } else {
                 friend = self.suggestions_array[indexPath.row]
@@ -585,10 +586,10 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         
         // Delete Following/Follower or Decline Follower's Request
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            var cell : FriendTVCell = tableView.cellForRowAtIndexPath(indexPath) as FriendTVCell
+            var cell : FriendTVCell = tableView.cellForRowAtIndexPath(indexPath) as! FriendTVCell
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "user_id": cell.friend.id.description
             ]
             if self.friends_tab == 1 {
@@ -598,7 +599,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
+                        var json = JSON(mydata!)
                         if (json["success"].intValue == 0) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         }
@@ -613,7 +614,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
+                        var json = JSON(mydata!)
                         if (json["success"].intValue == 0) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         }
@@ -631,7 +632,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
+                        var json = JSON(mydata!)
                         if (json["success"].intValue == 0) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         }
@@ -662,7 +663,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as FriendTVCell
+        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
         
         // Push to ProfilVC of the selected Row
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)

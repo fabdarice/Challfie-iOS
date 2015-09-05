@@ -7,8 +7,8 @@
 //
 
 import Foundation
-
-//import Alamofire
+import SwiftyJSON
+import Alamofire
 
 class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDelegate {
     
@@ -68,8 +68,8 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
         ]
         
         request(.POST, ApiLink.books_list, parameters: parameters, encoding: .JSON)
@@ -83,9 +83,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
-                    
-                    println(json)
+                    var json = JSON(mydata!)
                     
                     if json["books"].count != 0 {
                         for var i:Int = 0; i < json["books"].count; i++ {
@@ -130,7 +128,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
             }
             let lastBookContentVC = getBookContentVC(last_book_unlocked_index)!
             let startingViewControllers: NSArray = [lastBookContentVC]
-            self.pageViewController?.setViewControllers(startingViewControllers, direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+            self.pageViewController?.setViewControllers(startingViewControllers as [AnyObject], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         }
         
         let heightOtherView =  self.booksTabHeightConstraint.constant + self.topBar_bookstab_vertical_constraint.constant
@@ -155,7 +153,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
-        let itemController = viewController as BookPageContentVC
+        let itemController = viewController as! BookPageContentVC
         if itemController.itemIndex > 0 {
             return getBookContentVC(itemController.itemIndex-1)
         }
@@ -164,7 +162,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        let itemController = viewController as BookPageContentVC
+        let itemController = viewController as! BookPageContentVC
         
         if itemController.itemIndex+1 < self.books_array.count {
             return getBookContentVC(itemController.itemIndex+1)
@@ -205,7 +203,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
         // Remove Tap gesture to Hide Side Menu
         if let recognizers = self.view.gestureRecognizers {
             for recognizer in recognizers {
-                self.view.removeGestureRecognizer(recognizer as UIGestureRecognizer)
+                self.view.removeGestureRecognizer(recognizer as! UIGestureRecognizer)
             }
         }
     }

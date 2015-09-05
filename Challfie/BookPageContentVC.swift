@@ -135,7 +135,9 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.None.rawValue)
         
         // Create bitmap content with current image size and grayscale colorspace
-        let context: CGContextRef = CGBitmapContextCreate(nil, UInt(imageRect.size.width), UInt(imageRect.size.height), 8, 0, colorSpace, bitmapInfo)
+
+        
+        let context  = CGBitmapContextCreate(nil, Int(imageRect.size.width), Int(imageRect.size.height), 8, 0, colorSpace, bitmapInfo)
         
         // Draw image into current context, with specified rectangle
         // using previously defined context (with grayscale colorspace)
@@ -147,7 +149,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         
         // make a new alpha-only graphics context
         let bitmapInfo2 = CGBitmapInfo(CGImageAlphaInfo.Only.rawValue)
-        let alpha_context = CGBitmapContextCreate(nil, UInt(image.size.width), UInt(image.size.height), 8, 0, nil, bitmapInfo2);
+        let alpha_context = CGBitmapContextCreate(nil, Int(image.size.width), Int(image.size.height), 8, 0, nil, bitmapInfo2);
         
         // draw image into context with no colorspace
         CGContextDrawImage(alpha_context, imageRect, image.CGImage)
@@ -170,7 +172,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: ChallengeTVCell = tableView.dequeueReusableCellWithIdentifier("ChallengeCell") as ChallengeTVCell
+        var cell: ChallengeTVCell = tableView.dequeueReusableCellWithIdentifier("ChallengeCell") as! ChallengeTVCell
         var challenge:Challenge = self.book.challenges_array[indexPath.row]
                         
         cell.challenge = challenge
@@ -195,7 +197,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : ChallengeTVCell = tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as ChallengeTVCell
+        var cell : ChallengeTVCell = tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ChallengeTVCell
         
         self.challenge_selected = cell.challenge.description
         
@@ -259,7 +261,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
     }
     
     // MARK: - UIImagePickerController Delegate methods
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         
         if let pickedImage = image {
             self.imageToSave = pickedImage
@@ -269,9 +271,9 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
                 self.imageToSave = self.fixOrientation(image)
                 UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
                 // Push to TakePictureVC
-                if let allTabViewControllers = self.tabBarController?.viewControllers {
-                    var navController:UINavigationController = allTabViewControllers[2] as UINavigationController
-                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
+                if let allTabViewControllers = self.tabBarController?.viewControllers,
+                    var navController:UINavigationController = allTabViewControllers[2] as? UINavigationController,
+                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as? TakePictureVC {
                     takePictureVC.imageToSave = self.imageToSave
                     takePictureVC.challenge_selected = self.challenge_selected
                     self.tabBarController?.selectedViewController = navController
@@ -281,7 +283,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
                 self.hidesBottomBarWhenPushed = true
                 var photoLibraryPreviewVC = PhotoLibraryPreviewVC(nibName: "PhotoLibraryPreview", bundle: nil)
                 photoLibraryPreviewVC.imageToSave = self.imageToSave
-                photoLibraryPreviewVC.homeTabBarController = self.tabBarController as HomeTBC
+                photoLibraryPreviewVC.homeTabBarController = self.tabBarController as! HomeTBC
                 photoLibraryPreviewVC.imagePicker = picker
                 photoLibraryPreviewVC.challenge_selected = self.challenge_selected
                 picker.pushViewController(photoLibraryPreviewVC, animated: true)

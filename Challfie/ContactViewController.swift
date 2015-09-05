@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerViewDataSource,UITextViewDelegate {
     
@@ -111,8 +112,8 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         }
     
         let parameters:[String: AnyObject] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "type_contact": contactTypeInt,
             "message": self.textView.text
         ]
@@ -127,7 +128,7 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //convert to SwiftJSON
-                    let json = JSON_SWIFTY(mydata!)
+                    let json = JSON(mydata!)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RESPONSE FROM HTTP Request

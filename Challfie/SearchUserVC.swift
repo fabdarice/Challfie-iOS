@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
@@ -62,7 +63,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.users_array.removeAll(keepCapacity: false)
         searchBar.resignFirstResponder()
-        if countElements(searchBar.text) >= 2 {
+        if count(searchBar.text) >= 2 {
             // add loadingIndicator pop-up
             var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
@@ -72,8 +73,8 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
             self.view.addSubview(loadingActivityVC.view)
 
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "user_input": searchBar.text
             ]
             
@@ -87,7 +88,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
+                        var json = JSON(mydata!)
                         
                         if json["users"].count != 0 {
                             for var i:Int = 0; i < json["users"].count; i++ {
@@ -127,17 +128,17 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as FriendTVCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
         var user: Friend!
         
         user = self.users_array[indexPath.row]
         cell.friend = user
         
         // Set so it will Refresh Following Tab when visiting
-        if let allTabViewControllers = self.tabBarController?.viewControllers {
-            var navController:UINavigationController = allTabViewControllers[3] as UINavigationController
-            var friendsVC: FriendVC = navController.viewControllers[0] as FriendVC
-            cell.friendVC = friendsVC
+        if let allTabViewControllers = self.tabBarController?.viewControllers,
+            navController = allTabViewControllers[3] as? UINavigationController ,
+            friendsVC = navController.viewControllers[0] as? FriendVC {
+                cell.friendVC = friendsVC
         }
         
         cell.indexPath = indexPath
@@ -159,7 +160,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as FriendTVCell
+        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
         
         // Push to ProfilVC of the selected Row
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)

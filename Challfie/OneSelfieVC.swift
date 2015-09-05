@@ -7,7 +7,9 @@
 //
 
 import Foundation
-//import Alamofire
+import Haneke
+import Alamofire
+import SwiftyJSON
 
 class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -239,7 +241,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
         }
         
-        if self.selfie.user.username == KeychainWrapper.stringForKey(kSecAttrAccount) {
+        if self.selfie.user.username == KeychainWrapper.stringForKey(kSecAttrAccount as String) {
             // Hide Approve&Disapprove Button because own selfie
             self.approveButton.hidden = true
             self.rejectButton.hidden = true
@@ -265,7 +267,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
-        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
+        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.footerViewBottomConstraints.constant = keyboardFrame.size.height
@@ -285,8 +287,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.view.addSubview(loadingActivityVC.view)
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "id": self.selfie.id.description
         ]
         
@@ -300,7 +302,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["meta"]["hidden"].boolValue == true {
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("is_deleted", comment: "This selfie has been deleted."), controller: self)
@@ -335,8 +337,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.view.addSubview(loadingActivityVC.view)
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "id": self.selfie.id.description,
             "all_comment": all_comment.description
         ]
@@ -353,7 +355,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json2 = JSON_SWIFTY(mydata!)
+                    var json2 = JSON(mydata!)
                     
                     if json2["selfies"].count != 0 {
                         for var i:Int = 0; i < json2["selfies"].count; i++ {
@@ -422,7 +424,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: CommentTVCell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as CommentTVCell
+        var cell: CommentTVCell = tableView.dequeueReusableCellWithIdentifier("CommentCell") as! CommentTVCell
         var comment:Comment = self.comments_array[indexPath.row]
         
         cell.comment = comment
@@ -439,7 +441,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     
     // // MARK : - UITextFieldDelegate Functions
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {        
+    func textFieldShouldReturn(textField: UITextField) -> Bool {        
         self.commentSendButton(self.sendCommentButton)
         textField.resignFirstResponder()
         return true
@@ -450,8 +452,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // Perform the action only if the user hasn't approved yet the Selfie
         if self.selfie.user_vote_status != 1 {
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "id": self.selfie.id.description
             ]
             
@@ -461,7 +463,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //convert to SwiftJSON
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         
                         if (json["success"].intValue == 0) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -512,8 +514,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // Perform the action only if the user hasn't rejected yet the Selfie
         if self.selfie.user_vote_status != 2 {
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "id": self.selfie.id.description
             ]
             
@@ -523,7 +525,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //convert to SwiftJSON
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         
                         if (json["success"].intValue == 0) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -578,8 +580,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "selfie_id": self.selfie.id.description,
             "last_comment_id" : last_comment_id.description,
             "message": self.commentTextField.text
@@ -595,7 +597,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["meta"]["sucess"].boolValue == false {
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("comment_empty", comment: "Comment cannot be empty"), controller: self)
@@ -634,8 +636,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         if self.is_administrator == true {
             let adminOneAction = UIAlertAction(title: "Block Selfie", style: UIAlertActionStyle.Destructive) { (_) in
                 let parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "selfie_id": self.selfie.id.description
                 ]
                 
@@ -654,7 +656,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
                             //convert to SwiftJSON
-                            let json = JSON_SWIFTY(mydata!)
+                            let json = JSON(mydata!)
                             if (json["success"].intValue == 0) {
                                 // ERROR RESPONSE FROM HTTP Request
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("block_selfie", comment: "Block Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -668,8 +670,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             let adminTwoAction = UIAlertAction(title: "Block User", style: UIAlertActionStyle.Destructive) { (_) in
                 let parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "user_id": self.selfie.user.id.description
                 ]
                 
@@ -688,7 +690,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
                             //convert to SwiftJSON
-                            let json = JSON_SWIFTY(mydata!)
+                            let json = JSON(mydata!)
                             if (json["success"].intValue == 0) {
                                 // ERROR RESPONSE FROM HTTP Request
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("block_user", comment: "Block User"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -701,8 +703,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             let adminThreeAction = UIAlertAction(title: "Clear Flag", style: UIAlertActionStyle.Default) { (_) in
                 let parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "selfie_id": self.selfie.id.description
                 ]
                 
@@ -711,7 +713,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 loadingActivityVC.view.tag = 21
                 self.view.addSubview(loadingActivityVC.view)
                 
-                request(.POST, ApiLink.clear_flag_selfie, parameters: parameters, encoding: .JSON)
+                Alamofire.request(.POST, ApiLink.clear_flag_selfie, parameters: parameters, encoding: .JSON)
                     .responseJSON { (_, _, mydata, _) in
                         // Remove loadingIndicator pop-up
                         if let loadingActivityView = self.view.viewWithTag(21) {
@@ -721,7 +723,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
                             //convert to SwiftJSON
-                            let json = JSON_SWIFTY(mydata!)
+                            let json = JSON(mydata!)
                             if (json["success"].intValue == 0) {
                                 // ERROR RESPONSE FROM HTTP Request
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("clear_flag", comment: "Clear Selfie Flag"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -739,8 +741,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         let oneAction = UIAlertAction(title: NSLocalizedString("report_inappropriate_content", comment: "Report Inappropriate Content"), style: UIAlertActionStyle.Default) { (_) in
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "selfie_id": self.selfie.id.description
             ]
             
@@ -759,7 +761,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     } else {
                         //convert to SwiftJSON
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         if (json["success"].intValue == 0) {
                             // ERROR RESPONSE FROM HTTP Request
                             GlobalFunctions().displayAlert(title: NSLocalizedString("report_selfie", comment: "Report Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)

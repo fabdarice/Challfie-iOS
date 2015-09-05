@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, ENSideMenuDelegate {
     @IBOutlet weak var tableView: UITableView!
@@ -68,7 +69,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         self.tableView.estimatedRowHeight = 100.0                
         
         // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as MyNavigationController
+        var ensideNavBar = self.navigationController as! MyNavigationController
         var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
         
         let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
@@ -102,7 +103,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
         
-        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
+        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
         
         // Refresh the page if not the first time and a badge exists
         if self.first_time == false && alert_tabBarItem.badgeValue != nil {
@@ -124,18 +125,18 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if KeychainWrapper.stringForKey(kSecAttrAccount) != nil {
+        if KeychainWrapper.stringForKey(kSecAttrAccount as String) != nil {
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
             ]
             request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
             
             self.tabBarItem.badgeValue = nil
             
             // Update App Badge Number
-            var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as UITabBarItem
-            var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as UITabBarItem
+            var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
+            var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
             
             var badgeNumber : Int!
             if friend_tabBarItem.badgeValue != nil {
@@ -160,23 +161,23 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         
         if actionFromInit == true {
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "page": self.page.description
             ]
             api_link = ApiLink.alerts_list
         } else {
             if self.alerts_array.count == 0 {
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "last_alert_id": "-1"
                 ]
             } else {
                 let last_alert: Alert! = self.alerts_array.last
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                     "last_alert_id": last_alert.id.description
                 ]
             }
@@ -190,7 +191,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
 
                     if actionFromInit == false {
                         self.alerts_array.removeAll(keepCapacity: false)
@@ -249,8 +250,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     func loadData() {        
         self.loadingIndicator.startAnimating()
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "page": self.page.description
         ]
         
@@ -260,7 +261,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     
                     if json["notifications"].count != 0 {
                         for var i:Int = 0; i < json["notifications"].count; i++ {
@@ -314,7 +315,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     // MARK: - tableView Delegate
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //
-        var cell: AlertTVCell = tableView.dequeueReusableCellWithIdentifier("AlertCell") as AlertTVCell
+        var cell: AlertTVCell = tableView.dequeueReusableCellWithIdentifier("AlertCell") as! AlertTVCell
         
         var alert: Alert = self.alerts_array[indexPath.row]
         cell.loadItem(alert)
@@ -359,7 +360,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             // Push to Challenge Book
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             
-            var bookVC:BookVC = mainStoryboard.instantiateViewControllerWithIdentifier("bookID") as BookVC
+            var bookVC:BookVC = mainStoryboard.instantiateViewControllerWithIdentifier("bookID") as! BookVC
            
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             self.navigationController?.pushViewController(bookVC, animated: true)

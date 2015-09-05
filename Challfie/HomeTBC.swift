@@ -25,7 +25,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         self.tabBar.backgroundImage = UIImage(named: "tabBar_background_white")
         
         // TabBar Text and Image color for selected item
-        self.tabBar.selectedImageTintColor = MP_HEX_RGB("30768A")
+        self.tabBar.tintColor = MP_HEX_RGB("30768A")
         
         // Set Color for selected and unselected title item
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: MP_HEX_RGB("A8A7A7")], forState:.Normal)
@@ -33,7 +33,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
 
         
         // Set Color for unselected image item
-        for item in self.tabBar.items as [UITabBarItem] {
+        for item in self.tabBar.items as! [UITabBarItem] {
             if let image = item.image {
                 item.image = image.imageWithColor(MP_HEX_RGB("A8A7A7")).imageWithRenderingMode(.AlwaysOriginal)
             }
@@ -44,7 +44,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         for viewController in self.viewControllers!
         {
             viewController.view
-            var navController:UINavigationController = viewController as UINavigationController
+            var navController:UINavigationController = (viewController as? UINavigationController)!
             switch i {
             case 0 : navController.tabBarItem.title = NSLocalizedString("tab_timeline", comment: "Timeline")
             case 1 : navController.tabBarItem.title = NSLocalizedString("tab_challenge", comment: "Challenge")
@@ -70,29 +70,31 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         
         // Show popup for "camera Tab" instead of showing the viewcontroller directly
         if let selectedViewController = tabBarController.viewControllers {
-            if (viewController == selectedViewController[2] as NSObject) {
-                let navController = viewController as UINavigationController
-                var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
-                
-                // Show Pop-op to options to choose between camera and photo library
-                var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-                let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
+            if (viewController == selectedViewController[2] as! NSObject) {
+                if let navController = viewController as? UINavigationController {
+                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as! TakePictureVC
+                    
+                    // Show Pop-op to options to choose between camera and photo library
+                    var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
                         self.use_camera = true
                         self.showCamera()
                     }
-                let twoAction = UIAlertAction(title: NSLocalizedString("choose_from_gallery", comment: "Choose From Your Gallery"), style: .Default) { (_) in
+                    let twoAction = UIAlertAction(title: NSLocalizedString("choose_from_gallery", comment: "Choose From Your Gallery"), style: .Default) { (_) in
                         self.use_camera = false
                         self.showPhotoLibrary()
                     }
-                let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
+                    let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
+                    
+                    alert.addAction(oneAction)
+                    alert.addAction(twoAction)
+                    alert.addAction(thirdAction)
+                    
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
+                    return false
+                }
                 
-                alert.addAction(oneAction)
-                alert.addAction(twoAction)
-                alert.addAction(thirdAction)
-                
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                return false
             }
         }
         return true
@@ -140,7 +142,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
     }
     
     // MARK: - UIImagePickerController Delegate methods
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         
         if let pickedImage = image {
             self.imageToSave = pickedImage
@@ -150,9 +152,9 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
                 self.imageToSave = self.fixOrientation(image)
                 UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
                 // Push to TakePictureVC
-                if let allTabViewControllers = self.viewControllers {
-                    var navController:UINavigationController = allTabViewControllers[2] as UINavigationController
-                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as TakePictureVC
+                if let allTabViewControllers = self.viewControllers,
+                navController:UINavigationController = allTabViewControllers[2] as? UINavigationController,
+                takePictureVC: TakePictureVC = navController.viewControllers[0] as? TakePictureVC {
                     takePictureVC.imageToSave = self.imageToSave
                     self.selectedViewController = navController
                     picker.dismissViewControllerAnimated(true, completion: nil)

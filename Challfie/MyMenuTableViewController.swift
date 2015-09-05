@@ -7,7 +7,9 @@
 //
 
 import UIKit
-//import Alamofire
+import Haneke
+import Alamofire
+import SwiftyJSON
 
 class MyMenuTableViewController: UITableViewController {
     //var selectedMenuItem : Int = 5
@@ -85,9 +87,9 @@ class MyMenuTableViewController: UITableViewController {
                 
                 // Get Current User
                 let parameters:[String: String] = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
-                ]
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+                 ]
                 
                 request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
                     .responseJSON { (_, _, mydata, _) in
@@ -96,7 +98,7 @@ class MyMenuTableViewController: UITableViewController {
                         } else {
                             //Convert to SwiftJSON
                             
-                            var json = JSON_SWIFTY(mydata!)
+                            var json = JSON(mydata!)
                             
                             if json["user"].count != 0 {
                                 self.current_user = User.init(json: json["user"])
@@ -188,17 +190,17 @@ class MyMenuTableViewController: UITableViewController {
         case 0:
             // My Profile
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
             ]
             
             request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
-                .responseJSON { (_, _, mydata, _) in
+                .responseJSON{ (_, _, mydata, _) in
                     if (mydata == nil) {
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
                     } else {
                         //Convert to SwiftJSON
-                        var json = JSON_SWIFTY(mydata!)
+                        var json = JSON(mydata!)
                         var current_user: User!
                         
                         if json["user"].count != 0 {
@@ -219,17 +221,17 @@ class MyMenuTableViewController: UITableViewController {
             // Daily Challenge
             if indexPath.row == 0 {
                 let parameters:[String: String] = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData)!
+                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
                 ]
                 
                 request(.POST, ApiLink.daily_challenge, parameters: parameters, encoding: .JSON)
-                    .responseJSON { (_, _, mydata, _) in
+                    .responseJSON{ (_, _, mydata, _) in
                         if (mydata == nil) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
                         } else {
                             //Convert to SwiftJSON
-                            var json = JSON_SWIFTY(mydata!)
+                            var json = JSON(mydata!)
                             GlobalFunctions().displayAlert(title: NSLocalizedString("daily_challenge", comment: "Daily Challenge"), message: json["daily_challenge"].stringValue, controller: self.navController)
                             selectedCell.contentView.backgroundColor = UIColor.clearColor()
                         }
@@ -277,8 +279,8 @@ class MyMenuTableViewController: UITableViewController {
         case 3:
             // Log Out
             // Desactive Device so it can't receive push notifications
-            let login = KeychainWrapper.stringForKey(kSecAttrAccount)
-            let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+            let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
+            let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
             if (login != nil && auth_token != nil) {
                 let parameters:[String: AnyObject] = [
                     "login": login!,
@@ -290,14 +292,14 @@ class MyMenuTableViewController: UITableViewController {
                 request(.POST, ApiLink.create_or_update_device, parameters: parameters, encoding: .JSON)
             }
             
-            KeychainWrapper.removeObjectForKey(kSecAttrAccount)
-            KeychainWrapper.removeObjectForKey(kSecValueData)
+            KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
+            KeychainWrapper.removeObjectForKey(kSecValueData as String)
             if let facebookSession = FBSession.activeSession() {
                 facebookSession.closeAndClearTokenInformation()
                 facebookSession.close()
                 FBSession.setActiveSession(nil)
             }
-            var loginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as LoginVC
+            var loginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
             // Desactive the Background Fetch Mode
             UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
                 UIApplicationBackgroundFetchIntervalNever)

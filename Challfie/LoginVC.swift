@@ -7,7 +7,8 @@
 //
 
 import UIKit
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
 
@@ -91,7 +92,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
     
     // MARK: - login Action
     @IBAction func loginAction(sender: UIButton) {
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         //let deviceToken = appDelegate.deviceToken
         
         // Add loadingIndicator pop-up
@@ -104,8 +105,9 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
             "password": self.passwordTextField.text
         ]
         
+        
         request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+            .responseJSON{ (_, _, mydata, _) in
                 // Remove loadingIndicator pop-up
                 if let loadingActivityView = self.view.viewWithTag(21) {
                     loadingActivityView.removeFromSuperview()
@@ -114,7 +116,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //convert to SwiftJSON
-                    let json = JSON_SWIFTY(mydata!)
+                    let json = JSON(mydata!)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RESPONSE FROM HTTP Request
@@ -125,8 +127,8 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                         let auth_token:String! = json["auth_token"].string
                         
                         // Save login and auth_token to the iOS Keychain
-                        KeychainWrapper.setString(login, forKey: kSecAttrAccount)
-                        KeychainWrapper.setString(auth_token, forKey: kSecValueData)                        
+                        KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
+                        KeychainWrapper.setString(auth_token, forKey: kSecValueData as String)
                         
                         // Activate the Background Fetch Mode to Interval Minimum
                         UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
@@ -146,7 +148,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
     
     
     // MARK: - UITextFieldDelegate Delegate
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == self.loginTextField {
             self.passwordTextField.becomeFirstResponder()
         }
@@ -157,7 +159,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
         return true;
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true)
     }
     
@@ -170,8 +172,8 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
     }
     
     func loginViewFetchedUserInfo(loginView : FBLoginView!, user: FBGraphUser) {        
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData)
+        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
+        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
         
         if self.first_facebook_login == false && login == nil && auth_token == nil {
             // add loadingIndicator pop-up
@@ -194,7 +196,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
             }
             
             if user.objectForKey("locale") != nil {
-                facebook_locale = user.objectForKey("locale") as String
+                facebook_locale = user.objectForKey("locale") as! String
             }
             
             let parameters:[String: AnyObject] = [
@@ -220,7 +222,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                         self.first_facebook_login = false
                     } else {
                         //convert to SwiftJSON
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         
                         if (json["success"].intValue == 0) {
                             self.first_facebook_login = false
@@ -233,17 +235,18 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                             let username_activated: Bool = json["username_activated"].boolValue
 
                             // Save login and auth_token to the iOS Keychain
-                            KeychainWrapper.setString(login, forKey: kSecAttrAccount)
-                            KeychainWrapper.setString(auth_token, forKey: kSecValueData)
+                            KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
+                            KeychainWrapper.setString(auth_token, forKey: kSecValueData as String)
                             
                             if username_activated == true {
                                 // User has already set his Challfie Username
                                 let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                                var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as HomeTBC
+                                var homeTableViewController:HomeTBC = (mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as? HomeTBC)!
                                 // Add Background for status bar
-                                let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-                                appDelegate.window?.rootViewController = homeTableViewController
-                                self.presentViewController(homeTableViewController, animated: true, completion: nil)
+                                if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                                    appDelegate.window?.rootViewController = homeTableViewController
+                                    self.presentViewController(homeTableViewController, animated: true, completion: nil)
+                                }
                             } else {
                                 // User needs to set his Challfie username since coming from Facebook
                                 self.performSegueWithIdentifier("setFacebookUsernameSegue", sender: self)

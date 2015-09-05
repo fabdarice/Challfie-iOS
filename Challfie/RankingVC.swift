@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -96,8 +98,8 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "page": self.page.description
         ]
         
@@ -115,7 +117,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
 
                     // Set Current_user row
                     var current_user = User.init(json: json["current_user"][0])
@@ -175,7 +177,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
  
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("RankingCell") as RankingTVCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("RankingCell") as! RankingTVCell
         cell.user = self.users_array[indexPath.row]
         cell.index = indexPath
         cell.loadItem()
@@ -207,7 +209,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : RankingTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as RankingTVCell
+        var cell : RankingTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! RankingTVCell
         
         // Push to ProfilVC of the selected Row
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)

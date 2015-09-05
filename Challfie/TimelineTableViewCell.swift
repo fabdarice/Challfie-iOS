@@ -7,8 +7,9 @@
 //
 
 import Foundation
-//import Alamofire
-//import Haneke
+import Alamofire
+import Haneke
+import SwiftyJSON
 
 class TimelineTableViewCell : UITableViewCell {
     
@@ -196,7 +197,7 @@ class TimelineTableViewCell : UITableViewCell {
         self.approveButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         self.disapproveButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         
-        if self.selfie.user.username == KeychainWrapper.stringForKey(kSecAttrAccount) {
+        if self.selfie.user.username == KeychainWrapper.stringForKey(kSecAttrAccount as String) {
             // Hide Approve&Disapprove Button because own selfie
             self.approveButton.hidden = true
             self.disapproveButton.hidden = true
@@ -275,8 +276,8 @@ class TimelineTableViewCell : UITableViewCell {
             }
             
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "id": self.selfie.id.description
             ]
             
@@ -292,7 +293,7 @@ class TimelineTableViewCell : UITableViewCell {
                         
                     } else {
                         //convert to SwiftJSON
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         
                         if (json["success"].intValue == 0) {
                             // FAILURE
@@ -354,8 +355,8 @@ class TimelineTableViewCell : UITableViewCell {
             self.disapproveButton.setImage(UIImage(named: "reject_select_button.png"), forState: .Normal)
 
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "id": self.selfie.id.description
             ]
             
@@ -370,7 +371,7 @@ class TimelineTableViewCell : UITableViewCell {
                         self.disapproveButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
                     } else {                        
                         //convert to SwiftJSON
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         
                         if (json["success"].intValue == 0) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
@@ -455,8 +456,8 @@ class TimelineTableViewCell : UITableViewCell {
         // Push to ProfilVC of Commenter
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "user_id": self.selfie.last_comment.user_id
         ]
         
@@ -466,7 +467,7 @@ class TimelineTableViewCell : UITableViewCell {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                 } else {
                     //Convert to SwiftJSON
-                    var json = JSON_SWIFTY(mydata!)
+                    var json = JSON(mydata!)
                     var last_commenter: User!
                     
                     if json["user"].count != 0 {
@@ -505,7 +506,7 @@ class TimelineTableViewCell : UITableViewCell {
     @IBAction func settingsButton(sender: AnyObject) {
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount)
+        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
         var oneAction : UIAlertAction!
         
         if self.selfie.user.username == login {
@@ -515,8 +516,8 @@ class TimelineTableViewCell : UITableViewCell {
                 
                 let confirmationOk = UIAlertAction(title: NSLocalizedString("delete", comment: "Delete"), style: UIAlertActionStyle.Destructive) { (_) in
                     let parameters = [
-                        "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                        "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                        "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                        "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                         "selfie_id": self.selfie.id.description
                     ]
                     
@@ -535,7 +536,7 @@ class TimelineTableViewCell : UITableViewCell {
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                             } else {
                                 //convert to SwiftJSON
-                                let json = JSON_SWIFTY(mydata!)
+                                let json = JSON(mydata!)
                                 if (json["success"].intValue == 0) {
                                     // ERROR RESPONSE FROM HTTP Request
                                     GlobalFunctions().displayAlert(title: NSLocalizedString("delete_selfie", comment: "Delete Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
@@ -561,8 +562,8 @@ class TimelineTableViewCell : UITableViewCell {
         
         let twoAction = UIAlertAction(title: NSLocalizedString("report_inappropriate_content", comment: "Report Inappropriate Content"), style: UIAlertActionStyle.Default) { (_) in
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
                 "selfie_id": self.selfie.id.description
             ]
             
@@ -581,7 +582,7 @@ class TimelineTableViewCell : UITableViewCell {
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)
                     } else {
                         //convert to SwiftJSON
-                        let json = JSON_SWIFTY(mydata!)
+                        let json = JSON(mydata!)
                         if (json["success"].intValue == 0) {
                             // ERROR RESPONSE FROM HTTP Request
                             GlobalFunctions().displayAlert(title: NSLocalizedString("report_selfie", comment: "Report Selfie"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.timelineVC)

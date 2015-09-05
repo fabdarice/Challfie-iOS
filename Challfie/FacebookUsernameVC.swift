@@ -7,7 +7,8 @@
 //
 
 import Foundation
-//import Alamofire
+import Alamofire
+import SwiftyJSON
 
 class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     @IBOutlet weak var setUsernameView: UIView!
@@ -69,14 +70,14 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - UITextFieldDelegate Delegate
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
         self.validateUsernameButton(self.setUsernameButton)
         return true;
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true)
     }
     
@@ -87,8 +88,8 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
         self.view.addSubview(loadingActivityVC.view)
         
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData)!,
+            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
+            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
             "new_username": self.usernameTextField.text
         ]
                 
@@ -102,7 +103,7 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 } else {
                     //convert to SwiftJSON
-                    let json = JSON_SWIFTY(mydata!)                    
+                    let json = JSON(mydata!)
                     
                     if json["username"].count != 0 {
                         // ERROR VALIDATION OF USERNAME
@@ -112,7 +113,7 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
                         let login:String! = json["user"]["username"].string
                         
                         // Save login and auth_token to the iOS Keychain
-                        KeychainWrapper.setString(login, forKey: kSecAttrAccount)
+                        KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
                         
                         self.performSegueWithIdentifier("facebookregisterSegue", sender: self)
                         
@@ -124,7 +125,7 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "facebookregisterSegue") {
-            var guideVC: GuideVC = segue.destinationViewController as GuideVC
+            var guideVC: GuideVC = segue.destinationViewController as! GuideVC
             guideVC.from_facebook = true
         }
     }

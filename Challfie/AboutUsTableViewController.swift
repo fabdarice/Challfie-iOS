@@ -58,7 +58,7 @@ class AboutUsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("ExtraPagesCell") as ExtraPagesTVCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("ExtraPagesCell") as! ExtraPagesTVCell
         
         cell.userInteractionEnabled = false
         cell.loadItem()
