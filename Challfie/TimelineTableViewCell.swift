@@ -150,6 +150,12 @@ class TimelineTableViewCell : UITableViewCell {
         var sizeScale: CGFloat!
         
         switch model {
+        case "iPhone 3G":
+            sizeScale = 0.9
+            commentButtonWidthConstraint.constant = 80
+        case "iPhone 3GS":
+            sizeScale = 0.9
+            commentButtonWidthConstraint.constant = 80
         case "iPhone 4":
             sizeScale = 0.9
             commentButtonWidthConstraint.constant = 80
@@ -173,7 +179,7 @@ class TimelineTableViewCell : UITableViewCell {
             commentButtonWidthConstraint.constant = 100
         default:
             sizeScale = 1.0
-            commentButtonWidthConstraint.constant = 80
+            commentButtonWidthConstraint.constant = 90
         }
         
         // Test if Last comment exists or not
@@ -683,6 +689,8 @@ class TimelineTableViewCell : UITableViewCell {
         var sizeScale: CGFloat!
         
         switch model {
+        case "iPhone 3G": sizeScale = 0.9
+        case "iPhone 3GS": sizeScale = 0.9
         case "iPhone 4": sizeScale = 0.9
         case "iPhone 4S": sizeScale = 0.9
         case "iPhone 5": sizeScale = 0.9

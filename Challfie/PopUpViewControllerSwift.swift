@@ -42,6 +42,8 @@ import QuartzCore
         let model = UIDevice.currentDevice().modelName
         
         switch model {
+        case "iPhone 3G": topSpaceConstraint.constant = 70
+        case "iPhone 3GS": topSpaceConstraint.constant = 70
         case "iPhone 4": topSpaceConstraint.constant = 70
         case "iPhone 4S": topSpaceConstraint.constant = 70
         case "iPhone 5": topSpaceConstraint.constant = 85
@@ -50,7 +52,7 @@ import QuartzCore
         case "iPhone 6" : topSpaceConstraint.constant = 100
         case "iPhone 6 Plus" : topSpaceConstraint.constant = 120
         default:
-            topSpaceConstraint.constant = 70
+            topSpaceConstraint.constant = 100
         }
         
 

@@ -31,6 +31,8 @@ class CommentTVCell : UITableViewCell {
         var sizeScale: CGFloat!
         
         switch model {
+        case "iPhone 3G": sizeScale = 0.9
+        case "iPhone 3GS": sizeScale = 0.9
         case "iPhone 4": sizeScale = 0.9
         case "iPhone 4S": sizeScale = 0.9
         case "iPhone 5": sizeScale = 0.9

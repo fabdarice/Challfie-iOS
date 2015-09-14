@@ -39,6 +39,20 @@ class GuideBookVC: UIViewController {
         let model = UIDevice.currentDevice().modelName
         
         switch model {
+        case "iPhone 3G":
+            descriptionBottomConstraint.constant = 10
+            titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
+            descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
+            thanksLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
+            self.nextPageButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+            bookViewHeightConstraint.constant = 225
+        case "iPhone 3GS":
+            descriptionBottomConstraint.constant = 10
+            titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
+            descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
+            thanksLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
+            self.nextPageButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+            bookViewHeightConstraint.constant = 225
         case "iPhone 4":
             descriptionBottomConstraint.constant = 10
             titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
@@ -89,12 +103,12 @@ class GuideBookVC: UIViewController {
             self.nextPageButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
             bookViewHeightConstraint.constant = 350
         default:
-            descriptionBottomConstraint.constant = 30
-            titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
-            descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
-            thanksLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
-            self.nextPageButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
-            bookViewHeightConstraint.constant = 225
+            descriptionBottomConstraint.constant = 40
+            titleLabel.font = UIFont(name: "HelveticaNeue", size: 18.0)
+            descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+            thanksLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+            self.nextPageButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+            bookViewHeightConstraint.constant = 300
         }
     }
     

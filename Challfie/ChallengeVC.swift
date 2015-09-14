@@ -72,6 +72,8 @@ class ChallengeVC : UIViewController {
         let model = UIDevice.currentDevice().modelName
 
         switch model {
+        case "iPhone 3G": bookProgressViewHeightConstraint.constant = 180
+        case "iPhone 3GS": bookProgressViewHeightConstraint.constant = 180
         case "iPhone 4": bookProgressViewHeightConstraint.constant = 180
         case "iPhone 4S": bookProgressViewHeightConstraint.constant = 180
         case "iPhone 5": bookProgressViewHeightConstraint.constant = 225
@@ -80,7 +82,7 @@ class ChallengeVC : UIViewController {
         case "iPhone 6" : bookProgressViewHeightConstraint.constant = 250
         case "iPhone 6 Plus" : bookProgressViewHeightConstraint.constant = 350
         default:
-            bookProgressViewHeightConstraint.constant = 225
+            bookProgressViewHeightConstraint.constant = 250
         }        
         
         self.createFullCircle()

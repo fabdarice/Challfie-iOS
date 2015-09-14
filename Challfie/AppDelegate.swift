@@ -221,11 +221,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         super.initialize()
 
         Armchair.appID("974913351")
-        Armchair.significantEventsUntilPrompt(2)
+        Armchair.significantEventsUntilPrompt(10)
         Armchair.reviewMessage(NSLocalizedString("review_message", comment: "Review Message"))
         Armchair.shouldPromptIfRated(true)
-        Armchair.daysUntilPrompt(0)
-        Armchair.usesUntilPrompt(1)
+        Armchair.daysUntilPrompt(20)
+        Armchair.usesUntilPrompt(20)
     }
     
     /*
