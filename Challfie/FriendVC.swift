@@ -350,7 +350,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         if self.followers_first_time == true {
             self.followers_page = 1
             self.followers_array.removeAll(keepCapacity: false)
-            self.loadData(false)
+            self.tableView.reloadData()
             self.loadData(false)
             self.followers_first_time = false
         } else {
@@ -682,7 +682,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.loadingIndicator.isAnimating() == false {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height - 50)) {
+            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height * 0.50)) {
                 // Add Loading Indicator to footerView
                 self.tableView.tableFooterView = self.loadingIndicator
                 

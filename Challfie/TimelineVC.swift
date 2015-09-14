@@ -584,7 +584,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         if self.loadingIndicator.isAnimating() == false {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height - self.timelineTableView.bounds.size.height  - 200)) {
+            if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height * 0.66)) {
                 // Add Loading Indicator to footerView
                 self.timelineTableView.tableFooterView = self.loadingIndicator
                 

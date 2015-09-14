@@ -205,7 +205,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.loadingIndicator.isAnimating() == false {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height - 50)) {
+            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height * 0.66)) {
                 // Add Loading Indicator to footerView
                 self.tableView.tableFooterView = self.loadingIndicator
                 self.loadData(true)

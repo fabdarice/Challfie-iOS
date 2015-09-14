@@ -476,7 +476,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             let scrollContentSizeHeight = scrollView.contentSize.height;
             let scrollOffset = scrollView.contentOffset.y;
             
-            if (scrollOffset + scrollViewHeight >= (scrollContentSizeHeight - 200)) {
+            if (scrollOffset + scrollViewHeight >= (scrollContentSizeHeight - 400)) {
                 // Add Loading Indicator to footerView
                 self.loadData()
             }
