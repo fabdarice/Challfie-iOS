@@ -10,6 +10,9 @@ import UIKit
 import Haneke
 import Alamofire
 import SwiftyJSON
+import FBSDKCoreKit
+import FBSDKLoginKit
+import KeychainAccess
 
 class MyMenuTableViewController: UITableViewController {
     //var selectedMenuItem : Int = 5
@@ -23,7 +26,9 @@ class MyMenuTableViewController: UITableViewController {
         // Customize apperance of table view
         tableView.contentInset = UIEdgeInsetsMake(64.0, 0, 0, 0) //
         tableView.separatorStyle = .None
-        tableView.backgroundColor = MP_HEX_RGB("073340")
+        tableView.backgroundColor = MP_HEX_RGB("FFFFFF")
+        tableView.layer.borderColor = MP_HEX_RGB("01171F").CGColor
+        tableView.layer.borderWidth = 1.0
         tableView.bounces = false
 
         // Preserve selection between presentations
@@ -68,8 +73,8 @@ class MyMenuTableViewController: UITableViewController {
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
         
         var textLabel : UILabel = UILabel(frame: CGRectMake(40.0, 10.0, cell!.frame.size.width - 7 - 20, 20.0))
-        textLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
-        textLabel.textColor = MP_HEX_RGB("D1D1D1")
+        textLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
+        textLabel.textColor = MP_HEX_RGB("000000")
         
         cell!.addSubview(imageView)
         cell!.addSubview(textLabel)
@@ -82,13 +87,17 @@ class MyMenuTableViewController: UITableViewController {
         if indexPath.section == 0 {
             switch indexPath.row {
             case 0 :
-                textLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)
-                textLabel.textColor = MP_HEX_RGB("FFFFFF")
+                textLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
+                textLabel.textColor = MP_HEX_RGB("30768A")
+                
+                var keychain = Keychain(service: "challfie.app.service")
+                let login = keychain["login"]!
+                let auth_token = keychain["auth_token"]!
                 
                 // Get Current User
                 let parameters:[String: String] = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+                    "login": login,
+                    "auth_token": auth_token
                  ]
                 
                 request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
@@ -126,7 +135,7 @@ class MyMenuTableViewController: UITableViewController {
                 imageView.image = UIImage(named: "icon_daily_challenge")
             case 1 :
                 textLabel.text = NSLocalizedString("ranking", comment: "Ranking")
-                imageView.image = UIImage(named: "icon_ranking")
+                imageView.image = UIImage(named: "icon_rank")
             default:
                 textLabel.text = ""
             }
@@ -188,10 +197,14 @@ class MyMenuTableViewController: UITableViewController {
         switch (indexPath.section) {
         // Profile Section
         case 0:
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             // My Profile
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+                "login": login,
+                "auth_token": auth_token
             ]
             
             request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
@@ -210,6 +223,7 @@ class MyMenuTableViewController: UITableViewController {
                         // Push to OneSelfieVC
                         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
                         profilVC.user = current_user
+                        profilVC.hidesBottomBarWhenPushed = true
                         self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
                         self.navController.pushViewController(profilVC, animated: true)
                         selectedCell.contentView.backgroundColor = UIColor.clearColor()
@@ -220,9 +234,13 @@ class MyMenuTableViewController: UITableViewController {
         case 1:
             // Daily Challenge
             if indexPath.row == 0 {
+                var keychain = Keychain(service: "challfie.app.service")
+                let login = keychain["login"]!
+                let auth_token = keychain["auth_token"]!
+                
                 let parameters:[String: String] = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+                    "login": login,
+                    "auth_token": auth_token
                 ]
                 
                 request(.POST, ApiLink.daily_challenge, parameters: parameters, encoding: .JSON)
@@ -279,8 +297,10 @@ class MyMenuTableViewController: UITableViewController {
         case 3:
             // Log Out
             // Desactive Device so it can't receive push notifications
-            let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
-            let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
+            var keychain = Keychain(service: "challfie.app.service")
+            var login = keychain["login"]
+            var auth_token = keychain["auth_token"]
+            
             if (login != nil && auth_token != nil) {
                 let parameters:[String: AnyObject] = [
                     "login": login!,
@@ -290,20 +310,19 @@ class MyMenuTableViewController: UITableViewController {
                 ]
                 // update deviceToken
                 request(.POST, ApiLink.create_or_update_device, parameters: parameters, encoding: .JSON)
+                
+                keychain["login"] = nil
+                keychain["auth_token"] = nil
+                var facebookManager = FBSDKLoginManager()
+                facebookManager.logOut()
+                
+                var loginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
+                // Desactive the Background Fetch Mode
+                //UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                  //  UIApplicationBackgroundFetchIntervalNever)
+                self.navController.presentViewController(loginVC, animated: true, completion: nil)
+
             }
-            
-            KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
-            KeychainWrapper.removeObjectForKey(kSecValueData as String)
-            if let facebookSession = FBSession.activeSession() {
-                facebookSession.closeAndClearTokenInformation()
-                facebookSession.close()
-                FBSession.setActiveSession(nil)
-            }
-            var loginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
-            // Desactive the Background Fetch Mode
-            UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
-                UIApplicationBackgroundFetchIntervalNever)
-            self.navController.presentViewController(loginVC, animated: true, completion: nil)
             break
         default:
             break
@@ -329,12 +348,12 @@ class MyMenuTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         var headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 25.0))
-        headerView.backgroundColor = MP_HEX_RGB("042A36")
+        headerView.backgroundColor = MP_HEX_RGB("658D99")
         headerView.layer.borderColor = MP_HEX_RGB("01171F").CGColor
         headerView.layer.borderWidth = 1.0
         var headerLabel = UILabel(frame: CGRectMake(10.0, 5.0, tableView.frame.width, 15.0))
         headerLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
-        headerLabel.textColor = MP_HEX_RGB("A3A3A3")
+        headerLabel.textColor = MP_HEX_RGB("FFFFFF")
         
         
         headerView.addSubview(headerLabel)

@@ -1,0 +1,13 @@
+version: "Apple Swift version 1.2 (swiftlang-602.0.53.1 clang-602.0.53)"
+options: "12dfca6c47a4941aaa1f75dc2541c07c"
+inputs: 
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/Alamofire.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/Download.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/Manager.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/MultipartFormData.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/ParameterEncoding.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/Request.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/ResponseSerialization.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/ServerTrustPolicy.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/Upload.swift"
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/Alamofire/Source/Validation.swift"

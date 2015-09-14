@@ -9,6 +9,9 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import FBSDKCoreKit
+import FBSDKLoginKit
+import KeychainAccess
 
 class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ENSideMenuDelegate {
     
@@ -89,10 +92,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 60.0
         
-        // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as! MyNavigationController
-        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
-        
+        self.sideMenuController()?.sideMenu?.behindViewController = self
         
         // Set Default tab to Suggestions/Pending Request
         self.friends_tab = 1
@@ -133,9 +133,13 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             self.view.addSubview(loadingActivityVC.view)
         }
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "page": self.suggestions_page.description
         ]
         
@@ -228,9 +232,13 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             page = self.followers_page
         }
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "page": page.description
         ]
         
@@ -307,6 +315,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             self.suggestions_page = 1
             self.suggestions_array.removeAll(keepCapacity: false)
             self.request_array.removeAll(keepCapacity: false)
+            self.tableView.reloadData()
             self.loadRequestData(false)
             self.suggestions_first_time = false
         } else {
@@ -323,6 +332,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         if self.following_first_time == true {
             self.following_page = 1
             self.following_array.removeAll(keepCapacity: false)
+            self.tableView.reloadData()
             self.loadData(false)
             self.following_first_time = false
             
@@ -341,6 +351,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             self.followers_page = 1
             self.followers_array.removeAll(keepCapacity: false)
             self.loadData(false)
+            self.loadData(false)
             self.followers_first_time = false
         } else {
             self.tableView.reloadData()
@@ -349,63 +360,82 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     
     // MARK: - action "Link Facebook" button
     @IBAction func linkFacebook(sender: AnyObject) {
-        FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
-            (session:FBSession!, state:FBSessionState, error:NSError!) in
-                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-                appDelegate.sessionStateChanged(session, state: state, error: error)
-                if FBSession.activeSession().isOpen {
-                    FBRequestConnection.startForMeWithCompletionHandler({ (connection, user, error) -> Void in
-                        if (error != nil) {
+        var fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+        fbLoginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], handler: { (result, error) -> Void in
+            if (error != nil) {
+                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+            } else {
+                self.linkWithFacebook()
+            }
+        })
+
+    }
+    
+    func linkWithFacebook()
+    {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "name,email,first_name,last_name,locale"])
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            if ((error) != nil) {
+                // Process error
+                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+            } else {
+                let fbAccessToken = FBSDKAccessToken.currentAccessToken().tokenString
+                let fbTokenExpiresAt = FBSDKAccessToken.currentAccessToken().expirationDate.timeIntervalSince1970
+                var user_id = result.valueForKey("id") as! String
+                let userProfileImage = "http://graph.facebook.com/\(user_id)/picture?type=large"
+                var email = ""
+                var facebook_locale: String = "en_US"
+                
+                if result.valueForKey("email") == nil {
+                    email = user_id + "@facebook.com"
+                } else {
+                    email = result.valueForKey("email") as! String
+                }
+                
+                if result.valueForKey("locale") != nil {
+                    facebook_locale = result.valueForKey("locale") as! String
+                }
+                
+                var keychain = Keychain(service: "challfie.app.service")
+                let login = keychain["login"]!
+                let auth_token = keychain["auth_token"]!
+                
+                let parameters:[String: AnyObject] = [
+                    "login": login,
+                    "auth_token": auth_token,
+                    "uid": user_id,
+                    "firstname": result.valueForKey("first_name") as! String,
+                    "lastname": result.valueForKey("last_name") as! String ,
+                    "fbtoken": fbAccessToken,
+                    "fbtoken_expires_at": fbTokenExpiresAt,
+                    "fb_locale": facebook_locale
+                ]
+                
+                request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
+                    .responseJSON { (_, _, mydata, _) in
+                        if (mydata == nil) {
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                         } else {
-                            let user_uid: String = user.objectForKey("id") as! String
-                            let user_lastname = user.objectForKey("last_name") as! String
-                            let user_firstname = user.objectForKey("first_name") as! String
-                            let user_locale = user.objectForKey("locale") as! String
-                            
-                            let fbAccessToken = FBSession.activeSession().accessTokenData.accessToken
-                            let fbTokenExpiresAt = FBSession.activeSession().accessTokenData.expirationDate.timeIntervalSince1970
-                            
-                            let parameters:[String: AnyObject] = [
-                                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
-                                "uid": user_uid,
-                                "firstname": user_firstname,
-                                "lastname": user_lastname,
-                                "fbtoken": fbAccessToken,
-                                "fbtoken_expires_at": fbTokenExpiresAt,
-                                "fb_locale": user_locale,
-                                "isPublishPermissionEnabled": false
-                            ]
-                            
-                            request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
-                                .responseJSON { (_, _, mydata, _) in
-                                    if (mydata == nil) {
-                                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                                    } else {
-                                        //convert to SwiftJSON
-                                        let json = JSON(mydata!)
-                                        
-                                        if (json["success"].intValue == 0) {
-                                            // ERROR RESPONSE FROM HTTP Request
-                                            GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)
-                                        } else {
-                                            self.suggestions_page = 1
-                                            self.suggestions_array.removeAll(keepCapacity: false)
-                                            self.request_array.removeAll(keepCapacity: false)
-                                            self.loadRequestData(false)
-                                        }
-                                    }
-                                    
+
+                            //convert to SwiftJSON
+                            let json = JSON(mydata!)
+
+                            if (json["success"].intValue == 0) {
+                                // ERROR RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)
+                            } else {
+                                self.suggestions_page = 1
+                                self.suggestions_array.removeAll(keepCapacity: false)
+                                self.request_array.removeAll(keepCapacity: false)
+                                self.loadRequestData(false)
                             }
-                            
                         }
                         
-                    })
                 }
+            }
         })
     }
+    
     
     // MARK: - Display Message if Empty
     func display_empty_message() {
@@ -534,7 +564,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
-        
+
         var friend: Friend!
         if self.friends_tab == 1 {
             if indexPath.section == 0 {
@@ -587,9 +617,14 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         // Delete Following/Follower or Decline Follower's Request
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             var cell : FriendTVCell = tableView.cellForRowAtIndexPath(indexPath) as! FriendTVCell
+            
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "user_id": cell.friend.id.description
             ]
             if self.friends_tab == 1 {
@@ -647,7 +682,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.loadingIndicator.isAnimating() == false {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
+            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height - 50)) {
                 // Add Loading Indicator to footerView
                 self.tableView.tableFooterView = self.loadingIndicator
                 
@@ -668,6 +703,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         // Push to ProfilVC of the selected Row
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.friend
+        profilVC.hidesBottomBarWhenPushed = true
         
         self.navigationController?.pushViewController(profilVC, animated: true)
     }
@@ -676,9 +712,6 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     func toggleSideMenu() {
         toggleSideMenuView()
     }
-    
-    func hideSideMenu() {
-        hideSideMenuView()
-    }
+
     
 }

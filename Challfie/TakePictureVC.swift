@@ -10,9 +10,11 @@ import Foundation
 import MobileCoreServices
 import Alamofire
 import SwiftyJSON
+import FBSDKCoreKit
+import FBSDKLoginKit
+import KeychainAccess
+import Armchair
 
-//UIImagePickerControllerDelegate
-//UINavigationControllerDelegate
 class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -38,7 +40,6 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     var challenges_array: [[Challenge]] = []
     var imageToSave: UIImage!
     var isFacebookLinked: Bool = false
-    var isPublishPermissionEnabled: Bool = false
     var challenge_selected: String = ""
     
     override func viewDidLoad() {
@@ -202,9 +203,13 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     // load list of all challenges
     func loadData() {
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+            "login": login,
+            "auth_token": auth_token
         ]
         
         self.activityIndicator.startAnimating()
@@ -221,10 +226,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                     
                     // Check if account is linked with Facebook
                     self.isFacebookLinked = json["meta"]["isFacebookLinked"].boolValue
-                    
-                    // Check if Publish Action has already been authorized
-                    self.isPublishPermissionEnabled = json["meta"]["isPublishPermissionEnabled"].boolValue
-                    
+
                     if json["challenges"].count != 0 {
                         for var i:Int = 0; i < json["challenges"].count; i++ {
                             var book = Book.init(json: json["challenges"][i])
@@ -272,116 +274,120 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     // Function when Share Facebook Switch is ON
     func addFacebookLink() {
         if self.shareFacebookSwitch.on == true {
-            if self.isFacebookLinked == false || self.isPublishPermissionEnabled == false {
-                if self.isPublishPermissionEnabled == false && self.isFacebookLinked == true {
-                    FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends"], allowLoginUI: true, completionHandler: {
-                        (session:FBSession!, state:FBSessionState, error:NSError!) in
-
-                        if FBSession.activeSession().isOpen {
-                            if contains(FBSession.activeSession().permissions  as! [String], "publish_actions") == false {
-                                FBSession.activeSession().requestNewPublishPermissions(["publish_actions"], defaultAudience: FBSessionDefaultAudience.Friends, completionHandler: {(session:FBSession!, error:NSError!) in
+            if self.isFacebookLinked == false {
+                var fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+                fbLoginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], handler: { (result, error) -> Void in
+                    if (error != nil) {
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        self.shareFacebookSwitch.on = false
+                    } else {
+                        fbLoginManager.logInWithPublishPermissions(["publish_actions"], handler: { (result, error) -> Void in
+                            if (error != nil) {
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                                self.shareFacebookSwitch.on = false
+                            } else {
+                                self.linkAccWithFacebook()
+                            }
+                        })
+                    }
+                })
+            } else {
+                if FBSDKAccessToken.currentAccessToken() != nil {
+                    let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me/permissions", parameters: nil)
+                    graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+                        if ((error) != nil) {
+                            // Process error
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                            self.shareFacebookSwitch.on = false
+                        } else {
+                            let json = JSON(result)
+                            var publish_actions_permission_granted = false
+                            for var i = 0; i < json["data"].count; i++ {
+                                if json["data"][i]["permission"] == "publish_actions" {
+                                    if json["data"][i]["status"] == "granted" {
+                                        publish_actions_permission_granted = true
+                                    }
+                                }
+                            }
+                            if publish_actions_permission_granted == false {
+                                var fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+                                fbLoginManager.logInWithPublishPermissions(["publish_actions"], handler: { (result, error) -> Void in
                                     if (error != nil) {
                                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                         self.shareFacebookSwitch.on = false
-                                    } else {
-                                        self.updateFacebookPublishPermissions()
                                     }
                                 })
-                            } else {
-                                self.updateFacebookPublishPermissions()
                             }
-                        }
-                    })
-                } else {
-                    FBSession.openActiveSessionWithReadPermissions(["public_profile", "email", "user_friends", "publish_actions"], allowLoginUI: true, completionHandler: {
-                        (session:FBSession!, state:FBSessionState, error:NSError!) in
-                        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                        // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-                        appDelegate.sessionStateChanged(session, state: state, error: error)
-                        if FBSession.activeSession().isOpen {
-                            FBRequestConnection.startForMeWithCompletionHandler({ (connection, user, error) -> Void in
-                                if (error != nil) {
-                                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                                    self.shareFacebookSwitch.on = false
-                                } else {
-                                    let user_uid: String = user.objectForKey("id") as! String
-                                    let user_lastname = user.objectForKey("last_name") as! String
-                                    let user_firstname = user.objectForKey("first_name") as! String
-                                    let user_locale = user.objectForKey("locale") as! String
-                                    
-                                    let fbAccessToken = FBSession.activeSession().accessTokenData.accessToken
-                                    let fbTokenExpiresAt = FBSession.activeSession().accessTokenData.expirationDate.timeIntervalSince1970
-                                    
-                                    let parameters:[String: AnyObject] = [
-                                        "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                                        "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
-                                        "uid": user_uid,
-                                        "firstname": user_firstname,
-                                        "lastname": user_lastname,
-                                        "fbtoken": fbAccessToken,
-                                        "fbtoken_expires_at": fbTokenExpiresAt,
-                                        "fb_locale": user_locale,
-                                        "isPublishPermissionEnabled" : true
-                                    ]
-                                    
-                                    request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
-                                        .responseJSON { (_, _, mydata, _) in
-                                            if (mydata == nil) {
-                                                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                                                self.shareFacebookSwitch.on = false
-                                            } else {
-                                                //convert to SwiftJSON
-                                                let json = JSON(mydata!)
-                                                
-                                                if (json["success"].intValue == 0) {
-                                                    // ERROR RESPONSE FROM HTTP Request
-                                                    GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)                                                                                                        
-                                                    self.shareFacebookSwitch.on = false                                                                                                        
-                                                } else {
-                                                    self.isFacebookLinked = true
-                                                    self.isPublishPermissionEnabled = true
-                                                }
-                                            }
-                                    }
-                                    
-                                }
-                                
-                            })
+                            self.linkAccWithFacebook()
                         }
                     })
                 }
             }
+
         }
     }
     
-    func updateFacebookPublishPermissions () {
-        let parameters:[String: AnyObject] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
-            "isPublishPermissionEnabled": true
-        ]
-        
-        request(.POST, ApiLink.update_facebook_permission, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
-                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                    self.shareFacebookSwitch.on = false
+    func linkAccWithFacebook()
+    {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "name,email,first_name,last_name,locale"])
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            if ((error) != nil) {
+                // Process error
+                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                self.shareFacebookSwitch.on = false
+            } else {
+                let fbAccessToken = FBSDKAccessToken.currentAccessToken().tokenString
+                let fbTokenExpiresAt = FBSDKAccessToken.currentAccessToken().expirationDate.timeIntervalSince1970
+                var user_id = result.valueForKey("id") as! String
+                let userProfileImage = "http://graph.facebook.com/\(user_id)/picture?type=large"
+                var email = ""
+                var facebook_locale: String = "en_US"
+                
+                if result.valueForKey("email") == nil {
+                    email = user_id + "@facebook.com"
                 } else {
-                    //convert to SwiftJSON
-                    let json = JSON(mydata!)
-                    
-                    if (json["success"].intValue == 0) {
-                        // ERROR RESPONSE FROM HTTP Request
-                        GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)
-                        self.shareFacebookSwitch.on = false
-                    } else {
-                        self.isFacebookLinked = true
-                        self.isPublishPermissionEnabled = true
-                    }
+                    email = result.valueForKey("email") as! String
                 }
-        }
+                
+                if result.valueForKey("locale") != nil {
+                    facebook_locale = result.valueForKey("locale") as! String
+                }
+                
+                var keychain = Keychain(service: "challfie.app.service")
+                let login = keychain["login"]!
+                let auth_token = keychain["auth_token"]!
+                
+                let parameters:[String: AnyObject] = [
+                    "login": login,
+                    "auth_token": auth_token,
+                    "uid": user_id,
+                    "firstname": result.valueForKey("first_name") as! String,
+                    "lastname": result.valueForKey("last_name") as! String ,
+                    "fbtoken": fbAccessToken,
+                    "fbtoken_expires_at": fbTokenExpiresAt,
+                    "fb_locale": facebook_locale
+                ]
+                
+                request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
+                    .responseJSON { (_, _, mydata, _) in
+                        if (mydata == nil) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        } else {
+                            //convert to SwiftJSON
+                            let json = JSON(mydata!)
+                            if (json["success"].intValue == 0) {
+                                // ERROR RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)
+                                self.shareFacebookSwitch.on = false
+                            } else {
+                                self.isFacebookLinked = true
+                            }
+                        }
+                        
+                }
+            }
+        })
     }
-    
     
     
     // Dismiss Searchbar Keyboard
@@ -392,7 +398,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     // Add selfie
     func createSelfie() {
-        
+
         // Check if Selfie Image Exists or not
         if let cameraImage = self.cameraView.image {
             // Image Exists
@@ -438,9 +444,13 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             message = self.messageTextView.text
         }
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "message": message,
             "is_private": is_private,
             "is_shared_fb": is_shared_fb,
@@ -482,36 +492,41 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                     switch encodingResult {
                     case .Success(let upload, _, _):
                         upload.responseJSON { request, response, data, error in
-                            
-                            //convert to SwiftJSON
-                            let json = JSON(data!)
-
-                            // Check success response
-                            if (json["success"].intValue == 1) {
-                                self.cameraView.image = nil
-                                self.messageTextView.text = NSLocalizedString("add_message", comment: "Add a message..")
-                                self.messageTextView.textColor = UIColor.lightGrayColor()
-                                self.messageTextView.font = UIFont.italicSystemFontOfSize(13.0)
-                                self.message_presence = false
-                                if timelineVC.view != nil {
-                                    timelineVC.progressView.progress = 1.0
-                                    timelineVC.progressData = 1.0
-                                    timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_completed", comment: "Upload Completed")
-                                }
-                                
-                                UIView.transitionWithView(timelineVC.uploadSelfieView, duration: 0.6, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-                                    timelineVC.uploadSelfieView.hidden = true
-                                    }, completion: { (finished: Bool) -> Void in
-                                        if timelineVC.view != nil {
-                                            timelineVC.tableViewTopConstraint.constant = 0.0
-                                            timelineVC.refresh(actionFromInit: false)
-                                        }
-                                })
+                            if error != nil {
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                             } else {
-                                if timelineVC.view != nil {
-                                    timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
-                                    timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
-                                    timelineVC.retryButton.hidden = false
+                                //convert to SwiftJSON
+                                let json = JSON(data!)
+
+                                // Check success response
+                                if (json["success"].intValue == 1) {
+                                    self.cameraView.image = nil
+                                    self.messageTextView.text = NSLocalizedString("add_message", comment: "Add a message..")
+                                    self.messageTextView.textColor = UIColor.lightGrayColor()
+                                    self.messageTextView.font = UIFont.italicSystemFontOfSize(13.0)
+                                    self.message_presence = false
+                                    if timelineVC.view != nil {
+                                        timelineVC.progressView.progress = 1.0
+                                        timelineVC.progressData = 1.0
+                                        timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_completed", comment: "Upload Completed")
+                                    }
+                                    
+                                    UIView.transitionWithView(timelineVC.uploadSelfieView, duration: 0.6, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+                                        timelineVC.uploadSelfieView.hidden = true
+                                        }, completion: { (finished: Bool) -> Void in
+                                            if timelineVC.view != nil {
+                                                timelineVC.tableViewTopConstraint.constant = 0.0
+                                                timelineVC.refresh(actionFromInit: false)
+                                                // Tells Armchair that this is a significant Event
+                                                Armchair.userDidSignificantEvent(true)
+                                            }
+                                    })
+                                } else {
+                                    if timelineVC.view != nil {
+                                        timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
+                                        timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
+                                        timelineVC.retryButton.hidden = false
+                                    }
                                 }
                             }
                         }
@@ -526,52 +541,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             )
 
 
-            /*
-            var manager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager()
-            manager.POST(ApiLink.create_selfie, parameters: parameters, constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
-                formData.appendPartWithFileData(imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpeg", mimeType: "image/jpeg")
-                }, success: { (operation: AFHTTPRequestOperation!, responseObject) -> Void in
-                    //convert to SwiftJSON
-                    let json = JSON_SWIFTY(responseObject!)
-                    
-                    // Check success response
-                    if (json["success"].intValue == 1) {
-                        self.cameraView.image = nil
-                        self.messageTextView.text = NSLocalizedString("add_message", comment: "Add a message..")
-                        self.messageTextView.textColor = UIColor.lightGrayColor()
-                        self.messageTextView.font = UIFont.italicSystemFontOfSize(13.0)
-                        self.message_presence = false
                         if timelineVC.view != nil {
-                            timelineVC.progressView.progress = 1.0
-                            timelineVC.progressData = 1.0
-                            timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_completed", comment: "Upload Completed")
-                        }
-                        
-                        UIView.transitionWithView(timelineVC.uploadSelfieView, duration: 0.6, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-                                timelineVC.uploadSelfieView.hidden = true
-                            }, completion: { (finished: Bool) -> Void in
-                                if timelineVC.view != nil {
-                                    timelineVC.tableViewTopConstraint.constant = 0.0
-                                    timelineVC.refresh(actionFromInit: false)
-                                }
-                        })
-                    } else {
-                        if timelineVC.view != nil {
-                            timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
-                            timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
-                            timelineVC.retryButton.hidden = false
-                        }
-                    }
-                }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
-                    if timelineVC.view != nil {
-                        timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
-                        timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
-                        timelineVC.retryButton.hidden = false
-                    }
-            })
-            */
-
-            if timelineVC.view != nil {
                 timelineVC.disableBackgroundRefresh = true
             }
             self.tabBarController?.selectedIndex = 0

@@ -9,19 +9,21 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import FBSDKCoreKit
+import FBSDKLoginKit
+import KeychainAccess
 
-class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
+class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var credentialView: UIView!
     @IBOutlet weak var forgotPasswordButton: UIButton!
-    @IBOutlet weak var facebookLoginView: FBLoginView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var registerButton: UIButton!
-    
-    var first_facebook_login: Bool = false
+    @IBOutlet weak var facebookLoginButton: FBSDKLoginButton!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,22 +58,23 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
         // Set Textfield Delegate for hiding keyboard
         self.loginTextField.delegate = self;
         self.passwordTextField.delegate = self;
-
+        
         // Facebook Login
-        self.facebookLoginView.delegate = self
-        self.facebookLoginView.readPermissions = ["public_profile", "email", "user_friends"]
+        facebookLoginButton.delegate = self
+        facebookLoginButton.readPermissions = ["public_profile", "email", "user_friends"]
         
         // Register new account Btn
         self.registerButton.setTitle(NSLocalizedString("register_new_account", comment: "Register new account"), forState: .Normal)
         
         // Do any additional setup after loading the view, typically from a nib.
     }
-    
+
     override func viewWillAppear(animated: Bool) {
-        super.viewWillDisappear(animated)
+        super.viewWillAppear(animated)
         // Add Notification for when the Keyboard pop up  and when it is dismissed
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name:UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name:UIKeyboardDidHideNotification, object: nil)
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -93,18 +96,17 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
     // MARK: - login Action
     @IBAction func loginAction(sender: UIButton) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        //let deviceToken = appDelegate.deviceToken
         
         // Add loadingIndicator pop-up
         var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
-
+        
         let parameters:[String: AnyObject] = [
             "login": self.loginTextField.text,
-            "password": self.passwordTextField.text
+            "password": self.passwordTextField.text,
+            "timezone": NSTimeZone.localTimeZone().name
         ]
-        
         
         request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
             .responseJSON{ (_, _, mydata, _) in
@@ -127,12 +129,17 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
                         let auth_token:String! = json["auth_token"].string
                         
                         // Save login and auth_token to the iOS Keychain
-                        KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
-                        KeychainWrapper.setString(auth_token, forKey: kSecValueData as String)
+                        //KeychainInfo.login = login
+                        //KeychainInfo.auth_token = auth_token
+                        
+                        var keychain = Keychain(service: "challfie.app.service")
+                        // Save login and auth_token to the iOS Keychain
+                        keychain["login"] = login
+                        keychain["auth_token"] = auth_token
                         
                         // Activate the Background Fetch Mode to Interval Minimum
-                        UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
-                            UIApplicationBackgroundFetchIntervalMinimum)
+                        //UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                          //  UIApplicationBackgroundFetchIntervalMinimum)
                         
                         self.performSegueWithIdentifier("homeSegue", sender: self)
                     }
@@ -165,97 +172,104 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBLoginViewDelegate {
     
     
     // MARK: - Facebook Delegate Methods
-    func loginViewShowingLoggedInUser(loginView : FBLoginView!) {
-    }
-    
-    func loginViewShowingLoggedOutUser(loginView: FBLoginView!) {
-    }
-    
-    func loginViewFetchedUserInfo(loginView : FBLoginView!, user: FBGraphUser) {        
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
-        
-        if self.first_facebook_login == false && login == nil && auth_token == nil {
-            // add loadingIndicator pop-up
-            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
-            loadingActivityVC.view.tag = 21
-            self.view.addSubview(loadingActivityVC.view)
-            
-            self.first_facebook_login = true
-            
-            let fbAccessToken = FBSession.activeSession().accessTokenData.accessToken
-            let fbTokenExpiresAt = FBSession.activeSession().accessTokenData.expirationDate.timeIntervalSince1970
-            let userProfileImage = "http://graph.facebook.com/\(user.objectID)/picture?type=large"
-            var email = ""
-            var facebook_locale: String = "en_US"
-            
-            if user.objectForKey("email") == nil {
-                email = user.objectID + "@facebook.com"
-            } else {
-                user.objectForKey("email")
-            }
-            
-            if user.objectForKey("locale") != nil {
-                facebook_locale = user.objectForKey("locale") as! String
-            }
-            
-            let parameters:[String: AnyObject] = [
-                "uid": user.objectID,
-                "login": user.name,
-                "email": email,
-                "firstname": user.first_name,
-                "lastname": user.last_name,
-                "profilepic": userProfileImage,
-                "fbtoken": fbAccessToken,
-                "fbtoken_expires_at": fbTokenExpiresAt,
-                "fb_locale": facebook_locale
-            ]
-            
-            request(.POST, ApiLink.facebook_register, parameters: parameters, encoding: .JSON)
-                .responseJSON { (_, _, mydata, _) in
-                    // Remove loadingIndicator pop-up
-                    if let loadingActivityView = self.view.viewWithTag(21) {
-                        loadingActivityView.removeFromSuperview()
-                    }
-                    if (mydata == nil) {
-                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                        self.first_facebook_login = false
-                    } else {
-                        //convert to SwiftJSON
-                        let json = JSON(mydata!)
-                        
-                        if (json["success"].intValue == 0) {
-                            self.first_facebook_login = false
-                            // ERROR RESPONSE FROM HTTP Request
-                            GlobalFunctions().displayAlert(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, controller: self)
-                        } else {
-                            // SUCCESS RESPONSE FROM HTTP Request
-                            let login:String! = json["login"].string
-                            let auth_token:String! = json["auth_token"].string
-                            let username_activated: Bool = json["username_activated"].boolValue
-
-                            // Save login and auth_token to the iOS Keychain
-                            KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
-                            KeychainWrapper.setString(auth_token, forKey: kSecValueData as String)
-                            
-                            if username_activated == true {
-                                // User has already set his Challfie Username
-                                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                                var homeTableViewController:HomeTBC = (mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as? HomeTBC)!
-                                // Add Background for status bar
-                                if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-                                    appDelegate.window?.rootViewController = homeTableViewController
-                                    self.presentViewController(homeTableViewController, animated: true, completion: nil)
-                                }
-                            } else {
-                                // User needs to set his Challfie username since coming from Facebook
-                                self.performSegueWithIdentifier("setFacebookUsernameSegue", sender: self)
-                            }                            
-                        }
-                    }
-            }
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!)
+    {
+        if error == nil {
+            self.loginWithFacebook()
+        } else {
+            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
         }
-        
+    }
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!)
+    {
+    }
+    
+    
+    func loginWithFacebook()
+    {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "name,email,first_name,last_name,locale"])
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            if ((error) != nil) {
+                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+            } else {
+                // add loadingIndicator pop-up
+                var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+                loadingActivityVC.view.tag = 21
+                self.view.addSubview(loadingActivityVC.view)
+                
+                let fbAccessToken = FBSDKAccessToken.currentAccessToken().tokenString
+                let fbTokenExpiresAt = FBSDKAccessToken.currentAccessToken().expirationDate.timeIntervalSince1970
+                var user_id = result.valueForKey("id") as! String
+                let userProfileImage = "http://graph.facebook.com/\(user_id)/picture?type=large"
+                var email = ""
+                var facebook_locale: String = "en_US"
+                
+                if result.valueForKey("email") == nil {
+                    email = user_id + "@facebook.com"
+                } else {
+                    email = result.valueForKey("email") as! String
+                }
+                
+                if result.valueForKey("locale") != nil {
+                    facebook_locale = result.valueForKey("locale") as! String
+                }
+                
+                let parameters:[String: AnyObject] = [
+                    "uid": user_id,
+                    "login": result.valueForKey("name") as! String,
+                    "email": email,
+                    "firstname": result.valueForKey("first_name") as! String,
+                    "lastname": result.valueForKey("last_name") as! String ,
+                    "profilepic": userProfileImage,
+                    "fbtoken": fbAccessToken,
+                    "fbtoken_expires_at": fbTokenExpiresAt,
+                    "fb_locale": facebook_locale,
+                    "timezone": NSTimeZone.localTimeZone().name
+                ]
+                
+                request(.POST, ApiLink.facebook_register, parameters: parameters, encoding: .JSON)
+                    .responseJSON { (_, _, mydata, _) in
+                        // Remove loadingIndicator pop-up
+                        if let loadingActivityView = self.view.viewWithTag(21) {
+                            loadingActivityView.removeFromSuperview()
+                        }
+                        if (mydata == nil) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        } else {
+                            //convert to SwiftJSON
+                            let json = JSON(mydata!)
+                            
+                            if (json["success"].intValue == 0) {
+                                // ERROR RESPONSE FROM HTTP Request
+                                GlobalFunctions().displayAlert(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, controller: self)
+                            } else {
+                                // SUCCESS RESPONSE FROM HTTP Request
+                                let login:String! = json["login"].string
+                                let auth_token:String! = json["auth_token"].string
+                                let username_activated: Bool = json["username_activated"].boolValue
+                                
+                                var keychain = Keychain(service: "challfie.app.service")
+                                // Save login and auth_token to the iOS Keychain
+                                keychain["login"] = login
+                                keychain["auth_token"] = auth_token
+
+                                if username_activated == true {
+                                    // User has already set his Challfie Username
+                                    // Activate the Background Fetch Mode to Interval Minimum
+                                    //UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                                      //  UIApplicationBackgroundFetchIntervalMinimum)
+                                    
+                                    self.performSegueWithIdentifier("homeSegue", sender: self)
+                                } else {
+                                    // User needs to set his Challfie username since coming from Facebook
+                                    self.performSegueWithIdentifier("setFacebookUsernameSegue", sender: self)
+                                }                            
+                            }
+                        }
+                }
+            }
+        })
     }
     
     

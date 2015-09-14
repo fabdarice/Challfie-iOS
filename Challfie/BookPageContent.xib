@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookPageContentVC" customModule="Challfie" customModuleProvider="target">
@@ -53,7 +53,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="FaN-f8-4wu" userLabel="numberOfChallengesLabel">
-                                            <rect key="frame" x="93" y="67.5" width="107" height="14"/>
+                                            <rect key="frame" x="93" y="67" width="107" height="14"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="7oB-pZ-uhz"/>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="mYz-8T-7NN"/>
@@ -66,14 +66,18 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bqw-M2-8F5" userLabel="lockerImage">
-                                            <rect key="frame" x="0.0" y="6" width="83" height="137"/>
+                                            <rect key="frame" x="10" y="19.5" width="60" height="110"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="110" id="M3b-67-tE2"/>
+                                                <constraint firstAttribute="width" constant="60" id="hoJ-Ni-csh"/>
+                                            </constraints>
                                         </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Ypz-Wo-Ufa" firstAttribute="top" secondItem="Ovk-F8-lLv" secondAttribute="top" constant="40" id="AL9-mW-HrU"/>
                                         <constraint firstAttribute="centerY" secondItem="bqw-M2-8F5" secondAttribute="centerY" id="BsL-Ac-Eyq"/>
-                                        <constraint firstItem="bqw-M2-8F5" firstAttribute="leading" secondItem="Ovk-F8-lLv" secondAttribute="leading" id="CkD-jh-Hbz"/>
-                                        <constraint firstItem="9gN-uU-G3K" firstAttribute="width" secondItem="bqw-M2-8F5" secondAttribute="width" id="FUV-rc-MOz"/>
+                                        <constraint firstItem="bqw-M2-8F5" firstAttribute="leading" secondItem="Ovk-F8-lLv" secondAttribute="leading" constant="10" id="CkD-jh-Hbz"/>
+                                        <constraint firstItem="9gN-uU-G3K" firstAttribute="width" secondItem="bqw-M2-8F5" secondAttribute="width" constant="60" id="FUV-rc-MOz"/>
                                         <constraint firstAttribute="trailing" secondItem="FaN-f8-4wu" secondAttribute="trailing" id="KCx-rk-RkM"/>
                                         <constraint firstItem="FaN-f8-4wu" firstAttribute="top" secondItem="Ypz-Wo-Ufa" secondAttribute="bottom" constant="7.5" id="M2s-6T-ATb"/>
                                         <constraint firstAttribute="height" constant="150" id="TcJ-Sh-0Ju"/>
@@ -82,12 +86,14 @@
                                         <constraint firstAttribute="centerY" secondItem="9gN-uU-G3K" secondAttribute="centerY" id="p5a-uN-wDC"/>
                                         <constraint firstItem="FaN-f8-4wu" firstAttribute="leading" secondItem="9gN-uU-G3K" secondAttribute="trailing" constant="10" id="pcR-VP-xVY"/>
                                         <constraint firstItem="9gN-uU-G3K" firstAttribute="leading" secondItem="Ovk-F8-lLv" secondAttribute="leading" id="soY-db-Eal"/>
-                                        <constraint firstItem="9gN-uU-G3K" firstAttribute="height" secondItem="bqw-M2-8F5" secondAttribute="height" id="ucI-nv-b1R"/>
+                                        <constraint firstItem="9gN-uU-G3K" firstAttribute="height" secondItem="bqw-M2-8F5" secondAttribute="height" constant="110" id="ucI-nv-b1R"/>
                                         <constraint firstAttribute="trailing" secondItem="Ypz-Wo-Ufa" secondAttribute="trailing" id="y0O-g3-JEm"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
+                                            <exclude reference="FUV-rc-MOz"/>
                                             <exclude reference="bB0-9A-DU5"/>
+                                            <exclude reference="ucI-nv-b1R"/>
                                         </mask>
                                     </variation>
                                 </view>
@@ -102,7 +108,7 @@
                                     <rect key="frame" x="0.0" y="155" width="320" height="25"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Challenge" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRb-7b-Ejo" userLabel="ChallengeLabel">
-                                            <rect key="frame" x="35" y="4.5" width="62.5" height="16.5"/>
+                                            <rect key="frame" x="35" y="4" width="62.5" height="16.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -111,7 +117,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Difficulty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yiR-QQ-1eU" userLabel="DifficultyLabel">
-                                            <rect key="frame" x="235" y="4.5" width="80" height="16.5"/>
+                                            <rect key="frame" x="235" y="4" width="80" height="16.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="80" id="bNL-ip-SB1"/>
                                             </constraints>

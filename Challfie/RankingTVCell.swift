@@ -12,16 +12,14 @@ class RankingTVCell : UITableViewCell {
 
     @IBOutlet weak var profilPicImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var rankLabel: UILabel!
+    @IBOutlet weak var levelImageView: UIImageView!
     
     var user : User!
     var index: NSIndexPath!
     
     func loadItem() {
-        
-        var login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
         
         // Check if It's current_user
         if self.user.is_current_user == true {
@@ -39,7 +37,8 @@ class RankingTVCell : UITableViewCell {
         self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
         
         // Level
-        self.levelLabel.text = self.user.book_level
+        let levelImageURL:NSURL = NSURL(string: self.user.show_book_image())!
+        self.levelImageView.hnk_setImageFromURL(levelImageURL)
         
         // Progression
         self.progressLabel.text = self.user.progression.description + "%"
@@ -57,16 +56,13 @@ class RankingTVCell : UITableViewCell {
         self.profilPicImageView.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
         
         if self.user.book_tier == 1 {
-            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("0095AE").CGColor;
-            //self.levelLabel.textColor = MP_HEX_RGB("0095AE")
+            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
         }
         if self.user.book_tier == 2 {
-            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("63B54A").CGColor;
-            //self.levelLabel.textColor = MP_HEX_RGB("63B54A")
+            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
         }
         if self.user.book_tier == 3 {
-            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("8258E5").CGColor;
-            //self.levelLabel.textColor = MP_HEX_RGB("8258E5")
+            self.profilPicImageView.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
         }
 
     }

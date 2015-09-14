@@ -40,22 +40,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4hb-5c-uf7" userLabel="contentView">
-                            <rect key="frame" x="0.0" y="0.0" width="330" height="588"/>
+                            <rect key="frame" x="0.0" y="0.0" width="330" height="265"/>
                             <subviews>
-                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r88-ii-Iox">
-                                    <rect key="frame" x="0.0" y="215" width="330" height="373"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="373" id="G1D-Dt-by9"/>
-                                    </constraints>
-                                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="7d5-xd-Qqm">
-                                        <size key="itemSize" width="50" height="50"/>
-                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                        <size key="footerReferenceSize" width="50" height="50"/>
-                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    </collectionViewFlowLayout>
-                                </collectionView>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Y2z-SD-Nec">
-                                    <rect key="frame" x="147" y="225" width="37" height="37"/>
+                                    <rect key="frame" x="147" y="275" width="37" height="37"/>
                                     <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </activityIndicatorView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2GA-u5-3l3" userLabel="userInfosContainer">
@@ -69,7 +57,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbW-sL-qNh" userLabel="levelLabel">
-                                            <rect key="frame" x="138" y="113" width="55" height="17"/>
+                                            <rect key="frame" x="138" y="113" width="55" height="16.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -90,16 +78,16 @@
                                     <rect key="frame" x="0.0" y="140" width="330" height="55"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUQ-sz-I4r" userLabel="selfiesBlockView">
-                                            <rect key="frame" x="13" y="8" width="75" height="50"/>
+                                            <rect key="frame" x="13" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qy0-oZ-Yg1" userLabel="selfiesNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="75" height="21"/>
+                                                    <rect key="frame" x="0.0" y="3" width="74.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SELFIES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Iz-P9-iA0" userLabel="selfiesLabel">
-                                                    <rect key="frame" x="0.0" y="26" width="75" height="14"/>
+                                                    <rect key="frame" x="0.0" y="26" width="74.5" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -123,16 +111,16 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mRK-5z-LVy" userLabel="followersBlockView">
-                                            <rect key="frame" x="166" y="8" width="75" height="50"/>
+                                            <rect key="frame" x="166" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="HBk-cE-e3q" userLabel="followersNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="75" height="21"/>
+                                                    <rect key="frame" x="0.0" y="3" width="74.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FOLLOWERS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wBu-P7-7EE" userLabel="followersLabel">
-                                                    <rect key="frame" x="0.0" y="26" width="75" height="14"/>
+                                                    <rect key="frame" x="0.0" y="26" width="74.5" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -153,10 +141,10 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="deH-Dl-eHo" userLabel="followingBlockView">
-                                            <rect key="frame" x="90" y="8" width="75" height="50"/>
+                                            <rect key="frame" x="89" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="M8D-kc-LgB" userLabel="followingNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="74" height="21"/>
+                                                    <rect key="frame" x="0.0" y="3" width="73.5" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="QK5-zG-ZvF"/>
                                                     </constraints>
@@ -165,7 +153,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FOLLOWING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HRu-CL-kS3" userLabel="followingLabel">
-                                                    <rect key="frame" x="2" y="27" width="71" height="14"/>
+                                                    <rect key="frame" x="2" y="27" width="70.5" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -184,16 +172,16 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KyL-b6-wuA" userLabel="booksBlockView">
-                                            <rect key="frame" x="243" y="8" width="75" height="50"/>
+                                            <rect key="frame" x="242" y="8" width="74.5" height="50"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="OWN-Fq-MbD" userLabel="booksNumberLabel">
-                                                    <rect key="frame" x="0.0" y="3" width="75" height="21"/>
+                                                    <rect key="frame" x="0.0" y="3" width="74.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BOOKS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TZA-1L-wLm" userLabel="booksLabel">
-                                                    <rect key="frame" x="0.0" y="27" width="75" height="14"/>
+                                                    <rect key="frame" x="0.0" y="27" width="74.5" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -233,8 +221,21 @@
                                         <constraint firstItem="QUQ-sz-I4r" firstAttribute="leading" secondItem="ROt-x2-Exv" secondAttribute="leadingMargin" constant="5" id="x7L-su-f1a"/>
                                     </constraints>
                                 </view>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r88-ii-Iox">
+                                    <rect key="frame" x="0.0" y="215" width="330" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="G1D-Dt-by9"/>
+                                    </constraints>
+                                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="7d5-xd-Qqm">
+                                        <size key="itemSize" width="50" height="50"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="50" height="50"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
+                                </collectionView>
                             </subviews>
                             <constraints>
+                                <constraint firstAttribute="bottom" secondItem="r88-ii-Iox" secondAttribute="bottom" id="Dmu-TY-rNr"/>
                                 <constraint firstItem="r88-ii-Iox" firstAttribute="leading" secondItem="4hb-5c-uf7" secondAttribute="leading" id="EB5-NP-DnA"/>
                                 <constraint firstAttribute="bottom" secondItem="r88-ii-Iox" secondAttribute="bottom" id="H5C-8H-32d"/>
                                 <constraint firstItem="ROt-x2-Exv" firstAttribute="top" secondItem="2GA-u5-3l3" secondAttribute="bottom" constant="10" id="HzI-zN-hGf"/>
@@ -243,11 +244,11 @@
                                 <constraint firstAttribute="trailing" secondItem="ROt-x2-Exv" secondAttribute="trailing" id="PGO-Xn-QiY"/>
                                 <constraint firstAttribute="trailing" secondItem="r88-ii-Iox" secondAttribute="trailing" id="Tfg-uo-rmy"/>
                                 <constraint firstItem="r88-ii-Iox" firstAttribute="top" secondItem="ROt-x2-Exv" secondAttribute="bottom" constant="20" id="X7w-MH-J0U"/>
+                                <constraint firstItem="Y2z-SD-Nec" firstAttribute="top" secondItem="r88-ii-Iox" secondAttribute="bottom" constant="10" id="Zeu-FO-bYJ"/>
                                 <constraint firstAttribute="centerX" secondItem="Y2z-SD-Nec" secondAttribute="centerX" id="aDW-AZ-lDS"/>
                                 <constraint firstItem="2GA-u5-3l3" firstAttribute="leading" secondItem="4hb-5c-uf7" secondAttribute="leading" id="dbj-EM-4Zv"/>
                                 <constraint firstItem="2GA-u5-3l3" firstAttribute="top" secondItem="4hb-5c-uf7" secondAttribute="top" id="hko-mw-dXC"/>
                                 <constraint firstItem="ROt-x2-Exv" firstAttribute="leading" secondItem="4hb-5c-uf7" secondAttribute="leading" id="r5j-cc-4yQ"/>
-                                <constraint firstItem="Y2z-SD-Nec" firstAttribute="top" secondItem="ROt-x2-Exv" secondAttribute="bottom" constant="30" id="vkp-X0-JP2"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -262,8 +263,8 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Kpu-Qw-Zck" secondAttribute="trailing" id="3vo-g9-Bsu"/>
-                <constraint firstAttribute="bottom" secondItem="Kpu-Qw-Zck" secondAttribute="bottom" id="6iH-oB-sDQ"/>
                 <constraint firstItem="Kpu-Qw-Zck" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="P68-cy-rmp"/>
+                <constraint firstAttribute="bottom" secondItem="Kpu-Qw-Zck" secondAttribute="bottom" id="S8X-1a-kmf"/>
                 <constraint firstItem="Kpu-Qw-Zck" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="lFw-XV-B5M"/>
             </constraints>
             <point key="canvasLocation" x="160" y="182"/>

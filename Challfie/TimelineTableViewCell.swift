@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import Haneke
 import SwiftyJSON
+import KeychainAccess
 
 class TimelineTableViewCell : UITableViewCell {
     
@@ -20,7 +21,7 @@ class TimelineTableViewCell : UITableViewCell {
     @IBOutlet weak var selfieImage: UIImageView!
     @IBOutlet weak var challengeLabel: UILabel!
     @IBOutlet weak var selfieDateLabel: UILabel!
-    @IBOutlet weak var levelLabel: UILabel!
+//    @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var numberApprovalLabel: UILabel!
     @IBOutlet weak var numberDisapprovalLabel: UILabel!
     @IBOutlet weak var commentUsernameLabel: UILabel!
@@ -157,13 +158,13 @@ class TimelineTableViewCell : UITableViewCell {
             commentButtonWidthConstraint.constant = 80
         case "iPhone 5":
             sizeScale = 0.9
-            commentButtonWidthConstraint.constant = 90
+            commentButtonWidthConstraint.constant = 80
         case "iPhone 5c":
             sizeScale = 0.9
-            commentButtonWidthConstraint.constant = 90
+            commentButtonWidthConstraint.constant = 80
         case "iPhone 5s":
             sizeScale = 0.9
-            commentButtonWidthConstraint.constant = 90
+            commentButtonWidthConstraint.constant = 80
         case "iPhone 6" :
             sizeScale = 1.0
             commentButtonWidthConstraint.constant = 90
@@ -197,7 +198,10 @@ class TimelineTableViewCell : UITableViewCell {
         self.approveButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         self.disapproveButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         
-        if self.selfie.user.username == KeychainWrapper.stringForKey(kSecAttrAccount as String) {
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        
+        if self.selfie.user.username == login {
             // Hide Approve&Disapprove Button because own selfie
             self.approveButton.hidden = true
             self.disapproveButton.hidden = true
@@ -219,7 +223,7 @@ class TimelineTableViewCell : UITableViewCell {
         }
         
         // Selfie Level
-        self.levelLabel.text = selfie.user.book_level
+        //self.levelLabel.text = selfie.user.book_level
         
         
         // Profile Picture
@@ -234,13 +238,13 @@ class TimelineTableViewCell : UITableViewCell {
         self.profile_pic.clipsToBounds = true
         self.profile_pic.layer.borderWidth = 2.0
         if selfie.user.book_tier == 1 {
-            self.profile_pic.layer.borderColor = MP_HEX_RGB("0095AE").CGColor;
+            self.profile_pic.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
         }
         if selfie.user.book_tier == 2 {
-            self.profile_pic.layer.borderColor = MP_HEX_RGB("63B54A").CGColor;
+            self.profile_pic.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
         }
         if selfie.user.book_tier == 3 {
-            self.profile_pic.layer.borderColor = MP_HEX_RGB("8258E5").CGColor;
+            self.profile_pic.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
         }
         var profilPictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
         profilPictapGesture.addTarget(self, action: "tapGestureToProfil")
@@ -249,6 +253,7 @@ class TimelineTableViewCell : UITableViewCell {
         
         var screen_width = UIScreen.mainScreen().bounds.width - 12 - 12
         self.selfieHeightConstraint.constant =  screen_width / selfie.ratio_photo
+        self.selfieImage.contentMode = UIViewContentMode.ScaleAspectFit
         let selfieImageURL:NSURL = NSURL(string: selfie.show_selfie_pic())!
         self.selfieImage.hnk_setImageFromURL(selfieImageURL)
         
@@ -275,9 +280,13 @@ class TimelineTableViewCell : UITableViewCell {
                 self.disapproveButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
             }
             
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "id": self.selfie.id.description
             ]
             
@@ -353,10 +362,14 @@ class TimelineTableViewCell : UITableViewCell {
                 self.approveButton.setImage(UIImage(named: "approve_button.png"), forState: .Normal)
             }
             self.disapproveButton.setImage(UIImage(named: "reject_select_button.png"), forState: .Normal)
-
+            
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "id": self.selfie.id.description
             ]
             
@@ -448,6 +461,7 @@ class TimelineTableViewCell : UITableViewCell {
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = self.selfie.user
         self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        profilVC.hidesBottomBarWhenPushed = true
         self.timelineVC.navigationController?.pushViewController(profilVC, animated: true)
         
     }
@@ -455,9 +469,13 @@ class TimelineTableViewCell : UITableViewCell {
     func tapGestureToCommenterProfil() {
         // Push to ProfilVC of Commenter
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "user_id": self.selfie.last_comment.user_id
         ]
         
@@ -506,7 +524,10 @@ class TimelineTableViewCell : UITableViewCell {
     @IBAction func settingsButton(sender: AnyObject) {
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         var oneAction : UIAlertAction!
         
         if self.selfie.user.username == login {
@@ -515,9 +536,13 @@ class TimelineTableViewCell : UITableViewCell {
                 var delete_confirmation = UIAlertController(title: NSLocalizedString("delete_selfie", comment: "Delete selfie"), message: NSLocalizedString("delete_selfie_confiration", comment: "Are you sure you want to delete this selfie? It will be permanently deleted from your account"), preferredStyle: UIAlertControllerStyle.Alert)
                 
                 let confirmationOk = UIAlertAction(title: NSLocalizedString("delete", comment: "Delete"), style: UIAlertActionStyle.Destructive) { (_) in
+                    var keychain = Keychain(service: "challfie.app.service")
+                    let login = keychain["login"]!
+                    let auth_token = keychain["auth_token"]!
+                    
                     let parameters = [
-                        "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                        "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                        "login": login,
+                        "auth_token": auth_token,
                         "selfie_id": self.selfie.id.description
                     ]
                     
@@ -561,9 +586,14 @@ class TimelineTableViewCell : UITableViewCell {
         
         
         let twoAction = UIAlertAction(title: NSLocalizedString("report_inappropriate_content", comment: "Report Inappropriate Content"), style: UIAlertActionStyle.Default) { (_) in
+            
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "selfie_id": self.selfie.id.description
             ]
             

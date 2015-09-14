@@ -14,7 +14,7 @@
         {
           'type': 'file',
           'name': "Haneke.h",
-          'external-contents': "/Users/fcheng/workspace/mobileapp/HanekeSwift/Haneke/Haneke.h"
+          'external-contents': "/Users/fcheng/Downloads/HanekeSwift-master/Haneke/Haneke.h"
         }
       ]
     },
@@ -25,7 +25,7 @@
         {
           'type': 'file',
           'name': "module.modulemap",
-          'external-contents': "/Users/fcheng/workspace/mobileapp/Challfie/build/Build/Products/Debug-iphonesimulator/Haneke.framework/Modules/module.modulemap"
+          'external-contents': "/Users/fcheng/workspace/mobileapp/Challfie/build/Build/Intermediates/Haneke.build/Debug-iphonesimulator/Haneke.build/module.modulemap"
         }
       ]
     }

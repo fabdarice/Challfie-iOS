@@ -4,3 +4,7 @@ framework module Haneke {
   export *
   module * { export * }
 }
+
+module Haneke.__Swift {
+    exclude header "Haneke-Swift.h"
+}

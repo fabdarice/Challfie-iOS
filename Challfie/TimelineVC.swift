@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
 
@@ -24,7 +25,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     
     var selfies_array:[Selfie] = []
-    //var selfies_array_id:[Int] = []
     // this is the cell height cache; obviously you don't want a static size array in production
     var itemHeights:[CGFloat] = []
     var page = 1
@@ -101,32 +101,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         timelineTableView.rowHeight = UITableViewAutomaticDimension
         timelineTableView.estimatedRowHeight = 500.0
         
-        // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as! MyNavigationController
-        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
-        
-        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer.delegate = self
-        self.timelineTableView.addGestureRecognizer(rightSwipeGestureRecognizer)
-        let rightSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer2)
-        
-        // Add left swipe gesture Show Side Menu
-        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer.delegate = self
-        self.timelineTableView.addGestureRecognizer(leftSwipeGestureRecognizer)
-        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer2.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
-        
-        // Add Tap gesture to Hide Side Menu
-        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
-        self.timelineTableView.addGestureRecognizer(tapGesture)
+        self.sideMenuController()?.sideMenu?.behindViewController = self
         
         // Hide New Data Button Action
         self.newDataButton.hidden = true
@@ -156,7 +131,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         if self.uploadSelfieView.hidden == false {
             self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
         }
@@ -164,7 +139,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if self.disableBackgroundRefresh == false {
             self.backgroundRefresh()
         } else {
-            // Re-enable it
+            // Coming From TakePictureVC & Re-enable it
             self.disableBackgroundRefresh = false
         }
     }
@@ -197,27 +172,31 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.refreshControl.beginRefreshing()
         self.refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Refreshing_data", comment: "Refreshing data.."))
         var parameters = [String: String]()
-        var api_link: String!
+        var api_link: String!        
 
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         if actionFromInit == true {
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "page": self.page.description
             ]
             api_link = ApiLink.timeline
         } else {
             if selfies_array.count == 0 {
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "last_selfie_id": "-1"
                 ]
             } else {
                 let last_selfie: Selfie! = self.selfies_array.last
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "last_selfie_id": last_selfie.id.description
                 ]
             }
@@ -293,13 +272,19 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
 
     
-    // MARK: - Retrive list of selfies to a user timeline
+    // MARK: - Retrive list of selfies to a user timeline when scrolling down
     func loadData() {
         
         self.loadingIndicator.startAnimating()
+        
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "page": self.page.description
         ]
         
@@ -345,16 +330,20 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         } else {
             var parameters = [String: String]()
             
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             if self.selfies_array.count == 0 {
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "last_selfie_id": "-1"]
             } else {
                 let last_selfie: Selfie! = self.selfies_array.last
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "last_selfie_id": last_selfie.id.description]
             }
             
@@ -433,19 +422,20 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     
     // MARK: - Fetch Data in Background Mode (App not Active anymore)
+    /*
     func fetchDataInBackground(completionHandler: (UIBackgroundFetchResult -> Void)) {
         var parameters = [String: String]()
         if self.selfies_array.count == 0 {
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": KeychainInfo.login,
+                "auth_token": KeychainInfo.auth_token,
                 "last_selfie_id": "-1"
             ]
         } else {
             let last_selfie: Selfie! = self.selfies_array.last
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": KeychainInfo.login,
+                "auth_token": KeychainInfo.auth_token,
                 "last_selfie_id": last_selfie.id.description
             ]
         }
@@ -506,7 +496,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
                 }
             }
-    }
+    }*/
 
     
     // MARK: - Function to display a message in case of an empty return results
@@ -531,7 +521,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     // MARK: - Function to push to Search Page
     func tapGestureToSearchPage() {
         var globalFunctions = GlobalFunctions()
-        globalFunctions.tapGestureToSearchPage(self, backBarTitle: "Timeline")
+        globalFunctions.tapGestureToSearchPage(self, backBarTitle: NSLocalizedString("tab_timeline", comment: "Timeline"))
 
     }
     
@@ -594,7 +584,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         if self.loadingIndicator.isAnimating() == false {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height - self.timelineTableView.bounds.size.height  - 20)) {
+            if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height - self.timelineTableView.bounds.size.height  - 200)) {
                 // Add Loading Indicator to footerView
                 self.timelineTableView.tableFooterView = self.loadingIndicator
                 
@@ -621,7 +611,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.lastContentOffset = scrollView.contentOffset.y
     }
     
-    
     // MARK: - UIGestureDelegate Functions
     func gestureRecognizer(UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
@@ -634,13 +623,4 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         toggleSideMenuView()
     }
     
-    func hideSideMenu() {
-        hideSideMenuView()
-    }
-    
-    func showSideMenu() {
-        showSideMenuView()
-    }
-    
- 
 }

@@ -28,8 +28,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         didSet {
             if let imageView = self.bookImage {
                 // Book Cover Image
-                let bookImageStr = ApiLink.host + self.book.cover
-                let bookImageURL:NSURL = NSURL(string: bookImageStr)!
+                let bookImageURL:NSURL = NSURL(string: self.book.cover)!
                 imageView.hnk_setImageFromURL(bookImageURL)
             }
         }

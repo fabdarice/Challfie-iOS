@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -31,7 +31,7 @@
                         </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23 mutuals friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4I-ND-leN">
-                        <rect key="frame" x="58" y="30.5" width="95.5" height="14.5"/>
+                        <rect key="frame" x="58" y="30" width="95.5" height="14.5"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="JCv-j5-DQl"/>
                         </constraints>
@@ -46,15 +46,6 @@
                                 <exclude reference="JCv-j5-DQl"/>
                             </mask>
                         </variation>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qrc-fe-ubT">
-                        <rect key="frame" x="132.5" y="13" width="45" height="14"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="12"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
-                        </userDefinedRuntimeAttributes>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CjO-Mj-ZGk" userLabel="followButton">
                         <rect key="frame" x="227" y="0.0" width="75" height="60"/>
@@ -102,15 +93,23 @@
                             <action selector="declineRequestButton:" destination="Fkd-zY-w41" eventType="touchUpInside" id="2lB-1h-wdf"/>
                         </connections>
                     </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HJe-Vg-1Yc" userLabel="levelImageView">
+                        <rect key="frame" x="127.5" y="5" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="FTz-MI-HfF"/>
+                            <constraint firstAttribute="width" constant="25" id="gfr-vs-7M0"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="CjO-Mj-ZGk" secondAttribute="trailing" constant="10" id="0nc-AH-7jS"/>
+                    <constraint firstItem="HJe-Vg-1Yc" firstAttribute="leading" secondItem="Gg3-5A-O2D" secondAttribute="trailing" constant="5" id="5Wd-Y3-BfK"/>
                     <constraint firstAttribute="centerY" secondItem="0ev-Vb-nvf" secondAttribute="centerY" id="Abg-gh-hfZ"/>
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="I0K-2R-VCS"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="JUd-I3-zRI"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Lyo-Wh-Jh3"/>
+                    <constraint firstItem="HJe-Vg-1Yc" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="5" id="MiI-ct-etS"/>
                     <constraint firstAttribute="trailingMargin" secondItem="oce-x6-9wn" secondAttribute="trailing" constant="7" id="NE6-Px-r8s"/>
-                    <constraint firstItem="Qfv-S6-xGF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qrc-fe-ubT" secondAttribute="trailing" constant="10" id="OG6-iT-Ngo"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Tbq-Fr-1Wq"/>
                     <constraint firstItem="oce-x6-9wn" firstAttribute="leading" secondItem="Qfv-S6-xGF" secondAttribute="trailing" id="XRT-wN-BYQ"/>
                     <constraint firstAttribute="centerY" secondItem="oce-x6-9wn" secondAttribute="centerY" id="YNn-5d-tcW"/>
@@ -123,9 +122,6 @@
                     <constraint firstAttribute="centerY" secondItem="Qfv-S6-xGF" secondAttribute="centerY" id="mkr-i3-VIQ"/>
                     <constraint firstItem="0ev-Vb-nvf" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="10" id="nck-Jz-nzE"/>
                     <constraint firstItem="x4I-ND-leN" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="njq-09-dIa"/>
-                    <constraint firstItem="Qrc-fe-ubT" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="13" id="sHG-7F-x4k"/>
-                    <constraint firstItem="CjO-Mj-ZGk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qrc-fe-ubT" secondAttribute="trailing" constant="10" id="tTM-we-wN4"/>
-                    <constraint firstItem="Qrc-fe-ubT" firstAttribute="leading" secondItem="Gg3-5A-O2D" secondAttribute="trailing" constant="10" id="x3i-UA-QkA"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
@@ -142,7 +138,7 @@
                 <outlet property="declineButton" destination="oce-x6-9wn" id="iNG-dP-7Xp"/>
                 <outlet property="followButton" destination="CjO-Mj-ZGk" id="2z7-6D-XXX"/>
                 <outlet property="followButtonHeightConstraint" destination="BCk-bk-V7w" id="VHR-so-ncs"/>
-                <outlet property="levelLabel2" destination="Qrc-fe-ubT" id="gA7-RL-zOV"/>
+                <outlet property="levelImageView2" destination="HJe-Vg-1Yc" id="BaY-aA-0ws"/>
                 <outlet property="nb_mutual_friends2" destination="x4I-ND-leN" id="10z-dA-ZYY"/>
                 <outlet property="profilePic2" destination="0ev-Vb-nvf" id="fj8-2c-M4X"/>
                 <outlet property="usernameLabel2" destination="Gg3-5A-O2D" id="Rlp-oj-7u9"/>

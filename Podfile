@@ -4,4 +4,8 @@ use_frameworks!
 pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'master'
 
 pod 'SwiftyJSON', '~> 2.2.1'
-
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+pod 'FBSDKShareKit'
+pod 'KeychainAccess'
+pod 'HanekeSwift'

@@ -3,7 +3,5 @@
 //
 
 #import "MPColorTools.h"
-#import <FacebookSDK/FacebookSDK.h>
-#import <AFNetworking/AFNetworking.h>
 #import "GKImagePicker.h"
 

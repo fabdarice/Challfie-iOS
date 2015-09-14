@@ -9,14 +9,19 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class GlobalFunctions {
     
     /// Function to push to my Profil
     func tapGestureToProfil(controller: UIViewController) {
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+            "login": login,
+            "auth_token": auth_token
         ]
         
         request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)

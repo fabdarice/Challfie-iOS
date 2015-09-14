@@ -1,0 +1,4 @@
+version: "Apple Swift version 1.2 (swiftlang-602.0.53.1 clang-602.0.53)"
+options: "a5a340ae8403e3dc245392783959f210"
+inputs: 
+- "/Users/fcheng/workspace/mobileapp/Challfie/Pods/SwiftyJSON/Source/SwiftyJSON.swift"

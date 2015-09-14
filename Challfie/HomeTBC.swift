@@ -68,6 +68,18 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         
+        // If currently on timeline page and tap on "Timeline" tab, scroll tableview to top
+        if let selectedViewController = tabBarController.viewControllers {
+            if (viewController == selectedViewController[0] as! NSObject) && (self.selectedIndex == 0) {
+                if let navController = viewController as? UINavigationController {
+                    var timelineVC: TimelineVC = navController.viewControllers[0] as! TimelineVC
+                    timelineVC.timelineTableView.setContentOffset(CGPointZero, animated:true)
+                    timelineVC.navigationController?.navigationBarHidden = false
+                }
+            }
+        }
+
+        
         // Show popup for "camera Tab" instead of showing the viewcontroller directly
         if let selectedViewController = tabBarController.viewControllers {
             if (viewController == selectedViewController[2] as! NSObject) {

@@ -1,0 +1,4 @@
+version: "Apple Swift version 1.2 (swiftlang-602.0.53.1 clang-602.0.53)"
+options: "f93d6a60d307bfd3d9520f04fccaf0bf"
+inputs: 
+- "/Users/fcheng/workspace/mobileapp/Challfie/ChallfieTests/ChallfieTests.swift"

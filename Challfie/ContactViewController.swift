@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerViewDataSource,UITextViewDelegate {
     
@@ -40,6 +41,8 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         self.pickerView.dataSource = self
         self.pickerView.layer.borderColor = MP_HEX_RGB("C4C4C4").CGColor
         self.pickerView.layer.borderWidth = 1.0
+        
+        self.sendMessageButton.setTitle(NSLocalizedString("send_message", comment: "Send Message"), forState: .Normal)
        // let t0 = CGAffineTransformMakeTranslation (0, self.pickerView.bounds.size.height/2)
        // let s0 = CGAffineTransformMakeScale(1.0, 0.5)
        // let t1 = CGAffineTransformMakeTranslation (0, -self.pickerView.bounds.size.height/2)
@@ -110,10 +113,14 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         default :
             contactTypeInt = 0
         }
+        
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
     
         let parameters:[String: AnyObject] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "type_contact": contactTypeInt,
             "message": self.textView.text
         ]

@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/ContactViewController.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463907606.070502"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "ContactViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/LoginVC.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463907811.253076"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/TimelineVC.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463641035.35331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "58"
@@ -73,28 +73,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Challfie/TakePictureVC.swift"
-            timestampString = "463104928.658228"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "559"
-            endingLineNumber = "559"
-            landmarkName = "createSelfie()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Challfie/TimelineVC.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463879901.35154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "refresh(actionFromInit:)"
             landmarkType = "5">
             <Locations>
@@ -138,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/TimelineVC.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463879901.35154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
             landmarkName = "updateProgress()"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/OneSelfieVC.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463907606.070502"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
+            startingLineNumber = "610"
+            endingLineNumber = "610"
             landmarkName = "commentSendButton(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -169,28 +153,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Challfie/ProfilVC.swift"
-            timestampString = "463101680.143994"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "532"
-            endingLineNumber = "532"
-            landmarkName = "imagePicker(_:pickedImage:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Challfie/FriendVC.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463907606.070502"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "loadData(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,12 +170,121 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/AlertVC.swift"
-            timestampString = "463101680.143994"
+            timestampString = "463907606.070502"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
             landmarkName = "loadData()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Challfie/ChallengeTVCell.swift"
+            timestampString = "463873797.216691"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "ChallengeTVCell"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.ChallengeTVCell.leftSpaceConstraint.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.NSLayoutConstraint&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/ChallengeTVCell.swift"
+                  timestampString = "463873797.252497"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.ChallengeTVCell.leftSpaceConstraint.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.NSLayoutConstraint&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/ChallengeTVCell.swift"
+                  timestampString = "463873797.252686"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.ChallengeTVCell.leftSpaceConstraint.materializeForSet : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.NSLayoutConstraint&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/ChallengeTVCell.swift"
+                  timestampString = "463873797.252807"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.ChallengeTVCell.init (Challfie.ChallengeTVCell.Type)(style : C.UITableViewCellStyle, reuseIdentifier : Swift.Optional&lt;Swift.String&gt;) -&gt; Challfie.ChallengeTVCell"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/ChallengeTVCell.swift"
+                  timestampString = "463873797.252918"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "664">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.ChallengeTVCell.init (Challfie.ChallengeTVCell.Type)(coder : ObjectiveC.NSCoder) -&gt; Challfie.ChallengeTVCell"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/ChallengeTVCell.swift"
+                  timestampString = "463873797.25302"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "620">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Challfie/AppDelegate.swift"
+            timestampString = "463907741.44086"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "initialize()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

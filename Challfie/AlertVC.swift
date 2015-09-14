@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, ENSideMenuDelegate {
     @IBOutlet weak var tableView: UITableView!
@@ -19,6 +20,9 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     var alerts_array:[Alert] = []
     var alerts_array_id:[Int] = []
     var first_time = true
+    
+    var popViewController : PopUpViewControllerSwift = PopUpViewControllerSwift(nibName: "PopUpViewController", bundle: nil)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,30 +72,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 100.0                
         
-        // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as! MyNavigationController
-        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
+        self.sideMenuController()?.sideMenu?.behindViewController = self
         
-        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer.delegate = self
-        self.tableView.addGestureRecognizer(rightSwipeGestureRecognizer)
-        let rightSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer2)
-        
-        // Add left swipe gesture Show Side Menu
-        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer.delegate = self
-        self.tableView.addGestureRecognizer(leftSwipeGestureRecognizer)
-        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer2.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
-        
-                
         // Load Alerts List
         self.refresh(actionFromInit: true)
     }
@@ -103,12 +85,12 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
         
-        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
-        
         // Refresh the page if not the first time and a badge exists
-        if self.first_time == false && alert_tabBarItem.badgeValue != nil {
+        if self.first_time == false && self.tabBarItem.badgeValue != nil {
             refresh(actionFromInit: false)
         }
+        
+        self.tabBarItem.badgeValue = nil
         
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = true
@@ -125,10 +107,14 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if KeychainWrapper.stringForKey(kSecAttrAccount as String) != nil {
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
+        if keychain["login"] != nil {
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+                "login": login,
+                "auth_token": auth_token
             ]
             request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
             
@@ -159,25 +145,30 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         var parameters = [String: String]()
         var api_link: String!
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         if actionFromInit == true {
             parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "page": self.page.description
             ]
             api_link = ApiLink.alerts_list
         } else {
             if self.alerts_array.count == 0 {
+                
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "last_alert_id": "-1"
                 ]
             } else {
                 let last_alert: Alert! = self.alerts_array.last
                 parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "last_alert_id": last_alert.id.description
                 ]
             }
@@ -204,11 +195,27 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                             var author: User = User.init(json: json["notifications"][i]["author"])
                             alert.author = author
                             
-                            if alert.type_notification == "block_unlocked" && alert.read == false {
-                                println("SHOW POP-UP")
-                                var popViewController : PopUpViewControllerSwift = PopUpViewControllerSwift(nibName: "PopUpViewController", bundle: nil)
-                                popViewController.title = "This is a popup view"
-                                popViewController.showInView(self.view, withImage: UIImage(named: "typpzDemo"), withMessage: "You just triggered a great popup window", animated: true)
+                            // Display Pop up if alert of unlocking new Level
+                            if alert.type_notification == "book_unlock" && alert.read == false  {
+                                var popUpImage: UIImage!
+
+                                switch author.book_level {
+                                case "Newbie II" : popUpImage = UIImage(named: "level_up_newbie_2")
+                                case "Newbie III" : popUpImage = UIImage(named: "level_up_newbie_3")
+                                case "Apprentice I" : popUpImage = UIImage(named: "level_up_apprentice_1")
+                                case "Apprentice II" : popUpImage = UIImage(named: "level_up_apprentice_2")
+                                case "Apprentice III" : popUpImage = UIImage(named: "level_up_apprentice_3")
+                                case "Master I" : popUpImage = UIImage(named: "level_up_master_1")
+                                case "Master II" : popUpImage = UIImage(named: "level_up_master_2")
+                                case "Master III" : popUpImage = UIImage(named: "level_up_master_3")
+                                default : popUpImage = nil
+                                }
+
+                                if popUpImage != nil {
+                                    self.popViewController = PopUpViewControllerSwift(nibName: "PopUpViewController", bundle: nil)
+                                    self.popViewController.showInView(self.navigationController?.view, withImage: popUpImage, withMessage: "", animated: true)
+                                }
+                                
                             }
                             
                             self.alerts_array.append(alert)
@@ -222,12 +229,13 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                     }
                     
                     
+                    /*
                     // Update Badge of Alert TabBarItem
                     if json["meta"]["new_alert_nb"] != 0 {
                         self.tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
                     } else {
                         self.tabBarItem.badgeValue = nil
-                    }
+                    }*/
                     
                 }
                 self.refreshControl.endRefreshing()
@@ -249,9 +257,13 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     // Retrive list of selfies to a user timeline
     func loadData() {        
         self.loadingIndicator.startAnimating()
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "page": self.page.description
         ]
         
@@ -357,14 +369,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         
         // load book image
         if alert.book_img != "" {
-            // Push to Challenge Book
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            var bookVC:BookVC = mainStoryboard.instantiateViewControllerWithIdentifier("bookID") as! BookVC
-           
-            self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-            self.navigationController?.pushViewController(bookVC, animated: true)
-            
+            // Modal to Challenge Book
+            self.tabBarController?.selectedIndex = 1
         } else if alert.selfie_img != "" {
             // Push to OneSelfieVC
             var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
@@ -372,7 +378,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             oneSelfieVC.selfie = selfie
             
             // Hide TabBar when push to OneSelfie View
-            self.hidesBottomBarWhenPushed = true
+            //self.hidesBottomBarWhenPushed = true
             
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Alert_tab", comment: "Alert"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             self.navigationController?.pushViewController(oneSelfieVC, animated: true)
@@ -381,24 +387,17 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             // Push to Profil View(UserProfil)
             var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
             profilVC.user = alert.author
+            profilVC.hidesBottomBarWhenPushed = true
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             self.navigationController?.pushViewController(profilVC, animated: true)
         }
     }
     
     // MARK: - ENSideMenu Delegate
-
     func toggleSideMenu() {
-        toggleSideMenuView()
+       toggleSideMenuView()
     }
-    
-    func hideSideMenu() {
-        hideSideMenuView()
-    }
-    
-    func showSideMenu() {
-        showSideMenuView()
-    }
+ 
     
     // MARK: - UIGestureDelegate
     func gestureRecognizer(UIGestureRecognizer,

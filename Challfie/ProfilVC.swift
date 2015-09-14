@@ -10,6 +10,9 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 import MobileCoreServices
+import FBSDKCoreKit
+import FBSDKLoginKit
+import KeychainAccess
 
 class ProfilHeader : UICollectionReusableView {    
     @IBOutlet weak var headerMessageLabel: UILabel!
@@ -57,13 +60,19 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         // Styling Background
         self.view.backgroundColor = MP_HEX_RGB("1A596B")
         
+        // Hide tabBar
+        self.tabBarController?.tabBar.hidden = true
+        
         // Show navigationBar
         self.navigationController?.navigationBar.hidden = false
         self.title = user.username
         self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        
         // Check if it's current_user
-        if user.username == KeychainWrapper.stringForKey(kSecAttrAccount as String)! {
+        if user.username == login {
             self.is_current_user = true
         }
         
@@ -79,7 +88,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.followingLabel.textColor = blockLabelColor
         self.followingLabel.text = NSLocalizedString("Following", comment: "Following").uppercaseString
         self.followersLabel.text = NSLocalizedString("Followers", comment: "Followers").uppercaseString
-        self.booksLabel.text = NSLocalizedString("Books", comment: "Books").uppercaseString
+        self.booksLabel.text = NSLocalizedString("approved", comment: "approved").uppercaseString
         self.booksLabel.textColor = blockLabelColor
         
         // number of selfies/Following/Followers/Books Label color
@@ -120,13 +129,13 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.profileImage.clipsToBounds = true
         self.profileImage.layer.borderWidth = 2.0;
         if self.user.book_tier == 1 {
-            self.profileImage.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
+            self.profileImage.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
         }
         if self.user.book_tier == 2 {
-            self.profileImage.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
+            self.profileImage.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
         }
         if self.user.book_tier == 3 {
-            self.profileImage.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
+            self.profileImage.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
         }
         
         if self.is_current_user == true {
@@ -170,7 +179,11 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                 layout.headerReferenceSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 60.0)
             } else {
                 if self.user.is_pending == true {
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_pending"), style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+                    var pendingBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+                    pendingBtn.setImage(UIImage(named: "icon_pending"), forState: UIControlState.Normal)
+                    pendingBtn.addTarget(self.navigationController, action: nil, forControlEvents:  UIControlEvents.TouchUpInside)
+                    var pending_item = UIBarButtonItem(customView: pendingBtn)
+                    self.navigationItem.rightBarButtonItem = pending_item
                     self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("f3c378")
                     layout.headerReferenceSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 60.0)
                 } else {
@@ -212,8 +225,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.hidesBottomBarWhenPushed = false
-        self.tabBarController?.tabBar.hidden = false
+        
    
         // Show Status Bar because GKImagePicker hides it
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
@@ -227,11 +239,16 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.navigationController?.hidesBarsOnSwipe = false
     }
     
+    
     func loadData() {
         self.loadingIndicator.startAnimating()
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "user_id": self.user.id.description,
             "page": self.page.description
         ]
@@ -260,7 +277,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                     self.selfiesNumberLabel.text = json["meta"]["number_selfies"].stringValue
                     self.followingNumberLabel.text = json["meta"]["number_following"].stringValue
                     self.followersNumberLabel.text = json["meta"]["number_followers"].stringValue
-                    self.booksNumberLabel.text = json["meta"]["number_books"].stringValue
+                    self.booksNumberLabel.text = json["meta"]["number_approved"].stringValue
                     
                     var numberofRow = self.selfies_array.count / 3
                     if (self.selfies_array.count % 3) > 0 {
@@ -283,14 +300,22 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     
     // MARK: - Follow User Button
     func follow_user() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_pending"), style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+        var pendingBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        pendingBtn.setImage(UIImage(named: "icon_pending"), forState: UIControlState.Normal)
+        pendingBtn.addTarget(self.navigationController, action: nil, forControlEvents:  UIControlEvents.TouchUpInside)
+        var pending_item = UIBarButtonItem(customView: pendingBtn)
+        self.navigationItem.rightBarButtonItem = pending_item
         self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("f3c378")
         self.user.is_following = true
         self.user.is_pending = true
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "user_id": self.user.id.description
         ]
         
@@ -332,8 +357,10 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         let oneAction = UIAlertAction(title: NSLocalizedString("Log_out", comment: "Log out"), style: UIAlertActionStyle.Destructive) { (_) in
             
             // Desactive Device so it can't receive push notifications
-            let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
-            let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]
+            let auth_token = keychain["auth_token"]
+            
             if (login != nil && auth_token != nil) {
                 let parameters:[String: AnyObject] = [
                     "login": login!,
@@ -345,19 +372,16 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                 request(.POST, ApiLink.create_or_update_device, parameters: parameters, encoding: .JSON)
             }
             
-            KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
-            KeychainWrapper.removeObjectForKey(kSecValueData as String)
-            if let facebookSession = FBSession.activeSession() {
-                facebookSession.closeAndClearTokenInformation()
-                facebookSession.close()
-                FBSession.setActiveSession(nil)
-            }
+            keychain["login"] = nil
+            keychain["auth_token"] = nil
+            var facebookManager = FBSDKLoginManager()
+            facebookManager.logOut()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
             
             // Desactive the Background Fetch Mode
-            UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
-                UIApplicationBackgroundFetchIntervalNever)
+           // UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+             //   UIApplicationBackgroundFetchIntervalNever)
             
             
             
@@ -452,7 +476,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             let scrollContentSizeHeight = scrollView.contentSize.height;
             let scrollOffset = scrollView.contentOffset.y;
             
-            if (scrollOffset + scrollViewHeight >= (scrollContentSizeHeight - 20)) {
+            if (scrollOffset + scrollViewHeight >= (scrollContentSizeHeight - 200)) {
                 // Add Loading Indicator to footerView
                 self.loadData()
             }
@@ -510,12 +534,6 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.imagePicker.imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         
         self.presentViewController(self.imagePicker.imagePickerController, animated: true, completion: nil)
-        
-        /*var picker = UIImagePickerController()
-        picker.delegate = self
-        picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        picker.allowsEditing = true
-        self.presentViewController(picker, animated: true, completion: nil)*/
     }
     
     // MARK: - GKImagePicker Delegate Methods
@@ -527,13 +545,11 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
             UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil, nil)
         }
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
 
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)!
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)!
-
-        
         let imageData = UIImageJPEGRepresentation(imageToSave, 0.9)
-        
         
         Alamofire.upload(Method.POST, URLString: ApiLink.update_user,
             multipartFormData: { multipartFormData in

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoLibraryPreviewVC" customModule="Challfie" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="dXm-C5-1ex" id="kVR-nW-xiB"/>
+                <outlet property="imageHeightConstraint" destination="aUJ-Tl-WBE" id="NsR-65-7gQ"/>
                 <outlet property="imageView" destination="Cgk-xa-AWO" id="1Jj-Q9-zG8"/>
                 <outlet property="validateButton" destination="eDl-B7-ANM" id="VYf-ip-mkb"/>
                 <outlet property="view" destination="iN0-l3-epB" id="GOX-Rx-aWi"/>
@@ -17,9 +18,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cgk-xa-AWO" userLabel="imageView">
-                    <rect key="frame" x="5" y="20" width="310" height="488"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aFs-th-ZJ3" userLabel="toolBarView">
                     <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                     <subviews>
@@ -61,16 +59,34 @@
                         <constraint firstAttribute="height" constant="60" id="wlQ-mq-QXc"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0dI-TW-67D">
+                    <rect key="frame" x="8" y="20" width="304" height="488"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cgk-xa-AWO" userLabel="imageView">
+                            <rect key="frame" x="0.0" y="94" width="304" height="300"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="300" id="aUJ-Tl-WBE"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Cgk-xa-AWO" firstAttribute="leading" secondItem="0dI-TW-67D" secondAttribute="leading" id="HSv-Js-pGf"/>
+                        <constraint firstAttribute="centerY" secondItem="Cgk-xa-AWO" secondAttribute="centerY" id="Urs-Md-fG8"/>
+                        <constraint firstAttribute="centerX" secondItem="Cgk-xa-AWO" secondAttribute="centerX" id="cIB-mA-Utw"/>
+                        <constraint firstAttribute="trailing" secondItem="Cgk-xa-AWO" secondAttribute="trailing" id="hW4-Gb-6GZ"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="aFs-th-ZJ3" secondAttribute="trailing" id="0UU-Qd-Knp"/>
-                <constraint firstItem="Cgk-xa-AWO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="Of7-US-KR4"/>
+                <constraint firstItem="0dI-TW-67D" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="A7f-ii-sCx"/>
+                <constraint firstAttribute="trailing" secondItem="0dI-TW-67D" secondAttribute="trailing" constant="8" id="VA3-pg-WjO"/>
+                <constraint firstItem="aFs-th-ZJ3" firstAttribute="top" secondItem="0dI-TW-67D" secondAttribute="bottom" id="aQf-4c-slf"/>
                 <constraint firstAttribute="bottom" secondItem="aFs-th-ZJ3" secondAttribute="bottom" id="fai-UC-6Zw"/>
                 <constraint firstItem="aFs-th-ZJ3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="h8Y-nH-rVE"/>
-                <constraint firstItem="aFs-th-ZJ3" firstAttribute="top" secondItem="Cgk-xa-AWO" secondAttribute="bottom" id="pyX-At-P97"/>
-                <constraint firstAttribute="trailing" secondItem="Cgk-xa-AWO" secondAttribute="trailing" constant="5" id="rLc-tZ-DV5"/>
-                <constraint firstItem="Cgk-xa-AWO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="sP4-ey-UzX"/>
+                <constraint firstItem="0dI-TW-67D" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="rKy-N7-U7Q"/>
             </constraints>
             <point key="canvasLocation" x="240" y="214"/>
         </view>

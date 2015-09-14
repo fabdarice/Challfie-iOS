@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -26,8 +27,8 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var currentUsernameLabel: UILabel!
     @IBOutlet weak var currentUserRankLabel: UILabel!
     @IBOutlet weak var currentUserProfilPicImageView: UIImageView!
-    @IBOutlet weak var currentUserProgressLabel: UILabel!
-    @IBOutlet weak var currentUserLevelLabel: UILabel!
+    @IBOutlet weak var currentUserProgressLabel: UILabel!    
+    @IBOutlet weak var levelImageView: UIImageView!
     
     
     var page = 1
@@ -97,9 +98,13 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.view.addSubview(loadingActivityVC.view)
         }
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "page": self.page.description
         ]
         
@@ -127,7 +132,8 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.currentUsernameLabel.textColor = MP_HEX_RGB("3E9AB5")
                     
                     // Level
-                    self.currentUserLevelLabel.text = current_user.book_level
+                    let levelImageURL:NSURL = NSURL(string: current_user.show_book_image())!
+                    self.levelImageView.hnk_setImageFromURL(levelImageURL)
                     
                     // Progression
                     self.currentUserProgressLabel.text = current_user.progression.description + "%"
@@ -145,17 +151,17 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
                     
                     if current_user.book_tier == 1 {
-                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("0095AE").CGColor;
+                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
                         //self.currentUserLevelLabel.textColor = MP_HEX_RGB("0095AE")
                     }
                     if current_user.book_tier == 2 {
-                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("63B54A").CGColor;
+                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
                         //self.currentUserLevelLabel.textColor = MP_HEX_RGB("63B54A")
                     }
                     if current_user.book_tier == 3 {
-                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("8258E5").CGColor;
+                        self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
                         //self.currentUserLevelLabel.textColor = MP_HEX_RGB("8258E5")
-                    }
+                    }                                        
                    
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
@@ -199,7 +205,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.loadingIndicator.isAnimating() == false {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
+            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height - 50)) {
                 // Add Loading Indicator to footerView
                 self.tableView.tableFooterView = self.loadingIndicator
                 self.loadData(true)
@@ -214,6 +220,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Push to ProfilVC of the selected Row
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.user
+        profilVC.hidesBottomBarWhenPushed = true
         
         self.navigationController?.pushViewController(profilVC, animated: true)
     }

@@ -13,6 +13,7 @@ class PhotoLibraryPreviewVC: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var validateButton: UIButton!
+    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     
     var homeTabBarController: HomeTBC!
     var imageToSave: UIImage!
@@ -21,11 +22,17 @@ class PhotoLibraryPreviewVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()                
-        self.imageView.image = self.imageToSave
-        self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        
         self.cancelButton.setTitle(NSLocalizedString("cancel", comment: "Cancel"), forState: UIControlState.Normal)
         self.validateButton.setTitle(NSLocalizedString("confirm", comment: "Confirm"), forState: UIControlState.Normal)        
         self.navigationController?.navigationBarHidden = true
+        
+        var screen_width = UIScreen.mainScreen().bounds.width - 8 - 8
+        var ratio_photo = self.imageToSave.size.width / self.imageToSave.size.height
+        self.imageHeightConstraint.constant =  screen_width / ratio_photo
+        
+        self.imageView.image = self.imageToSave
+        self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
     }
     
     

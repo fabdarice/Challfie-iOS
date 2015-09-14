@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Forgot PasswordVC-->
         <scene sceneID="7iP-lC-cWc">
             <objects>
-                <viewController id="eQ3-H6-6ae" customClass="ForgotPasswordVC" customModule="Challfie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="forgotPasswordID" id="eQ3-H6-6ae" customClass="ForgotPasswordVC" customModule="Challfie" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8YV-JK-6GZ"/>
                         <viewControllerLayoutGuide type="bottom" id="sfw-R6-rcK"/>
@@ -270,9 +270,9 @@
                                             <constraint firstAttribute="height" constant="15" id="xUJ-fx-KDy"/>
                                         </constraints>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FKj-24-Qcl" userLabel="facebookLoginView" customClass="FBLoginView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FKj-24-Qcl" userLabel="facebookLoginView" customClass="FBSDKLoginButton">
                                         <rect key="frame" x="18" y="175" width="204" height="40"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="M6O-t6-dKV"/>
                                         </constraints>
@@ -330,7 +330,7 @@
                     <connections>
                         <outlet property="bottomView" destination="qAA-ap-l9k" id="yLS-OC-MI6"/>
                         <outlet property="credentialView" destination="2gY-NI-pQ9" id="9er-Sm-MP7"/>
-                        <outlet property="facebookLoginView" destination="FKj-24-Qcl" id="vcf-qr-DUq"/>
+                        <outlet property="facebookLoginButton" destination="FKj-24-Qcl" id="jfw-ta-Xyk"/>
                         <outlet property="forgotPasswordButton" destination="4n2-Q6-I14" id="dP0-D8-Sdv"/>
                         <outlet property="loginButton" destination="7aI-09-A7n" id="8R0-So-ANZ"/>
                         <outlet property="loginTextField" destination="Xe1-ZO-eie" id="mj5-ke-hSU"/>
@@ -489,7 +489,7 @@
         <!--RegisterVC-->
         <scene sceneID="xQh-Sf-ONK">
             <objects>
-                <viewController id="M9S-No-ZHF" userLabel="RegisterVC" customClass="RegisterVC" customModule="Challfie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="registerID" id="M9S-No-ZHF" userLabel="RegisterVC" customClass="RegisterVC" customModule="Challfie" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="N0T-r3-Q30"/>
                         <viewControllerLayoutGuide type="bottom" id="iUa-8n-v6M"/>
@@ -752,24 +752,6 @@
             </objects>
             <point key="canvasLocation" x="-330" y="979"/>
         </scene>
-        <!--TutorialVC-->
-        <scene sceneID="pWQ-jX-qVE">
-            <objects>
-                <viewController storyboardIdentifier="tutorialVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ES3-ya-XZu" customClass="TutorialVC" customModule="Challfie" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="k35-aJ-Maw"/>
-                        <viewControllerLayoutGuide type="bottom" id="TyP-hz-v01"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="MPf-JP-zSR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Y3u-jH-yDn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="601" y="2211"/>
-        </scene>
         <!--GuideVC-->
         <scene sceneID="Erp-cS-SFd">
             <objects>
@@ -967,15 +949,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EOA-Sj-tRG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="744" y="1523"/>
-        </scene>
-        <!--Page View Controller-->
-        <scene sceneID="JoA-qQ-fiA">
-            <objects>
-                <pageViewController storyboardIdentifier="tutorialPageVC" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="cEa-KB-mzX" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Oww-b6-rPO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-330" y="1639"/>
+            <point key="canvasLocation" x="670" y="1523"/>
         </scene>
         <!--Alert Item-->
         <scene sceneID="aDn-sb-7nS">
@@ -1288,7 +1262,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="2018" y="433"/>
+            <point key="canvasLocation" x="1628" y="373"/>
         </scene>
         <!--FriendsVC-->
         <scene sceneID="UBZ-Tt-Ubd">
@@ -1513,7 +1487,7 @@
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="TyQ-d7-aoX"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                        <state key="normal" title="Level progression" backgroundImage="challenge_tab_left_selected">
+                                        <state key="normal" title="Progression" backgroundImage="challenge_tab_left_selected">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1522,7 +1496,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QF5-mo-56G" userLabel="challengeButton">
                                         <rect key="frame" x="160" y="0.0" width="145" height="45"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                        <state key="normal" title="Book of challenges" backgroundImage="challenge_tab_right">
+                                        <state key="normal" title="Challenges" backgroundImage="challenge_tab_right">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1725,7 +1699,7 @@
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="Ghq-qc-iET"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                        <state key="normal" title="Level progression" backgroundImage="challenge_tab_left">
+                                        <state key="normal" title="Progression" backgroundImage="challenge_tab_left">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1737,7 +1711,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aS-MV-pA3" userLabel="challengeButton">
                                         <rect key="frame" x="160" y="0.0" width="145" height="45"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                        <state key="normal" title="Book of challenges" backgroundImage="challenge_tab_right_selected">
+                                        <state key="normal" title="Challenges" backgroundImage="challenge_tab_right_selected">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1815,7 +1789,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lfo-9A-40c" userLabel="uploadSelfieView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aNt-d4-Drh" userLabel="selfieImage">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aNt-d4-Drh" userLabel="selfieImage">
                                         <rect key="frame" x="15" y="5" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="7GN-ko-wcH"/>
@@ -1883,7 +1857,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HU4-XZ-jHO" userLabel="newDataButton">
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HU4-XZ-jHO" userLabel="newDataButton">
                                 <rect key="frame" x="102" y="518" width="117" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1967,9 +1941,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="df4-yw-1Nm"/>
-        <segue reference="6xE-qg-2qS"/>
-        <segue reference="vKq-tW-1Cc"/>
         <segue reference="K7W-fj-IXG"/>
+        <segue reference="vKq-tW-1Cc"/>
+        <segue reference="E3c-vE-c8t"/>
+        <segue reference="df4-yw-1Nm"/>
     </inferredMetricsTieBreakers>
 </document>

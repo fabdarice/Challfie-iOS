@@ -16,6 +16,7 @@ class Book {
     var is_unlocked: Bool!
     var tier: Int!
     var challenges_array: [Challenge]!
+    var thumb: String!
     
     init() {
         
@@ -27,16 +28,11 @@ class Book {
         self.cover = json["cover"].stringValue
         self.tier = json["tier"].intValue
         self.is_unlocked = json["is_unlocked"].boolValue
+        self.thumb = json["thumb"].stringValue
         self.challenges_array = []
     }
     
     func show_book_pic() -> String {
-        var book_url: String!
-        if ApiLink.host == "https://challfie.com" {
-            book_url = self.cover
-        } else {
-            book_url = ApiLink.host + self.cover
-        }
-        return book_url
+        return self.cover
     }
 }

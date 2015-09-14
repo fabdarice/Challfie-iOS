@@ -34,7 +34,7 @@ class ProfilSelfieCVCell : UICollectionViewCell {
         var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
         oneSelfieVC.selfie = self.selfie
         oneSelfieVC.to_bottom = false
-        self.profilVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Profil", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.profilVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Profil_tab", comment: "Profile"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.profilVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
         
     }

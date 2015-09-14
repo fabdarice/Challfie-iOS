@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gg3-5A-O2D">
-                        <rect key="frame" x="58" y="12" width="65" height="17"/>
+                        <rect key="frame" x="58" y="12" width="64.5" height="16.5"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="dsP-B8-zVX"/>
                         </constraints>
@@ -31,7 +31,7 @@
                         </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23 mutuals friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4I-ND-leN">
-                        <rect key="frame" x="58" y="31" width="96" height="15"/>
+                        <rect key="frame" x="58" y="30" width="95.5" height="14.5"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="JCv-j5-DQl"/>
                         </constraints>
@@ -60,20 +60,18 @@
                             <action selector="relationshipButton:" destination="Fkd-zY-w41" eventType="touchUpInside" id="hc9-VI-SGs"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie I" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qrc-fe-ubT">
-                        <rect key="frame" x="132" y="13" width="45" height="14"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="12"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
-                        </userDefinedRuntimeAttributes>
-                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0ev-Vb-nvf" userLabel="profilePicButton">
                         <rect key="frame" x="8" y="10" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="fzn-J6-A0x"/>
                             <constraint firstAttribute="width" constant="40" id="iZ8-Jx-Mbo"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3b9-z5-EAN" userLabel="levelImageView">
+                        <rect key="frame" x="127.5" y="5" width="25" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="23" id="FaX-64-Pjk"/>
+                            <constraint firstAttribute="width" constant="25" id="Kcz-Jf-duq"/>
                         </constraints>
                     </imageView>
                 </subviews>
@@ -82,17 +80,16 @@
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="I0K-2R-VCS"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="JUd-I3-zRI"/>
                     <constraint firstAttribute="trailingMargin" secondItem="SyE-th-V2e" secondAttribute="trailing" constant="10" id="PNa-Ch-quD"/>
+                    <constraint firstItem="3b9-z5-EAN" firstAttribute="leading" secondItem="Gg3-5A-O2D" secondAttribute="trailing" constant="5" id="Pxa-eA-QCa"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="ScR-kq-Ecg"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Tbq-Fr-1Wq"/>
+                    <constraint firstItem="3b9-z5-EAN" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="5" id="dIN-C8-EGl"/>
                     <constraint firstItem="x4I-ND-leN" firstAttribute="top" secondItem="Gg3-5A-O2D" secondAttribute="bottom" constant="2" id="dIs-4Q-DKg"/>
                     <constraint firstItem="SyE-th-V2e" firstAttribute="trailing" secondItem="kcE-gZ-leJ" secondAttribute="trailingMargin" constant="10" id="k3L-34-9ng"/>
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="12" id="m69-J6-tid"/>
                     <constraint firstItem="0ev-Vb-nvf" firstAttribute="leading" secondItem="kcE-gZ-leJ" secondAttribute="leadingMargin" id="mYV-jl-JuX"/>
                     <constraint firstItem="0ev-Vb-nvf" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="10" id="nck-Jz-nzE"/>
                     <constraint firstItem="x4I-ND-leN" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="njq-09-dIa"/>
-                    <constraint firstItem="Qrc-fe-ubT" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="13" id="sHG-7F-x4k"/>
-                    <constraint firstItem="SyE-th-V2e" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qrc-fe-ubT" secondAttribute="trailing" constant="10" id="wXG-Ib-LAk"/>
-                    <constraint firstItem="Qrc-fe-ubT" firstAttribute="leading" secondItem="Gg3-5A-O2D" secondAttribute="trailing" constant="10" id="x3i-UA-QkA"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
@@ -103,7 +100,7 @@
                 </variation>
             </tableViewCellContentView>
             <connections>
-                <outlet property="levelLabel" destination="Qrc-fe-ubT" id="rYQ-Av-uSb"/>
+                <outlet property="levelImageView" destination="3b9-z5-EAN" id="MZ1-xC-mfk"/>
                 <outlet property="nb_mutual_friends" destination="x4I-ND-leN" id="CE0-Ha-seZ"/>
                 <outlet property="profilePic" destination="0ev-Vb-nvf" id="YZb-FA-ywX"/>
                 <outlet property="relationshipButton" destination="SyE-th-V2e" id="3C0-sD-Vbv"/>

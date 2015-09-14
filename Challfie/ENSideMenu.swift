@@ -89,6 +89,7 @@ public class ENSideMenu : NSObject {
     private var needUpdateApperance : Bool = false
     public weak var delegate : ENSideMenuDelegate?
     private var isMenuOpen : Bool = false
+    public var behindViewController : UIViewController!
     
     public init(sourceView: UIView, menuPosition: ENSideMenuPosition) {
         super.init()
@@ -98,6 +99,7 @@ public class ENSideMenu : NSObject {
         
         animator = UIDynamicAnimator(referenceView:sourceView)
         
+        /*
         // Add right swipe gesture recognizer
         let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
         rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
@@ -115,6 +117,7 @@ public class ENSideMenu : NSObject {
             sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer)
             sourceView.addGestureRecognizer(leftSwipeGestureRecognizer)
         }
+        */
         
     }
     
@@ -257,9 +260,17 @@ public class ENSideMenu : NSObject {
     
     public func toggleMenu () {
         if (isMenuOpen) {
+            if let blackView = self.behindViewController.view.viewWithTag(63) {
+                blackView.removeFromSuperview()
+            }
             toggleMenu(false)
         }
         else {
+            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+            var blackView : UIView = UIView(frame: newframe)
+            blackView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+            blackView.tag = 63
+            self.behindViewController.view.addSubview(blackView)
             updateSideMenuApperanceIfNeeded()
             toggleMenu(true)
         }
@@ -267,12 +278,20 @@ public class ENSideMenu : NSObject {
     
     public func showSideMenu () {
         if (!isMenuOpen) {
+            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+            var blackView : UIView = UIView(frame: newframe)
+            blackView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+            blackView.tag = 63
+            self.behindViewController.view.addSubview(blackView)
             toggleMenu(true)
         }
     }
     
     public func hideSideMenu () {
         if (isMenuOpen) {
+            if let blackView = self.behindViewController.view.viewWithTag(63) {
+                blackView.removeFromSuperview()
+            }
             toggleMenu(false)
         }
     }

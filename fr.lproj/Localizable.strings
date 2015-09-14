@@ -48,6 +48,10 @@ send_reset_password = "Réinitialiser mon mot de passe";
 choose_username = "Choisis ton identifiant";
 only_alphanumeric = "* uniquement des caractères alphanumérique autorisés";
 
+// Review Popup
+review_message = "Si tu apprécies le concept de Challfie, cela nous aiderait énormément si tu pouvais prendre le temps de l'évaluer sur l'appstore. Cela ne prendra pas plus d'une minute. Merci pour ton soutien !";
+
+
 // Popcup
 Close = "Fermer";
 Error = "Erreur";
@@ -63,7 +67,7 @@ Reject = " rejettent";
 first_comment = "Sois le premier à commenter..";
 no_selfie = "Bienvenue sur Challfie!\n\nDémarre dès à présent en ajoutant tes amis et prends ton premier Challfie.";
 daily = "Journalier";
-flag_as_inappropriate = "Merci. Le contenu de ce selfie a été signalé comme étant inapproprié.";
+flag_as_inappropriate = "Le contenu de ce selfie a été signalé comme étant inapproprié et va être examiné par un administrateur.";
 report_selfie = "Signaler Selfie";
 report_inappropriate_content = "Signaler du contenu inapproprié";
 delete_selfie = "Supprimer selfie";
@@ -105,6 +109,7 @@ is_not_friend = "Abonne toi pour consulter sa liste de selfie challenges..";
 is_pending_request = "Ta demande d'abonnement a été envoyé. En attente d'une réponse..";
 Log_out = "Déconnexion";
 Books = "Livres";
+approved = "Approuvés";
 change_profil_pic = "Modifier sa photo de Profil";
 choose_from_gallery = "Choisir à partir de la galerie";
 take_picture = "Prendre une photo";
@@ -113,7 +118,7 @@ profil_blocked = "Ton compte a été bloqué par un administrateur. Merci de nou
 
 
 // Challenge Page
-book_of_challenges = "Livre de challenges";
+book_of_challenges = "Challenges";
 book_is_locked = "Débloque ce livre en ayant tes Challfies approuvés par tes amis.";
 book_locked = "Livre bloqué";
 difficulty = "Difficulté";
@@ -145,6 +150,7 @@ require_account_assistance = "Demande d'assistance pour ton compte";
 report_content = "Reporter du contenu obscène, raciste ou pornographique.";
 give_suggestions = "Emettre des suggestions pour l'application";
 others = "Autres";
+send_message = "Envoyer le message";
 
 // Side Menu
 daily_challenge = "Challenge du jour";
@@ -188,9 +194,9 @@ clear_flag = "Clear selfie flags";
 clear_flag_notification = "Flags have been cleared for this Selfie";
 
 // Tutorial
-skip_tutorial = "Passer le tutorial";
+skip_tutorial = "Passer le tutoriel";
 take_a_selfie = "Challenge : Prendre un selfie";
-thanks_tutorial = "Merci à toi de faire parti de la Challfie family! Amuses toi bien et prends plein de selfies!";
+thanks_tutorial = "Merci à toi de faire parti de la Challfie family ! Amuses toi bien et prends plein de selfies !";
 
 tutorial_one_title = "Bienvenue";
 tutorial_two_title = "Félicitation pour ton premier Challfie!";
@@ -199,15 +205,15 @@ tutorial_four_title = "Système de points";
 tutorial_five_title = "Monter de niveau";
 
 tutorial_one_description = "Le concept de Challfie est de compléter des challenges en prenant des selfies. \n\nPuisque c'est ta première fois, complétons ensemble un simple challenge : \"Prendre un selfie\".";
-tutorial_two_description = "Le statut de ton selfie est pour le moment \"en attente\". \nTes abonnés vont soit l'approuvé, soit le rejeté.";
+tutorial_two_description = "Le statut de ton selfie est pour le moment \"en attente\". \nTes abonnés vont soit l'approuver, soit le rejeter.";
 tutorial_three_description = "Parce que nous sommes suuuuper sympa, nous avons approuvé ton premier Challfie. \nLes prochaines fois, tu auras besoin d'un minimum de 5 votes avec >75% d'approbation.";
 tutorial_four_description = "Tu gagnes des points pour chaque Challfie approuvé. Plus le challenge est difficile à réaliser, plus il rapportera de points.";
 tutorial_five_description = "Lorsque tu auras cumulé assez de points, tu monteras de niveau et débloqueras des nouveaux challenges.";
 
 tutorial_one_button = "Compléter le challenge";
-tutorial_two_button = "Suivant (2/5) : Approbation du Challfie";
-tutorial_three_button = "Suivant (3/5) : Gagne des points";
-tutorial_four_button = "Suivant (4/5) : Monte de niveau";
+tutorial_two_button = "Suivant (3/5) : Approbation du Challfie";
+tutorial_three_button = "Suivant (4/5) : Gagne des points";
+tutorial_four_button = "Suivant (5/5) : Monte de niveau";
 tutorial_five_button = "C'est Parti!";
 
 first_challfie = "Mon premier Challfie!!";

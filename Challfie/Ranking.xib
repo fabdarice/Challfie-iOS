@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RankingVC" customModule="Challfie" customModuleProvider="target">
@@ -9,13 +9,13 @@
                 <outlet property="LevelColumnLabel" destination="NFg-sh-xYu" id="Kto-LZ-3J6"/>
                 <outlet property="UsernameColumnLabel" destination="236-0b-RrL" id="AqY-A4-cAJ"/>
                 <outlet property="allUsersRankButton" destination="iBZ-bJ-BBx" id="FPb-vG-Mok"/>
-                <outlet property="currentUserLevelLabel" destination="U0I-XI-3su" id="qbD-Tg-xGe"/>
                 <outlet property="currentUserProfilPicImageView" destination="FMN-h1-3AI" id="hnV-YP-kTB"/>
                 <outlet property="currentUserProgressLabel" destination="VRB-a6-vvF" id="RkN-Iu-XBr"/>
                 <outlet property="currentUserRankLabel" destination="87g-FJ-8Xv" id="cV0-3E-bk4"/>
                 <outlet property="currentUserView" destination="TQh-AY-QXj" id="99b-ou-dGG"/>
                 <outlet property="currentUsernameLabel" destination="nUG-kh-JP7" id="Uqr-AE-oaO"/>
                 <outlet property="friendsRankButton" destination="zha-GM-dyQ" id="EC4-eZ-ov8"/>
+                <outlet property="levelImageView" destination="tcr-bx-OP3" id="kQU-I3-QWp"/>
                 <outlet property="progressColumnLabel" destination="oSf-fB-D7D" id="FDr-V1-Ms9"/>
                 <outlet property="rankColumnLabel" destination="3FR-ys-4JP" id="OFw-ca-mVI"/>
                 <outlet property="tableHeaderView" destination="eA9-Vu-nd1" id="1S0-fQ-zQC"/>
@@ -35,7 +35,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="236-0b-RrL">
-                            <rect key="frame" x="97" y="7" width="29.5" height="16.5"/>
+                            <rect key="frame" x="107.5" y="7" width="29.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="236-0b-RrL" firstAttribute="leading" secondItem="3FR-ys-4JP" secondAttribute="trailing" constant="50" id="3eI-6u-Ev6"/>
+                        <constraint firstItem="236-0b-RrL" firstAttribute="leading" secondItem="3FR-ys-4JP" secondAttribute="trailing" constant="60" id="3eI-6u-Ev6"/>
                         <constraint firstAttribute="centerY" secondItem="3FR-ys-4JP" secondAttribute="centerY" id="5RZ-H9-4n5"/>
                         <constraint firstAttribute="centerY" secondItem="NFg-sh-xYu" secondAttribute="centerY" id="8hv-PP-jgK"/>
                         <constraint firstAttribute="trailing" secondItem="oSf-fB-D7D" secondAttribute="trailing" constant="10" id="Gft-LG-DnC"/>
@@ -150,16 +150,16 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FMN-h1-3AI" userLabel="profilPicImageView">
-                            <rect key="frame" x="50" y="2" width="40" height="39.5"/>
+                            <rect key="frame" x="60" y="2" width="40" height="39.5"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="2uR-Ah-Bl6"/>
                                 <constraint firstAttribute="height" constant="40" id="tCy-PU-mcr"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="87g-FJ-8Xv" userLabel="rankLabel">
-                            <rect key="frame" x="5" y="14" width="40" height="15.5"/>
+                            <rect key="frame" x="5" y="14" width="50" height="15.5"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="AEl-QH-Xgi"/>
+                                <constraint firstAttribute="width" constant="50" id="AEl-QH-Xgi"/>
                                 <constraint firstAttribute="height" constant="15.5" id="tFV-Bv-gUE"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
@@ -169,7 +169,7 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="nUG-kh-JP7" userLabel="usernameLabel">
-                            <rect key="frame" x="95" y="14" width="105" height="15.5"/>
+                            <rect key="frame" x="110" y="14" width="125" height="15.5"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="15.5" id="PT8-zJ-9uc"/>
                             </constraints>
@@ -180,34 +180,28 @@
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="U0I-XI-3su" userLabel="levelLabel">
-                            <rect key="frame" x="205" y="14" width="70" height="14.5"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tcr-bx-OP3" userLabel="levelImageView">
+                            <rect key="frame" x="245" y="9" width="25" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="15" id="Rdy-51-YhL"/>
-                                <constraint firstAttribute="width" constant="70" id="S9C-U1-LhF"/>
+                                <constraint firstAttribute="height" constant="25" id="6PM-4Y-kZu"/>
+                                <constraint firstAttribute="width" constant="25" id="cHe-pd-V5X"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
-                            </userDefinedRuntimeAttributes>
-                        </label>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="87g-FJ-8Xv" secondAttribute="centerY" id="IJ2-Kl-c72"/>
-                        <constraint firstItem="U0I-XI-3su" firstAttribute="leading" secondItem="nUG-kh-JP7" secondAttribute="trailing" constant="5" id="L5g-Nt-GiV"/>
                         <constraint firstAttribute="height" constant="44" id="LeJ-ml-892"/>
-                        <constraint firstItem="nUG-kh-JP7" firstAttribute="leading" secondItem="FMN-h1-3AI" secondAttribute="trailing" constant="5" id="RHH-Zj-dsN"/>
+                        <constraint firstItem="nUG-kh-JP7" firstAttribute="leading" secondItem="FMN-h1-3AI" secondAttribute="trailing" constant="10" id="RHH-Zj-dsN"/>
                         <constraint firstItem="FMN-h1-3AI" firstAttribute="top" secondItem="TQh-AY-QXj" secondAttribute="top" constant="2" id="Znd-iP-Zcs"/>
+                        <constraint firstAttribute="centerY" secondItem="tcr-bx-OP3" secondAttribute="centerY" id="bx0-QF-hk0"/>
                         <constraint firstAttribute="centerY" secondItem="VRB-a6-vvF" secondAttribute="centerY" id="c5u-Bc-1i0"/>
                         <constraint firstItem="87g-FJ-8Xv" firstAttribute="leading" secondItem="TQh-AY-QXj" secondAttribute="leading" constant="5" id="csw-KV-CpF"/>
-                        <constraint firstAttribute="centerY" secondItem="U0I-XI-3su" secondAttribute="centerY" id="dUr-Tq-Gce"/>
                         <constraint firstAttribute="centerY" secondItem="nUG-kh-JP7" secondAttribute="centerY" id="gEm-lG-UIX"/>
                         <constraint firstAttribute="bottom" secondItem="FMN-h1-3AI" secondAttribute="bottom" constant="2" id="hJO-I6-1vO"/>
+                        <constraint firstItem="VRB-a6-vvF" firstAttribute="leading" secondItem="tcr-bx-OP3" secondAttribute="trailing" constant="10" id="mR1-yZ-zpa"/>
                         <constraint firstAttribute="trailing" secondItem="VRB-a6-vvF" secondAttribute="trailing" id="my5-sI-oh0"/>
-                        <constraint firstItem="VRB-a6-vvF" firstAttribute="leading" secondItem="U0I-XI-3su" secondAttribute="trailing" constant="5" id="n9d-cS-CrT"/>
+                        <constraint firstItem="tcr-bx-OP3" firstAttribute="leading" secondItem="nUG-kh-JP7" secondAttribute="trailing" constant="10" id="mzp-gj-Umi"/>
                         <constraint firstItem="FMN-h1-3AI" firstAttribute="leading" secondItem="87g-FJ-8Xv" secondAttribute="trailing" constant="5" id="q0D-mA-s9Y"/>
                     </constraints>
                 </view>

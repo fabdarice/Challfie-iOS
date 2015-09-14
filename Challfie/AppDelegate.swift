@@ -9,6 +9,10 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import FBSDKCoreKit
+import FBSDKLoginKit
+import KeychainAccess
+import Armchair
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,8 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        //KeychainWrapper.removeObjectForKey(kSecAttrAccount)
-        //KeychainWrapper.removeObjectForKey(kSecValueData)
+        // Delete Keychain login & auth_token
+        //KeychainInfo.login = nil
+        //KeychainInfo.auth_token = nil
         
         // Change color of status bar
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
@@ -29,12 +34,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
         var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
-        var guideVC:GuideVC = mainStoryboard.instantiateViewControllerWithIdentifier("guideVC") as! GuideVC
+
+        //var guideVC:GuideVC = mainStoryboard.instantiateViewControllerWithIdentifier("guideVC") as! GuideVC
         
         var facebookUsernameViewController:FacebookUsernameVC = mainStoryboard.instantiateViewControllerWithIdentifier("facebookUsernameVC") as! FacebookUsernameVC
-
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
+        
+        
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]
+        let auth_token = keychain["auth_token"]
         
         var launchScreenVC = UIViewController(nibName: "LoadingLaunchScreen", bundle: nil)
         self.window?.rootViewController = launchScreenVC
@@ -42,52 +50,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (login != nil && auth_token != nil) {
             let parameters:[String: AnyObject] = [
                 "login": login!,
-                "token": auth_token!
+                "token": auth_token!,
+                "timezone": NSTimeZone.localTimeZone().name
             ]
-            
             // Check if the login and auth_token are valid for the user
             request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
                 .responseJSON { (_, _, mydata, _) in
+                    var keychain = Keychain(service: "challfie.app.service")
+                    
                     if (mydata != nil) {
                         let json = JSON(mydata!)
                         if (json["success"].intValue == 1) {
                             let username_activated: Bool = json["username_activated"].boolValue
                             
                             // Activate the Background Fetch Mode to Interval Minimum
-                            UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
-                                UIApplicationBackgroundFetchIntervalMinimum)
+                            //UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
+                                //UIApplicationBackgroundFetchIntervalMinimum)
                             
                             if username_activated == true {
                                 self.window?.rootViewController = homeTableViewController
-                                self.window?.rootViewController = guideVC
+                                //self.window?.rootViewController = guideVC
                             } else {
                                 self.window?.rootViewController = facebookUsernameViewController
                             }
                             
                         } else {
-                            KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
-                            KeychainWrapper.removeObjectForKey(kSecValueData as String)
-                            if let facebookSession = FBSession.activeSession() {
-                                facebookSession.closeAndClearTokenInformation()
-                                facebookSession.close()
-                                FBSession.setActiveSession(nil)
-                            }
-
+                            keychain["login"] = nil
+                            keychain["auth_token"] = nil
+                            // Logout FB if it was logged in
+                            var facebookManager = FBSDKLoginManager()
+                            facebookManager.logOut()
                             self.window?.rootViewController = loginViewController
                         }
                     } else {
-                        KeychainWrapper.removeObjectForKey(kSecAttrAccount as String)
-                        KeychainWrapper.removeObjectForKey(kSecValueData as String)
-                        if let facebookSession = FBSession.activeSession() {
-                            facebookSession.closeAndClearTokenInformation()
-                            facebookSession.close()
-                            FBSession.setActiveSession(nil)
-                        }
-
+                        // Logout FB if it was logged in
+                        var facebookManager = FBSDKLoginManager()
+                        facebookManager.logOut()
+                        keychain["login"] = nil
+                        keychain["auth_token"] = nil
                         self.window?.rootViewController = loginViewController
                     }
             }
         } else {
+            // Logout FB if it was logged in
+            var facebookManager = FBSDKLoginManager()
+            facebookManager.logOut()
             self.window?.rootViewController = loginViewController
         }
         
@@ -108,7 +115,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         */
         siren.checkVersion(.Immediately)
         
-        return true
+        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -133,6 +141,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Siren.sharedInstance.checkVersion(.Immediately)
     }
 
+    
+
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
@@ -140,6 +150,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Perform daily (.Daily) or weekly (.Weekly) checks for new version of your app.
         Useful if user returns to your app from the background after extended period of time.
         Place in applicationDidBecomeActive(_:).   */
+        
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]
+        let auth_token = keychain["auth_token"]
+        
+        // Refresh Data if Users are currently signed in and current screen is timelineVC
+        if (login != nil && auth_token != nil) {
+            if let homeTableViewController:HomeTBC = self.window?.rootViewController as? HomeTBC,
+                // Fetch Data of Timeline Tab
+                allTabViewControllers = homeTableViewController.viewControllers,
+                navController:UINavigationController = allTabViewControllers[0] as? UINavigationController,
+                timelineVC: TimelineVC = navController.viewControllers[0] as? TimelineVC {
+                    if homeTableViewController.selectedIndex == 0 && timelineVC.first_time == false {
+                        timelineVC.backgroundRefresh()
+                    }
+            }
+        }
+        
+        FBSDKAppEvents.activateApp()
         
         Siren.sharedInstance.checkVersion(.Daily)
     }
@@ -153,10 +182,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        println("ENTER didRegisterForRemoteNotificationsWithDeviceToken")
         var deviceTokenStr = NSString(format: "%@", deviceToken)
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]
+        let auth_token = keychain["auth_token"]
+
         if (login != nil && auth_token != nil) {
             let parameters:[String: AnyObject] = [
                 "login": login!,
@@ -180,33 +210,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Facebook Login to handle callback
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        let facebookCallHandled = FBAppCall.handleOpenURL(url, sourceApplication: sourceApplication)
-        
         // You can add your app-specific url handling code here if needed
-        return facebookCallHandled
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+
     }
     
     
-    func sessionStateChanged(session:FBSession, state:FBSessionState, error:NSError?) {
-        
+    // Set up Armchair
+    override class func initialize() {
+        super.initialize()
+
+        Armchair.appID("974913351")
+        Armchair.significantEventsUntilPrompt(2)
+        Armchair.reviewMessage(NSLocalizedString("review_message", comment: "Review Message"))
+        Armchair.shouldPromptIfRated(true)
+        Armchair.daysUntilPrompt(0)
+        Armchair.usesUntilPrompt(1)
     }
     
+    /*
     // MARK: - Fetch Data In Background Mode
     func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         
-        println("ENTER performFetchWithCompletionHandler")
-        if let homeTableViewController:HomeTBC = self.window?.rootViewController as? HomeTBC {
+        if let homeTableViewController:HomeTBC = self.window?.rootViewController as? HomeTBC,
             // Fetch Data of Timeline Tab
-            if let allTabViewControllers = homeTableViewController.viewControllers,
-                navController:UINavigationController = allTabViewControllers[0] as? UINavigationController,
-                timelineVC: TimelineVC = navController.viewControllers[0] as? TimelineVC {
-                
+            allTabViewControllers = homeTableViewController.viewControllers,
+            navController:UINavigationController = allTabViewControllers[0] as? UINavigationController,
+            timelineVC: TimelineVC = navController.viewControllers[0] as? TimelineVC {
                 timelineVC.fetchDataInBackground({(result) in completionHandler(result) })
-            }
         }
         
         
-    }
+    }*/
 
 }
 

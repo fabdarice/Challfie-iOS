@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,20 +13,8 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="m2R-B1-PtU" userLabel="usernameLabel">
-                        <rect key="frame" x="95" y="14.5" width="105" height="15.5"/>
+                        <rect key="frame" x="110" y="14" width="130" height="15.5"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
-                        </userDefinedRuntimeAttributes>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apprentice III" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="ELc-wO-ex6" userLabel="levelLabel">
-                        <rect key="frame" x="205" y="14" width="70" height="14.5"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="70" id="FIP-3d-kiG"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                         <userDefinedRuntimeAttributes>
@@ -45,11 +33,11 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="214" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hl-NN-WjU" userLabel="rankLabel">
-                        <rect key="frame" x="5" y="14" width="40" height="15.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hl-NN-WjU" userLabel="rankLabel">
+                        <rect key="frame" x="5" y="14" width="50" height="15.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="7Vr-em-p1z"/>
-                            <constraint firstAttribute="width" constant="40" id="bak-lK-xHv"/>
+                            <constraint firstAttribute="width" constant="50" id="bak-lK-xHv"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                         <nil key="highlightedColor"/>
@@ -63,27 +51,34 @@
                         </variation>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CW9-Qd-5ao" userLabel="profilPicImageView">
-                        <rect key="frame" x="50" y="2" width="40" height="39.5"/>
+                        <rect key="frame" x="60" y="2" width="40" height="39.5"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="6U7-oZ-8Ri"/>
                             <constraint firstAttribute="width" constant="40" id="j8Z-sf-M3n"/>
                         </constraints>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="p86-H2-cPa" userLabel="levelImageView">
+                        <rect key="frame" x="245" y="9" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="q7O-s1-t6y"/>
+                            <constraint firstAttribute="width" constant="25" id="x1c-oJ-Rek"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="HVo-eO-uuO" firstAttribute="leading" secondItem="ELc-wO-ex6" secondAttribute="trailing" constant="5" id="21G-ER-x2r"/>
+                    <constraint firstItem="p86-H2-cPa" firstAttribute="leading" secondItem="m2R-B1-PtU" secondAttribute="trailing" constant="5" id="8WF-mJ-pta"/>
                     <constraint firstAttribute="centerY" secondItem="4hl-NN-WjU" secondAttribute="centerY" id="8Wd-s2-apL"/>
-                    <constraint firstAttribute="centerY" secondItem="ELc-wO-ex6" secondAttribute="centerY" id="C2f-bJ-cV7"/>
                     <constraint firstItem="4hl-NN-WjU" firstAttribute="leading" secondItem="Zo2-He-BM3" secondAttribute="leading" constant="5" id="DTw-b5-Phx"/>
                     <constraint firstAttribute="bottom" secondItem="CW9-Qd-5ao" secondAttribute="bottom" constant="2" id="Ggr-HC-86U"/>
                     <constraint firstAttribute="trailing" secondItem="HVo-eO-uuO" secondAttribute="trailing" id="LKd-1z-Wrj"/>
                     <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="Zo2-He-BM3" secondAttribute="leading" constant="15" id="Mkl-RK-XfF"/>
                     <constraint firstAttribute="centerY" secondItem="m2R-B1-PtU" secondAttribute="centerY" id="P3r-Gm-FhV"/>
                     <constraint firstItem="CW9-Qd-5ao" firstAttribute="top" secondItem="Zo2-He-BM3" secondAttribute="top" constant="2" id="U31-fu-nm7"/>
+                    <constraint firstItem="HVo-eO-uuO" firstAttribute="leading" secondItem="p86-H2-cPa" secondAttribute="trailing" constant="10" id="Vdd-PA-QgJ"/>
+                    <constraint firstAttribute="centerY" secondItem="p86-H2-cPa" secondAttribute="centerY" id="W5e-9q-eLw"/>
                     <constraint firstAttribute="centerY" secondItem="HVo-eO-uuO" secondAttribute="centerY" id="iC4-eM-McT"/>
-                    <constraint firstItem="m2R-B1-PtU" firstAttribute="leading" secondItem="CW9-Qd-5ao" secondAttribute="trailing" constant="5" id="mS6-Kw-ZxS"/>
-                    <constraint firstItem="ELc-wO-ex6" firstAttribute="leading" secondItem="m2R-B1-PtU" secondAttribute="trailing" constant="5" id="p4y-7F-XKs"/>
+                    <constraint firstItem="m2R-B1-PtU" firstAttribute="leading" secondItem="CW9-Qd-5ao" secondAttribute="trailing" constant="10" id="mS6-Kw-ZxS"/>
                     <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="4hl-NN-WjU" secondAttribute="trailing" constant="5" id="rN6-H3-MDt"/>
                 </constraints>
                 <variation key="default">
@@ -94,7 +89,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="levelLabel" destination="ELc-wO-ex6" id="q2a-iR-SFj"/>
+                <outlet property="levelImageView" destination="p86-H2-cPa" id="uI4-Tp-etv"/>
                 <outlet property="profilPicImageView" destination="CW9-Qd-5ao" id="sch-aS-Dxd"/>
                 <outlet property="progressLabel" destination="HVo-eO-uuO" id="0MA-vd-mpD"/>
                 <outlet property="rankLabel" destination="4hl-NN-WjU" id="1RB-mX-497"/>

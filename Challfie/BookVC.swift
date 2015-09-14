@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 import Alamofire
+import KeychainAccess
 
 class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDelegate {
     
@@ -31,6 +32,8 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
         
         // Add Delegate to SideMenu
         self.sideMenuController()?.sideMenu?.delegate = self
+        
+        self.sideMenuController()?.sideMenu?.behindViewController = self
         
         // navigationController Left and Right Button
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabBar_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "tapGestureToSearchPage")
@@ -67,9 +70,14 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
         var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
+        
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!
+            "login": login,
+            "auth_token": auth_token
         ]
         
         request(.POST, ApiLink.books_list, parameters: parameters, encoding: .JSON)
@@ -191,29 +199,10 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
         return last_book_unlocked_index
     }
     
-    
     // MARK: - ENSideMenu Delegate
-    func sideMenuWillOpen() {
-        // Add Tap gesture to Hide Side Menu
-        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
-        self.view.addGestureRecognizer(tapGesture)
-    }
-    
-    func sideMenuWillClose() {
-        // Remove Tap gesture to Hide Side Menu
-        if let recognizers = self.view.gestureRecognizers {
-            for recognizer in recognizers {
-                self.view.removeGestureRecognizer(recognizer as! UIGestureRecognizer)
-            }
-        }
-    }
-    
     func toggleSideMenu() {
         toggleSideMenuView()
     }
-    
-    func hideSideMenu() {
-        hideSideMenuView()
-    }
+
     
 }

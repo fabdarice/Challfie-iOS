@@ -9,8 +9,8 @@
 import Foundation
 
 struct ApiLink {
-    static var host = "http://ADM-ML-C02MM24.local:3000"
-    //static var host = "https://challfie.com"
+    //static var host = "http://ADM-ML-C02MM24.local:3000"
+    static var host = "https://challfie.com"
     
     // Register and Sign_in
     static var register = host + "/api/users"
@@ -48,7 +48,6 @@ struct ApiLink {
     static var update_user = host + "/api/user/update"
     static var users_ranking = host + "/api/users/ranking"
     static var users_ranking_global  = host + "/api/users/ranking_global"
-    static var update_facebook_permission = host + "/api/users/update_facebook_permission"
     
     // FriendsController
     static var suggestions_and_request = host + "/api/suggestions_and_request"

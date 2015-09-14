@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class UserApprovalListVC : UITableViewController {
     
@@ -90,9 +91,14 @@ class UserApprovalListVC : UITableViewController {
             api_link = ApiLink.list_reject
         }
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+
+        
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "page": self.page.description,
             "selfie_id": self.selfie_id
         ]
@@ -211,6 +217,7 @@ class UserApprovalListVC : UITableViewController {
         // Push to ProfilVC of the selected Row
         var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.friend
+        profilVC.hidesBottomBarWhenPushed = true
         
         self.navigationController?.pushViewController(profilVC, animated: true)
     }

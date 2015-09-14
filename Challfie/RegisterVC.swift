@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 
 class RegisterVC: UIViewController, UITextFieldDelegate {
@@ -39,7 +40,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         self.createNewAccountLabel.text = NSLocalizedString("new_account_title", comment: "New account on Challfie")
         self.createAccountButton.setTitle(NSLocalizedString("Create_account", comment: "Create Account"), forState: .Normal)
         self.passwordHelperLabel.text = NSLocalizedString("Password_helper", comment: "* Password must be at least 8 characters long")
-        self.alreadyAccount.setTitle(NSLocalizedString("Create_account", comment: "Create Account"), forState: .Normal)
+        self.alreadyAccount.setTitle(NSLocalizedString("already_an_account", comment: "Already an account"), forState: .Normal)
         
         // Eula
         self.eulaLabel.text = NSLocalizedString("eula", comment: "by signing up for this account, you agree to the terms and conditions")
@@ -141,9 +142,10 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                         let login:String! = json["login"].string
                         let auth_token:String! = json["auth_token"].string
                         
+                        var keychain = Keychain(service: "challfie.app.service")
                         // Save login and auth_token to the iOS Keychain
-                        KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
-                        KeychainWrapper.setString(auth_token, forKey: kSecValueData as String)
+                        keychain["login"] = login
+                        keychain["auth_token"] = auth_token
                         
                         // Modal to GuideVC
                         //self.performSegueWithIdentifier("homeSegue2", sender: self)

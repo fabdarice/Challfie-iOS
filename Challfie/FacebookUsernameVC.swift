@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     @IBOutlet weak var setUsernameView: UIView!
@@ -87,9 +88,13 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "new_username": self.usernameTextField.text
         ]
                 
@@ -113,7 +118,8 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
                         let login:String! = json["user"]["username"].string
                         
                         // Save login and auth_token to the iOS Keychain
-                        KeychainWrapper.setString(login, forKey: kSecAttrAccount as String)
+                        var keychain = Keychain(service: "challfie.app.service")
+                        keychain["login"] = login
                         
                         self.performSegueWithIdentifier("facebookregisterSegue", sender: self)
                         

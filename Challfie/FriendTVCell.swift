@@ -9,14 +9,16 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class FriendTVCell : UITableViewCell {
     @IBOutlet weak var profilePic: UIImageView!    
-    @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var nb_mutual_friends: UILabel!
     @IBOutlet weak var relationshipButton: UIButton!
     @IBOutlet weak var relationshipButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var levelImageView: UIImageView!
+    
     
     var friends_tab: Int!
     var friend: Friend!
@@ -47,8 +49,9 @@ class FriendTVCell : UITableViewCell {
         }
         
         
-        // Level
-        self.levelLabel.text = friend.book_level
+        // Level Image
+        let levelImageURL:NSURL = NSURL(string: friend.show_book_image())!
+        self.levelImageView.hnk_setImageFromURL(levelImageURL)
         
         // User Profile Picture
         if friend.show_profile_pic() != "missing" {
@@ -61,14 +64,15 @@ class FriendTVCell : UITableViewCell {
         self.profilePic.clipsToBounds = true
         self.profilePic.layer.borderWidth = 2.0
         self.profilePic.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
+  
         if friend.book_tier == 1 {
-            self.profilePic.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
+            self.profilePic.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
         }
         if friend.book_tier == 2 {
-            self.profilePic.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
+            self.profilePic.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
         }
         if friend.book_tier == 3 {
-            self.profilePic.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
+            self.profilePic.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
         }
         
         
@@ -96,8 +100,10 @@ class FriendTVCell : UITableViewCell {
 
         if (friends_tab == 3 || friends_tab == 4) {
         // FOR FOLLOWERS OR "SEARCH USER" OR "USERAPPROVAL LIST" 
+            var keychain = Keychain(service: "challfie.app.service")
+            
             // Check if it's current_user
-            if friend.username == KeychainWrapper.stringForKey(kSecAttrAccount as String)! {
+            if friend.username == keychain["login"] {
                 self.relationshipButton.hidden = true
             } else {
                 self.relationshipButton.hidden = false
@@ -122,9 +128,13 @@ class FriendTVCell : UITableViewCell {
     }
     
     @IBAction func relationshipButton(sender: UIButton) {
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "user_id": self.friend.id.description
         ]
         

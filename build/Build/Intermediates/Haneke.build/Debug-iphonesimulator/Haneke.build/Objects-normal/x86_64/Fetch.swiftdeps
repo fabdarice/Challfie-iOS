@@ -1,0 +1,34 @@
+### Swift dependencies file v0 ###
+provides:
+- "FetchState"
+- "Fetch"
+- "Wrapper"
+nominals:
+- "O6Haneke10FetchState"
+- "C6Haneke5Fetch"
+- "C6Haneke7Wrapper"
+class-members:
+top-level:
+- !private "BooleanLiteralType"
+- "Bool"
+- "FetchState"
+- "Wrapper"
+- "NSError"
+member-access:
+- "O6Haneke10FetchState"
+- "C6Haneke7Wrapper"
+- "C6Haneke5Fetch"
+- "PSs9AnyObject"
+dynamic-lookup:
+cross-module:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/Swift.swiftmodule"
+- "/Users/fcheng/Downloads/HanekeSwift-master/Haneke/Haneke.h"
+- "/Users/fcheng/workspace/mobileapp/Challfie/build/Build/Intermediates/Haneke.build/Debug-iphonesimulator/Haneke.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/Security.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/CoreImage.swiftmodule"

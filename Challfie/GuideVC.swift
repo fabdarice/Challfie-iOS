@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class GuideVC : UIViewController, GKImagePickerDelegate {
     
@@ -25,10 +26,9 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        println("ENTER GuideVC")
         
-        let login = KeychainWrapper.stringForKey(kSecAttrAccount as String)
-        let auth_token = KeychainWrapper.stringForKey(kSecValueData as String)
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
         
         self.usernameLabel.text = login
         self.welcomeLabel.text = NSLocalizedString("tutorial_one_title", comment: "Welcome")
@@ -57,8 +57,6 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
     
     // MARK: takeSelfieAction()
     @IBAction func takeSelfieAction(sender: AnyObject) {
-        
-        println("ENTER takeSelfieButtonAction")
     
         // Show Pop-op to options to choose between camera and photo library
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -178,9 +176,13 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
         var is_shared_fb: String = "0"
         var message: String = NSLocalizedString("first_challfie", comment: "My first Challfie!!")
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "message": message,
             "is_private": is_private,
             "is_shared_fb": is_shared_fb,
@@ -201,14 +203,6 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
             },
             encodingCompletion: nil
         )
-        
-        /*
-        var manager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager()
-        manager.POST(ApiLink.create_selfie, parameters: parameters, constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
-            formData.appendPartWithFileData(imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpeg", mimeType: "image/jpeg")
-            }, success: { (operation: AFHTTPRequestOperation!, responseObject) -> Void in
-            }, failure: { (operation: AFHTTPRequestOperation!, error) -> Void in
-        })*/
     }
     
     

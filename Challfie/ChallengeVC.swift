@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class ChallengeVC : UIViewController {
 
@@ -84,21 +85,7 @@ class ChallengeVC : UIViewController {
         
         self.createFullCircle()
         
-        // Add right swipe gesture Hide Side Menu
-        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(rightSwipeGestureRecognizer)
-        
-        // Add left swipe gesture Show Side Menu
-        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-        self.view.addGestureRecognizer(leftSwipeGestureRecognizer)
-        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-
-        // Add Tap gesture to Hide Side Menu
-        let tapGesture = UITapGestureRecognizer(target: self, action: "hideSideMenu")
-        self.view.addGestureRecognizer(tapGesture)
-        
+        self.sideMenuController()?.sideMenu?.behindViewController = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -119,16 +106,9 @@ class ChallengeVC : UIViewController {
         loadData()
     }
         
+    // MARK: - ENSideMenu Delegate
     func toggleSideMenu() {
         toggleSideMenuView()
-    }
-    
-    func hideSideMenu() {
-        hideSideMenuView()
-    }
-    
-    func showSideMenu() {
-        showSideMenuView()
     }
     
     func loadData() {
@@ -140,10 +120,14 @@ class ChallengeVC : UIViewController {
         loadingActivityVC.view.frame = newframe
         self.view.addSubview(loadingActivityVC.view)
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         self.loadingIndicator.startAnimating()
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!            
+            "login": login,
+            "auth_token": auth_token
         ]
         
         request(.POST, ApiLink.level_progression, parameters: parameters, encoding: .JSON)

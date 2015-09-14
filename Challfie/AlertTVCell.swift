@@ -69,40 +69,28 @@ class AlertTVCell : UITableViewCell {
             self.userImageView.clipsToBounds = true
             self.userImageView.layer.borderWidth = 2.0
             self.userImageView.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
+            
             if alert.author.book_tier == 1 {
-                self.userImageView.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
+                self.userImageView.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
             }
             if alert.author.book_tier == 2 {
-                self.userImageView.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
+                self.userImageView.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
             }
             if alert.author.book_tier == 3 {
-                self.userImageView.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
+                self.userImageView.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
             }
         }
         
-        // load book image
+        // load book or selfie image
+        self.rightImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if alert.book_img != "" {
             self.rightImageView.hidden = false
-            var bookImageStr = ""
-            if ApiLink.host == "https://challfie.com" {
-                bookImageStr = alert.book_img
-            } else {
-                bookImageStr = ApiLink.host + alert.book_img
-            }
-            
-            let bookImageURL:NSURL = NSURL(string: bookImageStr)!
+            let bookImageURL:NSURL = NSURL(string: alert.book_img)!
             self.rightImageView.hnk_setImageFromURL(bookImageURL)
         } else if alert.selfie_img != "" {
             // load selfie image
             self.rightImageView.hidden = false
-            var selfieImageStr = ""
-            if ApiLink.host == "https://challfie.com" {
-                selfieImageStr = alert.selfie_img
-            } else {
-                selfieImageStr = ApiLink.host + alert.selfie_img
-            }
-            
-            let selfieImageURL:NSURL = NSURL(string: selfieImageStr)!
+            let selfieImageURL:NSURL = NSURL(string: alert.selfie_img)!
             self.rightImageView.hnk_setImageFromURL(selfieImageURL)
         } else {
             self.rightImageView.hidden = true

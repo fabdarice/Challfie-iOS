@@ -47,6 +47,9 @@ confirm = "Confirm";
 choose_username = "Select your username";
 only_alphanumeric = "* must contain only alphanumeric characters";
 
+// Review Popup
+review_message = "If you enjoy using Challfie, it would help us immensely if you take a moment to rate it. It won't take more than a minute. Thank you so much for your support!";
+
 // Popcup
 Close = "Close";
 Error = "Error";
@@ -105,6 +108,7 @@ is_not_friend = "Follow this user to see his/her Challfies..";
 is_pending_request = "Your request have been sent. Waiting for approval..";
 Log_out = "Log out";
 Books = "books";
+approved = "approved";
 change_profil_pic = "Change your profile picture";
 choose_from_gallery = "Choose from your gallery";
 take_picture = "Take a picture";
@@ -145,6 +149,7 @@ require_account_assistance = "Request assistance for your account";
 report_content = "Report obscene, offensive content";
 give_suggestions = "Give suggestions for the application";
 others = "Others";
+send_message = "Send message";
 
 // Side Menu
 daily_challenge = "Daily challenge";
@@ -172,13 +177,13 @@ skip_link_facebook_step = "Skip this step";
 
 // Ranking Page
 ranking_title = "Ranking - My Friends";
-ranking_all_users_title = "Ranking - All Users";
+ranking_all_users_title = "Ranking - Top 100";
 user = "User";
 rank = "Rank";
 level = "Level";
 progress = "%";
 my_friends = "My Friends";
-all_users = "All Users";
+all_users = "Top 100";
 
 
 

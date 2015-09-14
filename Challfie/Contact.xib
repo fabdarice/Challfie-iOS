@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactViewController" customModule="Challfie" customModuleProvider="target">
@@ -17,6 +17,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challfie_general_background" translatesAutoresizingMaskIntoConstraints="NO" id="XoI-ga-UCD" userLabel="backgroundImageView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ggg-HT-D0H" userLabel="contactformView">
                     <rect key="frame" x="20" y="128" width="280" height="312"/>
                     <subviews>
@@ -34,6 +37,7 @@
                             </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                             <state key="normal" title="Send Message">
+                                <color key="titleColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -68,14 +72,21 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="XoI-ga-UCD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0d4-Xr-V14"/>
+                <constraint firstAttribute="bottom" secondItem="XoI-ga-UCD" secondAttribute="bottom" id="1Zb-M6-Y3z"/>
                 <constraint firstAttribute="centerY" secondItem="ggg-HT-D0H" secondAttribute="centerY" id="5il-dI-JkS"/>
+                <constraint firstItem="XoI-ga-UCD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BBP-Pa-agc"/>
                 <constraint firstItem="ggg-HT-D0H" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="Ch5-cc-PsQ"/>
                 <constraint firstAttribute="centerX" secondItem="ggg-HT-D0H" secondAttribute="centerX" id="WWW-KZ-ImU"/>
+                <constraint firstAttribute="trailing" secondItem="XoI-ga-UCD" secondAttribute="trailing" id="u6d-Ac-bl3"/>
                 <constraint firstAttribute="trailing" secondItem="ggg-HT-D0H" secondAttribute="trailing" constant="20" id="z7u-uB-3FY"/>
             </constraints>
             <point key="canvasLocation" x="240" y="268"/>
         </view>
     </objects>
+    <resources>
+        <image name="challfie_general_background" width="400" height="700"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -9,16 +9,17 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class FriendRequestTVCell : FriendTVCell {
     @IBOutlet weak var profilePic2: UIImageView!
-    @IBOutlet weak var levelLabel2: UILabel!
     @IBOutlet weak var usernameLabel2: UILabel!
     @IBOutlet weak var nb_mutual_friends2: UILabel!
     @IBOutlet weak var followButton: UIButton!    
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var declineButton: UIButton!
     @IBOutlet weak var followButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var levelImageView2: UIImageView!
     
     override func loadItem(friends_tab: Int) {
         
@@ -37,8 +38,9 @@ class FriendRequestTVCell : FriendTVCell {
             self.nb_mutual_friends2.text = friend.nb_mutual_friends.description + NSLocalizedString("Mutual_friends", comment: " mutual friends")
         }
         
-        // Level
-        self.levelLabel2.text = friend.book_level
+        // Level Image
+        let levelImageURL:NSURL = NSURL(string: friend.show_book_image())!
+        self.levelImageView2.hnk_setImageFromURL(levelImageURL)
         
         
         // User Profile Picture
@@ -53,14 +55,15 @@ class FriendRequestTVCell : FriendTVCell {
         self.profilePic2.clipsToBounds = true
         self.profilePic2.layer.borderWidth = 2.0
         self.profilePic2.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
+   
         if friend.book_tier == 1 {
-            self.profilePic2.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
+            self.profilePic2.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
         }
         if friend.book_tier == 2 {
-            self.profilePic2.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
+            self.profilePic2.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
         }
         if friend.book_tier == 3 {
-            self.profilePic2.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
+            self.profilePic2.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
         }
         
         self.not_following = !friend.is_following
@@ -72,9 +75,13 @@ class FriendRequestTVCell : FriendTVCell {
         self.acceptButton.hidden = true
         self.declineButton.hidden = true
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+
         let parameters = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "user_id": self.friend.id.description
         ]
         request(.POST, ApiLink.accept_request, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
@@ -120,9 +127,13 @@ class FriendRequestTVCell : FriendTVCell {
         self.followButtonHeightConstraint.constant = 30
         
         if self.not_following == true {
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "user_id": self.friend.id.description
             ]
             self.not_following = false

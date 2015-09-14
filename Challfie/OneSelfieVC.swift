@@ -10,6 +10,7 @@ import Foundation
 import Haneke
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -95,6 +96,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // Set the height of a cell dynamically
         self.listCommentsTableView.rowHeight = UITableViewAutomaticDimension
         self.listCommentsTableView.estimatedRowHeight = 10.0
+        
         
         // Retrive list of comments of the selected Selfie
         self.loadData()
@@ -211,14 +213,17 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2;
         self.profilePicImage.clipsToBounds = true
         self.profilePicImage.layer.borderWidth = 2.0;
+        
+        
+        
         if self.selfie.user.book_tier == 1 {
-            self.profilePicImage.layer.borderColor = MP_HEX_RGB("f3c378").CGColor;
+            self.profilePicImage.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
         }
         if selfie.user.book_tier == 2 {
-            self.profilePicImage.layer.borderColor = MP_HEX_RGB("77797a").CGColor;
+            self.profilePicImage.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
         }
         if selfie.user.book_tier == 3 {
-            self.profilePicImage.layer.borderColor = MP_HEX_RGB("fff94b").CGColor;
+            self.profilePicImage.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
         }
         var profilPictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
         profilPictapGesture.addTarget(self, action: "tapGestureToProfil")
@@ -241,7 +246,9 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
         }
         
-        if self.selfie.user.username == KeychainWrapper.stringForKey(kSecAttrAccount as String) {
+        var keychain = Keychain(service: "challfie.app.service")
+        
+        if self.selfie.user.username == keychain["login"]! {
             // Hide Approve&Disapprove Button because own selfie
             self.approveButton.hidden = true
             self.rejectButton.hidden = true
@@ -286,9 +293,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "id": self.selfie.id.description
         ]
         
@@ -336,9 +347,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "id": self.selfie.id.description,
             "all_comment": all_comment.description
         ]
@@ -451,9 +466,14 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBAction func approveButtonAction(sender: AnyObject) {
         // Perform the action only if the user hasn't approved yet the Selfie
         if self.selfie.user_vote_status != 1 {
+            
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "id": self.selfie.id.description
             ]
             
@@ -513,9 +533,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBAction func rejectButtonAction(sender: AnyObject) {
         // Perform the action only if the user hasn't rejected yet the Selfie
         if self.selfie.user_vote_status != 2 {
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters:[String: String] = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "id": self.selfie.id.description
             ]
             
@@ -579,9 +603,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             last_comment_id = self.comments_array.last!.id
         }
         
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "selfie_id": self.selfie.id.description,
             "last_comment_id" : last_comment_id.description,
             "message": self.commentTextField.text
@@ -635,9 +663,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         if self.is_administrator == true {
             let adminOneAction = UIAlertAction(title: "Block Selfie", style: UIAlertActionStyle.Destructive) { (_) in
+                var keychain = Keychain(service: "challfie.app.service")
+                let login = keychain["login"]!
+                let auth_token = keychain["auth_token"]!
+                
                 let parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "selfie_id": self.selfie.id.description
                 ]
                 
@@ -669,9 +701,14 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 
             }
             let adminTwoAction = UIAlertAction(title: "Block User", style: UIAlertActionStyle.Destructive) { (_) in
+                
+                var keychain = Keychain(service: "challfie.app.service")
+                let login = keychain["login"]!
+                let auth_token = keychain["auth_token"]!
+                
                 let parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "user_id": self.selfie.user.id.description
                 ]
                 
@@ -702,9 +739,13 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
             }
             let adminThreeAction = UIAlertAction(title: "Clear Flag", style: UIAlertActionStyle.Default) { (_) in
+                var keychain = Keychain(service: "challfie.app.service")
+                let login = keychain["login"]!
+                let auth_token = keychain["auth_token"]!
+                
                 let parameters = [
-                    "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                    "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                    "login": login,
+                    "auth_token": auth_token,
                     "selfie_id": self.selfie.id.description
                 ]
                 
@@ -740,9 +781,14 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             alert.addAction(adminThreeAction)
         }
         let oneAction = UIAlertAction(title: NSLocalizedString("report_inappropriate_content", comment: "Report Inappropriate Content"), style: UIAlertActionStyle.Default) { (_) in
+            
+            var keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
             let parameters = [
-                "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-                "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+                "login": login,
+                "auth_token": auth_token,
                 "selfie_id": self.selfie.id.description
             ]
             

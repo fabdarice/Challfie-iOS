@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate,ENSideMenuDelegate  {
     
@@ -58,28 +59,7 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 100.0
         
-        // Add right swipe gesture hide Side Menu
-        var ensideNavBar = self.navigationController as! MyNavigationController
-        var ensideMenu :ENSideMenu = ensideNavBar.sideMenu!
-        
-        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer.delegate = self
-        self.tableView.addGestureRecognizer(rightSwipeGestureRecognizer)
-        let rightSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
-        rightSwipeGestureRecognizer2.direction =  UISwipeGestureRecognizerDirection.Right
-        rightSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer2)
-        
-        // Add left swipe gesture Show Side Menu
-        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer.delegate = self
-        self.tableView.addGestureRecognizer(leftSwipeGestureRecognizer)
-        let leftSwipeGestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: "hideSideMenu")
-        leftSwipeGestureRecognizer2.direction = UISwipeGestureRecognizerDirection.Left
-        leftSwipeGestureRecognizer2.delegate = self
-        ensideMenu.sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer2)
+        self.sideMenuController()?.sideMenu?.behindViewController = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -107,9 +87,14 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     // Retrive list of selfies to a user timeline
     func loadData() {
         self.loadingIndicator.startAnimating()
+        
+        var keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         let parameters:[String: String] = [
-            "login": KeychainWrapper.stringForKey(kSecAttrAccount as String)!,
-            "auth_token": KeychainWrapper.stringForKey(kSecValueData as String)!,
+            "login": login,
+            "auth_token": auth_token,
             "page": self.page.description
         ]
         
@@ -195,16 +180,9 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             return true
     }
     
+    // MARK: - ENSideMenu Delegate
     func toggleSideMenu() {
         toggleSideMenuView()
-    }
-    
-    func hideSideMenu() {
-        hideSideMenuView()
-    }
-    
-    func showSideMenu() {
-        showSideMenuView()
     }
 
 
