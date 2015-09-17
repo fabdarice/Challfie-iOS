@@ -121,6 +121,7 @@
 		87B48B3F1B3B433700E088A9 /* FlagContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B48B3E1B3B433700E088A9 /* FlagContentVC.swift */; };
 		87B48B411B3B4B6E00E088A9 /* FlagContentTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87B48B401B3B4B6E00E088A9 /* FlagContentTVCell.xib */; };
 		87B48B431B3DF11900E088A9 /* FlagContentTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */; };
+		87C87FE41BA8CD6700D69F66 /* challenge_daily_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 87C87FE61BA8CD6700D69F66 /* challenge_daily_small.png */; };
 		87CA93B41A5A2C4F004D72FE /* ProfilHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */; };
 		87D35A521B87A7B300F41821 /* GuideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D35A511B87A7B300F41821 /* GuideVC.swift */; };
 		87D35A541B87B3B600F41821 /* GuideTakePictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D35A531B87B3B600F41821 /* GuideTakePictureVC.swift */; };
@@ -369,6 +370,8 @@
 		87B48B3E1B3B433700E088A9 /* FlagContentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FlagContentVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		87B48B401B3B4B6E00E088A9 /* FlagContentTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlagContentTVCell.xib; sourceTree = "<group>"; };
 		87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagContentTVCell.swift; sourceTree = "<group>"; };
+		87C87FE51BA8CD6700D69F66 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/challenge_daily_small.png; sourceTree = "<group>"; };
+		87C87FE71BA8CD6800D69F66 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/challenge_daily_small.png; sourceTree = "<group>"; };
 		87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilHeader.xib; sourceTree = "<group>"; };
 		87D35A511B87A7B300F41821 /* GuideVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GuideVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		87D35A531B87B3B600F41821 /* GuideTakePictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuideTakePictureVC.swift; sourceTree = "<group>"; };
@@ -721,6 +724,7 @@
 		87B053771A2B24A7000B5A60 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				87C87FE61BA8CD6700D69F66 /* challenge_daily_small.png */,
 				876E86A21BA2D0F900D5C84C /* Level Up Images */,
 				87185BDA1BA0106D0047A5D7 /* comment_button.png */,
 				87EE9AD61B8D000200A4F5B5 /* new_data.png */,
@@ -911,6 +915,7 @@
 				8787EDCF1A9F1D4600A2639D /* Contact.xib in Resources */,
 				877874681A2E98200031718E /* challenge_approve.png in Resources */,
 				8781BEF51A4520CF0055EFBD /* FriendRequestTVCell.xib in Resources */,
+				87C87FE41BA8CD6700D69F66 /* challenge_daily_small.png in Resources */,
 				876E869F1BA2C4E600D5C84C /* PopUpViewController.xib in Resources */,
 				873F1BE11B944516008051EB /* PLCameraSheetButtonPressed@2x.png in Resources */,
 				877874501A2C11050031718E /* reject_button.png in Resources */,
@@ -1327,6 +1332,15 @@
 			);
 			name = Localizable.strings;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		87C87FE61BA8CD6700D69F66 /* challenge_daily_small.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87C87FE51BA8CD6700D69F66 /* en */,
+				87C87FE71BA8CD6800D69F66 /* fr */,
+			);
+			name = challenge_daily_small.png;
 			sourceTree = "<group>";
 		};
 		87EE9AD61B8D000200A4F5B5 /* new_data.png */ = {

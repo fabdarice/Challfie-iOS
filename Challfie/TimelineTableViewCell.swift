@@ -21,7 +21,6 @@ class TimelineTableViewCell : UITableViewCell {
     @IBOutlet weak var selfieImage: UIImageView!
     @IBOutlet weak var challengeLabel: UILabel!
     @IBOutlet weak var selfieDateLabel: UILabel!
-//    @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var numberApprovalLabel: UILabel!
     @IBOutlet weak var numberDisapprovalLabel: UILabel!
     @IBOutlet weak var commentUsernameLabel: UILabel!
@@ -36,7 +35,7 @@ class TimelineTableViewCell : UITableViewCell {
     @IBOutlet weak var selfieHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var commentButtonWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var levelImageView: UIImageView!
-    
+    @IBOutlet weak var challengeDifficultyImageView: UIImageView!
     
     var selfie: Selfie!
     var timelineVC: TimelineVC!
@@ -69,9 +68,19 @@ class TimelineTableViewCell : UITableViewCell {
         self.challengeLabel.textColor = MP_HEX_RGB("FFFFFF")
         // Test Daily Challenge
         if self.selfie.is_daily == true {
-            self.challengeLabel.text = NSLocalizedString("daily", comment: "Daily") + " - " + self.challengeLabel.text!
+            self.challengeDifficultyImageView.image = UIImage(named: "challenge_daily_small")
+        } else {
+            // Challenge Difficulty
+            switch self.selfie.challenge.difficulty {
+            case 1: self.challengeDifficultyImageView.image = UIImage(named: "challenge_difficulty_one_small")
+            case 2: self.challengeDifficultyImageView.image = UIImage(named: "challenge_difficulty_two_small")
+            case 3: self.challengeDifficultyImageView.image = UIImage(named: "challenge_difficulty_three_small")
+            case 4: self.challengeDifficultyImageView.image = UIImage(named: "challenge_difficulty_four_small")
+            case 5: self.challengeDifficultyImageView.image = UIImage(named: "challenge_difficulty_five_small")
+            default : self.challengeDifficultyImageView.image = nil
+            }
         }
-        
+
         // Selfie Creation Date
         self.selfieDateLabel.text = selfie.creation_date
         

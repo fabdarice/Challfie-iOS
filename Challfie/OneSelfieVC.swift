@@ -20,7 +20,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var challengeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var levelLabel: UILabel!
+    @IBOutlet weak var levelImageView: UIImageView!    
     @IBOutlet weak var numberCommentsLabel: UILabel!
     @IBOutlet weak var numberApprovalLabel: UILabel!
     @IBOutlet weak var numberRejectLabel: UILabel!
@@ -41,7 +41,8 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var selfieImageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var challengeView: UIView!
     @IBOutlet weak var viewAllCommentsButton: UIButton!    
-    @IBOutlet weak var viewAllCommentsButtonHeightConstraints: NSLayoutConstraint!
+    @IBOutlet weak var viewAllCommentsButtonHeightConstraints: NSLayoutConstraint!    
+    @IBOutlet weak var challengeDifficultyView: UIImageView!
     
     var original_footerViewBottomConstraints: CGFloat = 0.0
     var selfie: Selfie!
@@ -136,15 +137,27 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.usernameLabel.addGestureRecognizer(usernametapGesture)
         self.usernameLabel.userInteractionEnabled = true
         
-        // Selfie Level
-        self.levelLabel.text = selfie.user.book_level
+        // Level Image
+        let bookImageURL:NSURL = NSURL(string: selfie.user.show_book_image())!
+        self.levelImageView.hnk_setImageFromURL(bookImageURL)
         
         // Challenge        
         self.challengeLabel.text = selfie.challenge.description
         self.challengeLabel.textColor = MP_HEX_RGB("FFFFFF")
+        
         // Test Daily Challenge
         if self.selfie.is_daily == true {
-            self.challengeLabel.text = NSLocalizedString("daily", comment: "Daily") + " - " + self.challengeLabel.text!
+            self.challengeDifficultyView.image = UIImage(named: "challenge_daily_small")
+        } else {
+            // Challenge Difficulty
+            switch self.selfie.challenge.difficulty {
+            case 1: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_one_small")
+            case 2: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_two_small")
+            case 3: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_three_small")
+            case 4: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_four_small")
+            case 5: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_five_small")
+            default : self.challengeDifficultyView.image = nil
+            }
         }
         
         // Selfie Creation Date

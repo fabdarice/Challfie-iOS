@@ -793,6 +793,9 @@
                                     <color key="titleColor" red="0.40000000596046448" green="0.80000001192092896" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="skipTutorialAction:" destination="Rxy-mL-wue" eventType="touchUpInside" id="BHR-bc-cQw"/>
                                 </connections>
@@ -915,6 +918,9 @@
                                     <color key="titleColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="skipTestButton:" destination="JCw-df-Cyv" eventType="touchUpInside" id="ilP-Df-HdM"/>
                                 </connections>
@@ -1941,9 +1947,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="K7W-fj-IXG"/>
-        <segue reference="vKq-tW-1Cc"/>
         <segue reference="E3c-vE-c8t"/>
-        <segue reference="df4-yw-1Nm"/>
+        <segue reference="vKq-tW-1Cc"/>
+        <segue reference="DP1-Dv-bZh"/>
+        <segue reference="K7W-fj-IXG"/>
     </inferredMetricsTieBreakers>
 </document>

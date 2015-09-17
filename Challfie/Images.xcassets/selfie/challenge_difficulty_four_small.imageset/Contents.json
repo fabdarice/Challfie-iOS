@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "book_lock.png"
+      "filename" : "challenge_difficulty_four_small.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "book_lock@2x.png"
+      "filename" : "challenge_difficulty_four_small@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "book_lock@3x.png"
+      "filename" : "challenge_difficulty_four_small@3x.png"
     }
   ],
   "info" : {

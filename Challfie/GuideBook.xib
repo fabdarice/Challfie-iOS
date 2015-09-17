@@ -47,6 +47,9 @@
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iYi-2T-MJw" userLabel="nextPageAction">
                     <rect key="frame" x="35" y="508" width="250" height="40"/>
@@ -92,7 +95,7 @@
                                 <constraint firstAttribute="centerY" secondItem="eLc-CL-0Xx" secondAttribute="centerY" id="wig-pg-2xV"/>
                             </constraints>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="book_lock" translatesAutoresizingMaskIntoConstraints="NO" id="7FQ-C5-4DE" userLabel="lockImageView">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="level_lock" translatesAutoresizingMaskIntoConstraints="NO" id="7FQ-C5-4DE" userLabel="lockImageView">
                             <rect key="frame" x="185" y="5" width="115" height="190"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newbie III" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2EH-FI-Sr3" userLabel="firstBookLabel">
@@ -181,8 +184,8 @@
     <resources>
         <image name="apprentice_level_one_cover" width="157" height="160"/>
         <image name="arrow_icon" width="133" height="84"/>
-        <image name="book_lock" width="192" height="219"/>
         <image name="challfie_general_background" width="400" height="700"/>
+        <image name="level_lock" width="170" height="170"/>
         <image name="newbie_level_three_cover" width="157" height="160"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

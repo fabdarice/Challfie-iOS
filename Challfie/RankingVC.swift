@@ -80,6 +80,10 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.currentUserView.layer.borderWidth = 1.0
         self.currentUserView.layer.borderColor = MP_HEX_RGB("000000").CGColor
 
+        // Hide on swipe & keboard Appears
+        self.navigationController?.hidesBarsOnSwipe = false
+
+        
         self.loadData(false)
     }
     

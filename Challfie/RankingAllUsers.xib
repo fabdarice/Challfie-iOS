@@ -190,11 +190,10 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="centerY" secondItem="ZH1-Gk-Bnv" secondAttribute="centerY" id="0TJ-7t-AAq"/>
                         <constraint firstAttribute="height" constant="44" id="0ca-uP-qpf"/>
-                        <constraint firstItem="ZH1-Gk-Bnv" firstAttribute="top" secondItem="OUQ-Fs-yxw" secondAttribute="top" constant="2" id="CEA-4l-MKP"/>
                         <constraint firstAttribute="centerY" secondItem="qtA-JV-hSk" secondAttribute="centerY" id="JA9-vy-zUb"/>
                         <constraint firstAttribute="centerY" secondItem="rLO-AR-XVW" secondAttribute="centerY" id="PNu-jo-LaU"/>
-                        <constraint firstAttribute="bottom" secondItem="ZH1-Gk-Bnv" secondAttribute="bottom" constant="2" id="Sze-t0-XBU"/>
                         <constraint firstItem="ZH1-Gk-Bnv" firstAttribute="leading" secondItem="Wel-8V-Vyp" secondAttribute="trailing" constant="5" id="Yno-mO-Mg4"/>
                         <constraint firstItem="oAG-aJ-vBx" firstAttribute="leading" secondItem="ZH1-Gk-Bnv" secondAttribute="trailing" constant="10" id="dxw-6I-7hc"/>
                         <constraint firstAttribute="centerY" secondItem="oAG-aJ-vBx" secondAttribute="centerY" id="eZJ-T9-Q26"/>

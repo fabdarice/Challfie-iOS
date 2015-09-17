@@ -66,7 +66,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bqw-M2-8F5" userLabel="lockerImage">
-                                            <rect key="frame" x="10" y="19.5" width="60" height="110"/>
+                                            <rect key="frame" x="15" y="19.5" width="60" height="110"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="110" id="M3b-67-tE2"/>
                                                 <constraint firstAttribute="width" constant="60" id="hoJ-Ni-csh"/>
@@ -76,7 +76,7 @@
                                     <constraints>
                                         <constraint firstItem="Ypz-Wo-Ufa" firstAttribute="top" secondItem="Ovk-F8-lLv" secondAttribute="top" constant="40" id="AL9-mW-HrU"/>
                                         <constraint firstAttribute="centerY" secondItem="bqw-M2-8F5" secondAttribute="centerY" id="BsL-Ac-Eyq"/>
-                                        <constraint firstItem="bqw-M2-8F5" firstAttribute="leading" secondItem="Ovk-F8-lLv" secondAttribute="leading" constant="10" id="CkD-jh-Hbz"/>
+                                        <constraint firstItem="bqw-M2-8F5" firstAttribute="leading" secondItem="Ovk-F8-lLv" secondAttribute="leading" constant="15" id="CkD-jh-Hbz"/>
                                         <constraint firstItem="9gN-uU-G3K" firstAttribute="width" secondItem="bqw-M2-8F5" secondAttribute="width" constant="60" id="FUV-rc-MOz"/>
                                         <constraint firstAttribute="trailing" secondItem="FaN-f8-4wu" secondAttribute="trailing" id="KCx-rk-RkM"/>
                                         <constraint firstItem="FaN-f8-4wu" firstAttribute="top" secondItem="Ypz-Wo-Ufa" secondAttribute="bottom" constant="7.5" id="M2s-6T-ATb"/>

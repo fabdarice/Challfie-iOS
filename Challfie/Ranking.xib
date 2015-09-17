@@ -111,7 +111,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBZ-bJ-BBx" userLabel="allUsersRankingButton">
                             <rect key="frame" x="160" y="0.0" width="145" height="45"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <state key="normal" title="All Users" backgroundImage="challenge_tab_right">
+                            <state key="normal" title="TOP 100" backgroundImage="challenge_tab_right">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -192,13 +192,12 @@
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="87g-FJ-8Xv" secondAttribute="centerY" id="IJ2-Kl-c72"/>
                         <constraint firstAttribute="height" constant="44" id="LeJ-ml-892"/>
+                        <constraint firstAttribute="centerY" secondItem="FMN-h1-3AI" secondAttribute="centerY" id="Lm0-SV-tjT"/>
                         <constraint firstItem="nUG-kh-JP7" firstAttribute="leading" secondItem="FMN-h1-3AI" secondAttribute="trailing" constant="10" id="RHH-Zj-dsN"/>
-                        <constraint firstItem="FMN-h1-3AI" firstAttribute="top" secondItem="TQh-AY-QXj" secondAttribute="top" constant="2" id="Znd-iP-Zcs"/>
                         <constraint firstAttribute="centerY" secondItem="tcr-bx-OP3" secondAttribute="centerY" id="bx0-QF-hk0"/>
                         <constraint firstAttribute="centerY" secondItem="VRB-a6-vvF" secondAttribute="centerY" id="c5u-Bc-1i0"/>
                         <constraint firstItem="87g-FJ-8Xv" firstAttribute="leading" secondItem="TQh-AY-QXj" secondAttribute="leading" constant="5" id="csw-KV-CpF"/>
                         <constraint firstAttribute="centerY" secondItem="nUG-kh-JP7" secondAttribute="centerY" id="gEm-lG-UIX"/>
-                        <constraint firstAttribute="bottom" secondItem="FMN-h1-3AI" secondAttribute="bottom" constant="2" id="hJO-I6-1vO"/>
                         <constraint firstItem="VRB-a6-vvF" firstAttribute="leading" secondItem="tcr-bx-OP3" secondAttribute="trailing" constant="10" id="mR1-yZ-zpa"/>
                         <constraint firstAttribute="trailing" secondItem="VRB-a6-vvF" secondAttribute="trailing" id="my5-sI-oh0"/>
                         <constraint firstItem="tcr-bx-OP3" firstAttribute="leading" secondItem="nUG-kh-JP7" secondAttribute="trailing" constant="10" id="mzp-gj-Umi"/>

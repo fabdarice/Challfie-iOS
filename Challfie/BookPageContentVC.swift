@@ -53,7 +53,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
             //self.bookImage.image = book_image
             // Book is not unlocked yet
             if self.book.is_unlocked == false {
-                if let image = UIImage(named: "book_lock") {
+                if let image = UIImage(named: "level_lock") {
                     self.bookImage.image = self.convertToGrayscale(book_image)
                     self.lockerImage.image = self.convertToGrayscale(image)
                 }

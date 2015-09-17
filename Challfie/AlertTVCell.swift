@@ -82,7 +82,6 @@ class AlertTVCell : UITableViewCell {
         }
         
         // load book or selfie image
-        self.rightImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if alert.book_img != "" {
             self.rightImageView.hidden = false
             let bookImageURL:NSURL = NSURL(string: alert.book_img)!

@@ -50,7 +50,10 @@ only_alphanumeric = "* uniquement des caractères alphanumérique autorisés";
 
 // Review Popup
 review_message = "Si tu apprécies le concept de Challfie, cela nous aiderait énormément si tu pouvais prendre le temps de l'évaluer sur l'appstore. Cela ne prendra pas plus d'une minute. Merci pour ton soutien !";
-
+review_title = "Evalue Challfie";
+no_thanks = "Non, Merci";
+rate = "Evalue Challfie";
+remind_me_later = "Me le rappeler plus tard";
 
 // Popcup
 Close = "Fermer";
@@ -119,8 +122,8 @@ profil_blocked = "Ton compte a été bloqué par un administrateur. Merci de nou
 
 // Challenge Page
 book_of_challenges = "Challenges";
-book_is_locked = "Débloque ce livre en ayant tes Challfies approuvés par tes amis.";
-book_locked = "Livre bloqué";
+book_is_locked = "Débloque ce niveau en ayant tes Challfies approuvés par tes amis.";
+book_locked = "Niveau bloqué";
 difficulty = "Difficulté";
 next_level = "Prochain niveau";
 current_level = "Niveau actuel";

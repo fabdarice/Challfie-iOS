@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/OneSelfieVC.swift"
-            timestampString = "463907606.070502"
+            timestampString = "464048051.522114"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "610"
-            endingLineNumber = "610"
+            startingLineNumber = "623"
+            endingLineNumber = "623"
             landmarkName = "commentSendButton(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -279,11 +279,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/AppDelegate.swift"
-            timestampString = "463907741.44086"
+            timestampString = "463985071.908283"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
             landmarkName = "initialize()"
             landmarkType = "5">
          </BreakpointContent>

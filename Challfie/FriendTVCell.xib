@@ -68,7 +68,7 @@
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3b9-z5-EAN" userLabel="levelImageView">
-                        <rect key="frame" x="127.5" y="5" width="25" height="23"/>
+                        <rect key="frame" x="127" y="5" width="25" height="23"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="23" id="FaX-64-Pjk"/>
                             <constraint firstAttribute="width" constant="25" id="Kcz-Jf-duq"/>
@@ -76,15 +76,19 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="centerY" secondItem="0ev-Vb-nvf" secondAttribute="centerY" id="E5X-vT-aSa"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="9" id="Ex2-3e-SpP"/>
                     <constraint firstAttribute="centerY" secondItem="SyE-th-V2e" secondAttribute="centerY" id="GBh-Kk-glo"/>
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="leading" secondItem="0ev-Vb-nvf" secondAttribute="trailing" constant="10" id="I0K-2R-VCS"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="JUd-I3-zRI"/>
                     <constraint firstAttribute="trailingMargin" secondItem="SyE-th-V2e" secondAttribute="trailing" constant="10" id="PNa-Ch-quD"/>
                     <constraint firstItem="3b9-z5-EAN" firstAttribute="leading" secondItem="Gg3-5A-O2D" secondAttribute="trailing" constant="5" id="Pxa-eA-QCa"/>
+                    <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="RHP-ej-Nws"/>
                     <constraint firstAttribute="bottom" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="ScR-kq-Ecg"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0ev-Vb-nvf" secondAttribute="bottom" constant="10" id="Tbq-Fr-1Wq"/>
                     <constraint firstItem="3b9-z5-EAN" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="5" id="dIN-C8-EGl"/>
                     <constraint firstItem="x4I-ND-leN" firstAttribute="top" secondItem="Gg3-5A-O2D" secondAttribute="bottom" constant="2" id="dIs-4Q-DKg"/>
+                    <constraint firstAttribute="bottom" secondItem="x4I-ND-leN" secondAttribute="bottom" constant="15" id="f5f-kK-cvK"/>
                     <constraint firstItem="SyE-th-V2e" firstAttribute="trailing" secondItem="kcE-gZ-leJ" secondAttribute="trailingMargin" constant="10" id="k3L-34-9ng"/>
                     <constraint firstItem="Gg3-5A-O2D" firstAttribute="top" secondItem="kcE-gZ-leJ" secondAttribute="top" constant="12" id="m69-J6-tid"/>
                     <constraint firstItem="0ev-Vb-nvf" firstAttribute="leading" secondItem="kcE-gZ-leJ" secondAttribute="leadingMargin" id="mYV-jl-JuX"/>
@@ -93,8 +97,12 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="Ex2-3e-SpP"/>
                         <exclude reference="JUd-I3-zRI"/>
+                        <exclude reference="RHP-ej-Nws"/>
+                        <exclude reference="ScR-kq-Ecg"/>
                         <exclude reference="Tbq-Fr-1Wq"/>
+                        <exclude reference="nck-Jz-nzE"/>
                         <exclude reference="k3L-34-9ng"/>
                     </mask>
                 </variation>

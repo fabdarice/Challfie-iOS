@@ -24,7 +24,7 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>6094D9F4198D56F78EB1B455EC894F8A44DC0039</key>
-		<string>../Armchair/</string>
+		<string>../Armchair</string>
 		<key>67620B5EFA902936DF04070AF595B76AB0333747</key>
 		<string>../Alamofire</string>
 		<key>84513E01561C3EBBC9AB14197877780677F36458</key>

@@ -223,8 +223,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Armchair.appID("974913351")
         Armchair.significantEventsUntilPrompt(10)
         Armchair.reviewMessage(NSLocalizedString("review_message", comment: "Review Message"))
+        Armchair.reviewTitle(NSLocalizedString("review_title", comment: "Evalue Challfie"))
+        Armchair.cancelButtonTitle(NSLocalizedString("no_thanks", comment: "No, Thanks"))
+        Armchair.rateButtonTitle(NSLocalizedString("rate", comment: "Rate Challfie"))
+        Armchair.remindButtonTitle(NSLocalizedString("remind_me_later", comment: "Remind me later"))
         Armchair.shouldPromptIfRated(true)
-        Armchair.daysUntilPrompt(20)
+        Armchair.daysUntilPrompt(10)
         Armchair.usesUntilPrompt(20)
     }
     

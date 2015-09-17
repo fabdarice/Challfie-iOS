@@ -21,10 +21,10 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRg-du-Qra">
-                        <rect key="frame" x="63" y="10" width="194" height="44.5"/>
+                        <rect key="frame" x="63" y="10" width="199" height="44.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzi-SX-KIL" userLabel="messageView">
-                                <rect key="frame" x="0.0" y="6" width="185" height="31.5"/>
+                                <rect key="frame" x="0.0" y="6" width="190" height="31.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Us" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ScU-J5-l8g" userLabel="usernameLabel">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="15.5"/>
@@ -36,7 +36,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="PCI-BI-6GJ" userLabel="messageLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="185" height="15.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="190" height="15.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -78,20 +78,20 @@
                             <constraint firstItem="Qzi-SX-KIL" firstAttribute="leading" secondItem="cRg-du-Qra" secondAttribute="leading" id="oIJ-73-nWW"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="H8N-Hd-1dC" userLabel="rightImageView">
-                        <rect key="frame" x="265" y="10" width="45" height="44.5"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="H8N-Hd-1dC" userLabel="rightImageView">
+                        <rect key="frame" x="270" y="13" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="45" id="BLn-pM-mAR"/>
-                            <constraint firstAttribute="height" constant="45" id="F4s-Xw-kts"/>
+                            <constraint firstAttribute="width" constant="40" id="BLn-pM-mAR"/>
+                            <constraint firstAttribute="height" constant="40" id="F4s-Xw-kts"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="er9-ks-EMM" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="1uf-Na-z6o"/>
+                    <constraint firstItem="cRg-du-Qra" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="9bZ-vA-YgT"/>
+                    <constraint firstAttribute="centerY" secondItem="cRg-du-Qra" secondAttribute="centerY" id="E80-R1-EjH"/>
                     <constraint firstAttribute="trailing" secondItem="H8N-Hd-1dC" secondAttribute="trailing" constant="10" id="JeI-oi-Hh3"/>
-                    <constraint firstItem="cRg-du-Qra" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="LfK-Em-Fyk"/>
-                    <constraint firstItem="H8N-Hd-1dC" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="10" id="Mdq-qv-xHm"/>
-                    <constraint firstAttribute="bottom" secondItem="cRg-du-Qra" secondAttribute="bottom" constant="10" id="RMM-LM-dSp"/>
+                    <constraint firstItem="H8N-Hd-1dC" firstAttribute="top" secondItem="Grx-8U-eYS" secondAttribute="top" constant="13" id="Mdq-qv-xHm"/>
                     <constraint firstItem="cRg-du-Qra" firstAttribute="leading" secondItem="er9-ks-EMM" secondAttribute="trailing" constant="8" id="UVf-MC-aNk"/>
                     <constraint firstItem="er9-ks-EMM" firstAttribute="leading" secondItem="Grx-8U-eYS" secondAttribute="leading" constant="10" id="VXs-Ra-BWl"/>
                     <constraint firstItem="H8N-Hd-1dC" firstAttribute="leading" secondItem="cRg-du-Qra" secondAttribute="trailing" constant="8" id="aOf-4c-Jyj"/>

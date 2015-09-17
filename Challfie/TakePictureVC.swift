@@ -223,7 +223,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                 } else {
                     //Convert to SwiftJSON
                     var json = JSON(mydata!)
-                    
+                                    
                     // Check if account is linked with Facebook
                     self.isFacebookLinked = json["meta"]["isFacebookLinked"].boolValue
 

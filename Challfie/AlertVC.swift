@@ -352,7 +352,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {        
         if self.loadingIndicator.isAnimating() == false {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height * 0.50)) {
+            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
                 // Add Loading Indicator to footerView
                 self.tableView.tableFooterView = self.loadingIndicator
                 
@@ -378,7 +378,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             oneSelfieVC.selfie = selfie
             
             // Hide TabBar when push to OneSelfie View
-            //self.hidesBottomBarWhenPushed = true
+            self.hidesBottomBarWhenPushed = true
             
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Alert_tab", comment: "Alert"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             self.navigationController?.pushViewController(oneSelfieVC, animated: true)

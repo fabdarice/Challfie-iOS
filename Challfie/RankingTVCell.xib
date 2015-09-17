@@ -77,13 +77,16 @@
                     <constraint firstItem="CW9-Qd-5ao" firstAttribute="top" secondItem="Zo2-He-BM3" secondAttribute="top" constant="2" id="U31-fu-nm7"/>
                     <constraint firstItem="HVo-eO-uuO" firstAttribute="leading" secondItem="p86-H2-cPa" secondAttribute="trailing" constant="10" id="Vdd-PA-QgJ"/>
                     <constraint firstAttribute="centerY" secondItem="p86-H2-cPa" secondAttribute="centerY" id="W5e-9q-eLw"/>
+                    <constraint firstAttribute="centerY" secondItem="CW9-Qd-5ao" secondAttribute="centerY" id="Xqc-1A-k9Y"/>
                     <constraint firstAttribute="centerY" secondItem="HVo-eO-uuO" secondAttribute="centerY" id="iC4-eM-McT"/>
                     <constraint firstItem="m2R-B1-PtU" firstAttribute="leading" secondItem="CW9-Qd-5ao" secondAttribute="trailing" constant="10" id="mS6-Kw-ZxS"/>
                     <constraint firstItem="CW9-Qd-5ao" firstAttribute="leading" secondItem="4hl-NN-WjU" secondAttribute="trailing" constant="5" id="rN6-H3-MDt"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="Ggr-HC-86U"/>
                         <exclude reference="Mkl-RK-XfF"/>
+                        <exclude reference="U31-fu-nm7"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>

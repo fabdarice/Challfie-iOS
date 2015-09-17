@@ -49,6 +49,10 @@ only_alphanumeric = "* must contain only alphanumeric characters";
 
 // Review Popup
 review_message = "If you enjoy using Challfie, it would help us immensely if you take a moment to rate it. It won't take more than a minute. Thank you so much for your support!";
+review_title = "Rate Challfie";
+no_thanks = "No, Thanks";
+rate = "Rate Challfie";
+remind_me_later = "Remind me later";
 
 // Popcup
 Close = "Close";
@@ -118,8 +122,8 @@ profil_blocked = "Your account have been blocked by an administrator. Please con
 
 // Challenge Page
 book_of_challenges = "Challenges";
-book_is_locked = "Unlock this book by getting your Challfies approved by your friends.";
-book_locked = "Book locked";
+book_is_locked = "Unlock this level by getting your Challfies approved by your friends.";
+book_locked = "Level locked";
 difficulty = "Difficulty";
 next_level = "Next Level";
 current_level = "Current level";
