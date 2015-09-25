@@ -1,11 +1,13 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
-pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'master'
+pod 'Alamofire', '~> 2.0'
 
-pod 'SwiftyJSON', '~> 2.2.1'
+pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
 pod 'FBSDKCoreKit'
 pod 'FBSDKLoginKit'
 pod 'FBSDKShareKit'
-pod 'KeychainAccess'
-pod 'HanekeSwift'
+pod 'Siren'
+pod 'KeychainAccess', :git => 'https://github.com/kishikawakatsumi/KeychainAccess.git', :branch => 'swift-2.0'
+pod 'HanekeSwift', :git => 'https://github.com/meteochu/HanekeSwift.git', :branch => 'swift-2.0'
+pod 'Google/Analytics', '~> 1.0.0'

@@ -4,4 +4,5 @@
 
 #import "MPColorTools.h"
 #import "GKImagePicker.h"
+#import <Google/Analytics.h>
 

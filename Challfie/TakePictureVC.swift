@@ -58,7 +58,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         self.navigationItem.leftBarButtonItem = backItem
         self.navigationItem.rightBarButtonItem = doneItem
         
-        var navigationTitle : UILabel = UILabel(frame: CGRectMake(0.0, 0.0, 100.0, 40.0))
+        let navigationTitle : UILabel = UILabel(frame: CGRectMake(0.0, 0.0, 100.0, 40.0))
         navigationTitle.font = UIFont(name: "HelveticaNeue", size: 16.0)
         navigationTitle.text = NSLocalizedString("post_a_challfie", comment: "Post a Challfie")
         navigationTitle.textColor = UIColor.whiteColor()
@@ -98,19 +98,23 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         
         // set searchBar textfield backgroun to white
         self.searchBar.searchBarStyle = UISearchBarStyle.Minimal
-        self.searchBar.setSearchFieldBackgroundImage(UIImage(named: "searchBarTextFieldBackground"), forState: UIControlState.Normal)
         self.searchBar.backgroundColor = MP_HEX_RGB("A7C7D1")
         self.searchBar.layer.borderColor = MP_HEX_RGB("C4C4C4").CGColor
         self.searchBar.layer.borderWidth = 1.0
-        self.searchBar.placeholder = NSLocalizedString("search_a_challenge", comment: "Search a Challenge")
+        if let searchTextField = self.searchBar.valueForKey("searchField") as? UITextField {
+            searchTextField.textColor = MP_HEX_RGB("FFFFFF")
+            searchTextField.contentMode = UIViewContentMode.ScaleToFill
+            let attributeDict = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+            searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("search_a_challenge", comment: "Search a Challenge"), attributes: attributeDict)
+        }
         
-        var tapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
         tapGesture.addTarget(self, action: "dismissKeyboard")
         self.view.addGestureRecognizer(tapGesture)
         self.view.userInteractionEnabled = true
         
         // HiddenView to cover the UITableView to dismissKeyboard when tapgesture because tapgesture doesn't work on UITableView
-        var tapGesture2 : UITapGestureRecognizer = UITapGestureRecognizer()
+        let tapGesture2 : UITapGestureRecognizer = UITapGestureRecognizer()
         tapGesture2.addTarget(self, action: "dismissKeyboard")
         self.hiddenView.addGestureRecognizer(tapGesture)
         self.hiddenView.userInteractionEnabled = true
@@ -118,7 +122,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "ChallengeTVCell", bundle: nil)
+        let nib = UINib(nibName: "ChallengeTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "ChallengeCell")
         
         // Remove tableview Inset Separator
@@ -140,9 +144,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         // Add constraints to force vertical scrolling of UIScrollView
         // Basically set the leading and trailing of contentView to the View's one (instead of the scrollView)
         // Can't be done in the Interface Builder (.xib)
-        var leftConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
         self.view.addConstraint(leftConstraint)
-        var rightConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0)
         self.view.addConstraint(rightConstraint)
         
         // set delegate
@@ -160,6 +164,13 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "TakeSelfie Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
         // Add Notification for when the Keyboard pop up  and when it is dismissed
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name:UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name:UIKeyboardDidHideNotification, object: nil)
@@ -203,7 +214,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     // load list of all challenges
     func loadData() {
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -215,25 +226,26 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         self.activityIndicator.startAnimating()
         
         
-        request(.POST, ApiLink.challenges_list, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
+        Alamofire.request(.POST, ApiLink.challenges_list, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                     self.activityIndicator.stopAnimating()
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
                                     
                     // Check if account is linked with Facebook
                     self.isFacebookLinked = json["meta"]["isFacebookLinked"].boolValue
 
                     if json["challenges"].count != 0 {
                         for var i:Int = 0; i < json["challenges"].count; i++ {
-                            var book = Book.init(json: json["challenges"][i])
+                            let book = Book.init(json: json["challenges"][i])
                             if json["challenges"][i]["challenges"].count != 0 {
                                 var challenge_array_tmp: [Challenge] = []
                                 for var j:Int = 0; j < json["challenges"][i]["challenges"].count; j++ {
-                                    var challenge = Challenge.init(json: json["challenges"][i]["challenges"][j])
+                                    let challenge = Challenge.init(json: json["challenges"][i]["challenges"][j])
                                     book.challenges_array.append(challenge)
                                     challenge_array_tmp.append(challenge)
                                 }
@@ -275,7 +287,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     func addFacebookLink() {
         if self.shareFacebookSwitch.on == true {
             if self.isFacebookLinked == false {
-                var fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+                let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
                 fbLoginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], handler: { (result, error) -> Void in
                     if (error != nil) {
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -310,7 +322,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                 }
                             }
                             if publish_actions_permission_granted == false {
-                                var fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+                                let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
                                 fbLoginManager.logInWithPublishPermissions(["publish_actions"], handler: { (result, error) -> Void in
                                     if (error != nil) {
                                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -338,22 +350,15 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             } else {
                 let fbAccessToken = FBSDKAccessToken.currentAccessToken().tokenString
                 let fbTokenExpiresAt = FBSDKAccessToken.currentAccessToken().expirationDate.timeIntervalSince1970
-                var user_id = result.valueForKey("id") as! String
+                let user_id = result.valueForKey("id") as! String
                 let userProfileImage = "http://graph.facebook.com/\(user_id)/picture?type=large"
-                var email = ""
                 var facebook_locale: String = "en_US"
-                
-                if result.valueForKey("email") == nil {
-                    email = user_id + "@facebook.com"
-                } else {
-                    email = result.valueForKey("email") as! String
-                }
                 
                 if result.valueForKey("locale") != nil {
                     facebook_locale = result.valueForKey("locale") as! String
                 }
                 
-                var keychain = Keychain(service: "challfie.app.service")
+                let keychain = Keychain(service: "challfie.app.service")
                 let login = keychain["login"]!
                 let auth_token = keychain["auth_token"]!
                 
@@ -365,16 +370,18 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                     "lastname": result.valueForKey("last_name") as! String ,
                     "fbtoken": fbAccessToken,
                     "fbtoken_expires_at": fbTokenExpiresAt,
-                    "fb_locale": facebook_locale
+                    "fb_locale": facebook_locale,
+                    "facebook_picture": userProfileImage
                 ]
                 
-                request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
-                    .responseJSON { (_, _, mydata, _) in
-                        if (mydata == nil) {
+                Alamofire.request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
+                    .responseJSON { _, _, result in
+                        switch result {
+                        case .Failure(_, _):
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                        } else {
+                        case .Success(let mydata):
                             //convert to SwiftJSON
-                            let json = JSON(mydata!)
+                            let json = JSON(mydata)
                             if (json["success"].intValue == 0) {
                                 // ERROR RESPONSE FROM HTTP Request
                                 GlobalFunctions().displayAlert(title: "Facebook Authentication", message: json["message"].stringValue, controller: self)
@@ -398,30 +405,26 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     // Add selfie
     func createSelfie() {
-
-        // Check if Selfie Image Exists or not
-        if let cameraImage = self.cameraView.image {
-            // Image Exists
-        } else {
+        guard let _ = self.cameraView.image else {
             // Image Not Selected
-            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("create_selfie_missing_image", comment: "Please select a picture."), preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("create_selfie_missing_image", comment: "Please select a picture."), preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
             return ;
         }
-        
+
         // Check if a Challenge has been selected
-        let path = self.tableView.indexPathForSelectedRow()
+        let path = self.tableView.indexPathForSelectedRow
         if (path == nil) {
-            var alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("create_selfie_missing_challenge", comment: "Please select a picture."), preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("create_selfie_missing_challenge", comment: "Please select a picture."), preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
             return ;
         }
         
         // Retrieve selected challenge
-        let selectedIndexPath: NSIndexPath = self.tableView.indexPathForSelectedRow()!
-        var selected_challenge: Challenge = self.books_array[selectedIndexPath.section].challenges_array[selectedIndexPath.row]
+        let selectedIndexPath: NSIndexPath = self.tableView.indexPathForSelectedRow!
+        let selected_challenge: Challenge = self.books_array[selectedIndexPath.section].challenges_array[selectedIndexPath.row]
         
         let imageData = UIImageJPEGRepresentation(self.imageToSave, 0.9)
 
@@ -444,7 +447,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             message = self.messageTextView.text
         }
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -478,7 +481,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                 timelineVC.progressView.progress = 0.1
             }
             
-            Alamofire.upload(Method.POST, URLString: ApiLink.create_selfie,
+            Alamofire.upload(Method.POST, ApiLink.create_selfie,
                 multipartFormData: { multipartFormData in
                     multipartFormData.appendBodyPart(data: parameters["login"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "login")
                     multipartFormData.appendBodyPart(data: parameters["auth_token"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "auth_token")
@@ -486,17 +489,18 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                     multipartFormData.appendBodyPart(data: parameters["message"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "message")
                     multipartFormData.appendBodyPart(data: parameters["is_private"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_private")
                     multipartFormData.appendBodyPart(data: parameters["is_shared_fb"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_shared_fb")
-                    multipartFormData.appendBodyPart(data: imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpg", mimeType: "image/jpeg")
+                    multipartFormData.appendBodyPart(data: imageData!, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpg", mimeType: "image/jpeg")
                 },
                 encodingCompletion: { encodingResult in
                     switch encodingResult {
                     case .Success(let upload, _, _):
-                        upload.responseJSON { request, response, data, error in
-                            if error != nil {
+                        upload.responseJSON { request, response, result in
+                            switch result {
+                            case .Failure(_, _):
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                            } else {
+                            case .Success(let data):
                                 //convert to SwiftJSON
-                                let json = JSON(data!)
+                                let json = JSON(data)
 
                                 // Check success response
                                 if (json["success"].intValue == 1) {
@@ -516,7 +520,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                         }, completion: { (finished: Bool) -> Void in
                                             if timelineVC.view != nil {
                                                 timelineVC.tableViewTopConstraint.constant = 0.0
-                                                timelineVC.refresh(actionFromInit: false)
+                                                timelineVC.refresh(false)
                                                 // Tells Armchair that this is a significant Event
                                                 Armchair.userDidSignificantEvent(true)
                                             }
@@ -530,7 +534,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                 }
                             }
                         }
-                    case .Failure(let encodingError):
+                    case .Failure( _):
                         if timelineVC.view != nil {
                             timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
                             timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
@@ -544,6 +548,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                         if timelineVC.view != nil {
                 timelineVC.disableBackgroundRefresh = true
             }
+            timelineVC.navigationController?.navigationBarHidden = false
             self.tabBarController?.selectedIndex = 0
         }
         
@@ -558,7 +563,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
 
     // MARK: - UISearchBarDelegate, UISearchDisplayDelegate
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text.isEmpty {
+        if searchBar.text!.isEmpty {
             for var i = 0; i < self.books_array.count; i++ {
                 self.books_array[i].challenges_array = self.challenges_array[i]
             }
@@ -567,7 +572,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                 self.books_array[i].challenges_array.removeAll(keepCapacity: false)
                 for var j = 0; j < self.challenges_array[i].count; j++
                 {
-                    var currentString = self.challenges_array[i][j].description as String
+                    let currentString = self.challenges_array[i][j].description as String
                     if currentString.lowercaseString.rangeOfString(searchText.lowercaseString) != nil {
                         self.books_array[i].challenges_array.append(self.challenges_array[i][j])
                     }
@@ -608,7 +613,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     // Dismiss Keyboard when Search Button has been clicked on
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.searchBar.resignFirstResponder()
-        if searchBar.text.isEmpty {
+        if searchBar.text!.isEmpty {
             for var i = 0; i < self.books_array.count; i++ {
                 self.books_array[i].challenges_array = self.challenges_array[i]
             }
@@ -617,8 +622,8 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                 self.books_array[i].challenges_array.removeAll(keepCapacity: false)
                 for var j = 0; j < self.challenges_array[i].count; j++
                 {
-                    var currentString = self.challenges_array[i][j].description as String
-                    if currentString.lowercaseString.rangeOfString(searchBar.text.lowercaseString) != nil {
+                    let currentString = self.challenges_array[i][j].description as String
+                    if currentString.lowercaseString.rangeOfString(searchBar.text!.lowercaseString) != nil {
                         self.books_array[i].challenges_array.append(self.challenges_array[i][j])
                     }
                 }
@@ -673,9 +678,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        var headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 20.0))
+        let headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 20.0))
         headerView.backgroundColor = MP_HEX_RGB("30768A")
-        var headerLabel = UILabel(frame: CGRectMake(15.0, 5.0, tableView.frame.width, 17.0))
+        let headerLabel = UILabel(frame: CGRectMake(15.0, 5.0, tableView.frame.width, 17.0))
         headerLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
         headerLabel.textColor = MP_HEX_RGB("FFFFFF")
         
@@ -687,9 +692,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //
-        var cell: ChallengeTVCell = tableView.dequeueReusableCellWithIdentifier("ChallengeCell") as! ChallengeTVCell
+        let cell: ChallengeTVCell = tableView.dequeueReusableCellWithIdentifier("ChallengeCell") as! ChallengeTVCell
         
-        var challenge: Challenge = self.books_array[indexPath.section].challenges_array[indexPath.row]
+        let challenge: Challenge = self.books_array[indexPath.section].challenges_array[indexPath.row]
         cell.challenge = challenge
         cell.loadItemForTakePicture()
         
@@ -707,7 +712,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var selectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        let selectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         selectedCell.contentView.backgroundColor = MP_HEX_RGB("FAE0B1")
     }
     
@@ -733,7 +738,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     }
     
     // UITextFieldDelegate Delegate
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // hide keyboard when tap outside the textfield
         self.view.endEditing(true)
     }

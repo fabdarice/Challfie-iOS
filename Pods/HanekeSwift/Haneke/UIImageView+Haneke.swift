@@ -12,7 +12,7 @@ public extension UIImageView {
     
     public var hnk_format : Format<UIImage> {
         let viewSize = self.bounds.size
-            assert(viewSize.width > 0 && viewSize.height > 0, "[\(reflect(self).summary) \(__FUNCTION__)]: UImageView size is zero. Set its frame, call sizeToFit or force layout first.")
+            assert(viewSize.width > 0 && viewSize.height > 0, "[\(Mirror(reflecting: self).description) \(__FUNCTION__)]: UImageView size is zero. Set its frame, call sizeToFit or force layout first.")
             let scaleMode = self.hnk_scaleMode
             return HanekeGlobals.UIKit.formatWithSize(viewSize, scaleMode: scaleMode)
     }
@@ -37,19 +37,22 @@ public extension UIImageView {
         format : Format<UIImage>? = nil,
         failure fail : ((NSError?) -> ())? = nil,
         success succeed : ((UIImage) -> ())? = nil) {
-
-        self.image = placeholder // CUSTOM FAB
+        
+        //self.image = placeholder // CUSTOM FAB
         self.hnk_cancelSetImage()
         
         self.hnk_fetcher = fetcher
         
-            let didSetImage = self.hnk_fetchImageForFetcher(fetcher, format: format, failure: fail, success: succeed)
+        let didSetImage = self.hnk_fetchImageForFetcher(fetcher, format: format, failure: fail, success: succeed)
         
         if didSetImage { return }
      
-        /*if let placeholder = placeholder {
-            self.image = placeholder // CUSOTM FAB
-        }*/
+        // CUSTOM FAB DELETE
+
+        if let placeholder = placeholder {
+            self.image = placeholder
+        }
+
     }
     
     public func hnk_cancelSetImage() {
@@ -73,7 +76,7 @@ public extension UIImageView {
             if let fetcher = fetcher {
                 wrapper = ObjectWrapper(value: fetcher)
             }
-            objc_setAssociatedObject(self, &HanekeGlobals.UIKit.SetImageFetcherKey, wrapper, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &HanekeGlobals.UIKit.SetImageFetcherKey, wrapper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -132,7 +135,7 @@ public extension UIImageView {
     func hnk_shouldCancelForKey(key:String) -> Bool {
         if self.hnk_fetcher?.key == key { return false }
         
-        Log.debug("Cancelled set image for \(key.lastPathComponent)")
+        Log.debug("Cancelled set image for \((key as NSString).lastPathComponent)")
         return true
     }
     

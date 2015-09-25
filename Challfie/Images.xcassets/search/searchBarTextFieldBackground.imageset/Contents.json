@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "searchBarTextFieldBackground.png"
+      "filename" : "searchBarTextFieldBackground.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "searchBarTextFieldBackground@2x.png"
+      "filename" : "searchBarTextFieldBackground@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "searchBarTextFieldBackground@3x.png"
+      "filename" : "searchBarTextFieldBackground@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

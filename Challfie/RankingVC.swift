@@ -35,6 +35,8 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     var users_array : [User] = []
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     
+    var loadMoreData: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,7 +67,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.tableView.dataSource = self
 
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "RankingTVCell", bundle: nil)
+        let nib = UINib(nibName: "RankingTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "RankingCell")
         
         // Remove tableview Inset Separator
@@ -87,22 +89,32 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.loadData(false)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Ranking Friends Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
+    
     // MARK: - Load/Fetch Data
     func loadData(pagination: Bool) {
         if pagination == true {
             self.loadingIndicator.startAnimating()
         } else {
             // add loadingIndicator pop-up
-            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
             // -49 because of the height of the Tabbar ; -40 because of navigationController
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
             loadingActivityVC.view.frame = newframe
             
             self.view.addSubview(loadingActivityVC.view)
         }
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -112,8 +124,8 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
             "page": self.page.description
         ]
         
-        request(.POST, ApiLink.users_ranking, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, ApiLink.users_ranking, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if pagination == true {
                     self.loadingIndicator.stopAnimating()
@@ -122,14 +134,16 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                         loadingActivityView.removeFromSuperview()
                     }
                 }
-                if (mydata == nil) {
+                
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
 
                     // Set Current_user row
-                    var current_user = User.init(json: json["current_user"][0])
+                    let current_user = User.init(json: json["current_user"][0])
                     self.currentUserRankLabel.text = json["current_rank"].stringValue
                     // Username
                     self.currentUsernameLabel.text = current_user.username
@@ -169,11 +183,15 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
                    
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
-                            var user = User.init(json: json["users"][i])
+                            let user = User.init(json: json["users"][i])
                             self.users_array.append(user)
                         }
                         self.page += 1
+                        self.loadMoreData = true
+                    } else {
+                        self.loadMoreData = false
                     }
+                    
                     self.tableView.reloadData()                    
                 }
                 self.tableView.tableFooterView = nil
@@ -187,7 +205,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
  
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("RankingCell") as! RankingTVCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("RankingCell") as! RankingTVCell
         cell.user = self.users_array[indexPath.row]
         cell.index = indexPath
         cell.loadItem()
@@ -203,26 +221,25 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.updateConstraintsIfNeeded()
         cell.sizeToFit()
         
+        if self.loadingIndicator.isAnimating() == false {
+            if (indexPath.row == self.users_array.count - 1) && (self.loadMoreData == true) {
+                // Add Loading Indicator to footerView
+                self.tableView.tableFooterView = self.loadingIndicator
+                
+                // Retrieve more Data (pagination)
+                self.loadData(true)
+            }
+            
+        }
+        
         return cell
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.loadingIndicator.isAnimating() == false {
-            // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height * 0.66)) {
-                // Add Loading Indicator to footerView
-                self.tableView.tableFooterView = self.loadingIndicator
-                self.loadData(true)
-            }
-        }
-    }
-    
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : RankingTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! RankingTVCell
+        let cell : RankingTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! RankingTVCell
         
         // Push to ProfilVC of the selected Row
-        var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+        let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.user
         profilVC.hidesBottomBarWhenPushed = true
         
@@ -231,7 +248,10 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     @IBAction func allUsersRankAction(sender: AnyObject) {
-        var rankingAllusersVC = RankingAllUsersVC(nibName: "RankingAllUsers", bundle: nil)
+
+        let rankingAllusersVC = RankingAllUsersVC(nibName: "RankingAllUsers", bundle: nil)
+        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.navigationController?.pushViewController(rankingAllusersVC, animated: true)
     }
 

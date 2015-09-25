@@ -52,8 +52,20 @@ public extension UIDevice {
         
         let machine = systemInfo.machine
         var identifier = ""
-        let mirror = reflect(machine)
-        for i in 0..<reflect(machine).count {
+        let mirror = Mirror(reflecting: machine)
+        for c in mirror.children {
+            if c.value as! Int8 == 0 {
+                break
+            }
+            identifier.append(UnicodeScalar(UInt8(c.value as! Int8)))
+        }
+        if let readableIdentifier = deviceList[identifier] {
+            return readableIdentifier
+        }
+        return identifier
+        
+        /*
+        for var i: IntMax = 0; i < mirror.children.count ; i++ {
             if mirror[i].1.value as! Int8 == 0 {
                 break
             }
@@ -62,7 +74,7 @@ public extension UIDevice {
         if let readableIdentifier = deviceList[identifier] {
             return readableIdentifier
         }
-        return identifier
+        return identifier*/
     }
     
 }

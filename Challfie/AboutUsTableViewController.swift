@@ -33,7 +33,7 @@ class AboutUsTableViewController: UITableViewController {
         tableView.estimatedRowHeight = 50.0
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "ExtraPagesTVCell", bundle: nil)
+        let nib = UINib(nibName: "ExtraPagesTVCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "ExtraPagesCell")
         
         self.navigationItem.title = NSLocalizedString("about_us", comment: "About Us")
@@ -58,7 +58,7 @@ class AboutUsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("ExtraPagesCell") as! ExtraPagesTVCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("ExtraPagesCell") as! ExtraPagesTVCell
         
         cell.userInteractionEnabled = false
         cell.loadItem()

@@ -44,18 +44,34 @@ public extension UIViewController {
         sideMenuController()?.sideMenu?.showSideMenu()
     }
     
+    public func isSideMenuOpen () -> Bool {
+        let sieMenuOpen = self.sideMenuController()?.sideMenu?.isMenuOpen
+        return sieMenuOpen!
+    }
+    
+    /**
+    * You must call this method from viewDidLayoutSubviews in your content view controlers so it fixes size and position of the side menu when the screen
+    * rotates.
+    * A convenient way to do it might be creating a subclass of UIViewController that does precisely that and then subclassing your view controllers from it.
+    */
+    func fixSideMenuSize() {
+        if let navController = self.navigationController as? ENSideMenuNavigationController {
+            navController.sideMenu?.updateFrame()
+        }
+    }
+    
     public func sideMenuController () -> ENSideMenuProtocol? {
-        var iteration : UIViewController? = self
+        var iteration : UIViewController? = self.parentViewController
         if (iteration == nil) {
             return topMostController()
         }
-        do {
+        repeat {
             if (iteration is ENSideMenuProtocol) {
                 return iteration as? ENSideMenuProtocol
             } else if (iteration?.parentViewController != nil && iteration?.parentViewController != iteration) {
-                iteration = iteration!.parentViewController;
+                iteration = iteration!.parentViewController
             } else {
-                iteration = nil;
+                iteration = nil
             }
         } while (iteration != nil)
         
@@ -65,14 +81,14 @@ public extension UIViewController {
     internal func topMostController () -> ENSideMenuProtocol? {
         var topController : UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController
         while (topController?.presentedViewController is ENSideMenuProtocol) {
-            topController = topController?.presentedViewController;
+            topController = topController?.presentedViewController
         }
         
         return topController as? ENSideMenuProtocol
     }
 }
 
-public class ENSideMenu : NSObject {
+public class ENSideMenu : NSObject, UIGestureRecognizerDelegate {
     
     public var menuWidth : CGFloat = 160.0 {
         didSet {
@@ -82,14 +98,18 @@ public class ENSideMenu : NSObject {
     }
     private var menuPosition:ENSideMenuPosition = .Left
     public var bouncingEnabled :Bool = true
-    public var sideMenuContainerView =  UIView()
-    private var menuTableViewController : UITableViewController!
+    public var animationDuration = 0.4
+    private let sideMenuContainerView =  UIView()
+    private var menuViewController : UIViewController!
     private var animator : UIDynamicAnimator!
     private var sourceView : UIView!
     private var needUpdateApperance : Bool = false
     public weak var delegate : ENSideMenuDelegate?
-    private var isMenuOpen : Bool = false
-    public var behindViewController : UIViewController!
+    private(set) var isMenuOpen : Bool = false
+    public var allowLeftSwipe : Bool = true
+    public var allowRightSwipe : Bool = true
+    public var behindViewController : UIViewController! // CUSTOM FAB
+    public var hideBarOnSwipe : Bool = true // CUSTOM FAB
     
     public init(sourceView: UIView, menuPosition: ENSideMenuPosition) {
         super.init()
@@ -99,48 +119,73 @@ public class ENSideMenu : NSObject {
         
         animator = UIDynamicAnimator(referenceView:sourceView)
         
-        /*
+        // CUSTOM FAB
         // Add right swipe gesture recognizer
-        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
-        rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
-        sourceView.addGestureRecognizer(rightSwipeGestureRecognizer)
+        //let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
+        //rightSwipeGestureRecognizer.delegate = self
+        //rightSwipeGestureRecognizer.direction =  UISwipeGestureRecognizerDirection.Right
+        // END CUSOTM FAB
         
         // Add left swipe gesture recognizer
         let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleGesture:")
+        leftSwipeGestureRecognizer.delegate = self
         leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
         
         if (menuPosition == .Left) {
-            sourceView.addGestureRecognizer(rightSwipeGestureRecognizer)
+            //sourceView.addGestureRecognizer(rightSwipeGestureRecognizer) // CUSTOM FAB
             sideMenuContainerView.addGestureRecognizer(leftSwipeGestureRecognizer)
         }
         else {
-            sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer)
+            //sideMenuContainerView.addGestureRecognizer(rightSwipeGestureRecognizer) // CUSTOM FAB
             sourceView.addGestureRecognizer(leftSwipeGestureRecognizer)
         }
-        */
         
     }
     
-    public convenience init(sourceView: UIView, menuTableViewController: UITableViewController, menuPosition: ENSideMenuPosition) {
+    public convenience init(sourceView: UIView, menuViewController: UIViewController, menuPosition: ENSideMenuPosition) {
         self.init(sourceView: sourceView, menuPosition: menuPosition)
-        self.menuTableViewController = menuTableViewController
-        self.menuTableViewController.tableView.frame = sideMenuContainerView.bounds
-        self.menuTableViewController.tableView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
-        sideMenuContainerView.addSubview(self.menuTableViewController.tableView)
+        self.menuViewController = menuViewController
+        self.menuViewController.view.frame = sideMenuContainerView.bounds
+        self.menuViewController.view.autoresizingMask =  [.FlexibleHeight, .FlexibleWidth]
+        sideMenuContainerView.addSubview(self.menuViewController.view)
     }
     
+    public convenience init(sourceView: UIView, view: UIView, menuPosition: ENSideMenuPosition) {
+        self.init(sourceView: sourceView, menuPosition: menuPosition)
+        view.frame = sideMenuContainerView.bounds
+        view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        sideMenuContainerView.addSubview(view)
+    }
     
-    private func updateFrame() {
+    /**
+    * Do not make this function private, it must be called from your own UIViewControllers (using the fixSideMenuSize function of the extension).
+    */
+    func updateFrame() {
+        var width:CGFloat
+        var height:CGFloat
+        (width, height) = adjustFrameDimensions( sourceView.frame.size.width, height: sourceView.frame.size.height)
         let menuFrame = CGRectMake(
             (menuPosition == .Left) ?
                 isMenuOpen ? 0 : -menuWidth-1.0 :
-                isMenuOpen ? sourceView.frame.size.width - menuWidth : sourceView.frame.size.width+1.0,
+                isMenuOpen ? width - menuWidth : width+1.0,
             sourceView.frame.origin.y,
             menuWidth,
-            sourceView.frame.size.height
+            height
         )
-        
         sideMenuContainerView.frame = menuFrame
+    }
+    
+    private func adjustFrameDimensions( width: CGFloat, height: CGFloat ) -> (CGFloat,CGFloat) {
+        if floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1 &&
+            (UIApplication.sharedApplication().statusBarOrientation == UIInterfaceOrientation.LandscapeRight ||
+                UIApplication.sharedApplication().statusBarOrientation == UIInterfaceOrientation.LandscapeLeft) {
+                    // iOS 7.1 or lower and landscape mode -> interchange width and height
+                    return (height, width)
+        }
+        else {
+            return (width, height)
+        }
+        
     }
     
     private func setupMenuView() {
@@ -150,19 +195,19 @@ public class ENSideMenu : NSObject {
         
         sideMenuContainerView.backgroundColor = UIColor.clearColor()
         sideMenuContainerView.clipsToBounds = false
-        sideMenuContainerView.layer.masksToBounds = false;
-        sideMenuContainerView.layer.shadowOffset = (menuPosition == .Left) ? CGSizeMake(1.0, 1.0) : CGSizeMake(-1.0, -1.0);
-        sideMenuContainerView.layer.shadowRadius = 1.0;
-        sideMenuContainerView.layer.shadowOpacity = 0.125;
+        sideMenuContainerView.layer.masksToBounds = false
+        sideMenuContainerView.layer.shadowOffset = (menuPosition == .Left) ? CGSizeMake(1.0, 1.0) : CGSizeMake(-1.0, -1.0)
+        sideMenuContainerView.layer.shadowRadius = 1.0
+        sideMenuContainerView.layer.shadowOpacity = 0.125
         sideMenuContainerView.layer.shadowPath = UIBezierPath(rect: sideMenuContainerView.bounds).CGPath
         
         sourceView.addSubview(sideMenuContainerView)
         
         if (NSClassFromString("UIVisualEffectView") != nil) {
             // Add blur view
-            var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light)) as UIVisualEffectView
+            let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light)) as UIVisualEffectView
             visualEffectView.frame = sideMenuContainerView.bounds
-            visualEffectView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+            visualEffectView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
             sideMenuContainerView.addSubview(visualEffectView)
         }
         else {
@@ -172,10 +217,13 @@ public class ENSideMenu : NSObject {
     
     private func toggleMenu (shouldOpen: Bool) {
         if (shouldOpen && delegate?.sideMenuShouldOpenSideMenu?() == false) {
-            return;
+            return
         }
         updateSideMenuApperanceIfNeeded()
         isMenuOpen = shouldOpen
+        var width:CGFloat
+        var height:CGFloat
+        (width, height) = adjustFrameDimensions( sourceView.frame.size.width, height: sourceView.frame.size.height)
         if (bouncingEnabled) {
             
             animator.removeAllBehaviors()
@@ -196,7 +244,7 @@ public class ENSideMenu : NSObject {
                 // Right side menu
                 gravityDirectionX = (shouldOpen) ? -1 : 1
                 pushMagnitude = (shouldOpen) ? -20 : 20
-                boundaryPointX = (shouldOpen) ? sourceView.frame.size.width-menuWidth : sourceView.frame.size.width+menuWidth+2
+                boundaryPointX = (shouldOpen) ? width-menuWidth : width+menuWidth+2
                 boundaryPointY =  -20
             }
             
@@ -206,7 +254,7 @@ public class ENSideMenu : NSObject {
             
             let collisionBehavior = UICollisionBehavior(items: [sideMenuContainerView])
             collisionBehavior.addBoundaryWithIdentifier("menuBoundary", fromPoint: CGPointMake(boundaryPointX, boundaryPointY),
-                toPoint: CGPointMake(boundaryPointX, sourceView.frame.size.height))
+                toPoint: CGPointMake(boundaryPointX, height))
             animator.addBehavior(collisionBehavior)
             
             let pushBehavior = UIPushBehavior(items: [sideMenuContainerView], mode: UIPushBehaviorMode.Instantaneous)
@@ -221,16 +269,16 @@ public class ENSideMenu : NSObject {
         else {
             var destFrame :CGRect
             if (menuPosition == .Left) {
-                destFrame = CGRectMake((shouldOpen) ? -2.0 : -menuWidth, 0, menuWidth, sideMenuContainerView.frame.size.height)
+                destFrame = CGRectMake((shouldOpen) ? -2.0 : -menuWidth, 0, menuWidth, height)
             }
             else {
-                destFrame = CGRectMake((shouldOpen) ? sourceView.frame.size.width-menuWidth : sourceView.frame.size.width+2.0,
+                destFrame = CGRectMake((shouldOpen) ? width-menuWidth : width+2.0,
                     0,
                     menuWidth,
-                    sideMenuContainerView.frame.size.height)
+                    height)
             }
             
-            UIView.animateWithDuration(0.4, animations: { () -> Void in
+            UIView.animateWithDuration(animationDuration, animations: { () -> Void in
                 self.sideMenuContainerView.frame = destFrame
             })
         }
@@ -242,7 +290,45 @@ public class ENSideMenu : NSObject {
         }
     }
     
+    public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UISwipeGestureRecognizer {
+            let swipeGestureRecognizer = gestureRecognizer as! UISwipeGestureRecognizer
+            if !self.allowLeftSwipe {
+                if swipeGestureRecognizer.direction == .Left {
+                    return false
+                }
+            }
+            
+            if !self.allowRightSwipe {
+                if swipeGestureRecognizer.direction == .Right {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+    
     internal func handleGesture(gesture: UISwipeGestureRecognizer) {
+        // CUSTOM FAB
+        if (isMenuOpen) {
+            if let blackView = self.behindViewController.view.viewWithTag(63) { // CUSTOM FAB
+                blackView.removeFromSuperview()  // CUSTOM FAB
+                if self.hideBarOnSwipe == true {
+                    self.behindViewController.navigationController?.hidesBarsOnSwipe = true
+                }
+                
+            } // CUSTOM FAB
+        } else {
+            // CUSTOM FAB
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+            let blackView : UIView = UIView(frame: newframe)
+            blackView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+            blackView.tag = 63
+            self.behindViewController.view.addSubview(blackView)
+            self.behindViewController.navigationController?.hidesBarsOnSwipe = false
+        }
+        // END CUSTOM FAB
+        
         toggleMenu((self.menuPosition == .Right && gesture.direction == .Left)
             || (self.menuPosition == .Left && gesture.direction == .Right))
     }
@@ -260,17 +346,24 @@ public class ENSideMenu : NSObject {
     
     public func toggleMenu () {
         if (isMenuOpen) {
-            if let blackView = self.behindViewController.view.viewWithTag(63) {
-                blackView.removeFromSuperview()
-            }
+            if let blackView = self.behindViewController.view.viewWithTag(63) { // CUSTOM FAB
+                blackView.removeFromSuperview()  // CUSTOM FAB
+                if self.hideBarOnSwipe == true {
+                    self.behindViewController.navigationController?.hidesBarsOnSwipe = true
+                }
+            } // CUSTOM FAB
             toggleMenu(false)
         }
         else {
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
-            var blackView : UIView = UIView(frame: newframe)
+            // CUSTOM FAB
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+            let blackView : UIView = UIView(frame: newframe)
             blackView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
             blackView.tag = 63
             self.behindViewController.view.addSubview(blackView)
+            self.behindViewController.navigationController?.hidesBarsOnSwipe = false
+            // END CUSTOM FAB
+            
             updateSideMenuApperanceIfNeeded()
             toggleMenu(true)
         }
@@ -278,20 +371,28 @@ public class ENSideMenu : NSObject {
     
     public func showSideMenu () {
         if (!isMenuOpen) {
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
-            var blackView : UIView = UIView(frame: newframe)
+            
+            // CUSTOM FAB
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+            let blackView : UIView = UIView(frame: newframe)
             blackView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
             blackView.tag = 63
             self.behindViewController.view.addSubview(blackView)
+            self.behindViewController.navigationController?.hidesBarsOnSwipe = false
+            // END CUSTOM FAB
+            
             toggleMenu(true)
         }
     }
     
     public func hideSideMenu () {
         if (isMenuOpen) {
-            if let blackView = self.behindViewController.view.viewWithTag(63) {
-                blackView.removeFromSuperview()
-            }
+            if let blackView = self.behindViewController.view.viewWithTag(63) { //CUSTOM FAB
+                blackView.removeFromSuperview() //CUSTOM FAB
+                if self.hideBarOnSwipe == true {
+                    self.behindViewController.navigationController?.hidesBarsOnSwipe = true
+                }
+            } //CUSTOM FAB
             toggleMenu(false)
         }
     }

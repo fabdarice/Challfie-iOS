@@ -42,6 +42,43 @@ class GuideTakePictureVC: UIViewController {
         let model = UIDevice.currentDevice().modelName
         
         switch model {
+        case "x86_64":
+            switch UIScreen.mainScreen().bounds.height {
+                // Iphone 3 & 4
+            case 480.0 :
+                descriptionBottomConstraint.constant = 10
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+                nextPageVerticalConstraint.constant = 20
+                // Iphone 5
+            case 568.0:
+                descriptionBottomConstraint.constant = 30
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 17.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                nextPageVerticalConstraint.constant = 30
+                // Iphone 6
+            case 667.0:
+                descriptionBottomConstraint.constant = 40
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 18.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                nextPageVerticalConstraint.constant = 40
+                // Iphone 6Plus
+            case 736.0:
+                descriptionBottomConstraint.constant = 50
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 19.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                nextPageVerticalConstraint.constant = 40
+            default:
+                descriptionBottomConstraint.constant = 40
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 18.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                nextPageVerticalConstraint.constant = 40
+            }
         case "iPhone 3G":
             descriptionBottomConstraint.constant = 10
             titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
@@ -118,14 +155,14 @@ class GuideTakePictureVC: UIViewController {
         if self.from_facebook == true {
             // Modal to Timeline TabBarViewCOntroller
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
+            let homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
             homeTableViewController.from_facebook = self.from_facebook
             self.presentViewController(homeTableViewController, animated: true, completion: nil)
             
         } else {
             // Modal to LinkFacebook Tutorial Page
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var linkFacebookVC:LinkFacebookVC = mainStoryboard.instantiateViewControllerWithIdentifier("linkFacebookVC") as! LinkFacebookVC
+            let linkFacebookVC:LinkFacebookVC = mainStoryboard.instantiateViewControllerWithIdentifier("linkFacebookVC") as! LinkFacebookVC
             self.presentViewController(linkFacebookVC, animated: true, completion: nil)
         }
     }
@@ -134,7 +171,7 @@ class GuideTakePictureVC: UIViewController {
     // MARK: - Next Page Action
     @IBAction func nextPageAction(sender: AnyObject) {
         // Push to GuideApproveSelfieVC
-        var guideApproveSelfie = GuideApproveSelfieVC(nibName: "GuideApproveSelfie" , bundle: nil)
+        let guideApproveSelfie = GuideApproveSelfieVC(nibName: "GuideApproveSelfie" , bundle: nil)
         guideApproveSelfie.from_facebook = self.from_facebook
         //guideApproveSelfie.selfieImageView.image = self.imageToSave        
         guideApproveSelfie.selfie = self.imageToSave

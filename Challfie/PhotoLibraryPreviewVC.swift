@@ -27,8 +27,8 @@ class PhotoLibraryPreviewVC: UIViewController {
         self.validateButton.setTitle(NSLocalizedString("confirm", comment: "Confirm"), forState: UIControlState.Normal)        
         self.navigationController?.navigationBarHidden = true
         
-        var screen_width = UIScreen.mainScreen().bounds.width - 8 - 8
-        var ratio_photo = self.imageToSave.size.width / self.imageToSave.size.height
+        let screen_width = UIScreen.mainScreen().bounds.width - 8 - 8
+        let ratio_photo = self.imageToSave.size.width / self.imageToSave.size.height
         self.imageHeightConstraint.constant =  screen_width / ratio_photo
         
         self.imageView.image = self.imageToSave

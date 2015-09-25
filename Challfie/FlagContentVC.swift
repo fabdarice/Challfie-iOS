@@ -52,7 +52,7 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         self.tableView.dataSource = self
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "FlagContentTVCell", bundle: nil)
+        let nib = UINib(nibName: "FlagContentTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "FlagContentCell")
         
         // Set the height of a cell dynamically
@@ -88,7 +88,7 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     func loadData() {
         self.loadingIndicator.startAnimating()
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -98,18 +98,19 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             "page": self.page.description
         ]
         
-        request(.POST, ApiLink.flag_selfies_list, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
+        Alamofire.request(.POST, ApiLink.flag_selfies_list, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
                     
                     if json["administrators"].count != 0 {
                         for var i:Int = 0; i < json["administrators"].count; i++ {
-                            var selfie = Selfie.init(json: json["administrators"][i])
-                            var user: User = User.init(json: json["administrators"][i]["user"])
+                            let selfie = Selfie.init(json: json["administrators"][i])
+                            let user: User = User.init(json: json["administrators"][i]["user"])
                             selfie.user = user
                             self.flag_selfie_array.append(selfie)
                         }
@@ -125,9 +126,9 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     // MARK: - tableView Delegate
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //
-        var cell: FlagContentTVCell = tableView.dequeueReusableCellWithIdentifier("FlagContentCell") as! FlagContentTVCell
+        let cell: FlagContentTVCell = tableView.dequeueReusableCellWithIdentifier("FlagContentCell") as! FlagContentTVCell
         
-        var selfie: Selfie = self.flag_selfie_array[indexPath.row]
+        let selfie: Selfie = self.flag_selfie_array[indexPath.row]
         cell.loadItem(selfie)
         
         // Remove the inset for cell separator
@@ -160,10 +161,10 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var selfie: Selfie = self.flag_selfie_array[indexPath.row]
+        let selfie: Selfie = self.flag_selfie_array[indexPath.row]
         
         // Push to OneSelfieVC
-        var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
+        let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
         oneSelfieVC.selfie = selfie
         oneSelfieVC.is_administrator = true
         
@@ -175,7 +176,7 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     // MARK: - UIGestureDelegate
-    func gestureRecognizer(UIGestureRecognizer,
+    func gestureRecognizer(_: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
             return true
     }

@@ -50,9 +50,9 @@ only_alphanumeric = "* uniquement des caractères alphanumérique autorisés";
 
 // Review Popup
 review_message = "Si tu apprécies le concept de Challfie, cela nous aiderait énormément si tu pouvais prendre le temps de l'évaluer sur l'appstore. Cela ne prendra pas plus d'une minute. Merci pour ton soutien !";
-review_title = "Evalue Challfie";
+review_title = "Évalue Challfie";
 no_thanks = "Non, Merci";
-rate = "Evalue Challfie";
+rate = "Évaluer Challfie";
 remind_me_later = "Me le rappeler plus tard";
 
 // Popcup
@@ -180,13 +180,13 @@ skip_link_facebook_step = "Passer cette étape";
 
 // Ranking Page
 ranking_title = "Classement - Mes Amis";
-ranking_all_users_title = "Classement - Général";
+ranking_all_users_title = "Classement - Top 100";
 user = "Utilisateur";
 rank = "Rang";
 level = "Niveau";
 progress = "%";
 my_friends = "Mes Amis";
-all_users = "Général";
+all_users = "Top 100";
 
 // Admin
 block_selfie = "Block selfie";
@@ -196,7 +196,7 @@ block_user_notification = "User has been blocked";
 clear_flag = "Clear selfie flags";
 clear_flag_notification = "Flags have been cleared for this Selfie";
 
-// Tutorial
+// Guide
 skip_tutorial = "Passer le tutoriel";
 take_a_selfie = "Challenge : Prendre un selfie";
 thanks_tutorial = "Merci à toi de faire parti de la Challfie family ! Amuses toi bien et prends plein de selfies !";
@@ -217,7 +217,7 @@ tutorial_one_button = "Compléter le challenge";
 tutorial_two_button = "Suivant (3/5) : Approbation du Challfie";
 tutorial_three_button = "Suivant (4/5) : Gagne des points";
 tutorial_four_button = "Suivant (5/5) : Monte de niveau";
-tutorial_five_button = "C'est Parti!";
+tutorial_five_button = "C'est parti!";
 
 first_challfie = "Mon premier Challfie!!";
 

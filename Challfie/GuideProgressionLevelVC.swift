@@ -52,6 +52,48 @@ class GuideProgressionLevelVC: UIViewController {
         let model = UIDevice.currentDevice().modelName
         
         switch model {
+        case "x86_64":
+            switch UIScreen.mainScreen().bounds.height {
+                // Iphone 3 & 4
+            case 480.0 :
+                descriptionBottomConstraint.constant = 10
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 13.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+                nextPageVerticalConstraint.constant = 20
+                nextBookViewHeightConstraint.constant = 180
+                // Iphone 5
+            case 568.0:
+                descriptionBottomConstraint.constant = 30
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 17.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+                nextPageVerticalConstraint.constant = 30
+                nextBookViewHeightConstraint.constant = 225
+                // Iphone 6
+            case 667.0:
+                descriptionBottomConstraint.constant = 40
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 18.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                nextPageVerticalConstraint.constant = 40
+                nextBookViewHeightConstraint.constant = 250
+                // Iphone 6Plus
+            case 736.0:
+                descriptionBottomConstraint.constant = 50
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 19.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                nextPageVerticalConstraint.constant = 40
+                nextBookViewHeightConstraint.constant = 300
+            default:
+                descriptionBottomConstraint.constant = 40
+                titleLabel.font = UIFont(name: "HelveticaNeue", size: 18.0)
+                descriptionLabel.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                self.skipTutorialButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15.0)
+                nextPageVerticalConstraint.constant = 40
+                nextBookViewHeightConstraint.constant = 250
+            }
         case "iPhone 3G":
             descriptionBottomConstraint.constant = 10
             titleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
@@ -148,14 +190,14 @@ class GuideProgressionLevelVC: UIViewController {
         if self.from_facebook == true {
             // Modal to Timeline TabBarViewCOntroller
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
+            let homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
             homeTableViewController.from_facebook = self.from_facebook
             self.presentViewController(homeTableViewController, animated: true, completion: nil)
             
         } else {
             // Modal to LinkFacebook Tutorial Page
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var linkFacebookVC:LinkFacebookVC = mainStoryboard.instantiateViewControllerWithIdentifier("linkFacebookVC") as! LinkFacebookVC
+            let linkFacebookVC:LinkFacebookVC = mainStoryboard.instantiateViewControllerWithIdentifier("linkFacebookVC") as! LinkFacebookVC
             self.presentViewController(linkFacebookVC, animated: true, completion: nil)
         }
     }
@@ -164,7 +206,7 @@ class GuideProgressionLevelVC: UIViewController {
     // MARK:: Next Page Action
     @IBAction func nextPageAction(sender: AnyObject) {
         // Push to GuideBookVC
-        var guideBookVC = GuideBookVC(nibName: "GuideBook" , bundle: nil)
+        let guideBookVC = GuideBookVC(nibName: "GuideBook" , bundle: nil)
         guideBookVC.from_facebook = self.from_facebook
         
         self.presentViewController(guideBookVC, animated: true, completion: nil)
@@ -183,7 +225,7 @@ class GuideProgressionLevelVC: UIViewController {
         let circlePath : UIBezierPath = UIBezierPath(arcCenter: arcCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
         // Draw the full circle
-        var fullcircleLayer : CAShapeLayer = CAShapeLayer()
+        let fullcircleLayer : CAShapeLayer = CAShapeLayer()
         fullcircleLayer.path = circlePath.CGPath
         fullcircleLayer.strokeColor = MP_HEX_RGB("0F4352").CGColor
         fullcircleLayer.fillColor = UIColor.clearColor().CGColor

@@ -17,7 +17,7 @@ import KeychainAccess
 class MyMenuTableViewController: UITableViewController {
     //var selectedMenuItem : Int = 5
     
-    var navController : UINavigationController!
+    var navController : MyNavigationController!
     var current_user: User!
     
     override func viewDidLoad() {
@@ -63,16 +63,16 @@ class MyMenuTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("CELL") as? UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("CELL")
         
         if (cell == nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "CELL")
             cell!.backgroundColor = UIColor.clearColor()
         }
-        var imageView : UIImageView = UIImageView(frame: CGRectMake(10.0, 10.0, 20.0, 20.0))
+        let imageView : UIImageView = UIImageView(frame: CGRectMake(10.0, 10.0, 20.0, 20.0))
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
         
-        var textLabel : UILabel = UILabel(frame: CGRectMake(40.0, 10.0, cell!.frame.size.width - 7 - 20, 20.0))
+        let textLabel : UILabel = UILabel(frame: CGRectMake(40.0, 10.0, cell!.frame.size.width - 7 - 20, 20.0))
         textLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
         textLabel.textColor = MP_HEX_RGB("000000")
         
@@ -90,7 +90,7 @@ class MyMenuTableViewController: UITableViewController {
                 textLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
                 textLabel.textColor = MP_HEX_RGB("30768A")
                 
-                var keychain = Keychain(service: "challfie.app.service")
+                let keychain = Keychain(service: "challfie.app.service")
                 let login = keychain["login"]!
                 let auth_token = keychain["auth_token"]!
                 
@@ -101,13 +101,13 @@ class MyMenuTableViewController: UITableViewController {
                  ]
                 
                 request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
-                    .responseJSON { (_, _, mydata, _) in
-                        if (mydata == nil) {
-                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
-                        } else {
+                    .responseJSON { _, _, result in
+                        switch result {
+                        case .Failure(_, _):
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
+                        case .Success(let mydata):
                             //Convert to SwiftJSON
-                            
-                            var json = JSON(mydata!)
+                            var json = JSON(mydata)
                             
                             if json["user"].count != 0 {
                                 self.current_user = User.init(json: json["user"])
@@ -115,7 +115,6 @@ class MyMenuTableViewController: UITableViewController {
                                     let profilePicURL:NSURL = NSURL(string: self.current_user.show_profile_pic())!
                                     imageView.hnk_setImageFromURL(profilePicURL)
                                 } else {
-                                   
                                     imageView.image = UIImage(named: "missing_user")
                                 }
                                 textLabel.text = self.current_user.username
@@ -177,27 +176,20 @@ class MyMenuTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        //if (indexPath.row == selectedMenuItem) {
-        //    return
-        //}
-        //selectedMenuItem = indexPath.row
-        
-        
         // Cell Background Color
-        var selectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        let selectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         selectedCell.contentView.backgroundColor = MP_HEX_RGB("165669")
         
         // hide sideMenu
-        self.navController.hideSideMenuView()
+        self.navController.sideMenu?.hideSideMenu()
 
         //Present new view controller
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        var destViewController : UIViewController!
 
         switch (indexPath.section) {
         // Profile Section
         case 0:
-            var keychain = Keychain(service: "challfie.app.service")
+            let keychain = Keychain(service: "challfie.app.service")
             let login = keychain["login"]!
             let auth_token = keychain["auth_token"]!
             
@@ -208,12 +200,13 @@ class MyMenuTableViewController: UITableViewController {
             ]
             
             request(.POST, ApiLink.show_my_profile, parameters: parameters, encoding: .JSON)
-                .responseJSON{ (_, _, mydata, _) in
-                    if (mydata == nil) {
+                .responseJSON{ _, _, result in
+                    switch result {
+                    case .Failure(_, _):
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
-                    } else {
+                    case .Success(let mydata):
                         //Convert to SwiftJSON
-                        var json = JSON(mydata!)
+                        var json = JSON(mydata)
                         var current_user: User!
                         
                         if json["user"].count != 0 {
@@ -221,7 +214,7 @@ class MyMenuTableViewController: UITableViewController {
                         }
                         
                         // Push to OneSelfieVC
-                        var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+                        let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
                         profilVC.user = current_user
                         profilVC.hidesBottomBarWhenPushed = true
                         self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -234,7 +227,7 @@ class MyMenuTableViewController: UITableViewController {
         case 1:
             // Daily Challenge
             if indexPath.row == 0 {
-                var keychain = Keychain(service: "challfie.app.service")
+                let keychain = Keychain(service: "challfie.app.service")
                 let login = keychain["login"]!
                 let auth_token = keychain["auth_token"]!
                 
@@ -244,12 +237,13 @@ class MyMenuTableViewController: UITableViewController {
                 ]
                 
                 request(.POST, ApiLink.daily_challenge, parameters: parameters, encoding: .JSON)
-                    .responseJSON{ (_, _, mydata, _) in
-                        if (mydata == nil) {
+                    .responseJSON{_, _, result in
+                        switch result {
+                        case .Failure(_, _):
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self.navController)
-                        } else {
+                        case .Success(let mydata):
                             //Convert to SwiftJSON
-                            var json = JSON(mydata!)
+                            var json = JSON(mydata)
                             GlobalFunctions().displayAlert(title: NSLocalizedString("daily_challenge", comment: "Daily Challenge"), message: json["daily_challenge"].stringValue, controller: self.navController)
                             selectedCell.contentView.backgroundColor = UIColor.clearColor()
                         }
@@ -257,7 +251,7 @@ class MyMenuTableViewController: UITableViewController {
             }
             // Rank
             if indexPath.row == 1 {
-                var rankingVC = RankingVC(nibName: "Ranking" , bundle: nil)
+                let rankingVC = RankingVC(nibName: "Ranking" , bundle: nil)
                 self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
                 self.navController.pushViewController(rankingVC, animated: true)                
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
@@ -267,14 +261,14 @@ class MyMenuTableViewController: UITableViewController {
         case 2:
             // About Us
             if indexPath.row == 0 {
-                var aboutUsTVC = AboutUsTableViewController()
+                let aboutUsTVC = AboutUsTableViewController()
                 self.navController.pushViewController(aboutUsTVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
             
             // Privacy
             if indexPath.row == 1 {
-                var privacyTVC = PrivacyTableViewController()
+                let privacyTVC = PrivacyTableViewController()
                 self.navController.pushViewController(privacyTVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
@@ -282,14 +276,14 @@ class MyMenuTableViewController: UITableViewController {
             
             // Terms
             if indexPath.row == 2 {
-                var termsTVC = TermsTableViewController()
+                let termsTVC = TermsTableViewController()
                 self.navController.pushViewController(termsTVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
             
             // Contact Us
             if indexPath.row == 3 {
-                var contactVC = ContactViewController(nibName:"Contact", bundle: nil)
+                let contactVC = ContactViewController(nibName:"Contact", bundle: nil)
                 self.navController.pushViewController(contactVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
@@ -297,9 +291,9 @@ class MyMenuTableViewController: UITableViewController {
         case 3:
             // Log Out
             // Desactive Device so it can't receive push notifications
-            var keychain = Keychain(service: "challfie.app.service")
-            var login = keychain["login"]
-            var auth_token = keychain["auth_token"]
+            let keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]
+            let auth_token = keychain["auth_token"]
             
             if (login != nil && auth_token != nil) {
                 let parameters:[String: AnyObject] = [
@@ -313,10 +307,10 @@ class MyMenuTableViewController: UITableViewController {
                 
                 keychain["login"] = nil
                 keychain["auth_token"] = nil
-                var facebookManager = FBSDKLoginManager()
+                let facebookManager = FBSDKLoginManager()
                 facebookManager.logOut()
                 
-                var loginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
+                let loginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
                 // Desactive the Background Fetch Mode
                 //UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
                   //  UIApplicationBackgroundFetchIntervalNever)
@@ -347,11 +341,11 @@ class MyMenuTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        var headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 25.0))
+        let headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 25.0))
         headerView.backgroundColor = MP_HEX_RGB("658D99")
         headerView.layer.borderColor = MP_HEX_RGB("01171F").CGColor
         headerView.layer.borderWidth = 1.0
-        var headerLabel = UILabel(frame: CGRectMake(10.0, 5.0, tableView.frame.width, 15.0))
+        let headerLabel = UILabel(frame: CGRectMake(10.0, 5.0, tableView.frame.width, 15.0))
         headerLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
         headerLabel.textColor = MP_HEX_RGB("FFFFFF")
         

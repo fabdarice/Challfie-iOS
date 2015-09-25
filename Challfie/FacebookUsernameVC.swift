@@ -78,37 +78,39 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
         return true;
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.view.endEditing(true)
     }
     
     @IBAction func validateUsernameButton(sender: AnyObject) {
         // add loadingIndicator pop-up
-        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
         let parameters:[String: String] = [
             "login": login,
             "auth_token": auth_token,
-            "new_username": self.usernameTextField.text
+            "new_username": self.usernameTextField.text!
         ]
                 
-        request(.POST, ApiLink.update_user, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, ApiLink.update_user, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if let loadingActivityView = self.view.viewWithTag(21) {
                     loadingActivityView.removeFromSuperview()
                 }
-                if (mydata == nil) {
+                
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //convert to SwiftJSON
-                    let json = JSON(mydata!)
+                    let json = JSON(mydata)
                     
                     if json["username"].count != 0 {
                         // ERROR VALIDATION OF USERNAME
@@ -118,7 +120,7 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
                         let login:String! = json["user"]["username"].string
                         
                         // Save login and auth_token to the iOS Keychain
-                        var keychain = Keychain(service: "challfie.app.service")
+                        let keychain = Keychain(service: "challfie.app.service")
                         keychain["login"] = login
                         
                         self.performSegueWithIdentifier("facebookregisterSegue", sender: self)
@@ -131,7 +133,7 @@ class FacebookUsernameVC : UIViewController, UITextFieldDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "facebookregisterSegue") {
-            var guideVC: GuideVC = segue.destinationViewController as! GuideVC
+            let guideVC: GuideVC = segue.destinationViewController as! GuideVC
             guideVC.from_facebook = true
         }
     }

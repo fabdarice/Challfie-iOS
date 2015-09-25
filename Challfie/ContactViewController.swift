@@ -49,12 +49,12 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
        // self.pickerView.transform = CGAffineTransformConcat(t0, CGAffineTransformConcat(s0, t1))
         
         // tapGesture to hide keyboard
-        var tapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
         tapGesture.addTarget(self, action: "dismissKeyboard")
         self.view.addGestureRecognizer(tapGesture)
         self.view.userInteractionEnabled = true
         
-        self.navigationItem.title = "Contact Us"
+        self.navigationItem.title = NSLocalizedString("contact_us", comment: "Contact Us")
         self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
                 
     }
@@ -92,19 +92,19 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         var contactTypeInt: Int!
         
         // Add loadingIndicator pop-up
-        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         // -49 because of the height of the Tabbar ; -40 because of navigationController
-        var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+        let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
         loadingActivityVC.view.frame = newframe
         self.view.addSubview(loadingActivityVC.view)
         
         switch contactType[self.pickerView.selectedRowInComponent(0)] {
         case NSLocalizedString("report_bug", comment: "Report a Bug") :
             contactTypeInt = 1
-        case NSLocalizedString("report_content", comment: "Report obscene, pornographic, offensive content") :
-            contactTypeInt = 2
         case NSLocalizedString("require_account_assistance", comment: "Require Assistance for your account") :
+            contactTypeInt = 2
+        case NSLocalizedString("report_content", comment: "Report obscene, pornographic, offensive content") :
             contactTypeInt = 3
         case NSLocalizedString("give_suggestions", comment: "Give suggestions for the website") :
             contactTypeInt = 4    
@@ -114,7 +114,7 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
             contactTypeInt = 0
         }
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
     
@@ -125,17 +125,18 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
             "message": self.textView.text
         ]
         
-        request(.POST, ApiLink.create_contact, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, ApiLink.create_contact, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if let loadingActivityView = self.view.viewWithTag(21) {
                     loadingActivityView.removeFromSuperview()
                 }
-                if (mydata == nil) {
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //convert to SwiftJSON
-                    let json = JSON(mydata!)
+                    let json = JSON(mydata)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RESPONSE FROM HTTP Request
@@ -179,11 +180,11 @@ class ContactViewController : UIViewController, UIPickerViewDelegate, UIPickerVi
         return self.contactType.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return self.contactType[row]
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         let pickerLabel = UILabel()
         let titleData = self.contactType[row]
         let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue", size: 13.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])

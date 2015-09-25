@@ -20,6 +20,9 @@ class RankingTVCell : UITableViewCell {
     var index: NSIndexPath!
     
     func loadItem() {
+        // set image to nil to avoid misplaced image
+        self.profilPicImageView.image = nil
+        self.levelImageView.image = nil
         
         // Check if It's current_user
         if self.user.is_current_user == true {

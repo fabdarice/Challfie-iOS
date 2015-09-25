@@ -59,6 +59,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods/FBSDKShareKit.framework'
   install_framework 'Pods/Haneke.framework'
   install_framework 'Pods/KeychainAccess.framework'
+  install_framework 'Pods/Siren.framework'
   install_framework 'Pods/SwiftyJSON.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -69,5 +70,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods/FBSDKShareKit.framework'
   install_framework 'Pods/Haneke.framework'
   install_framework 'Pods/KeychainAccess.framework'
+  install_framework 'Pods/Siren.framework'
   install_framework 'Pods/SwiftyJSON.framework'
 fi

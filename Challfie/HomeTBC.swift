@@ -22,7 +22,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         self.delegate = self
         
         // Tabbar Background
-        self.tabBar.backgroundImage = UIImage(named: "tabBar_background_white")
+        self.tabBar.backgroundImage = UIImage(named: "tabBar_background")
         
         // TabBar Text and Image color for selected item
         self.tabBar.tintColor = MP_HEX_RGB("30768A")
@@ -33,18 +33,21 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
 
         
         // Set Color for unselected image item
-        for item in self.tabBar.items as! [UITabBarItem] {
-            if let image = item.image {
-                item.image = image.imageWithColor(MP_HEX_RGB("A8A7A7")).imageWithRenderingMode(.AlwaysOriginal)
+        if let tabBarItems = self.tabBar.items {
+            for item in tabBarItems {
+                if let image = item.image {
+                    item.image = image.imageWithColor(MP_HEX_RGB("A8A7A7")).imageWithRenderingMode(.AlwaysOriginal)
+                }
             }
+            
         }
         
         // Load all views + set Title of UITabBarItem
         var i = 0
         for viewController in self.viewControllers!
         {
-            viewController.view
-            var navController:UINavigationController = (viewController as? UINavigationController)!
+            let _ = viewController.view
+            let navController:UINavigationController = (viewController as? UINavigationController)!
             switch i {
             case 0 : navController.tabBarItem.title = NSLocalizedString("tab_timeline", comment: "Timeline")
             case 1 : navController.tabBarItem.title = NSLocalizedString("tab_challenge", comment: "Challenge")
@@ -70,10 +73,10 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         
         // If currently on timeline page and tap on "Timeline" tab, scroll tableview to top
         if let selectedViewController = tabBarController.viewControllers {
-            if (viewController == selectedViewController[0] as! NSObject) && (self.selectedIndex == 0) {
+            if (viewController == selectedViewController[0] as NSObject) && (self.selectedIndex == 0) {
                 if let navController = viewController as? UINavigationController {
-                    var timelineVC: TimelineVC = navController.viewControllers[0] as! TimelineVC
-                    timelineVC.timelineTableView.setContentOffset(CGPointZero, animated:true)
+                    let timelineVC: TimelineVC = navController.viewControllers[0] as! TimelineVC
+                    timelineVC.timelineTableView.setContentOffset(CGPointMake(0, 0 - timelineVC.timelineTableView.contentInset.top), animated:true)
                     timelineVC.navigationController?.navigationBarHidden = false
                 }
             }
@@ -82,31 +85,26 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         
         // Show popup for "camera Tab" instead of showing the viewcontroller directly
         if let selectedViewController = tabBarController.viewControllers {
-            if (viewController == selectedViewController[2] as! NSObject) {
-                if let navController = viewController as? UINavigationController {
-                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as! TakePictureVC
-                    
-                    // Show Pop-op to options to choose between camera and photo library
-                    var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-                    let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
-                        self.use_camera = true
-                        self.showCamera()
-                    }
-                    let twoAction = UIAlertAction(title: NSLocalizedString("choose_from_gallery", comment: "Choose From Your Gallery"), style: .Default) { (_) in
-                        self.use_camera = false
-                        self.showPhotoLibrary()
-                    }
-                    let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
-                    
-                    alert.addAction(oneAction)
-                    alert.addAction(twoAction)
-                    alert.addAction(thirdAction)
-                    
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    
-                    return false
+            if (viewController == selectedViewController[2] as NSObject) {
+                // Show Pop-op to options to choose between camera and photo library
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
+                    self.use_camera = true
+                    self.showCamera()
                 }
+                let twoAction = UIAlertAction(title: NSLocalizedString("choose_from_gallery", comment: "Choose From Your Gallery"), style: .Default) { (_) in
+                    self.use_camera = false
+                    self.showPhotoLibrary()
+                }
+                let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
                 
+                alert.addAction(oneAction)
+                alert.addAction(twoAction)
+                alert.addAction(thirdAction)
+                
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+                return false
             }
         }
         return true
@@ -173,7 +171,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
                 }
             } else {
                 self.hidesBottomBarWhenPushed = true
-                var photoLibraryPreviewVC = PhotoLibraryPreviewVC(nibName: "PhotoLibraryPreview", bundle: nil)
+                let photoLibraryPreviewVC = PhotoLibraryPreviewVC(nibName: "PhotoLibraryPreview", bundle: nil)
                 photoLibraryPreviewVC.imageToSave = self.imageToSave
                 photoLibraryPreviewVC.homeTabBarController = self
                 photoLibraryPreviewVC.imagePicker = picker
@@ -195,7 +193,7 @@ class HomeTBC: UITabBarController, UITabBarControllerDelegate, UIAlertViewDelega
         let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
         img.drawInRect(rect)
         
-        var normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext();
         return normalizedImage;
     }
@@ -206,10 +204,10 @@ extension UIImage {
     func imageWithColor(tintColor: UIColor) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         
-        let context = UIGraphicsGetCurrentContext() as CGContextRef
+        let context = UIGraphicsGetCurrentContext()
         CGContextTranslateCTM(context, 0, self.size.height)
         CGContextScaleCTM(context, 1.0, -1.0);
-        CGContextSetBlendMode(context, kCGBlendModeNormal)
+        CGContextSetBlendMode(context, CGBlendMode.Normal)
         
         let rect = CGRectMake(0, 0, self.size.width, self.size.height) as CGRect
         CGContextClipToMask(context, rect, self.CGImage)

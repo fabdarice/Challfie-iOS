@@ -20,7 +20,7 @@ import QuartzCore
     
     var sourceView : UIView!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -42,6 +42,18 @@ import QuartzCore
         let model = UIDevice.currentDevice().modelName
         
         switch model {
+        case "x86_64":
+            switch UIScreen.mainScreen().bounds.height {
+                // Iphone 3 & 4
+            case 480.0 : topSpaceConstraint.constant = 70
+                // Iphone 5
+            case 568.0: topSpaceConstraint.constant = 85
+                // Iphone 6
+            case 667.0: topSpaceConstraint.constant = 100
+                // Iphone 6Plus
+            case 736.0: topSpaceConstraint.constant = 120
+            default: topSpaceConstraint.constant = 100
+            }
         case "iPhone 3G": topSpaceConstraint.constant = 70
         case "iPhone 3GS": topSpaceConstraint.constant = 70
         case "iPhone 4": topSpaceConstraint.constant = 70

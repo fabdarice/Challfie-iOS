@@ -41,7 +41,12 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     // Last Content OFfset of ScrollView - To Detect if Scroll up or Down
     var lastContentOffset: CGFloat = 0
     
+    // For TakePictureVC : disableBackgroundRefresh after creating a selfie to void double refresh
     var disableBackgroundRefresh: Bool = false
+    
+    // Var to set if there's more data to load (from pagination)
+    var loadMoreData : Bool = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,12 +99,12 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
 
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "TimelineCustomCell", bundle: nil)
+        let nib = UINib(nibName: "TimelineCustomCell", bundle: nil)
         timelineTableView.registerNib(nib, forCellReuseIdentifier: "TimelineCustomCell")
 
         // Set the height of a cell dynamically
         timelineTableView.rowHeight = UITableViewAutomaticDimension
-        timelineTableView.estimatedRowHeight = 500.0
+        //timelineTableView.estimatedRowHeight = 600
         
         self.sideMenuController()?.sideMenu?.behindViewController = self
         
@@ -107,12 +112,18 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.newDataButton.hidden = true
         
         // Load Selfies for User Timeline
-        self.refresh(actionFromInit: true)
+        self.refresh(true)
         self.first_time = true
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Timeline Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         // Display tabBarController
         self.hidesBottomBarWhenPushed = false
@@ -120,8 +131,9 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         // Show Status Bar because GKImagePicker hides it (From TakePicture)
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
-        
+    
         // Hide on swipe & keboard Appears
+        self.navigationController?.setNavigationBarHidden(false, animated: true) // Default Show
         self.navigationController?.hidesBarsOnSwipe = true
 
         // Show StatusBarBackground
@@ -154,17 +166,24 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         }
         
     }
-        
+    
+    // MARK: First Time Refresh
     func refreshInvoked(sender:AnyObject) {
-        self.refresh(actionFromInit: false)
+        self.refresh(false)
     }
     
+    
+    // MARK: - New Data (Selfies) Button
     @IBAction func newDataAction(sender: AnyObject) {
-        self.timelineTableView.reloadData()
-        self.timelineTableView.setContentOffset(CGPointZero, animated: true)
-        self.newDataButton.hidden = true
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.hasNewData = false
+        self.newDataButton.hidden = true
+        
+        UIView.animateWithDuration(0.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+            self.timelineTableView.contentOffset = CGPointZero
+            }, completion: {_ in
+                self.timelineTableView.reloadData()
+        })
     }    
     
     // MARK: - Pull-to-refresh function - Refresh all data
@@ -174,7 +193,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         var parameters = [String: String]()
         var api_link: String!        
 
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -204,13 +223,18 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         }
         
         
-        request(.POST, api_link, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
+        Alamofire.request(.POST, api_link, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
 
                     if actionFromInit == false {
                         self.selfies_array.removeAll(keepCapacity: false)
@@ -220,41 +244,46 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
-                            var selfie = Selfie.init(json: json["selfies"][i])
-                            var challenge = Challenge.init(json: json["selfies"][i]["challenge"])
-                            var user = User.init(json: json["selfies"][i]["user"])
-                            var last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
+                            let selfie = Selfie.init(json: json["selfies"][i])
+                            let challenge = Challenge.init(json: json["selfies"][i]["challenge"])
+                            let user = User.init(json: json["selfies"][i]["user"])
+                            let last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
                             
                             selfie.challenge = challenge
                             selfie.user = user
                             selfie.last_comment = last_comment
                             
                             self.selfies_array.append(selfie)
-                            //self.selfies_array_id.append(selfie.id)
                             self.itemHeights.append(UITableViewAutomaticDimension)
+
+                            
                         }
                         if actionFromInit == true {
                             self.page += 1
+                            self.loadMoreData = true
                         }
                         
                         self.timelineTableView.reloadData()
                     }
                     
-                    // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
-                    if json["meta"]["new_alert_nb"] != 0 {                        
-                        alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
-                    } else {
-                        alert_tabBarItem.badgeValue = nil
+                    if let tabBarItems = self.tabBarController?.tabBar.items {
+                        // Update Badge of Alert TabBarItem
+                        let alert_tabBarItem : UITabBarItem = tabBarItems[4]
+                        if json["meta"]["new_alert_nb"] != 0 {
+                            alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
+                        } else {
+                            alert_tabBarItem.badgeValue = nil
+                        }
+                        
+                        // Update Badge of Friends TabBarItem
+                        let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+                        if json["meta"]["new_friends_request_nb"] != 0 {
+                            friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
+                        } else {
+                            friend_tabBarItem.badgeValue = nil
+                        }
                     }
                     
-                    // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
-                    if json["meta"]["new_friends_request_nb"] != 0 {
-                        friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
-                    } else {
-                        friend_tabBarItem.badgeValue = nil
-                    }
                     
                     var badgeNumber : Int!
                     badgeNumber = json["meta"]["new_alert_nb"].intValue + json["meta"]["new_friends_request_nb"].intValue
@@ -277,7 +306,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         self.loadingIndicator.startAnimating()
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
 
@@ -288,34 +317,42 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             "page": self.page.description
         ]
         
-        request(.POST, ApiLink.timeline, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
+        Alamofire.request(.POST, ApiLink.timeline, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
                     
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
-                            var selfie = Selfie.init(json: json["selfies"][i])
-                            var challenge = Challenge.init(json: json["selfies"][i]["challenge"])
-                            var user = User.init(json: json["selfies"][i]["user"])
-                            var last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
+                            let selfie = Selfie.init(json: json["selfies"][i])
+                            let challenge = Challenge.init(json: json["selfies"][i]["challenge"])
+                            let user = User.init(json: json["selfies"][i]["user"])
+                            let last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
                             
                             selfie.challenge = challenge
                             selfie.user = user
                             selfie.last_comment = last_comment
                             
                             // Avoid Same Data
-                            if (contains(self.selfies_array, selfie)) == false {
+                            if (self.selfies_array.contains(selfie)) == false {
                                 self.selfies_array.append(selfie)
-                            //    self.selfies_array_id.append(selfie.id)
+
                                 self.itemHeights.append(UITableViewAutomaticDimension)
                             }
                         }
                         self.page += 1
+                        self.loadMoreData = true
                         self.timelineTableView.reloadData()
+                    } else {
+                        self.loadMoreData = false
                     }
                 }
                 self.loadingIndicator.stopAnimating()
@@ -325,12 +362,10 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     // MARK: - Background Refresh (while app is still active)
     func backgroundRefresh() {
-        if self.first_time == true {
-            self.first_time = false
-        } else {
+        if self.first_time == false {
             var parameters = [String: String]()
             
-            var keychain = Keychain(service: "challfie.app.service")
+            let keychain = Keychain(service: "challfie.app.service")
             let login = keychain["login"]!
             let auth_token = keychain["auth_token"]!
             
@@ -347,26 +382,32 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     "last_selfie_id": last_selfie.id.description]
             }
             
-            request(.POST, ApiLink.selfies_refresh, parameters: parameters, encoding: .JSON)
-                .responseJSON { (_, _, mydata, _) in
-                    if (mydata != nil) {
+            Alamofire.request(.POST, ApiLink.selfies_refresh, parameters: parameters, encoding: .JSON)
+                .responseJSON { _, _, result in
+                    switch result {
+                    case .Failure(_, _):
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    case .Success(let mydata):
                         //Convert to SwiftJSON
-                        var json = JSON(mydata!)
+                        var json = JSON(mydata)
                         
-                        // Update Badge of Alert TabBarItem
-                        var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
-                        if json["meta"]["new_alert_nb"] != 0 {
-                            alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
-                        } else {
-                            alert_tabBarItem.badgeValue = nil
-                        }
-                        
-                        // Update Badge of Friends TabBarItem
-                        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
-                        if json["meta"]["new_friends_request_nb"] != 0 {
-                            friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
-                        } else {
-                            friend_tabBarItem.badgeValue = nil
+                        if let tabBarItems = self.tabBarController?.tabBar.items {
+                            // Update Badge of Alert TabBarItem
+                            let alert_tabBarItem : UITabBarItem = tabBarItems[4]
+                            if json["meta"]["new_alert_nb"] != 0 {
+                                alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
+                            } else {
+                                alert_tabBarItem.badgeValue = nil
+                            }
+                            
+                            // Update Badge of Friends TabBarItem
+                            let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+                            if json["meta"]["new_friends_request_nb"] != 0 {
+                                friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
+                            } else {
+                                friend_tabBarItem.badgeValue = nil
+                            }
+
                         }
                         
                         var badgeNumber : Int!
@@ -375,7 +416,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                         UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
                         
                         var diff_selfies_count: Bool = false
-                        if json["selfies"].count != self.selfies_array.count {
+                        if json["selfies"].count > self.selfies_array.count {
                             diff_selfies_count = true
                         }
 
@@ -384,17 +425,16 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                             var updated_itemHeights: [CGFloat] = []
                             
                             for var i:Int = 0; i < json["selfies"].count; i++ {
-                                var selfie = Selfie.init(json: json["selfies"][i])
-                                var challenge = Challenge.init(json: json["selfies"][i]["challenge"])
-                                var user = User.init(json: json["selfies"][i]["user"])
-                                var last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
+                                let selfie = Selfie.init(json: json["selfies"][i])
+                                let challenge = Challenge.init(json: json["selfies"][i]["challenge"])
+                                let user = User.init(json: json["selfies"][i]["user"])
+                                let last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
                                 
                                 selfie.challenge = challenge
                                 selfie.user = user
                                 selfie.last_comment = last_comment
                                 
                                 updated_selfie_array.append(selfie)
-                                //self.selfies_array_id.append(selfie.id)
                                 updated_itemHeights.append(UITableViewAutomaticDimension)
                             }
                             
@@ -408,8 +448,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                                 self.hasNewData = false
                                 self.newDataButton.hidden = true
                             }
-                            
-                            
                         } else {
                             self.hasNewData = false
                         }
@@ -503,7 +541,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func display_empty_message() {
         if (self.selfies_array.count == 0) {
             // Display a message when the table is empty
-            var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
+            let messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
             messageLabel.text = NSLocalizedString("no_selfie", comment: "Welcome to Challfie! Get started by adding your friends and take your first Selfie Challenge.")
             messageLabel.textColor = MP_HEX_RGB("000000")
             messageLabel.numberOfLines = 0;
@@ -520,7 +558,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     // MARK: - Function to push to Search Page
     func tapGestureToSearchPage() {
-        var globalFunctions = GlobalFunctions()
+        let globalFunctions = GlobalFunctions()
         globalFunctions.tapGestureToSearchPage(self, backBarTitle: NSLocalizedString("tab_timeline", comment: "Timeline"))
 
     }
@@ -548,51 +586,55 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TimelineTableViewCell = tableView.dequeueReusableCellWithIdentifier("TimelineCustomCell") as! TimelineTableViewCell
-
-        var selfie:Selfie = self.selfies_array[indexPath.row]
-        cell.timelineVC = self
-        cell.indexPath = indexPath
-        cell.loadItem(selfie: selfie)
+        let cell: TimelineTableViewCell = tableView.dequeueReusableCellWithIdentifier("TimelineCustomCell") as! TimelineTableViewCell
         
-        // Update Cell Constraints
-        cell.setNeedsUpdateConstraints()
-        cell.updateConstraintsIfNeeded()
-
-        return cell
+        if indexPath.row >= self.selfies_array.count {
+            tableView.reloadData()
+            return cell
+        } else {
+            let selfie:Selfie = self.selfies_array[indexPath.row]
+            cell.timelineVC = self
+            cell.indexPath = indexPath
+            
+            cell.loadItem(selfie: selfie)
+            
+            if self.loadingIndicator.isAnimating() == false {
+                if (indexPath.row == self.selfies_array.count - 5) && (self.loadMoreData == true) {
+                    if self.first_time == true {
+                        self.first_time = false
+                    } else {
+                        // Add Loading Indicator to footerView
+                        self.timelineTableView.tableFooterView = self.loadingIndicator
+                        
+                        // Load Next Page of Selfies for User Timeline
+                        self.loadData()
+                    }
+                }
+            }
+            
+            return cell
+        }
+        
     }
   
-    
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if itemHeights[indexPath.row] == UITableViewAutomaticDimension {
-            itemHeights[indexPath.row] = cell.bounds.height
+        if indexPath.row < self.itemHeights.count {
+            if itemHeights[indexPath.row] == UITableViewAutomaticDimension {
+                itemHeights[indexPath.row] = cell.bounds.height
+            }
         }
+        
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return itemHeights[indexPath.row]
     }
- 
-
+    
     // MARK: - UIScrollView Delegate Functions
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.lastContentOffset = scrollView.contentOffset.y
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        //if scrollView.
-        
-        if self.loadingIndicator.isAnimating() == false {
-            // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.timelineTableView.contentOffset.y >= (self.timelineTableView.contentSize.height * 0.66)) {
-                // Add Loading Indicator to footerView
-                self.timelineTableView.tableFooterView = self.loadingIndicator
-                
-                // Load Next Page of Selfies for User Timeline
-                self.loadData()
-            }
-        }
-    }
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if (self.lastContentOffset > scrollView.contentOffset.y + 10) {
@@ -612,7 +654,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     // MARK: - UIGestureDelegate Functions
-    func gestureRecognizer(UIGestureRecognizer,
+    func gestureRecognizer(_: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
             return true
     }
@@ -622,5 +664,4 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func toggleSideMenu() {
         toggleSideMenuView()
     }
-    
 }

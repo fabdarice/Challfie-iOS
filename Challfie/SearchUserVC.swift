@@ -29,8 +29,14 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         // set searchBar textfield backgroun to white
         self.searchBar.searchBarStyle = UISearchBarStyle.Minimal
-        self.searchBar.setSearchFieldBackgroundImage(UIImage(named: "searchBarTextFieldBackground"), forState: UIControlState.Normal)
-        self.searchBar.placeholder = NSLocalizedString("search_username", comment: "Search by Username or Email")
+        //self.searchBar.setSearchFieldBackgroundImage(UIImage(named: "searchBarTextFieldBackground"), forState: UIControlState.Normal)
+
+        if let searchTextField = self.searchBar.valueForKey("searchField") as? UITextField {
+            searchTextField.textColor = MP_HEX_RGB("FFFFFF")
+            searchTextField.contentMode = UIViewContentMode.ScaleToFill
+            let attributeDict = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+            searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("search_username", comment: "Search by Username or Email"), attributes: attributeDict)
+        }
         
         // Remove tableview Inset Separator
         self.tableView.layoutMargins = UIEdgeInsetsZero
@@ -42,17 +48,23 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.tableView.dataSource = self
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "FriendTVCell", bundle: nil)
+        let nib = UINib(nibName: "FriendTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "FriendCell")
 
         // Set the height of a cell dynamically
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 20.0
+        self.tableView.estimatedRowHeight = 60.0
         
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Search User Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         // Show navigationBar
         self.navigationController?.navigationBarHidden = false
@@ -64,47 +76,48 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.users_array.removeAll(keepCapacity: false)
         searchBar.resignFirstResponder()
-        if count(searchBar.text) >= 2 {
+        if searchBar.text!.characters.count >= 2 {
             // add loadingIndicator pop-up
-            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
             // -49 because of the height of the Tabbar ; -40 because of navigationController
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
             loadingActivityVC.view.frame = newframe
             self.view.addSubview(loadingActivityVC.view)
 
-            var keychain = Keychain(service: "challfie.app.service")
+            let keychain = Keychain(service: "challfie.app.service")
             let login = keychain["login"]!
             let auth_token = keychain["auth_token"]!
             
             let parameters:[String: String] = [
                 "login": login,
                 "auth_token": auth_token,
-                "user_input": searchBar.text
+                "user_input": searchBar.text!
             ]
             
             request(.POST, ApiLink.autocomplete_search_user, parameters: parameters, encoding: .JSON)
-                .responseJSON { (_, _, mydata, _) in
-                    // Remove loadingIndicator pop-up
-                    if let loadingActivityView = self.view.viewWithTag(21) {
-                        loadingActivityView.removeFromSuperview()
-                    }
-                    if (mydata == nil) {
-                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                    } else {
-                        //Convert to SwiftJSON
-                        var json = JSON(mydata!)
-                        
-                        if json["users"].count != 0 {
-                            for var i:Int = 0; i < json["users"].count; i++ {
-                                var user = Friend.init(json: json["users"][i])
-                                self.users_array.append(user)
-                            }                            
-                        } else {
-                            self.display_empty_message()
+                .responseJSON { _, _, result in
+                // Remove loadingIndicator pop-up
+                if let loadingActivityView = self.view.viewWithTag(21) {
+                    loadingActivityView.removeFromSuperview()
+                }
+                switch result {
+                case .Failure(_, _):
+                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                case .Success(let mydata):
+                    //Convert to SwiftJSON
+                    var json = JSON(mydata)
+                    
+                    if json["users"].count != 0 {
+                        for var i:Int = 0; i < json["users"].count; i++ {
+                            let user = Friend.init(json: json["users"][i])
+                            self.users_array.append(user)
                         }
-                        self.tableView.reloadData()
+                    } else {
+                        self.display_empty_message()
                     }
+                    self.tableView.reloadData()
+                }
             }
         }
     }
@@ -113,7 +126,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     func display_empty_message() {
         if (self.users_array.count == 0) {
             // Display a message when the table is empty
-            var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
+            let messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
             messageLabel.text = NSLocalizedString("no_users_found", comment: "No Results found.")
             messageLabel.textColor = MP_HEX_RGB("000000")
             messageLabel.numberOfLines = 0;
@@ -133,7 +146,7 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
         var user: Friend!
         
         user = self.users_array[indexPath.row]
@@ -165,10 +178,10 @@ class SearchUserVC : UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
+        let cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
         
         // Push to ProfilVC of the selected Row
-        var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+        let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.friend
         profilVC.hidesBottomBarWhenPushed = true
         

@@ -19,6 +19,10 @@ class AlertTVCell : UITableViewCell {
     
     func loadItem(alert:Alert) {
         
+        // set image to nil to avoid misplaced image
+        self.userImageView.image = nil
+        self.rightImageView.image = nil
+        
         // Change background if the alert is unread
         if alert.read == true {
             self.backgroundColor = MP_HEX_RGB("FFFFFF")
@@ -38,7 +42,7 @@ class AlertTVCell : UITableViewCell {
             let message_style = NSMutableParagraphStyle()
             message_style.firstLineHeadIndent = CGFloat(self.usernameLabel.frame.width + 1.0)
             message_style.headIndent = 0.0
-            var message_style_indent = NSMutableAttributedString(string: alert.message)
+            let message_style_indent = NSMutableAttributedString(string: alert.message)
             // Test if Last comment exists or not
             message_style_indent.addAttribute(NSParagraphStyleAttributeName, value: message_style, range: NSMakeRange(0, message_style_indent.length))
             self.messageLabel.attributedText = message_style_indent
@@ -82,6 +86,7 @@ class AlertTVCell : UITableViewCell {
         }
         
         // load book or selfie image
+        self.rightImageView.clipsToBounds = true
         if alert.book_img != "" {
             self.rightImageView.hidden = false
             let bookImageURL:NSURL = NSURL(string: alert.book_img)!

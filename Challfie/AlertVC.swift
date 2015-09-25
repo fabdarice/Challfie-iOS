@@ -22,6 +22,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     var first_time = true
     
     var popViewController : PopUpViewControllerSwift = PopUpViewControllerSwift(nibName: "PopUpViewController", bundle: nil)
+    
+    var loadMoreData: Bool = false
 
     
     override func viewDidLoad() {
@@ -65,21 +67,27 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         self.tableView.dataSource = self
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "AlertTVCell", bundle: nil)
+        let nib = UINib(nibName: "AlertTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "AlertCell")
         
         // Set the height of a cell dynamically
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 100.0                
+        self.tableView.estimatedRowHeight = 65.0
         
         self.sideMenuController()?.sideMenu?.behindViewController = self
         
         // Load Alerts List
-        self.refresh(actionFromInit: true)
+        self.refresh(true)
     }
     
     override func viewWillAppear(animated: Bool) {        
         super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Alert's Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         // Display tabBarController
         self.hidesBottomBarWhenPushed = false
@@ -87,7 +95,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         
         // Refresh the page if not the first time and a badge exists
         if self.first_time == false && self.tabBarItem.badgeValue != nil {
-            refresh(actionFromInit: false)
+            refresh(false)
         }
         
         self.tabBarItem.badgeValue = nil
@@ -107,45 +115,59 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
         if keychain["login"] != nil {
+            
+            var last_notification_id : String!
+            
+            if self.alerts_array_id.count == 0 {
+                last_notification_id = "0"
+            } else {
+                last_notification_id = self.alerts_array_id.first?.description
+            }
+            
             let parameters = [
                 "login": login,
-                "auth_token": auth_token
+                "auth_token": auth_token,
+                "last_notification_id": last_notification_id
             ]
-            request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
+            Alamofire.request(.POST, ApiLink.alerts_all_read, parameters: parameters, encoding: .JSON)
             
             self.tabBarItem.badgeValue = nil
             
-            // Update App Badge Number
-            var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
-            var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
-            
-            var badgeNumber : Int!
-            if friend_tabBarItem.badgeValue != nil {
-                badgeNumber = friend_tabBarItem.badgeValue?.toInt()
-                UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
-            } else {
-                UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+            if let tabBarItems = self.tabBarController?.tabBar.items {
+                // Update App Badge Number
+                let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+                
+                var badgeNumber : Int!
+                if friend_tabBarItem.badgeValue != nil {
+                    badgeNumber = Int(friend_tabBarItem.badgeValue!)
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+                } else {
+                    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+                }
             }
+            
         }
     }
     
+    // MARK: - Refresh and Initial Loading New Data
     func refreshInvoked(sender:AnyObject) {
-        refresh(actionFromInit: false)
+        refresh(false)
     }
     
-    // Pull-to-refresh function - Refresh all data
+    //  when true : Initial Loading of Data
+    //  when false : Refresh all data (not used anymore)
     func refresh(actionFromInit: Bool = false) {
         self.refreshControl.beginRefreshing()
         self.refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Refreshing_data", comment: "Refreshing data.."))
         var parameters = [String: String]()
         var api_link: String!
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -176,27 +198,30 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         }
         
         
-        request(.POST, api_link, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
+        Alamofire.request(.POST, api_link, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
 
                     if actionFromInit == false {
                         self.alerts_array.removeAll(keepCapacity: false)
                         self.alerts_array_id.removeAll(keepCapacity: false)
                     }
                     
+                    var isDisplayingPopUp: Bool = false
+                    
                     if json["notifications"].count != 0 {
                         for var i:Int = 0; i < json["notifications"].count; i++ {
-                            var alert = Alert.init(json: json["notifications"][i])
-                            var author: User = User.init(json: json["notifications"][i]["author"])
+                            let alert = Alert.init(json: json["notifications"][i])
+                            let author: User = User.init(json: json["notifications"][i]["author"])
                             alert.author = author
                             
                             // Display Pop up if alert of unlocking new Level
-                            if alert.type_notification == "book_unlock" && alert.read == false  {
+                            if alert.type_notification == "book_unlock" && alert.read == false && isDisplayingPopUp == false {
                                 var popUpImage: UIImage!
 
                                 switch author.book_level {
@@ -212,6 +237,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                                 }
 
                                 if popUpImage != nil {
+                                    isDisplayingPopUp = true
                                     self.popViewController = PopUpViewControllerSwift(nibName: "PopUpViewController", bundle: nil)
                                     self.popViewController.showInView(self.navigationController?.view, withImage: popUpImage, withMessage: "", animated: true)
                                 }
@@ -224,18 +250,10 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                         }
                         if actionFromInit == true {
                             self.page += 1
+                            self.loadMoreData = true
                         }
                         self.tableView.reloadData()
                     }
-                    
-                    
-                    /*
-                    // Update Badge of Alert TabBarItem
-                    if json["meta"]["new_alert_nb"] != 0 {
-                        self.tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
-                    } else {
-                        self.tabBarItem.badgeValue = nil
-                    }*/
                     
                 }
                 self.refreshControl.endRefreshing()
@@ -245,19 +263,17 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 if actionFromInit == true {
                     // Register for Push Notitications, if running iOS 8
                     let app = UIApplication.sharedApplication()
-                    let notificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
+                    let notificationType: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
                     let settings = UIUserNotificationSettings(forTypes: notificationType, categories: nil)
                     app.registerUserNotificationSettings(settings)
                 }
         }
-        
-        
     }
     
-    // Retrive list of selfies to a user timeline
+    // Pagination : Load next Alerts
     func loadData() {        
         self.loadingIndicator.startAnimating()
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -267,30 +283,33 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             "page": self.page.description
         ]
         
-        request(.POST, ApiLink.alerts_list, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
-                if (mydata == nil) {
+        Alamofire.request(.POST, ApiLink.alerts_list, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
                     
                     if json["notifications"].count != 0 {
                         for var i:Int = 0; i < json["notifications"].count; i++ {
-                            var alert = Alert.init(json: json["notifications"][i])
-                            var author: User = User.init(json: json["notifications"][i]["author"])
+                            let alert = Alert.init(json: json["notifications"][i])
+                            let author: User = User.init(json: json["notifications"][i]["author"])
                             alert.author = author
                             
-                            if contains(self.alerts_array_id, alert.id) == false {
+                            if self.alerts_array_id.contains(alert.id) == false {
                                 self.alerts_array.append(alert)
                                 self.alerts_array_id.append(alert.id)
                             }
                             
                         }
                         self.page += 1
+                        self.loadMoreData = true
                         self.tableView.reloadData()
+                    } else {
+                        self.loadMoreData = false
                     }
-                    
                     
                 }
                 self.loadingIndicator.stopAnimating()
@@ -300,7 +319,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     func display_empty_message() {
         if (self.alerts_array.count == 0) {
             // Display a message when the table is empty
-            var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
+            let messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
             messageLabel.text = NSLocalizedString("no_alert", comment: "No alerts found..")
             messageLabel.textColor = MP_HEX_RGB("000000")
             messageLabel.numberOfLines = 0;
@@ -317,9 +336,9 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         }
     }
     
-    // Function to push to Search Page
+    // MARK:- Function to push to Search Page
     func tapGestureToSearchPage() {
-        var globalFunctions = GlobalFunctions()
+        let globalFunctions = GlobalFunctions()
         globalFunctions.tapGestureToSearchPage(self, backBarTitle: NSLocalizedString("Alert_tab", comment: "Alert"))
         
     }
@@ -327,9 +346,9 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     // MARK: - tableView Delegate
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //
-        var cell: AlertTVCell = tableView.dequeueReusableCellWithIdentifier("AlertCell") as! AlertTVCell
+        let cell: AlertTVCell = tableView.dequeueReusableCellWithIdentifier("AlertCell") as! AlertTVCell
         
-        var alert: Alert = self.alerts_array[indexPath.row]
+        let alert: Alert = self.alerts_array[indexPath.row]
         cell.loadItem(alert)
         
         // Remove the inset for cell separator
@@ -342,29 +361,27 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         
         cell.sizeToFit()
         
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.alerts_array.count
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {        
         if self.loadingIndicator.isAnimating() == false {
-            // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.bounds.size.height)) {
+            if (indexPath.row == self.alerts_array.count - 1) && (self.loadMoreData == true) {
                 // Add Loading Indicator to footerView
                 self.tableView.tableFooterView = self.loadingIndicator
                 
                 // Load Next Page of Selfies for User Timeline
                 self.loadData()
             }
+            
         }
+        
+        return cell
     }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.alerts_array.count
+    }
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         //var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as FriendTVCell
-        var alert: Alert = self.alerts_array[indexPath.row]
+        let alert: Alert = self.alerts_array[indexPath.row]
         
         
         // load book image
@@ -373,8 +390,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             self.tabBarController?.selectedIndex = 1
         } else if alert.selfie_img != "" {
             // Push to OneSelfieVC
-            var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
-            var selfie = Selfie.init(id: alert.selfie_id)
+            let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
+            let selfie = Selfie.init(id: alert.selfie_id)
             oneSelfieVC.selfie = selfie
             
             // Hide TabBar when push to OneSelfie View
@@ -385,7 +402,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             
         } else {
             // Push to Profil View(UserProfil)
-            var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+            let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
             profilVC.user = alert.author
             profilVC.hidesBottomBarWhenPushed = true
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -400,7 +417,7 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
  
     
     // MARK: - UIGestureDelegate
-    func gestureRecognizer(UIGestureRecognizer,
+    func gestureRecognizer(_: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
             return true
     }

@@ -29,7 +29,7 @@ class LoadingActivityVC: UIViewController {
         }
         
         // -49 because of the height of the Tabbar ; -40 because of navigationController
-        var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - variableHeight)        
+        let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - variableHeight)        
         self.view.frame = newframe
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)

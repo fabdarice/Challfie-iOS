@@ -14,10 +14,10 @@ class MyNavigationController: ENSideMenuNavigationController, ENSideMenuDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var menuTVC = MyMenuTableViewController()
+        let menuTVC = MyMenuTableViewController()
         menuTVC.navController = self
                         
-        sideMenu = ENSideMenu(sourceView: self.view, menuTableViewController: menuTVC, menuPosition:.Left)
+        sideMenu = ENSideMenu(sourceView: self.view, menuViewController: menuTVC, menuPosition:.Left)
         //sideMenu?.delegate = self //optional
         sideMenu?.menuWidth = 250.0 // optional, default is 160
         sideMenu?.bouncingEnabled = false

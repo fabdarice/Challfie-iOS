@@ -71,6 +71,13 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Login Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
         // Add Notification for when the Keyboard pop up  and when it is dismissed
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name:UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name:UIKeyboardDidHideNotification, object: nil)
@@ -95,30 +102,30 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
     
     // MARK: - login Action
     @IBAction func loginAction(sender: UIButton) {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Add loadingIndicator pop-up
-        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         
-        let parameters:[String: AnyObject] = [
-            "login": self.loginTextField.text,
-            "password": self.passwordTextField.text,
+        let parameters:[String: String] = [
+            "login": self.loginTextField.text!,
+            "password": self.passwordTextField.text!,
             "timezone": NSTimeZone.localTimeZone().name
         ]
         
-        request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
-            .responseJSON{ (_, _, mydata, _) in
+        Alamofire.request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if let loadingActivityView = self.view.viewWithTag(21) {
                     loadingActivityView.removeFromSuperview()
                 }
-                if (mydata == nil) {
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //convert to SwiftJSON
-                    let json = JSON(mydata!)
+                    let json = JSON(mydata)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RESPONSE FROM HTTP Request
@@ -132,14 +139,14 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
                         //KeychainInfo.login = login
                         //KeychainInfo.auth_token = auth_token
                         
-                        var keychain = Keychain(service: "challfie.app.service")
+                        let keychain = Keychain(service: "challfie.app.service")
                         // Save login and auth_token to the iOS Keychain
                         keychain["login"] = login
                         keychain["auth_token"] = auth_token
                         
                         // Activate the Background Fetch Mode to Interval Minimum
                         //UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
-                          //  UIApplicationBackgroundFetchIntervalMinimum)
+                        //  UIApplicationBackgroundFetchIntervalMinimum)
                         
                         self.performSegueWithIdentifier("homeSegue", sender: self)
                     }
@@ -166,7 +173,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
         return true;
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.view.endEditing(true)
     }
     
@@ -194,13 +201,13 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
                 GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
             } else {
                 // add loadingIndicator pop-up
-                var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+                let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
                 loadingActivityVC.view.tag = 21
                 self.view.addSubview(loadingActivityVC.view)
                 
                 let fbAccessToken = FBSDKAccessToken.currentAccessToken().tokenString
                 let fbTokenExpiresAt = FBSDKAccessToken.currentAccessToken().expirationDate.timeIntervalSince1970
-                var user_id = result.valueForKey("id") as! String
+                let user_id = result.valueForKey("id") as! String
                 let userProfileImage = "http://graph.facebook.com/\(user_id)/picture?type=large"
                 var email = ""
                 var facebook_locale: String = "en_US"
@@ -229,16 +236,17 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
                 ]
                 
                 request(.POST, ApiLink.facebook_register, parameters: parameters, encoding: .JSON)
-                    .responseJSON { (_, _, mydata, _) in
+                    .responseJSON { _, _, result in
                         // Remove loadingIndicator pop-up
                         if let loadingActivityView = self.view.viewWithTag(21) {
                             loadingActivityView.removeFromSuperview()
                         }
-                        if (mydata == nil) {
+                        switch result {
+                        case .Failure(_, _):
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                        } else {
+                        case .Success(let mydata):
                             //convert to SwiftJSON
-                            let json = JSON(mydata!)
+                            let json = JSON(mydata)
                             
                             if (json["success"].intValue == 0) {
                                 // ERROR RESPONSE FROM HTTP Request
@@ -249,22 +257,22 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
                                 let auth_token:String! = json["auth_token"].string
                                 let username_activated: Bool = json["username_activated"].boolValue
                                 
-                                var keychain = Keychain(service: "challfie.app.service")
+                                let keychain = Keychain(service: "challfie.app.service")
                                 // Save login and auth_token to the iOS Keychain
                                 keychain["login"] = login
                                 keychain["auth_token"] = auth_token
-
+                                
                                 if username_activated == true {
                                     // User has already set his Challfie Username
                                     // Activate the Background Fetch Mode to Interval Minimum
                                     //UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(
-                                      //  UIApplicationBackgroundFetchIntervalMinimum)
+                                    //  UIApplicationBackgroundFetchIntervalMinimum)
                                     
                                     self.performSegueWithIdentifier("homeSegue", sender: self)
                                 } else {
                                     // User needs to set his Challfie username since coming from Facebook
                                     self.performSegueWithIdentifier("setFacebookUsernameSegue", sender: self)
-                                }                            
+                                }
                             }
                         }
                 }

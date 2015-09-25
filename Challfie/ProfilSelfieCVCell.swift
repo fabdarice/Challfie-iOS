@@ -16,22 +16,32 @@ class ProfilSelfieCVCell : UICollectionViewCell {
     var selfie: Selfie!
     var profilVC : UIViewController!
     
-    func loadItem() {
+    override func awakeFromNib() {
+        super.awakeFromNib()
         
-        // Selfie Image
-        let selfieImageURL:NSURL = NSURL(string: selfie.show_selfie_pic())!
-        self.selfieImage.hnk_setImageFromURL(selfieImageURL)
-        
-        var selfiePictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+        let selfiePictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
         selfiePictapGesture.addTarget(self, action: "selfieTapGesture")
         self.selfieImage.addGestureRecognizer(selfiePictapGesture)
         self.selfieImage.userInteractionEnabled = true
     }
     
+    func loadItem() {
+        // Selfie Image
+        let selfieImageURL:NSURL = NSURL(string: selfie.show_selfie_pic())!
+        self.selfieImage.hnk_setImageFromURL(selfieImageURL)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        // set image to nil to avoid misplaced image
+        self.selfieImage.image = nil
+    }
+    
     func selfieTapGesture() {
         self.profilVC.hidesBottomBarWhenPushed = true
         // Push to OneSelfieVC
-        var oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
+        let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
         oneSelfieVC.selfie = self.selfie
         oneSelfieVC.to_bottom = false
         self.profilVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Profil_tab", comment: "Profile"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)

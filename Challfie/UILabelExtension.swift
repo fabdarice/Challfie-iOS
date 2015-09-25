@@ -12,12 +12,24 @@ extension UILabel {
     var adjustFontToRealIPhoneSize: Bool {
         set {
             if newValue {
-                var currentFont = self.font
+                let currentFont = self.font
                 var sizeScale: CGFloat = 1
                 
                 let model = UIDevice.currentDevice().modelName
                                 
                 switch model {
+                case "x86_64":
+                    switch UIScreen.mainScreen().bounds.height {
+                        // Iphone 3 & 4
+                    case 480.0 : sizeScale = 0.9
+                        // Iphone 5
+                    case 568.0: sizeScale = 0.9
+                        // Iphone 6
+                    case 667.0: sizeScale = 1.0
+                        // Iphone 6Plus
+                    case 736.0: sizeScale = 1.1
+                    default: sizeScale = 1.0
+                    }
                 case "iPhone 3G": sizeScale = 0.9
                 case "iPhone 3GS": sizeScale = 0.9
                 case "iPhone 4": sizeScale = 0.9

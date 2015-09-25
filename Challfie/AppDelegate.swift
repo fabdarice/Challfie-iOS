@@ -12,6 +12,7 @@ import SwiftyJSON
 import FBSDKCoreKit
 import FBSDKLoginKit
 import KeychainAccess
+import Siren
 import Armchair
 
 @UIApplicationMain
@@ -32,19 +33,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
-        var loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
-        var homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
+        let loginViewController:LoginVC = mainStoryboard.instantiateViewControllerWithIdentifier("loginVC") as! LoginVC
+        let homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
 
         //var guideVC:GuideVC = mainStoryboard.instantiateViewControllerWithIdentifier("guideVC") as! GuideVC
         
-        var facebookUsernameViewController:FacebookUsernameVC = mainStoryboard.instantiateViewControllerWithIdentifier("facebookUsernameVC") as! FacebookUsernameVC
+        let facebookUsernameViewController:FacebookUsernameVC = mainStoryboard.instantiateViewControllerWithIdentifier("facebookUsernameVC") as! FacebookUsernameVC
         
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]
         let auth_token = keychain["auth_token"]
         
-        var launchScreenVC = UIViewController(nibName: "LoadingLaunchScreen", bundle: nil)
+        let launchScreenVC = UIViewController(nibName: "LoadingLaunchScreen", bundle: nil)
         self.window?.rootViewController = launchScreenVC
         
         if (login != nil && auth_token != nil) {
@@ -54,12 +55,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 "timezone": NSTimeZone.localTimeZone().name
             ]
             // Check if the login and auth_token are valid for the user
-            request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
-                .responseJSON { (_, _, mydata, _) in
-                    var keychain = Keychain(service: "challfie.app.service")
+            Alamofire.request(.POST, ApiLink.sign_in, parameters: parameters, encoding: .JSON)
+                .responseJSON { _, _, result in
+                    let keychain = Keychain(service: "challfie.app.service")
                     
-                    if (mydata != nil) {
-                        let json = JSON(mydata!)
+                    switch result {
+                    case .Failure(_, _):
+                        // Logout FB if it was logged in
+                        let facebookManager = FBSDKLoginManager()
+                        facebookManager.logOut()
+                        keychain["login"] = nil
+                        keychain["auth_token"] = nil
+                        self.window?.rootViewController = loginViewController
+                    case .Success(let mydata):
+                        let json = JSON(mydata)
                         if (json["success"].intValue == 1) {
                             let username_activated: Bool = json["username_activated"].boolValue
                             
@@ -78,25 +87,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             keychain["login"] = nil
                             keychain["auth_token"] = nil
                             // Logout FB if it was logged in
-                            var facebookManager = FBSDKLoginManager()
+                            let facebookManager = FBSDKLoginManager()
                             facebookManager.logOut()
                             self.window?.rootViewController = loginViewController
                         }
-                    } else {
-                        // Logout FB if it was logged in
-                        var facebookManager = FBSDKLoginManager()
-                        facebookManager.logOut()
-                        keychain["login"] = nil
-                        keychain["auth_token"] = nil
-                        self.window?.rootViewController = loginViewController
+
+                        
                     }
             }
         } else {
             // Logout FB if it was logged in
-            var facebookManager = FBSDKLoginManager()
+            let facebookManager = FBSDKLoginManager()
             facebookManager.logOut()
             self.window?.rootViewController = loginViewController
         }
+        
+        // Configure tracker from GoogleService-Info.plist.
+        var configureError:NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        
+        // Optional: configure GAI options.
+        let gai = GAI.sharedInstance()
+        gai.trackUncaughtExceptions = true  // report uncaught exceptions
+        //gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
         
         self.window?.makeKeyAndVisible()
         
@@ -151,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Useful if user returns to your app from the background after extended period of time.
         Place in applicationDidBecomeActive(_:).   */
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]
         let auth_token = keychain["auth_token"]
         
@@ -182,8 +196,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        var deviceTokenStr = NSString(format: "%@", deviceToken)
-        var keychain = Keychain(service: "challfie.app.service")
+        let deviceTokenStr = NSString(format: "%@", deviceToken)
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]
         let auth_token = keychain["auth_token"]
 
@@ -202,14 +216,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        println("failed to register for remote notifications:  \(error)")
+        print("failed to register for remote notifications:  \(error)")
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
     }
 
     // MARK: - Facebook Login to handle callback
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         // You can add your app-specific url handling code here if needed
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
 
@@ -229,7 +243,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Armchair.remindButtonTitle(NSLocalizedString("remind_me_later", comment: "Remind me later"))
         Armchair.shouldPromptIfRated(true)
         Armchair.daysUntilPrompt(10)
-        Armchair.usesUntilPrompt(20)
+        Armchair.usesUntilPrompt(15)
     }
     
     /*

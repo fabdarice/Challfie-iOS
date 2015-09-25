@@ -36,6 +36,10 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     var following_first_time: Bool = true
     var followers_first_time: Bool = true
     
+    var loadMoreSuggestionsData : Bool = false
+    var loadMoreFollowingData : Bool = false
+    var loadMoreFollowersData : Bool = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,8 +87,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "FriendTVCell", bundle: nil)
-        var nib_request = UINib(nibName: "FriendRequestTVCell", bundle: nil)
+        let nib = UINib(nibName: "FriendTVCell", bundle: nil)
+        let nib_request = UINib(nibName: "FriendRequestTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "FriendCell")
         self.tableView.registerNib(nib_request, forCellReuseIdentifier: "FriendRequestCell")
         
@@ -102,13 +106,20 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        var friend_tabBarItem : UITabBarItem = (self.tabBarController?.tabBar.items?[3] as? UITabBarItem)!
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Friends Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
-        if friend_tabBarItem.badgeValue != nil || self.friends_tab == 1 {
-            // set the suggestions Tab to be displayed by default
-            self.suggestionsTab(self)
+        if let tabBarItems = self.tabBarController?.tabBar.items {
+            let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+            if friend_tabBarItem.badgeValue != nil || self.friends_tab == 1 {
+                // set the suggestions Tab to be displayed by default
+                self.suggestionsTab(self)
+            }
         }
-        
+
         // Show StatusBarBackground
         let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
         statusBarViewBackground?.hidden = false
@@ -125,15 +136,15 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             self.loadingIndicator.startAnimating()
         } else {
             // add loadingIndicator pop-up
-            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
             // -49 because of the height of the Tabbar ; -40 because of navigationController
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
             loadingActivityVC.view.frame = newframe
             self.view.addSubview(loadingActivityVC.view)
         }
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -143,8 +154,9 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             "page": self.suggestions_page.description
         ]
         
-        request(.POST, ApiLink.suggestions_and_request, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, ApiLink.suggestions_and_request, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
+                // Remove loadingIndicator pop-up
                 if pagination == true {
                     self.loadingIndicator.stopAnimating()
                 } else {
@@ -153,42 +165,53 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         loadingActivityView.removeFromSuperview()
                     }
                 }
-                if (mydata == nil) {
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
                     
                     if json["request"].count != 0 {
                         for var i:Int = 0; i < json["request"].count; i++ {
-                            var friend = Friend.init(json: json["request"][i])
+                            let friend = Friend.init(json: json["request"][i])
                             self.request_array.append(friend)
                         }
                     }
                     if json["suggestions"].count != 0 {
                         for var i:Int = 0; i < json["suggestions"].count; i++ {
-                            var friend = Friend.init(json: json["suggestions"][i])
+                            let friend = Friend.init(json: json["suggestions"][i])
                             self.suggestions_array.append(friend)
                         }
+                        self.suggestions_page += 1
+                        self.loadMoreSuggestionsData = true
+                    } else {
+                        self.loadMoreSuggestionsData = false
                     }
-                    self.suggestions_page += 1
+                    
                     self.tableView.reloadData()
                     
-                    // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
-                    if json["new_alert_nb"] != 0 {
-                        alert_tabBarItem.badgeValue = json["new_alert_nb"].stringValue
-                    } else {
-                        alert_tabBarItem.badgeValue = nil
+                    
+                    if let tabBarItems = self.tabBarController?.tabBar.items {
+                        
+                        // Update Badge of Alert TabBarItem
+                        let alert_tabBarItem : UITabBarItem = tabBarItems[4]
+                        if json["new_alert_nb"] != 0 {
+                            alert_tabBarItem.badgeValue = json["new_alert_nb"].stringValue
+                        } else {
+                            alert_tabBarItem.badgeValue = nil
+                        }
+                        
+                        // Update Badge of Friends TabBarItem
+                        let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+                        if json["new_friends_request_nb"] != 0 {
+                            friend_tabBarItem.badgeValue = json["new_friends_request_nb"].stringValue
+                        } else {
+                            friend_tabBarItem.badgeValue = nil
+                        }
                     }
                     
-                    // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
-                    if json["new_friends_request_nb"] != 0 {
-                        friend_tabBarItem.badgeValue = json["new_friends_request_nb"].stringValue
-                    } else {
-                        friend_tabBarItem.badgeValue = nil
-                    }
+                    
                     
                     // Display "Search for Facebook's Friend" Button if the user didn't link his account yet
                     if json["is_facebook_link"] == true {
@@ -210,10 +233,10 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             self.loadingIndicator.startAnimating()
         } else {
             // add loadingIndicator pop-up
-            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
             // -49 because of the height of the Tabbar ; -40 because of navigationController
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
             loadingActivityVC.view.frame = newframe
 
             self.view.addSubview(loadingActivityVC.view)
@@ -232,7 +255,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             page = self.followers_page
         }
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -242,8 +265,8 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             "page": page.description
         ]
         
-        request(.POST, api_link, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, api_link, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if pagination == true {
                     self.loadingIndicator.stopAnimating()
@@ -252,15 +275,17 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         loadingActivityView.removeFromSuperview()
                     }
                 }
-                if (mydata == nil) {
+                
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
                     
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
-                            var friend = Friend.init(json: json["users"][i])
+                            let friend = Friend.init(json: json["users"][i])
                             
                             if self.friends_tab == 2 {
                                 self.following_array.append(friend)
@@ -271,28 +296,38 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                         }
                         
                         if self.friends_tab == 2 {
+                            self.loadMoreFollowingData = true
                             self.following_page += 1
                         } else {
+                            self.loadMoreFollowersData = true
                            self.followers_page += 1
+                        }
+                    } else {
+                        if self.friends_tab == 2 {
+                            self.loadMoreFollowingData = false
+                        } else {
+                            self.loadMoreFollowersData = false
                         }
                     }
                     
                     self.tableView.reloadData()
                     
-                    // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[4] as! UITabBarItem
-                    if json["meta"]["new_alert_nb"] != 0 {
-                        alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
-                    } else {
-                        alert_tabBarItem.badgeValue = nil
-                    }
-                    
-                    // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
-                    if json["meta"]["new_friends_request_nb"] != 0 {
-                        friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
-                    } else {
-                        friend_tabBarItem.badgeValue = nil
+                    if let tabBarItems = self.tabBarController?.tabBar.items {
+                        // Update Badge of Alert TabBarItem
+                        let alert_tabBarItem : UITabBarItem = tabBarItems[4]
+                        if json["meta"]["new_alert_nb"] != 0 {
+                            alert_tabBarItem.badgeValue = json["meta"]["new_alert_nb"].stringValue
+                        } else {
+                            alert_tabBarItem.badgeValue = nil
+                        }
+                        
+                        // Update Badge of Friends TabBarItem
+                        let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+                        if json["meta"]["new_friends_request_nb"] != 0 {
+                            friend_tabBarItem.badgeValue = json["meta"]["new_friends_request_nb"].stringValue
+                        } else {
+                            friend_tabBarItem.badgeValue = nil
+                        }
                     }
                     
                 }
@@ -308,19 +343,23 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         self.followersButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         self.friends_tab = 1
         
-        
-        var friend_tabBarItem : UITabBarItem = self.tabBarController?.tabBar.items?[3] as! UITabBarItem
-        
-        if self.suggestions_first_time == true || friend_tabBarItem.badgeValue != nil {
-            self.suggestions_page = 1
-            self.suggestions_array.removeAll(keepCapacity: false)
-            self.request_array.removeAll(keepCapacity: false)
-            self.tableView.reloadData()
-            self.loadRequestData(false)
-            self.suggestions_first_time = false
+        if let tabBarItems = self.tabBarController?.tabBar.items {
+            let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+            
+            if self.suggestions_first_time == true || friend_tabBarItem.badgeValue != nil {
+                self.suggestions_page = 1
+                self.suggestions_array.removeAll(keepCapacity: false)
+                self.request_array.removeAll(keepCapacity: false)
+                self.tableView.reloadData()
+                self.loadRequestData(false)
+                self.suggestions_first_time = false
+            } else {
+                self.tableView.reloadData()
+            }
         } else {
-            self.tableView.reloadData()
+            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
         }
+
     }
     
     @IBAction func followingTab(sender: UIButton) {
@@ -360,7 +399,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     
     // MARK: - action "Link Facebook" button
     @IBAction func linkFacebook(sender: AnyObject) {
-        var fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+        let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
         fbLoginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], handler: { (result, error) -> Void in
             if (error != nil) {
                 GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -381,22 +420,15 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
             } else {
                 let fbAccessToken = FBSDKAccessToken.currentAccessToken().tokenString
                 let fbTokenExpiresAt = FBSDKAccessToken.currentAccessToken().expirationDate.timeIntervalSince1970
-                var user_id = result.valueForKey("id") as! String
+                let user_id = result.valueForKey("id") as! String
                 let userProfileImage = "http://graph.facebook.com/\(user_id)/picture?type=large"
-                var email = ""
                 var facebook_locale: String = "en_US"
-                
-                if result.valueForKey("email") == nil {
-                    email = user_id + "@facebook.com"
-                } else {
-                    email = result.valueForKey("email") as! String
-                }
-                
+
                 if result.valueForKey("locale") != nil {
                     facebook_locale = result.valueForKey("locale") as! String
                 }
                 
-                var keychain = Keychain(service: "challfie.app.service")
+                let keychain = Keychain(service: "challfie.app.service")
                 let login = keychain["login"]!
                 let auth_token = keychain["auth_token"]!
                 
@@ -408,17 +440,18 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                     "lastname": result.valueForKey("last_name") as! String ,
                     "fbtoken": fbAccessToken,
                     "fbtoken_expires_at": fbTokenExpiresAt,
-                    "fb_locale": facebook_locale
+                    "fb_locale": facebook_locale,
+                    "facebook_picture": userProfileImage
                 ]
                 
-                request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
-                    .responseJSON { (_, _, mydata, _) in
-                        if (mydata == nil) {
+                Alamofire.request(.POST, ApiLink.facebook_link_account, parameters: parameters, encoding: .JSON)
+                    .responseJSON { _, _, result in
+                        switch result {
+                        case .Failure(_, _):
                             GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                        } else {
-
+                        case .Success(let mydata):
                             //convert to SwiftJSON
-                            let json = JSON(mydata!)
+                            let json = JSON(mydata)
 
                             if (json["success"].intValue == 0) {
                                 // ERROR RESPONSE FROM HTTP Request
@@ -439,7 +472,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     
     // MARK: - Display Message if Empty
     func display_empty_message() {
-        var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
+        let messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
         messageLabel.textColor = MP_HEX_RGB("000000")
         messageLabel.numberOfLines = 0;
         messageLabel.textAlignment = NSTextAlignment.Center
@@ -481,7 +514,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     
     // MARK: - Tap Gesture to push to Search Page
     func tapGestureToSearchPage() {
-        var globalFunctions = GlobalFunctions()
+        let globalFunctions = GlobalFunctions()
         globalFunctions.tapGestureToSearchPage(self, backBarTitle: NSLocalizedString("Friends_tab", comment: "Friends"))
         
     }
@@ -508,7 +541,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if self.friends_tab == 1 {
-            // Return 2 sections if "Suggestions Tab"
+            // Return 2 sections if "Suggestions & Pending Request Tab"
             return 2
         } else {
             // Return 1 Sections if "Followers" & "Following" Tab
@@ -538,9 +571,9 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         // Add Header for the "Friends Suggestions Tab"
         // One Header for "Pending Request"
         // One HEader for "Friends Suggestions"
-        var headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 20.0))
+        let headerView = UIView(frame: CGRectMake(0.0, 0.0, tableView.frame.width, 20.0))
         headerView.backgroundColor = MP_HEX_RGB("1A596B")
-        var headerLabel = UILabel(frame: CGRectMake(10.0, 5.0, tableView.frame.width, 17.0))
+        let headerLabel = UILabel(frame: CGRectMake(10.0, 5.0, tableView.frame.width, 17.0))
         headerLabel.font = UIFont(name: "HelveticaNeue", size: 13.0)
         headerLabel.textColor = MP_HEX_RGB("FFFFFF")
         
@@ -599,90 +632,26 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         cell.updateConstraintsIfNeeded()
         cell.sizeToFit()
         
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if self.friends_tab == 1 {
-            // Disable "Swipe to Delete" for "Suggestions Tab"
-            return false
-        } else {
-            // Enable "Swipe to Delete" for "Followers" & "Following" Tab
-            return true
-        }
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        // Delete Following/Follower or Decline Follower's Request
-        if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            var cell : FriendTVCell = tableView.cellForRowAtIndexPath(indexPath) as! FriendTVCell
-            
-            var keychain = Keychain(service: "challfie.app.service")
-            let login = keychain["login"]!
-            let auth_token = keychain["auth_token"]!
-            
-            let parameters = [
-                "login": login,
-                "auth_token": auth_token,
-                "user_id": cell.friend.id.description
-            ]
-            if self.friends_tab == 1 {
-                self.request_array.removeAtIndex(indexPath.row)
-                request(.POST, ApiLink.remove_follower, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
-                    if (mydata == nil) {
-                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                    } else {
-                        //Convert to SwiftJSON
-                        var json = JSON(mydata!)
-                        if (json["success"].intValue == 0) {
-                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                        }
-                    }
-                }
-            }
-            if self.friends_tab == 2 {
-                // Swipe to remove a following relationship
-                self.following_array.removeAtIndex(indexPath.row)
-                request(.POST, ApiLink.unfollow, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
-                    if (mydata == nil) {
-                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                    } else {
-                        //Convert to SwiftJSON
-                        var json = JSON(mydata!)
-                        if (json["success"].intValue == 0) {
-                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                        }
-                    }
-                }
-                // Refresh all 2 Tabs
-                self.suggestions_first_time = true
-                self.followers_first_time = true
-            }
-            if self.friends_tab == 3 {
-                // Swipe to remove a follower relationship
-                self.followers_array.removeAtIndex(indexPath.row)                
-                request(.POST, ApiLink.remove_follower, parameters: parameters, encoding: .JSON).responseJSON { (_, _, mydata, _) in
-                    if (mydata == nil) {
-                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                    } else {
-                        //Convert to SwiftJSON
-                        var json = JSON(mydata!)
-                        if (json["success"].intValue == 0) {
-                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                        }
-                    }
-                }
-            }
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-            tableView.reloadData()
-        }
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.loadingIndicator.isAnimating() == false {
-            // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
-            if (self.tableView.contentOffset.y >= (self.tableView.contentSize.height * 0.50)) {
+            var shouldLoadMoreData : Bool = false
+            if self.friends_tab == 1 {
+                if indexPath.section != 0 && (indexPath.row == self.suggestions_array.count - 1) && (self.loadMoreSuggestionsData == true) {
+                    shouldLoadMoreData = true
+                }
+            } else {
+                if self.friends_tab == 2 {
+                    if (indexPath.row == self.following_array.count - 1) && (self.loadMoreFollowingData == true) {
+                        shouldLoadMoreData = true
+                    }
+                }
+                if self.friends_tab == 3 {
+                    if (indexPath.row == self.followers_array.count - 1) && (self.loadMoreFollowersData == true) {
+                        shouldLoadMoreData = true
+                    }
+                }
+            }
+            
+            if shouldLoadMoreData == true {
                 // Add Loading Indicator to footerView
                 self.tableView.tableFooterView = self.loadingIndicator
                 
@@ -694,14 +663,89 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
                 }
             }
         }
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if self.friends_tab == 1 {
+            // Disable "Swipe to Delete" for "Pending Request"
+            if indexPath.section == 0 {
+                return false
+            } else {
+                return true
+            }
+        } else {
+            // Enable "Swipe to Delete" for "Followers" & "Following" Tab
+            return true
+        }
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        // Delete Following/Follower or Decline Follower's Request
+        if (editingStyle == UITableViewCellEditingStyle.Delete) {
+            let cell : FriendTVCell = tableView.cellForRowAtIndexPath(indexPath) as! FriendTVCell
+            
+            let keychain = Keychain(service: "challfie.app.service")
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
+            
+            var apilink: String!
+            
+            let parameters = [
+                "login": login,
+                "auth_token": auth_token,
+                "user_id": cell.friend.id.description
+            ]
+            if self.friends_tab == 1 && (indexPath.section == 1) {
+                // Swipe to remove a suggestion
+                self.suggestions_array.removeAtIndex(indexPath.row)
+                apilink = ApiLink.remove_suggestions
+            }
+            
+            if self.friends_tab == 2 {
+                // Swipe to remove a following relationship
+                self.following_array.removeAtIndex(indexPath.row)
+                apilink = ApiLink.unfollow
+            }
+            
+            if ((self.friends_tab == 1  && indexPath.section == 0) || (self.friends_tab == 3)) {
+                // Swipe to reject a pending request OR to remove a follower relationship
+                if self.friends_tab == 3 {
+                    self.followers_array.removeAtIndex(indexPath.row)
+                } else {
+                    self.request_array.removeAtIndex(indexPath.row)
+                }
+                
+                apilink = ApiLink.remove_follower
+            }
+            
+            Alamofire.request(.POST, apilink, parameters: parameters, encoding: .JSON)
+                .responseJSON { _, _, result in
+                    switch result {
+                    case .Failure(_, _):
+                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                    case .Success(let mydata):
+                        //Convert to SwiftJSON
+                        var json = JSON(mydata)
+                        if (json["success"].intValue == 0) {
+                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
+                        }
+                    }
+            }
+            
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            tableView.reloadData()
+        }
     }
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
+        let cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
         
         // Push to ProfilVC of the selected Row
-        var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+        let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.friend
         profilVC.hidesBottomBarWhenPushed = true
         

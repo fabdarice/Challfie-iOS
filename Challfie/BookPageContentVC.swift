@@ -63,7 +63,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
                 self.numberOfChallenges.textColor = MP_HEX_RGB("9C9A9A")
                 
                 // Display a message when the table is empty
-                var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, 20.0))
+                let messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, 20.0))
                 messageLabel.text = NSLocalizedString("book_is_locked", comment: "Unlock this book by getting your selfie challenges approved by your friends. Check your progress in the \"Level Progression\" tab")
                 messageLabel.textColor = MP_HEX_RGB("FFFFFF")
                 messageLabel.numberOfLines = 0
@@ -84,7 +84,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
                 self.challengeTableView.estimatedRowHeight = 20.0
                 
                 // Register the xib for the Custom TableViewCell
-                var nib = UINib(nibName: "ChallengeTVCell", bundle: nil)
+                let nib = UINib(nibName: "ChallengeTVCell", bundle: nil)
                 self.challengeTableView.registerNib(nib, forCellReuseIdentifier: "ChallengeCell")
                 
                 // Set Delegate and Datasource of challengeTableView
@@ -118,9 +118,9 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         // Add constraints to force vertical scrolling of UIScrollView
         // Basically set the leading and trailing of contentView to the View's one (instead of the scrollView)
         // Can't be done in the Interface Builder (.xib)
-        var leftConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
         self.view.addConstraint(leftConstraint)
-        var rightConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0)
         self.view.addConstraint(rightConstraint)
 
         
@@ -130,13 +130,12 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         let imageRect = CGRectMake(0, 0, image.size.width, image.size.height)
         
         // Grayscale color space
-        let colorSpace: CGColorSpaceRef = CGColorSpaceCreateDeviceGray()
-        let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.None.rawValue)
+        let colorSpace: CGColorSpaceRef = CGColorSpaceCreateDeviceGray()!
+        //let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.None.rawValue)
         
         // Create bitmap content with current image size and grayscale colorspace
-
         
-        let context  = CGBitmapContextCreate(nil, Int(imageRect.size.width), Int(imageRect.size.height), 8, 0, colorSpace, bitmapInfo)
+        let context  = CGBitmapContextCreate(nil, Int(imageRect.size.width), Int(imageRect.size.height), 8, 0, colorSpace, CGImageAlphaInfo.None.rawValue)
         
         // Draw image into current context, with specified rectangle
         // using previously defined context (with grayscale colorspace)
@@ -144,23 +143,23 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         
         /* changes start here */
         // Create bitmap image info from pixel data in current context
-        let grayImage: CGImageRef = CGBitmapContextCreateImage(context)
+        let grayImage: CGImageRef = CGBitmapContextCreateImage(context)!
         
         // make a new alpha-only graphics context
-        let bitmapInfo2 = CGBitmapInfo(CGImageAlphaInfo.Only.rawValue)
-        let alpha_context = CGBitmapContextCreate(nil, Int(image.size.width), Int(image.size.height), 8, 0, nil, bitmapInfo2);
+        //let bitmapInfo2 = CGBitmapInfo(rawValue: CGImageAlphaInfo.Only.rawValue)
+        let alpha_context = CGBitmapContextCreate(nil, Int(image.size.width), Int(image.size.height), 8, 0, nil, CGImageAlphaInfo.Only.rawValue);
         
         // draw image into context with no colorspace
         CGContextDrawImage(alpha_context, imageRect, image.CGImage)
         
         // create alpha bitmap mask from current context
-        let mask: CGImageRef = CGBitmapContextCreateImage(alpha_context)
+        let mask: CGImageRef = CGBitmapContextCreateImage(alpha_context)!
         
         // make UIImage from grayscale image with alpha mask
-        let grayScaleImage: UIImage = UIImage(CGImage: CGImageCreateWithMask(grayImage, mask))!
+        let grayScaleImage: UIImage = UIImage(CGImage: CGImageCreateWithMask(grayImage, mask)!)
         
         // Create bitmap image info from pixel data in current context
-        let imageRef: CGImageRef = CGBitmapContextCreateImage(context)
+        //let imageRef: CGImageRef = CGBitmapContextCreateImage(context)!
         
         return grayScaleImage
     }
@@ -171,8 +170,8 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: ChallengeTVCell = tableView.dequeueReusableCellWithIdentifier("ChallengeCell") as! ChallengeTVCell
-        var challenge:Challenge = self.book.challenges_array[indexPath.row]
+        let cell: ChallengeTVCell = tableView.dequeueReusableCellWithIdentifier("ChallengeCell") as! ChallengeTVCell
+        let challenge:Challenge = self.book.challenges_array[indexPath.row]
                         
         cell.challenge = challenge
         cell.loadItem()
@@ -196,12 +195,12 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : ChallengeTVCell = tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ChallengeTVCell
+        let cell : ChallengeTVCell = tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! ChallengeTVCell
         
         self.challenge_selected = cell.challenge.description
         
         // Show Pop-op to options to choose between camera and photo library
-        var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a Picture"), style: .Default) { (_) in
             self.use_camera = true
             self.showCamera()
@@ -271,8 +270,8 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
                 UIImageWriteToSavedPhotosAlbum(self.imageToSave, nil, nil, nil)
                 // Push to TakePictureVC
                 if let allTabViewControllers = self.tabBarController?.viewControllers,
-                    var navController:UINavigationController = allTabViewControllers[2] as? UINavigationController,
-                    var takePictureVC: TakePictureVC = navController.viewControllers[0] as? TakePictureVC {
+                    let navController:UINavigationController = allTabViewControllers[2] as? UINavigationController,
+                    let takePictureVC: TakePictureVC = navController.viewControllers[0] as? TakePictureVC {
                     takePictureVC.imageToSave = self.imageToSave
                     takePictureVC.challenge_selected = self.challenge_selected
                     self.tabBarController?.selectedViewController = navController
@@ -280,7 +279,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
                 }
             } else {
                 self.hidesBottomBarWhenPushed = true
-                var photoLibraryPreviewVC = PhotoLibraryPreviewVC(nibName: "PhotoLibraryPreview", bundle: nil)
+                let photoLibraryPreviewVC = PhotoLibraryPreviewVC(nibName: "PhotoLibraryPreview", bundle: nil)
                 photoLibraryPreviewVC.imageToSave = self.imageToSave
                 photoLibraryPreviewVC.homeTabBarController = self.tabBarController as! HomeTBC
                 photoLibraryPreviewVC.imagePicker = picker
@@ -303,7 +302,7 @@ class BookPageContentVC : UIViewController, UITableViewDelegate, UITableViewData
         let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
         img.drawInRect(rect)
         
-        var normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext();
         return normalizedImage;
     }

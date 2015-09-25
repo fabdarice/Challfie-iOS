@@ -66,6 +66,12 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Register Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
         // Add Notification for when the Keyboard pop up  and when it is dismissed
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name:UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name:UIKeyboardDidHideNotification, object: nil)
@@ -90,32 +96,34 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     
     @IBAction func createAccountButton(sender: AnyObject) {
         // add loadingIndicator pop-up
-        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         
-        let parameters:[String: AnyObject] = [
-            "login": self.usernameTextField.text,
-            "firstname": self.firstnameTextField.text,
-            "lastname": self.lastnameTextField.text,
-            "password": self.passwordTextField.text,
-            "email": self.emailTextField.text,
-            "from_facebook": false,
-            "from_mobileapp": true
+        let parameters : [String: String] = [
+            "login": self.usernameTextField.text!,
+            "firstname": self.firstnameTextField.text!,
+            "lastname": self.lastnameTextField.text!,
+            "password": self.passwordTextField.text!,
+            "email": self.emailTextField.text!,
+            "from_facebook": "false",
+            "from_mobileapp": "true",
+            "timezone": NSTimeZone.localTimeZone().name
         ]
 
 
-        request(.POST, ApiLink.register, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, ApiLink.register, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if let loadingActivityView = self.view.viewWithTag(21) {
                     loadingActivityView.removeFromSuperview()
                 }
-                if (mydata == nil) {
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {                
+                case .Success(let mydata):
                     //convert to SwiftJSON
-                    let json = JSON(mydata!)
+                    let json = JSON(mydata)
                     
                     if (json["success"].intValue == 0) {
                         // ERROR RSPONSE FROM HTTP Request
@@ -142,7 +150,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                         let login:String! = json["login"].string
                         let auth_token:String! = json["auth_token"].string
                         
-                        var keychain = Keychain(service: "challfie.app.service")
+                        let keychain = Keychain(service: "challfie.app.service")
                         // Save login and auth_token to the iOS Keychain
                         keychain["login"] = login
                         keychain["auth_token"] = auth_token
@@ -150,8 +158,9 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                         // Modal to GuideVC
                         //self.performSegueWithIdentifier("homeSegue2", sender: self)
                         self.performSegueWithIdentifier("registerSegue", sender: self)
-
+                        
                     }
+                    
                 }
         }
     }
@@ -177,7 +186,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
         return true;
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.view.endEditing(true)
     }
     

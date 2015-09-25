@@ -19,6 +19,8 @@ class UserApprovalListVC : UITableViewController {
     var is_approval_list: Bool = true
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     
+    var loadMoreData: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +49,7 @@ class UserApprovalListVC : UITableViewController {
         
         
         // Register the xib for the Custom TableViewCell
-        var nib = UINib(nibName: "FriendTVCell", bundle: nil)
+        let nib = UINib(nibName: "FriendTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "FriendCell")
         
         // Set the height of a cell dynamically
@@ -59,6 +61,13 @@ class UserApprovalListVC : UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "List Approvals/Rejection Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
         // show navigation and don't hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
         self.navigationController?.hidesBarsOnSwipe = false
@@ -75,10 +84,10 @@ class UserApprovalListVC : UITableViewController {
             self.loadingIndicator.startAnimating()
         } else {
             // add loadingIndicator pop-up
-            var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+            let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
             loadingActivityVC.view.tag = 21
             // -49 because of the height of the Tabbar ; -40 because of navigationController
-            var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+            let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
             loadingActivityVC.view.frame = newframe
             
             self.view.addSubview(loadingActivityVC.view)
@@ -91,7 +100,7 @@ class UserApprovalListVC : UITableViewController {
             api_link = ApiLink.list_reject
         }
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
 
@@ -103,8 +112,8 @@ class UserApprovalListVC : UITableViewController {
             "selfie_id": self.selfie_id
         ]
         
-        request(.POST, api_link, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, api_link, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if pagination == true {
                     self.loadingIndicator.stopAnimating()
@@ -113,18 +122,23 @@ class UserApprovalListVC : UITableViewController {
                         loadingActivityView.removeFromSuperview()
                     }
                 }
-                if (mydata == nil) {
+                
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
 
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
-                            var friend = Friend.init(json: json["selfies"][i])
+                            let friend = Friend.init(json: json["selfies"][i])
                             self.user_array.append(friend)
                         }
                         self.page += 1
+                        self.loadMoreData = true
+                    } else {
+                        self.loadMoreData = false
                     }
                     
                     self.tableView.reloadData()
@@ -137,7 +151,7 @@ class UserApprovalListVC : UITableViewController {
     
     // MARK: - Display Message if Empty
     func display_empty_message() {
-        var messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
+        let messageLabel = UILabel(frame: CGRectMake(20, 0, UIScreen.mainScreen().bounds.width - 40, self.view.bounds.size.height))
         messageLabel.textColor = MP_HEX_RGB("000000")
         messageLabel.numberOfLines = 0;
         messageLabel.textAlignment = NSTextAlignment.Center
@@ -168,7 +182,7 @@ class UserApprovalListVC : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("FriendCell") as! FriendTVCell
         
         // Set so it will Refresh Following Tab when visiting
         if let allTabViewControllers = self.tabBarController?.viewControllers,
@@ -193,6 +207,17 @@ class UserApprovalListVC : UITableViewController {
         cell.updateConstraintsIfNeeded()
         cell.sizeToFit()
         
+        if self.loadingIndicator.isAnimating() == false {
+            if (indexPath.row == self.user_array.count - 1) && (self.loadMoreData == true) {
+                // Add Loading Indicator to footerView
+                self.tableView.tableFooterView = self.loadingIndicator
+                
+                // Retrieve more Data (pagination)
+                self.loadData(true)
+            }
+            
+        }
+        
         return cell
     }
     
@@ -212,10 +237,10 @@ class UserApprovalListVC : UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
+        let cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FriendTVCell
         
         // Push to ProfilVC of the selected Row
-        var profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
+        let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.friend
         profilVC.hidesBottomBarWhenPushed = true
         

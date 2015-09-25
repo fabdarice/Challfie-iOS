@@ -27,7 +27,7 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         
         self.usernameLabel.text = login
@@ -59,7 +59,7 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
     @IBAction func takeSelfieAction(sender: AnyObject) {
     
         // Show Pop-op to options to choose between camera and photo library
-        var alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let oneAction = UIAlertAction(title: NSLocalizedString("take_picture", comment: "Take a picture"), style: .Default) { (_) in
             self.use_camera = true
             self.showCamera()
@@ -139,7 +139,7 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
         })
         
         // Push to GuideTakePicture
-        var guideTakePictureVC = GuideTakePictureVC(nibName: "GuideTakePicture" , bundle: nil)
+        let guideTakePictureVC = GuideTakePictureVC(nibName: "GuideTakePicture" , bundle: nil)
         guideTakePictureVC.from_facebook = self.from_facebook
         guideTakePictureVC.imageToSave = self.imageToSave
         self.presentViewController(guideTakePictureVC, animated: true, completion: nil)
@@ -161,7 +161,7 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
         let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
         img.drawInRect(rect)
         
-        var normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext();
         return normalizedImage;
     }
@@ -169,14 +169,14 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
     // MARK: - Upload the Selfie on the server
     func createSelfie() {
         // Retrieve id of challenge : "Take a selfie"
-        var id_challenge: String = "1"
+        let id_challenge: String = "1"
         let imageData = UIImageJPEGRepresentation(self.imageToSave, 0.9)
         
-        var is_private: String = "1"
-        var is_shared_fb: String = "0"
-        var message: String = NSLocalizedString("first_challfie", comment: "My first Challfie!!")
+        let is_private: String = "1"
+        let is_shared_fb: String = "0"
+        let message: String = NSLocalizedString("first_challfie", comment: "My first Challfie!!")
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -190,7 +190,7 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
             "approval_status": "1"
         ]
         
-        Alamofire.upload(Method.POST, URLString: ApiLink.create_selfie,
+        Alamofire.upload(Method.POST, ApiLink.create_selfie,
             multipartFormData: { multipartFormData in
                 multipartFormData.appendBodyPart(data: parameters["login"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "login")
                 multipartFormData.appendBodyPart(data: parameters["auth_token"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "auth_token")
@@ -199,7 +199,7 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
                 multipartFormData.appendBodyPart(data: parameters["is_private"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_private")
                 multipartFormData.appendBodyPart(data: parameters["is_shared_fb"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_shared_fb")
                 multipartFormData.appendBodyPart(data: parameters["approval_status"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "approval_status")
-                multipartFormData.appendBodyPart(data: imageData, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpg", mimeType: "image/jpeg")
+                multipartFormData.appendBodyPart(data: imageData!, name: "mobile_upload_file", fileName: "mobile_upload_file21.jpg", mimeType: "image/jpeg")
             },
             encodingCompletion: nil
         )
@@ -209,7 +209,7 @@ class GuideVC : UIViewController, GKImagePickerDelegate {
     // MARK: - prepareForSegue method
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "homeSegue2") && (self.from_facebook == true) {
-            var tabBar: HomeTBC = segue.destinationViewController as! HomeTBC
+            let tabBar: HomeTBC = segue.destinationViewController as! HomeTBC
             tabBar.selectedIndex = 3
         }
     }

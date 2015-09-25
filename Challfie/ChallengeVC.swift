@@ -72,6 +72,18 @@ class ChallengeVC : UIViewController {
         let model = UIDevice.currentDevice().modelName
 
         switch model {
+        case "x86_64":
+            switch UIScreen.mainScreen().bounds.height {
+            // Iphone 3 & 4
+            case 480.0 : bookProgressViewHeightConstraint.constant = 180
+            // Iphone 5
+            case 568.0: bookProgressViewHeightConstraint.constant = 225
+            // Iphone 6
+            case 667.0: bookProgressViewHeightConstraint.constant = 250
+            // Iphone 6Plus
+            case 736.0: bookProgressViewHeightConstraint.constant = 300
+            default: bookProgressViewHeightConstraint.constant = 250
+            }
         case "iPhone 3G": bookProgressViewHeightConstraint.constant = 180
         case "iPhone 3GS": bookProgressViewHeightConstraint.constant = 180
         case "iPhone 4": bookProgressViewHeightConstraint.constant = 180
@@ -80,7 +92,7 @@ class ChallengeVC : UIViewController {
         case "iPhone 5c": bookProgressViewHeightConstraint.constant = 225
         case "iPhone 5s": bookProgressViewHeightConstraint.constant = 225
         case "iPhone 6" : bookProgressViewHeightConstraint.constant = 250
-        case "iPhone 6 Plus" : bookProgressViewHeightConstraint.constant = 350
+        case "iPhone 6 Plus" : bookProgressViewHeightConstraint.constant = 300
         default:
             bookProgressViewHeightConstraint.constant = 250
         }        
@@ -88,10 +100,17 @@ class ChallengeVC : UIViewController {
         self.createFullCircle()
         
         self.sideMenuController()?.sideMenu?.behindViewController = self
+        self.sideMenuController()?.sideMenu?.hideBarOnSwipe = false
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Challenge - Progression Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         // Display tabBarController
         self.hidesBottomBarWhenPushed = false
@@ -113,16 +132,17 @@ class ChallengeVC : UIViewController {
         toggleSideMenuView()
     }
     
+    
     func loadData() {
         // add loadingIndicator pop-up
-        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         // -49 because of the height of the Tabbar ; -40 because of navigationController
-        var newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
+        let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 89)
         loadingActivityVC.view.frame = newframe
         self.view.addSubview(loadingActivityVC.view)
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
         
@@ -133,31 +153,35 @@ class ChallengeVC : UIViewController {
         ]
         
         request(.POST, ApiLink.level_progression, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if let loadingActivityView = self.view.viewWithTag(21) {
                     loadingActivityView.removeFromSuperview()
                 }
-                if (mydata == nil) {
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let data):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(data)
                     
-                    // Update Badge of Alert TabBarItem
-                    var alert_tabBarItem : UITabBarItem = (self.tabBarController?.tabBar.items?[4] as? UITabBarItem)!
-                    if json["new_alert_nb"] != 0 {
-                        alert_tabBarItem.badgeValue = json["new_alert_nb"].stringValue
-                    } else {
-                        alert_tabBarItem.badgeValue = nil
-                    }
                     
-                    // Update Badge of Friends TabBarItem
-                    var friend_tabBarItem : UITabBarItem = (self.tabBarController?.tabBar.items?[3] as? UITabBarItem)!
-                    if json["new_friends_request_nb"] != 0 {
-                        friend_tabBarItem.badgeValue = json["new_friends_request_nb"].stringValue
-                    } else {
-                        friend_tabBarItem.badgeValue = nil
+                    if let tabBarItems = self.tabBarController?.tabBar.items {
+                        // Update Badge of Alert TabBarItem
+                        let alertTabBarItem : UITabBarItem = tabBarItems[4]
+                        if json["new_alert_nb"] != 0 {
+                            alertTabBarItem.badgeValue = json["new_alert_nb"].stringValue
+                        } else {
+                            alertTabBarItem.badgeValue = nil
+                        }
+                        
+                        // Update Badge of Friends TabBarItem
+                        let friend_tabBarItem : UITabBarItem = tabBarItems[3]
+                        if json["new_friends_request_nb"] != 0 {
+                            friend_tabBarItem.badgeValue = json["new_friends_request_nb"].stringValue
+                        } else {
+                            friend_tabBarItem.badgeValue = nil
+                        }
                     }
                     
                     // Set value of current level / next level / and level progression percentage
@@ -169,15 +193,12 @@ class ChallengeVC : UIViewController {
                     // Create Animated Circle Progress
                     self.createProgressLayer()
                 }
-                
+    
                 self.loadingIndicator.stopAnimating()
         }
     }
     
     func createFullCircle() {
-        // Display our percentage as a string
-        let textContent = self.percent
-        
         // Where is start
         let arcCenter  = CGPoint(x: UIScreen.mainScreen().bounds.size.width / 2, y: self.bookProgressViewHeightConstraint.constant / 2)
         // Diameter
@@ -190,7 +211,7 @@ class ChallengeVC : UIViewController {
         let circlePath : UIBezierPath = UIBezierPath(arcCenter: arcCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
         // Draw the full circle
-        var fullcircleLayer : CAShapeLayer = CAShapeLayer()
+        let fullcircleLayer : CAShapeLayer = CAShapeLayer()
         fullcircleLayer.path = circlePath.CGPath
         fullcircleLayer.strokeColor = MP_HEX_RGB("0F4352").CGColor
         fullcircleLayer.fillColor = UIColor.clearColor().CGColor
@@ -238,7 +259,7 @@ class ChallengeVC : UIViewController {
     
     // Function to push to Search Page
     func tapGestureToSearchPage() {
-        var globalFunctions = GlobalFunctions()
+        let globalFunctions = GlobalFunctions()
         globalFunctions.tapGestureToSearchPage(self, backBarTitle: "Challenge")
         
     }            

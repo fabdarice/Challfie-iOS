@@ -52,6 +52,12 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Add Google Tracker for Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Challenge - Level's Page")
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
         // Display tabBarController
         self.hidesBottomBarWhenPushed = false
         self.tabBarController?.tabBar.hidden = false
@@ -67,11 +73,11 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
 
     func loadData() {
         // add loadingIndicator pop-up
-        var loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
+        let loadingActivityVC = LoadingActivityVC(nibName: "LoadingActivity" , bundle: nil)
         loadingActivityVC.view.tag = 21
         self.view.addSubview(loadingActivityVC.view)
         
-        var keychain = Keychain(service: "challfie.app.service")
+        let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]!
         let auth_token = keychain["auth_token"]!
 
@@ -80,26 +86,27 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
             "auth_token": auth_token
         ]
         
-        request(.POST, ApiLink.books_list, parameters: parameters, encoding: .JSON)
-            .responseJSON { (_, _, mydata, _) in
+        Alamofire.request(.POST, ApiLink.books_list, parameters: parameters, encoding: .JSON)
+            .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if let loadingActivityView = self.view.viewWithTag(21) {
                     loadingActivityView.removeFromSuperview()
                 }
-
-                if (mydata == nil) {
+                
+                switch result {
+                case .Failure(_, _):
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
-                } else {
+                case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata!)
+                    var json = JSON(mydata)
                     
                     if json["books"].count != 0 {
                         for var i:Int = 0; i < json["books"].count; i++ {
-                            var book = Book.init(json: json["books"][i])
+                            let book = Book.init(json: json["books"][i])
                             
                             if json["books"][i]["challenges"].count != 0 {
                                 for var j:Int = 0; j < json["books"][i]["challenges"].count; j++ {
-                                    var challenge = Challenge.init(json: json["books"][i]["challenges"][j])
+                                    let challenge = Challenge.init(json: json["books"][i]["challenges"][j])
                                     book.challenges_array.append(challenge)
                                 }
                             }
@@ -117,7 +124,7 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
     
     // Function to push to Search Page
     func tapGestureToSearchPage() {
-        var globalFunctions = GlobalFunctions()
+        let globalFunctions = GlobalFunctions()
         globalFunctions.tapGestureToSearchPage(self, backBarTitle: "Challenge")
         
     }
@@ -135,8 +142,8 @@ class BookVC : UIViewController, UIPageViewControllerDataSource, ENSideMenuDeleg
                 }
             }
             let lastBookContentVC = getBookContentVC(last_book_unlocked_index)!
-            let startingViewControllers: NSArray = [lastBookContentVC]
-            self.pageViewController?.setViewControllers(startingViewControllers as [AnyObject], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+            let startingViewControllers: [UIViewController] = [lastBookContentVC]
+            self.pageViewController?.setViewControllers(startingViewControllers, direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         }
         
         let heightOtherView =  self.booksTabHeightConstraint.constant + self.topBar_bookstab_vertical_constraint.constant
