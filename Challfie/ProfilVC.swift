@@ -274,9 +274,12 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                             selfie.user = user
                             selfie.challenge = challenge
                             self.selfies_array.append(selfie)
+                            
                         }
+                        
                         self.page += 1
                         self.selfiesCollectionView.reloadData()
+                        
                     }
 
                     self.selfiesNumberLabel.text = json["meta"]["number_selfies"].stringValue
@@ -457,10 +460,13 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: ProfilSelfieCVCell = collectionView.dequeueReusableCellWithReuseIdentifier(self.reuseIdentifier, forIndexPath: indexPath) as! ProfilSelfieCVCell
+        
         cell.backgroundColor = UIColor.blackColor()
         cell.selfie = selfies_array[indexPath.row]
         cell.profilVC = self
         cell.loadItem()
+        
+        
         // Configure the cell
         
         return cell
@@ -474,20 +480,25 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
         return 2.0
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
+    func scrollViewDidScroll(scrollView: UIScrollView) {
         if ((self.loadingIndicator.isAnimating() == false) && (self.user.blocked == false)) {
             // Check if the user has scrolled down to the end of the view -> if Yes -> Load more content
             let scrollViewHeight = scrollView.frame.size.height;
             let scrollContentSizeHeight = scrollView.contentSize.height;
             let scrollOffset = scrollView.contentOffset.y;
             
-            if (scrollOffset + scrollViewHeight >= (scrollContentSizeHeight - 400)) {
+            if (scrollOffset + scrollViewHeight >= (scrollContentSizeHeight - 300)) {
                 // Add Loading Indicator to footerView
                 self.loadData()
             }
         }
     }
+    
+    /*
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        
+    }*/
     
     // Show Pop-op to options to change profil pic
     func tapGesturechangeProfilPic() {

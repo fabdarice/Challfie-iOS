@@ -26,7 +26,7 @@
                         <rect key="frame" x="63" y="10" width="199" height="44.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzi-SX-KIL" userLabel="messageView">
-                                <rect key="frame" x="0.0" y="6" width="190" height="31.5"/>
+                                <rect key="frame" x="0.0" y="6" width="191" height="31.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Us" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ScU-J5-l8g" userLabel="usernameLabel">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="15.5"/>
@@ -37,8 +37,8 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="PCI-BI-6GJ" userLabel="messageLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="190" height="15.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="PCI-BI-6GJ" userLabel="messageLabel">
+                                        <rect key="frame" x="0.0" y="0.0" width="191" height="15.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -74,7 +74,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="40" id="6VE-1P-TtF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Qzi-SX-KIL" secondAttribute="trailing" constant="1" id="GsU-Mp-J3O"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Qzi-SX-KIL" secondAttribute="trailing" id="GsU-Mp-J3O"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Qzi-SX-KIL" secondAttribute="bottom" constant="1" id="cEB-Qz-8r3"/>
                             <constraint firstAttribute="centerY" secondItem="Qzi-SX-KIL" secondAttribute="centerY" id="eWX-8c-QJ1"/>
                             <constraint firstItem="Qzi-SX-KIL" firstAttribute="leading" secondItem="cRg-du-Qra" secondAttribute="leading" id="oIJ-73-nWW"/>

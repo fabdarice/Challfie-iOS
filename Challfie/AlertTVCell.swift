@@ -42,8 +42,11 @@ class AlertTVCell : UITableViewCell {
             let message_style = NSMutableParagraphStyle()
             message_style.firstLineHeadIndent = CGFloat(self.usernameLabel.frame.width + 1.0)
             message_style.headIndent = 0.0
+            message_style.lineBreakMode = NSLineBreakMode.ByClipping
+
             let message_style_indent = NSMutableAttributedString(string: alert.message)
             // Test if Last comment exists or not
+
             message_style_indent.addAttribute(NSParagraphStyleAttributeName, value: message_style, range: NSMakeRange(0, message_style_indent.length))
             self.messageLabel.attributedText = message_style_indent
             

@@ -288,6 +288,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         if self.shareFacebookSwitch.on == true {
             if self.isFacebookLinked == false {
                 let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+                fbLoginManager.logOut() //Otherwie can crash
                 fbLoginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], handler: { (result, error) -> Void in
                     if (error != nil) {
                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -298,7 +299,17 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                 self.shareFacebookSwitch.on = false
                             } else {
-                                self.linkAccWithFacebook()
+                                if result.isCancelled == true {
+                                    GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("facebook_published_not_permitted", comment: "You can't share your selfie on Facebook unless 'Publish Permission' has been approved."), controller: self)
+                                    self.shareFacebookSwitch.on = false
+                                } else {
+                                    if result.grantedPermissions.contains("publish_actions") {
+                                        self.linkAccWithFacebook()
+                                    } else {
+                                        GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("facebook_published_not_permitted", comment: "You can't share your selfie on Facebook unless 'Publish Permission' has been approved."), controller: self)
+                                        self.shareFacebookSwitch.on = false
+                                    }
+                                }
                             }
                         })
                     }
@@ -318,19 +329,33 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                 if json["data"][i]["permission"] == "publish_actions" {
                                     if json["data"][i]["status"] == "granted" {
                                         publish_actions_permission_granted = true
+                                        self.linkAccWithFacebook()
                                     }
                                 }
                             }
                             if publish_actions_permission_granted == false {
                                 let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+                                fbLoginManager.logOut() //Otherwie can crash
                                 fbLoginManager.logInWithPublishPermissions(["publish_actions"], handler: { (result, error) -> Void in
                                     if (error != nil) {
                                         GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                                         self.shareFacebookSwitch.on = false
+                                    } else {
+                                        if result.isCancelled == true {
+                                            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("facebook_published_not_permitted", comment: "You can't share your selfie on Facebook unless 'Publish Permission' has been approved."), controller: self)
+                                            self.shareFacebookSwitch.on = false
+                                        } else {
+                                            if result.grantedPermissions.contains("publish_actions") {
+                                                self.linkAccWithFacebook()
+                                            } else {
+                                                GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("facebook_published_not_permitted", comment: "You can't share your selfie on Facebook unless 'Publish Permission' has been approved."), controller: self)
+                                                self.shareFacebookSwitch.on = false
+                                            }
+                                        }
                                     }
                                 })
                             }
-                            self.linkAccWithFacebook()
+                            
                         }
                     })
                 }
@@ -521,6 +546,11 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                             if timelineVC.view != nil {
                                                 timelineVC.tableViewTopConstraint.constant = 0.0
                                                 timelineVC.refresh(false)
+                                                timelineVC.navigationController?.navigationBarHidden = false
+                                                
+                                                if (timelineVC.timelineTableView.numberOfSections > 0) && (timelineVC.timelineTableView.numberOfRowsInSection(0) > 0) {
+                                                    timelineVC.timelineTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+                                                }
                                                 // Tells Armchair that this is a significant Event
                                                 Armchair.userDidSignificantEvent(true)
                                             }
@@ -545,7 +575,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             )
 
 
-                        if timelineVC.view != nil {
+            if timelineVC.view != nil {
                 timelineVC.disableBackgroundRefresh = true
             }
             timelineVC.navigationController?.navigationBarHidden = false

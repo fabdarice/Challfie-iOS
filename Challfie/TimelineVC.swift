@@ -27,13 +27,20 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var selfies_array:[Selfie] = []
     // this is the cell height cache; obviously you don't want a static size array in production
     var itemHeights:[CGFloat] = []
+    
+    var updated_selfie_array: [Selfie] = []
+    var updated_itemHeights: [CGFloat] = []
+    
     var page = 1
     var refreshControl:UIRefreshControl!  // An optional variable
     var progressTimer: NSTimer!
     var progressData:Float = 0.1
     
     // Var to check if it's first time loading the view
-    var first_time: Bool = false
+    var first_time: Bool = true
+    
+    // Var to check if it's first time loading the cells
+    var first_time_loading_cell: Bool = true
     
     // Var to set if Background refresh has new Data to display the newData Button
     var hasNewData: Bool = false
@@ -113,11 +120,11 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         // Load Selfies for User Timeline
         self.refresh(true)
-        self.first_time = true
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         
         // Add Google Tracker for Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -178,16 +185,26 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.hasNewData = false
         self.newDataButton.hidden = true
         
-        UIView.animateWithDuration(0.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.navigationController?.setNavigationBarHidden(false, animated: true)
-            self.timelineTableView.contentOffset = CGPointZero
-            }, completion: {_ in
-                self.timelineTableView.reloadData()
-        })
+        self.selfies_array = self.updated_selfie_array
+        self.itemHeights = self.updated_itemHeights
+        
+        self.updated_selfie_array.removeAll(keepCapacity: false)
+        self.updated_itemHeights.removeAll(keepCapacity: false)
+        
+        self.navigationController?.navigationBarHidden = false
+        self.timelineTableView.reloadData()
+
+        if (self.timelineTableView.numberOfSections > 0) && (self.timelineTableView.numberOfRowsInSection(0) > 0) {
+            self.timelineTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+        }
+        
     }    
     
     // MARK: - Pull-to-refresh function - Refresh all data
     func refresh(actionFromInit: Bool = false)  {
+        
+        self.hasNewData = false
+        self.newDataButton.hidden = true
         self.refreshControl.beginRefreshing()
         self.refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Refreshing_data", comment: "Refreshing data.."))
         var parameters = [String: String]()
@@ -297,6 +314,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 }
                 self.refreshControl.endRefreshing()
                 self.refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull_to_refresh", comment: "Pull down to refresh"))
+                self.first_time = false
         }
     }
 
@@ -382,6 +400,9 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     "last_selfie_id": last_selfie.id.description]
             }
             
+            self.updated_selfie_array.removeAll(keepCapacity: false)
+            self.updated_itemHeights.removeAll(keepCapacity: false)
+            
             Alamofire.request(.POST, ApiLink.selfies_refresh, parameters: parameters, encoding: .JSON)
                 .responseJSON { _, _, result in
                     switch result {
@@ -414,17 +435,10 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                         badgeNumber = json["meta"]["new_alert_nb"].intValue + json["meta"]["new_friends_request_nb"].intValue
                         
                         UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
-                        
-                        var diff_selfies_count: Bool = false
-                        if json["selfies"].count > self.selfies_array.count {
-                            diff_selfies_count = true
-                        }
-
+        
                         if json["selfies"].count != 0 {
-                            var updated_selfie_array: [Selfie] = []
-                            var updated_itemHeights: [CGFloat] = []
-                            
                             for var i:Int = 0; i < json["selfies"].count; i++ {
+                                
                                 let selfie = Selfie.init(json: json["selfies"][i])
                                 let challenge = Challenge.init(json: json["selfies"][i]["challenge"])
                                 let user = User.init(json: json["selfies"][i]["user"])
@@ -434,28 +448,58 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                                 selfie.user = user
                                 selfie.last_comment = last_comment
                                 
-                                updated_selfie_array.append(selfie)
-                                updated_itemHeights.append(UITableViewAutomaticDimension)
+                                self.updated_selfie_array.append(selfie)
+                                self.updated_itemHeights.append(UITableViewAutomaticDimension)
                             }
                             
-                            
-                            self.selfies_array = updated_selfie_array
-                            self.itemHeights = updated_itemHeights
-                            if diff_selfies_count == true {
-                                self.hasNewData = true
-                                self.newDataButton.hidden = false
+                            // If Timeline is empty, refresh no matter what
+                            if self.selfies_array.count == 0 {
+                                self.newDataAction(self)
                             } else {
-                                self.hasNewData = false
-                                self.newDataButton.hidden = true
+                                if let newSelfieDateCreation = self.updated_selfie_array.first?.created_at,
+                                    oldSelfieDateCreation = self.selfies_array.first?.created_at {
+                                        let newSelfieDateMaker = NSDateFormatter()
+                                        newSelfieDateMaker.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                                        let newSelfieDate = newSelfieDateMaker.dateFromString(newSelfieDateCreation)
+                                        
+                                        let oldSelfieDateMaker = NSDateFormatter()
+                                        oldSelfieDateMaker.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                                        let oldSelfieDate = oldSelfieDateMaker.dateFromString(oldSelfieDateCreation)
+                                        
+                                        if newSelfieDate!.compare(oldSelfieDate!) == NSComparisonResult.OrderedDescending {
+                                            self.hasNewData = true
+                                            self.newDataButton.hidden = false
+                                        } else {
+                                            self.hasNewData = false
+                                            self.newDataButton.hidden = true
+                                        }
+                                } else {
+                                    self.hasNewData = false
+                                    self.newDataButton.hidden = true
+                                }
+                                
+                                // Update Selfies' last comment, number approvals, number rejections, status, number comments
+                                self.updateSelfiesFromBackgroundRefresh()
                             }
                         } else {
                             self.hasNewData = false
                         }
-                        
                     }
             }
         }
+    }
     
+    // MARK: - Methode to update Selfies' last comment, number approvals, number rejections, status, number comments
+    func updateSelfiesFromBackgroundRefresh() {
+        var startIndex: Int = 0
+        for var i = 0; i < self.selfies_array.count - 1; i++ {
+            for var j = startIndex; j < self.updated_selfie_array.count - 1; j++ {
+                if self.selfies_array[i].id == self.updated_selfie_array[j].id {
+                    self.selfies_array[i] = self.updated_selfie_array[j]
+                    startIndex = j + 1
+                }
+            }
+        }
     }
     
     
@@ -600,8 +644,8 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             
             if self.loadingIndicator.isAnimating() == false {
                 if (indexPath.row == self.selfies_array.count - 5) && (self.loadMoreData == true) {
-                    if self.first_time == true {
-                        self.first_time = false
+                    if self.first_time_loading_cell == true {
+                        self.first_time_loading_cell = false
                     } else {
                         // Add Loading Indicator to footerView
                         self.timelineTableView.tableFooterView = self.loadingIndicator

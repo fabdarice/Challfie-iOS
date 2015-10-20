@@ -146,6 +146,7 @@ create_selfie_missing_challenge = "Sélectionne un challenge..";
 uploading_selfie = "Selfie en téléchargement...";
 upload_failed = "Téléchargement échoué :(";
 upload_completed = "Selfie posté avec succès!";
+facebook_published_not_permitted = "Tu ne peux pas partager ton selfie sur Facebook à moins d'autoriser les publications";
 
 // Contact
 report_bug = "Reporter un bug";
@@ -202,13 +203,13 @@ take_a_selfie = "Challenge : Prendre un selfie";
 thanks_tutorial = "Merci à toi de faire parti de la Challfie family ! Amuses toi bien et prends plein de selfies !";
 
 tutorial_one_title = "Bienvenue";
-tutorial_two_title = "Félicitation pour ton premier Challfie!";
+tutorial_two_title = "Félicitations pour ton premier Challfie!";
 tutorial_three_title = "Ton selfie challenge a été approuvé!";
 tutorial_four_title = "Système de points";
 tutorial_five_title = "Monter de niveau";
 
 tutorial_one_description = "Le concept de Challfie est de compléter des challenges en prenant des selfies. \n\nPuisque c'est ta première fois, complétons ensemble un simple challenge : \"Prendre un selfie\".";
-tutorial_two_description = "Le statut de ton selfie est pour le moment \"en attente\". \nTes abonnés vont soit l'approuver, soit le rejeter.";
+tutorial_two_description = "Le statut de ton selfie est \"en attente\". \nTes abonnés vont soit l'approuver, soit le rejeter.";
 tutorial_three_description = "Parce que nous sommes suuuuper sympa, nous avons approuvé ton premier Challfie. \nLes prochaines fois, tu auras besoin d'un minimum de 5 votes avec >75% d'approbation.";
 tutorial_four_description = "Tu gagnes des points pour chaque Challfie approuvé. Plus le challenge est difficile à réaliser, plus il rapportera de points.";
 tutorial_five_description = "Lorsque tu auras cumulé assez de points, tu monteras de niveau et débloqueras des nouveaux challenges.";

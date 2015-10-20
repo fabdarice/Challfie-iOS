@@ -33,7 +33,6 @@ class MyMenuTableViewController: UITableViewController {
 
         // Preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = false
-        //tableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedMenuItem, inSection: 0), animated: false, scrollPosition: .Middle)
     }
     
     override func didReceiveMemoryWarning() {

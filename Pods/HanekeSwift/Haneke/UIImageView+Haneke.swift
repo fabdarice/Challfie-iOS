@@ -22,12 +22,12 @@ public extension UIImageView {
         self.hnk_setImageFromFetcher(fetcher, placeholder: placeholder, format: format, failure: fail, success: succeed)
     }
     
-    public func hnk_setImage(@autoclosure(escaping) image: () -> UIImage, key : String, placeholder : UIImage? = nil, format : Format<UIImage>? = nil, success succeed : ((UIImage) -> ())? = nil) {
+    public func hnk_setImage(@autoclosure(escaping) image: () -> UIImage, key: String, placeholder : UIImage? = nil, format : Format<UIImage>? = nil, success succeed : ((UIImage) -> ())? = nil) {
         let fetcher = SimpleFetcher<UIImage>(key: key, value: image)
         self.hnk_setImageFromFetcher(fetcher, placeholder: placeholder, format: format, success: succeed)
     }
     
-    public func hnk_setImageFromFile(path : String, placeholder : UIImage? = nil, format : Format<UIImage>? = nil, failure fail : ((NSError?) -> ())? = nil, success succeed : ((UIImage) -> ())? = nil) {
+    public func hnk_setImageFromFile(path: String, placeholder : UIImage? = nil, format : Format<UIImage>? = nil, failure fail : ((NSError?) -> ())? = nil, success succeed : ((UIImage) -> ())? = nil) {
         let fetcher = DiskFetcher<UIImage>(path: path)
         self.hnk_setImageFromFetcher(fetcher, placeholder: placeholder, format: format, failure: fail, success: succeed)
     }
@@ -37,8 +37,7 @@ public extension UIImageView {
         format : Format<UIImage>? = nil,
         failure fail : ((NSError?) -> ())? = nil,
         success succeed : ((UIImage) -> ())? = nil) {
-        
-        //self.image = placeholder // CUSTOM FAB
+
         self.hnk_cancelSetImage()
         
         self.hnk_fetcher = fetcher
@@ -47,12 +46,9 @@ public extension UIImageView {
         
         if didSetImage { return }
      
-        // CUSTOM FAB DELETE
-
         if let placeholder = placeholder {
             self.image = placeholder
         }
-
     }
     
     public func hnk_cancelSetImage() {
@@ -112,7 +108,7 @@ public extension UIImageView {
             if let strongSelf = self {
                 if strongSelf.hnk_shouldCancelForKey(fetcher.key) { return }
                 
-                strongSelf.hnk_setImage(image, animated:animated, success:succeed)
+                strongSelf.hnk_setImage(image, animated: animated, success: succeed)
             }
         }
         animated = true

@@ -19,6 +19,7 @@ class Selfie {
     var approval_status: Int!
     var is_daily: Bool!
     var creation_date: String!
+    var created_at: String!
     var user: User!
     var nb_upvotes: Int!
     var nb_downvotes: Int!
@@ -42,6 +43,7 @@ class Selfie {
         self.is_daily = json["is_daily"].boolValue
         self.is_private = json["private"].boolValue
         self.creation_date = json["creation_date"].stringValue
+        self.created_at = json["created_at"].stringValue
         self.nb_upvotes = json["nb_upvotes"].intValue
         self.nb_downvotes = json["nb_downvotes"].intValue
         self.nb_comments = json["nb_comments"].intValue

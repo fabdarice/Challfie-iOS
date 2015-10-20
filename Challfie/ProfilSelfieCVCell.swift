@@ -31,13 +31,6 @@ class ProfilSelfieCVCell : UICollectionViewCell {
         self.selfieImage.hnk_setImageFromURL(selfieImageURL)
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        // set image to nil to avoid misplaced image
-        self.selfieImage.image = nil
-    }
-    
     func selfieTapGesture() {
         self.profilVC.hidesBottomBarWhenPushed = true
         // Push to OneSelfieVC

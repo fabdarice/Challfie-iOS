@@ -84,7 +84,7 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
 
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = false
-
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         self.loadData(false)
     }
@@ -242,7 +242,6 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
         let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.user
         profilVC.hidesBottomBarWhenPushed = true
-        
         self.navigationController?.pushViewController(profilVC, animated: true)
     }
     
@@ -250,8 +249,6 @@ class RankingVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBAction func allUsersRankAction(sender: AnyObject) {
 
         let rankingAllusersVC = RankingAllUsersVC(nibName: "RankingAllUsers", bundle: nil)
-        
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.navigationController?.pushViewController(rankingAllusersVC, animated: true)
     }
 

@@ -39,6 +39,7 @@ class LinkFacebookVC: UIViewController {
     
     @IBAction func linkFacebookAcct(sender: AnyObject) {
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+        fbLoginManager.logOut() //Otherwie can crash
         fbLoginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], handler: { (result, error) -> Void in
             if (error != nil) {
                 GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)

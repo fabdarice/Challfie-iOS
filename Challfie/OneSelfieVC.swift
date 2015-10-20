@@ -158,6 +158,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             // Challenge Difficulty
             switch self.selfie.challenge.difficulty {
+            case -1: self.challengeDifficultyView.image = UIImage(named: "challfie_difficulty")
             case 1: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_one_small")
             case 2: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_two_small")
             case 3: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_three_small")
@@ -742,26 +743,27 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                                 self.numberCommentsLabel.text = self.selfie.nb_comments.description + NSLocalizedString("Comments", comment: "Comments")
                             }
                             
-                            
                             // Made Modifications on Timeline Cell
                             if self.selfieTimelineCell != nil {
                                 self.selfieTimelineCell.numberCommentsButton.setTitle(self.numberCommentsLabel.text, forState: .Normal)
                                 
                                 self.selfieTimelineCell.commentUsernameLabel.text = login
-                                if let commentCell: CommentTVCell = self.listCommentsTableView.cellForRowAtIndexPath(NSIndexPath(forRow: self.comments_array.count - 1, inSection: 0)) as? CommentTVCell {
-                                    
-                                    // Initiate comment Message Style
-                                    let comment_message_style = NSMutableParagraphStyle()
-                                    comment_message_style.headIndent = 0.0
-                                    comment_message_style.firstLineHeadIndent = CGFloat(commentCell.usernameLabel.frame.width + 5.0)
-                                    let comment_message_indent = NSMutableAttributedString(string: message)
-                                    
-                                    // Test if Last comment exists or not
-                                    if comment_message_indent.length != 0 {
-                                        comment_message_indent.addAttribute(NSParagraphStyleAttributeName, value: comment_message_style, range: NSMakeRange(0, comment_message_indent.length))
-                                        self.selfieTimelineCell.commentMessageLabel.attributedText = comment_message_indent
-                                    }
+                                self.selfieTimelineCell.commentUsernameLabel.sizeToFit()
+                                
+                                // Initiate comment Message Style
+                                let comment_message_style = NSMutableParagraphStyle()
+                                comment_message_style.headIndent = 0.0
+                                comment_message_style.firstLineHeadIndent = CGFloat(self.selfieTimelineCell.commentUsernameLabel.frame.width + 5.0)
+                                let comment_message_indent = NSMutableAttributedString(string: message)
+                                
+                                // Test if Last comment exists or not
+                                if comment_message_indent.length != 0 {
+                                    comment_message_indent.addAttribute(NSParagraphStyleAttributeName, value: comment_message_style, range: NSMakeRange(0, comment_message_indent.length))
+                                    self.selfieTimelineCell.commentMessageLabel.attributedText = comment_message_indent
+                                    self.selfieTimelineCell.commentMessageLabel.textColor = MP_HEX_RGB("000000")
+                                    self.selfieTimelineCell.commentMessageLabel.sizeToFit()
                                 }
+
                             }
                             
 

@@ -121,7 +121,8 @@
 		87B48B3F1B3B433700E088A9 /* FlagContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B48B3E1B3B433700E088A9 /* FlagContentVC.swift */; };
 		87B48B411B3B4B6E00E088A9 /* FlagContentTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87B48B401B3B4B6E00E088A9 /* FlagContentTVCell.xib */; };
 		87B48B431B3DF11900E088A9 /* FlagContentTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */; };
-		87C33ADC1BB55F7600E7426D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87C33ADB1BB55F7600E7426D /* GoogleService-Info.plist */; settings = {ASSET_TAGS = (); }; };
+		87BE4A671BB6256800C25CDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87BE4A661BB6256800C25CDD /* GoogleService-Info.plist */; settings = {ASSET_TAGS = (); }; };
+		87BE4A681BB6256B00C25CDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87BE4A661BB6256800C25CDD /* GoogleService-Info.plist */; settings = {ASSET_TAGS = (); }; };
 		87C87FE41BA8CD6700D69F66 /* challenge_daily_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 87C87FE61BA8CD6700D69F66 /* challenge_daily_small.png */; };
 		87CA93B41A5A2C4F004D72FE /* ProfilHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */; };
 		87D35A521B87A7B300F41821 /* GuideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D35A511B87A7B300F41821 /* GuideVC.swift */; };
@@ -368,7 +369,7 @@
 		87B48B3E1B3B433700E088A9 /* FlagContentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FlagContentVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		87B48B401B3B4B6E00E088A9 /* FlagContentTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlagContentTVCell.xib; sourceTree = "<group>"; };
 		87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagContentTVCell.swift; sourceTree = "<group>"; };
-		87C33ADB1BB55F7600E7426D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		87BE4A661BB6256800C25CDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		87C87FE51BA8CD6700D69F66 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/challenge_daily_small.png; sourceTree = "<group>"; };
 		87C87FE71BA8CD6800D69F66 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/challenge_daily_small.png; sourceTree = "<group>"; };
 		87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilHeader.xib; sourceTree = "<group>"; };
@@ -674,7 +675,7 @@
 		87904FA81A0C9FF2004FD75E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				87C33ADB1BB55F7600E7426D /* GoogleService-Info.plist */,
+				87BE4A661BB6256800C25CDD /* GoogleService-Info.plist */,
 				87904FA91A0C9FF2004FD75E /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -919,7 +920,7 @@
 				87185BD81BA0106D0047A5D7 /* comment_button.png in Resources */,
 				87D35A5C1B87FF1000F41821 /* GuideProgressionLevel.xib in Resources */,
 				873F1BE41B944516008051EB /* PLCameraSheetDoneButtonPressed.png in Resources */,
-				87C33ADC1BB55F7600E7426D /* GoogleService-Info.plist in Resources */,
+				87BE4A671BB6256800C25CDD /* GoogleService-Info.plist in Resources */,
 				873F1BE51B944516008051EB /* PLCameraSheetDoneButtonPressed@2x.png in Resources */,
 				87721E071B953683003032A7 /* RankingAllUsers.xib in Resources */,
 				873F1BE01B944516008051EB /* PLCameraSheetButtonPressed.png in Resources */,
@@ -965,6 +966,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87BE4A681BB6256B00C25CDD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

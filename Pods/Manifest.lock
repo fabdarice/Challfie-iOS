@@ -32,7 +32,7 @@ PODS:
   - GoogleSymbolUtilities (1.0.0)
   - GoogleUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0.0)
-  - HanekeSwift (0.9.1)
+  - HanekeSwift (0.10.0)
   - KeychainAccess (1.2.1)
   - Siren (0.5.1)
   - SwiftyJSON (2.2.1)
@@ -43,16 +43,13 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - FBSDKShareKit
   - Google/Analytics (~> 1.0.0)
-  - HanekeSwift (from `https://github.com/meteochu/HanekeSwift.git`, branch `swift-2.0`)
+  - HanekeSwift
   - KeychainAccess (from `https://github.com/kishikawakatsumi/KeychainAccess.git`,
     branch `swift-2.0`)
   - Siren
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode7`)
 
 EXTERNAL SOURCES:
-  HanekeSwift:
-    :branch: swift-2.0
-    :git: https://github.com/meteochu/HanekeSwift.git
   KeychainAccess:
     :branch: swift-2.0
     :git: https://github.com/kishikawakatsumi/KeychainAccess.git
@@ -61,9 +58,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 CHECKOUT OPTIONS:
-  HanekeSwift:
-    :commit: f87220fccba7810955fe5392ebd492a5c9baf050
-    :git: https://github.com/meteochu/HanekeSwift.git
   KeychainAccess:
     :commit: 38ea7f3e8f40d878bc040e2dc9109ea29326b1d5
     :git: https://github.com/kishikawakatsumi/KeychainAccess.git
@@ -82,7 +76,7 @@ SPEC CHECKSUMS:
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
   GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
-  HanekeSwift: 50d37bfbc4432edc649167e538c259feccb4a2bb
+  HanekeSwift: d6f5bdf9dbdbbc09d59623b2c1d533e46463dd4d
   KeychainAccess: 2ffa8b1b7130263bb7fe90b359d778696fc2d8ce
   Siren: e4be2c086eccc30990e8a5dcaea063510928d9b5
   SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33

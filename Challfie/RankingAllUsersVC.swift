@@ -84,6 +84,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
 
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = false
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         self.loadData(false)
     }
@@ -248,7 +249,6 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
     
     @IBAction func friendsRankAction(sender: AnyObject) {
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         let rankingFriendsVC = RankingVC(nibName: "Ranking", bundle: nil)
         self.navigationController?.pushViewController(rankingFriendsVC, animated: true)
     }

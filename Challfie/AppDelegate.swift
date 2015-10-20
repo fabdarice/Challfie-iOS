@@ -164,11 +164,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Perform daily (.Daily) or weekly (.Weekly) checks for new version of your app.
         Useful if user returns to your app from the background after extended period of time.
         Place in applicationDidBecomeActive(_:).   */
-        
+
         let keychain = Keychain(service: "challfie.app.service")
         let login = keychain["login"]
         let auth_token = keychain["auth_token"]
-        
+
         // Refresh Data if Users are currently signed in and current screen is timelineVC
         if (login != nil && auth_token != nil) {
             if let homeTableViewController:HomeTBC = self.window?.rootViewController as? HomeTBC,
@@ -244,6 +244,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Armchair.shouldPromptIfRated(true)
         Armchair.daysUntilPrompt(10)
         Armchair.usesUntilPrompt(15)
+        
+        // Cannot open in StoreKit on iOS < 9
+        Armchair.opensInStoreKit(false)
+        
+        // Launch the Review Pop-up Manually
+        //Armchair.debugEnabled(true)
+        //Armchair.userDidSignificantEvent(true)
     }
     
     /*

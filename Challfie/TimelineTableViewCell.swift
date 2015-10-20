@@ -57,6 +57,7 @@ class TimelineTableViewCell : UITableViewCell {
     var image_difficulty_four: UIImage!
     var image_difficulty_five: UIImage!
     var image_daily_challenge: UIImage!
+    var image_challfie_logo: UIImage!
     
     var image_challenge_pending: UIImage!
     var image_challenge_approved: UIImage!
@@ -90,6 +91,7 @@ class TimelineTableViewCell : UITableViewCell {
         self.image_difficulty_four = UIImage(named: "challenge_difficulty_four_small")
         self.image_difficulty_five = UIImage(named: "challenge_difficulty_five_small")
         self.image_daily_challenge = UIImage(named: "challenge_daily_small")
+        self.image_challfie_logo = UIImage(named: "challfie_difficulty")
         self.image_challenge_pending = UIImage(named: "challenge_pending.png")
         self.image_challenge_approved = UIImage(named: "challenge_approve.png")
         self.image_challenge_rejected = UIImage(named: "challenge_rejected")
@@ -239,6 +241,7 @@ class TimelineTableViewCell : UITableViewCell {
         } else {
             // Challenge Difficulty
             switch self.selfie.challenge.difficulty {
+            case -1: self.challengeDifficultyImageView.image = self.image_challfie_logo
             case 1: self.challengeDifficultyImageView.image = self.image_difficulty_one
             case 2: self.challengeDifficultyImageView.image = self.image_difficulty_two
             case 3: self.challengeDifficultyImageView.image = self.image_difficulty_three

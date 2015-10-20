@@ -146,6 +146,7 @@ create_selfie_missing_challenge = "Please select a challenge..";
 uploading_selfie = "Uploading Selfie...";
 upload_failed = "Upload failed :(";
 upload_completed = "Upload completed!";
+facebook_published_not_permitted = "You can't share your selfie on Facebook unless 'Publish Permission' has been approved.";
 
 // Contact Page
 report_bug = "Report a bug";
@@ -206,7 +207,7 @@ thanks_tutorial = "Thank you for becoming part of the Challfie family. Enjoy and
 
 tutorial_one_title = "Welcome";
 tutorial_two_title = "Congratulation on taking your first Challfie!";
-tutorial_three_title = "Your selfie challenge has been approved!";
+tutorial_three_title = "Your selfie has been approved!";
 tutorial_four_title = "Point system";
 tutorial_five_title = "Leveling up";
 
@@ -217,9 +218,9 @@ tutorial_four_description = "You will earn points for each Challfie approved. Ch
 tutorial_five_description = "Once you have enough points, you will level up and unlock new awesome challenges.";
 
 tutorial_one_button = "Complete the challenge";
-tutorial_two_button = "Next (2/5) : Get your selfie approved";
-tutorial_three_button = "Next (3/5) : Earn points";
-tutorial_four_button = "Next (4/5) : Leveling up";
+tutorial_two_button = "Next (3/5) : Get your selfie approved";
+tutorial_three_button = "Next (4/5) : Earn points";
+tutorial_four_button = "Next (5/5) : Leveling up";
 tutorial_five_button = "Let's Get Started!";
 
 first_challfie = "My first Challfie!!";
