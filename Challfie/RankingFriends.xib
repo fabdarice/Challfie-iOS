@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RankingFriendsVC" customModule="Challfie" customModuleProvider="target">
+            <connections>
+                <outlet property="LevelColumnLabel" destination="NFg-sh-xYu" id="Kto-LZ-3J6"/>
+                <outlet property="UsernameColumnLabel" destination="236-0b-RrL" id="AqY-A4-cAJ"/>
+                <outlet property="currentUserProfilPicImageView" destination="FMN-h1-3AI" id="hnV-YP-kTB"/>
+                <outlet property="currentUserProgressLabel" destination="VRB-a6-vvF" id="RkN-Iu-XBr"/>
+                <outlet property="currentUserRankLabel" destination="87g-FJ-8Xv" id="cV0-3E-bk4"/>
+                <outlet property="currentUserView" destination="TQh-AY-QXj" id="99b-ou-dGG"/>
+                <outlet property="currentUsernameLabel" destination="nUG-kh-JP7" id="Uqr-AE-oaO"/>
+                <outlet property="levelImageView" destination="tcr-bx-OP3" id="kQU-I3-QWp"/>
+                <outlet property="progressColumnLabel" destination="oSf-fB-D7D" id="FDr-V1-Ms9"/>
+                <outlet property="rankColumnLabel" destination="3FR-ys-4JP" id="OFw-ca-mVI"/>
+                <outlet property="tableHeaderView" destination="eA9-Vu-nd1" id="1S0-fQ-zQC"/>
+                <outlet property="tableView" destination="ga6-UL-Rqp" id="9m7-Y3-eMD"/>
+                <outlet property="view" destination="iN0-l3-epB" id="jF5-9n-6hZ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eA9-Vu-nd1" userLabel="tableHeader">
+                    <rect key="frame" x="0.0" y="10" width="320" height="30"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="236-0b-RrL">
+                            <rect key="frame" x="109" y="7" width="31.5" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NFg-sh-xYu">
+                            <rect key="frame" x="235.5" y="7" width="35.5" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="%" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSf-fB-D7D">
+                            <rect key="frame" x="296" y="7" width="14" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rank" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3FR-ys-4JP">
+                            <rect key="frame" x="15" y="7" width="34.5" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="236-0b-RrL" firstAttribute="leading" secondItem="3FR-ys-4JP" secondAttribute="trailing" constant="60" id="3eI-6u-Ev6"/>
+                        <constraint firstAttribute="centerY" secondItem="3FR-ys-4JP" secondAttribute="centerY" id="5RZ-H9-4n5"/>
+                        <constraint firstAttribute="centerY" secondItem="NFg-sh-xYu" secondAttribute="centerY" id="8hv-PP-jgK"/>
+                        <constraint firstAttribute="trailing" secondItem="oSf-fB-D7D" secondAttribute="trailing" constant="10" id="Gft-LG-DnC"/>
+                        <constraint firstItem="oSf-fB-D7D" firstAttribute="leading" secondItem="NFg-sh-xYu" secondAttribute="trailing" constant="25" id="Q8d-bO-oa5"/>
+                        <constraint firstAttribute="centerY" secondItem="oSf-fB-D7D" secondAttribute="centerY" id="Qr0-vH-4wu"/>
+                        <constraint firstItem="3FR-ys-4JP" firstAttribute="leading" secondItem="eA9-Vu-nd1" secondAttribute="leading" constant="15" id="TrT-oh-5lU"/>
+                        <constraint firstAttribute="height" constant="30" id="qtq-LE-ro8"/>
+                        <constraint firstAttribute="centerY" secondItem="236-0b-RrL" secondAttribute="centerY" id="xJm-qB-eOp"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ga6-UL-Rqp" userLabel="userRanksTableView">
+                    <rect key="frame" x="0.0" y="104" width="320" height="464"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TQh-AY-QXj" userLabel="currentUserView">
+                    <rect key="frame" x="0.0" y="45" width="320" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRB-a6-vvF" userLabel="progressLevel">
+                            <rect key="frame" x="280" y="15" width="40" height="14.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="4tO-3u-dMD"/>
+                                <constraint firstAttribute="height" constant="15" id="zzF-pO-Inv"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FMN-h1-3AI" userLabel="profilPicImageView">
+                            <rect key="frame" x="60" y="2" width="40" height="39.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="2uR-Ah-Bl6"/>
+                                <constraint firstAttribute="height" constant="40" id="tCy-PU-mcr"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="87g-FJ-8Xv" userLabel="rankLabel">
+                            <rect key="frame" x="5" y="14" width="50" height="15.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="AEl-QH-Xgi"/>
+                                <constraint firstAttribute="height" constant="15.5" id="tFV-Bv-gUE"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="nUG-kh-JP7" userLabel="usernameLabel">
+                            <rect key="frame" x="110" y="14" width="125" height="15.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="15.5" id="PT8-zJ-9uc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tcr-bx-OP3" userLabel="levelImageView">
+                            <rect key="frame" x="245" y="9" width="25" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="6PM-4Y-kZu"/>
+                                <constraint firstAttribute="width" constant="25" id="cHe-pd-V5X"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="87g-FJ-8Xv" secondAttribute="centerY" id="IJ2-Kl-c72"/>
+                        <constraint firstAttribute="height" constant="44" id="LeJ-ml-892"/>
+                        <constraint firstAttribute="centerY" secondItem="FMN-h1-3AI" secondAttribute="centerY" id="Lm0-SV-tjT"/>
+                        <constraint firstItem="nUG-kh-JP7" firstAttribute="leading" secondItem="FMN-h1-3AI" secondAttribute="trailing" constant="10" id="RHH-Zj-dsN"/>
+                        <constraint firstAttribute="centerY" secondItem="tcr-bx-OP3" secondAttribute="centerY" id="bx0-QF-hk0"/>
+                        <constraint firstAttribute="centerY" secondItem="VRB-a6-vvF" secondAttribute="centerY" id="c5u-Bc-1i0"/>
+                        <constraint firstItem="87g-FJ-8Xv" firstAttribute="leading" secondItem="TQh-AY-QXj" secondAttribute="leading" constant="5" id="csw-KV-CpF"/>
+                        <constraint firstAttribute="centerY" secondItem="nUG-kh-JP7" secondAttribute="centerY" id="gEm-lG-UIX"/>
+                        <constraint firstItem="VRB-a6-vvF" firstAttribute="leading" secondItem="tcr-bx-OP3" secondAttribute="trailing" constant="10" id="mR1-yZ-zpa"/>
+                        <constraint firstAttribute="trailing" secondItem="VRB-a6-vvF" secondAttribute="trailing" id="my5-sI-oh0"/>
+                        <constraint firstItem="tcr-bx-OP3" firstAttribute="leading" secondItem="nUG-kh-JP7" secondAttribute="trailing" constant="10" id="mzp-gj-Umi"/>
+                        <constraint firstItem="FMN-h1-3AI" firstAttribute="leading" secondItem="87g-FJ-8Xv" secondAttribute="trailing" constant="5" id="q0D-mA-s9Y"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="ga6-UL-Rqp" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5if-3X-NNk"/>
+                <constraint firstItem="eA9-Vu-nd1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EU7-De-0nK"/>
+                <constraint firstAttribute="trailing" secondItem="eA9-Vu-nd1" secondAttribute="trailing" id="FPY-Cm-bvP"/>
+                <constraint firstAttribute="trailing" secondItem="TQh-AY-QXj" secondAttribute="trailing" id="Goa-2C-LSk"/>
+                <constraint firstAttribute="trailing" secondItem="ga6-UL-Rqp" secondAttribute="trailing" id="Mpc-16-LUA"/>
+                <constraint firstItem="eA9-Vu-nd1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="PcQ-lj-jqc"/>
+                <constraint firstItem="TQh-AY-QXj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="UIz-Ic-qOC"/>
+                <constraint firstItem="TQh-AY-QXj" firstAttribute="top" secondItem="eA9-Vu-nd1" secondAttribute="bottom" constant="5" id="esX-Jd-fF6"/>
+                <constraint firstAttribute="bottom" secondItem="ga6-UL-Rqp" secondAttribute="bottom" id="hqN-Y8-GAd"/>
+                <constraint firstItem="ga6-UL-Rqp" firstAttribute="top" secondItem="TQh-AY-QXj" secondAttribute="bottom" constant="15" id="vHd-Ak-DVR"/>
+            </constraints>
+            <point key="canvasLocation" x="33" y="463"/>
+        </view>
+    </objects>
+</document>

@@ -51,8 +51,8 @@ class MyMenuTableViewController: UITableViewController {
         // Return the number of rows in the section.
         switch section {
         case 0 : return 1
-        case 1 : return 2
-        case 2 : return 4
+        case 1 : return 3
+        case 2 : return 3
         case 3 : return 1
         default:
             return 0
@@ -134,6 +134,9 @@ class MyMenuTableViewController: UITableViewController {
             case 1 :
                 textLabel.text = NSLocalizedString("ranking", comment: "Ranking")
                 imageView.image = UIImage(named: "icon_rank")
+            case 2 :
+                textLabel.text = NSLocalizedString("matchups", comment: "Duel")
+                imageView.image = UIImage(named: "icon_rank")
             default:
                 textLabel.text = ""
             }
@@ -146,12 +149,9 @@ class MyMenuTableViewController: UITableViewController {
                 textLabel.text = NSLocalizedString("about_us", comment: "About us")
                 imageView.image = UIImage(named: "icon_about_us")
             case 1 :
-                textLabel.text = "Privacy"
-                imageView.image = UIImage(named: "icon_privacy")
-            case 2 :
-                textLabel.text = "Terms"
+                textLabel.text = "Terms & Privacy"
                 imageView.image = UIImage(named: "icon_terms")
-            case 3 :
+            case 2 :
                 textLabel.text = NSLocalizedString("contact_us", comment: "Contact us")
                 imageView.image = UIImage(named: "icon_contact")
             default:
@@ -251,8 +251,17 @@ class MyMenuTableViewController: UITableViewController {
             // Rank
             if indexPath.row == 1 {
                 let rankingVC = RankingVC(nibName: "Ranking" , bundle: nil)
+                rankingVC.hidesBottomBarWhenPushed = true
                 self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
                 self.navController.pushViewController(rankingVC, animated: true)                
+                selectedCell.contentView.backgroundColor = UIColor.clearColor()
+            }
+            // Rank
+            if indexPath.row == 2 {
+                let matchupsVC = MatchupsVC(nibName: "Matchups" , bundle: nil)
+                matchupsVC.hidesBottomBarWhenPushed = true
+                self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                self.navController.pushViewController(matchupsVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
             break
@@ -265,27 +274,20 @@ class MyMenuTableViewController: UITableViewController {
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
             
-            // Privacy
+            // Privacy & Terms
             if indexPath.row == 1 {
-                let privacyTVC = PrivacyTableViewController()
-                self.navController.pushViewController(privacyTVC, animated: true)
-                selectedCell.contentView.backgroundColor = UIColor.clearColor()
-            }
-            
-            
-            // Terms
-            if indexPath.row == 2 {
-                let termsTVC = TermsTableViewController()
-                self.navController.pushViewController(termsTVC, animated: true)
+                let termsAndPrivacyVC = TermsAndPrivacyVC()
+                self.navController.pushViewController(termsAndPrivacyVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
             
             // Contact Us
-            if indexPath.row == 3 {
+            if indexPath.row == 2 {
                 let contactVC = ContactViewController(nibName:"Contact", bundle: nil)
                 self.navController.pushViewController(contactVC, animated: true)
                 selectedCell.contentView.backgroundColor = UIColor.clearColor()
             }
+            
             break
         case 3:
             // Log Out

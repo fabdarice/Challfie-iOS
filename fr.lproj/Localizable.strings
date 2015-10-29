@@ -180,14 +180,14 @@ link_facebook_button = "Recherche tes amis Facebook";
 skip_link_facebook_step = "Passer cette étape";
 
 // Ranking Page
-ranking_title = "Classement - Mes Amis";
-ranking_all_users_title = "Classement - Top 100";
+ranking_title = "Classement";
+ranking_all_users_title = "Classement";
 user = "Utilisateur";
 rank = "Rang";
 level = "Niveau";
 progress = "%";
-my_friends = "Mes Amis";
-all_users = "Top 100";
+my_friends = "AMIS";
+all_users = "TOP 100";
 
 // Admin
 block_selfie = "Block selfie";
@@ -221,4 +221,11 @@ tutorial_four_button = "Suivant (5/5) : Monte de niveau";
 tutorial_five_button = "C'est parti!";
 
 first_challfie = "Mon premier Challfie!!";
+
+// Battle
+matchups = "Duels";
+matchups_daily = "JOURNALIER";
+matchups_friends = "AMIS";
+
+
 

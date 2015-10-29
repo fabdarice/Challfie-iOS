@@ -1,15 +1,14 @@
 //
-//  RankingVC.swift
+//  TermsAndPrivacyVC.swift
 //  Challfie
 //
-//  Created by fcheng on 10/28/15.
+//  Created by fcheng on 10/29/15.
 //  Copyright © 2015 Fabrice Cheng. All rights reserved.
 //
 
 import Foundation
 
-class RankingVC: UIViewController {
-    
+class TermsAndPrivacyVC: UIViewController {
     var pageMenu : CAPSPageMenu?
     
     override func viewDidLoad() {
@@ -25,20 +24,14 @@ class RankingVC: UIViewController {
         // Array to keep track of controllers in page menu
         var controllerArray : [UIViewController] = []
         
-        // Create variables for all view controllers you want to put in the
-        // page menu, initialize them, and add each to the controller array.
-        // (Can be any UIViewController subclass)
-        // Make sure the title property of all view controllers is set
-        // Example:
-        let rankingFriendsController : RankingFriendsVC = RankingFriendsVC(nibName: "RankingFriends", bundle: nil)
-        rankingFriendsController.title = NSLocalizedString("my_friends", comment: "My Friends")
-        rankingFriendsController.parentController = self
-        controllerArray.append(rankingFriendsController)
+        // Add ViewCOntroller to Array
+        let termsTVC = TermsTableViewController()
+        termsTVC.title = "Terms"
+        controllerArray.append(termsTVC)
         
-        let rankingAllUsersController : RankingAllUsersVC = RankingAllUsersVC(nibName: "RankingAllUsers", bundle: nil)
-        rankingAllUsersController.title = NSLocalizedString("all_users", comment: "Top 100")
-        rankingAllUsersController.parentController = self
-        controllerArray.append(rankingAllUsersController)
+        let privacyTVC = PrivacyTableViewController()
+        privacyTVC.title = "Privacy"
+        controllerArray.append(privacyTVC)
         
         // Customize page menu to your liking (optional) or use default settings by sending nil for 'options' in the init
         // Example:
@@ -63,7 +56,7 @@ class RankingVC: UIViewController {
         
         // Initialize page menu with controller array, frame, and optional parameters
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRectMake(0.0, 0.0, self.view.frame.width, self.view.frame.height), pageMenuOptions: parameters)
-
+        
         // Lastly add page menu as subview of base view controller view
         // or use pageMenu controller in you view hierachy as desired
         self.view.addSubview(pageMenu!.view)

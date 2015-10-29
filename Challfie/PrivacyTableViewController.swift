@@ -52,7 +52,7 @@ class PrivacyTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 13
+        return 14
         
     }
     
@@ -105,9 +105,12 @@ class PrivacyTableViewController: UITableViewController {
         case 12 :
             cell.titleLabel.text = "COPPA (Children Online Privacy Protection Act)"
             cell.messageLabel.text = "When it comes to the collection of personal information from children under 13, the Children's Online Privacy Protection Act (COPPA) puts parents in control. The Federal Trade Commission, the nation's consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must do to protect children's privacy and safety online.\n\nWe do not specifically market to children under 13."
-        default :
+        case 13 :
             cell.titleLabel.text = "Fair Information Practices"
             cell.messageLabel.text = "The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.\n\nIn order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:\n\n\nWe will notify the users via email within 7 business days.\nWe will notify the users via in site notification within 7 business days.\n\nWe also agree to the individual redress principle, which requires that individuals have a right to pursue legally enforceable rights against data collectors and processors who fail to adhere to the law. This principle requires not only that individuals have enforceable rights against data users, but also that individuals have recourse to courts or a government agency to investigate and/or prosecute non-compliance by data processors."
+        default :
+            cell.titleLabel.text = ""
+            cell.messageLabel.text = ""
         }
         
         // Update Cell Constraints

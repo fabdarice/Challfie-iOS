@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RankingAllUsersVC" customModule="Challfie" customModuleProvider="target">
             <connections>
                 <outlet property="LevelColumnLabel" destination="sdc-Gk-aPf" id="QoD-ez-1se"/>
                 <outlet property="UsernameColumnLabel" destination="H3M-bH-64A" id="3H2-M2-l2r"/>
-                <outlet property="allUsersRankButton" destination="IL0-yk-qOE" id="p4R-Nr-J7a"/>
                 <outlet property="currentUserProfilPicImageView" destination="ZH1-Gk-Bnv" id="fAD-W3-9xV"/>
                 <outlet property="currentUserProgressLabel" destination="rLO-AR-XVW" id="HcH-rW-bKZ"/>
                 <outlet property="currentUserRankLabel" destination="Wel-8V-Vyp" id="pPa-2H-AFf"/>
                 <outlet property="currentUserView" destination="OUQ-Fs-yxw" id="CGw-Np-JEu"/>
                 <outlet property="currentUsernameLabel" destination="oAG-aJ-vBx" id="LgS-Pw-7r4"/>
-                <outlet property="friendsRankButton" destination="fBq-oS-qfR" id="b2h-ac-mZ8"/>
                 <outlet property="levelImageView" destination="qtA-JV-hSk" id="HgY-WZ-X9r"/>
                 <outlet property="progressColumnLabel" destination="zF3-gu-smO" id="GnE-eh-tEz"/>
                 <outlet property="rankColumnLabel" destination="qtc-iF-BlL" id="yr7-rX-2Dc"/>
@@ -29,42 +28,36 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nl7-A2-O1P" userLabel="tableHeader">
-                    <rect key="frame" x="0.0" y="70" width="320" height="30"/>
+                    <rect key="frame" x="0.0" y="10" width="320" height="30"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challfie_general_background" translatesAutoresizingMaskIntoConstraints="NO" id="5jl-lz-ekm" userLabel="backgroundImage">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
-                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3M-bH-64A">
-                            <rect key="frame" x="107.5" y="7" width="29.5" height="16.5"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <rect key="frame" x="109" y="7" width="31.5" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdc-Gk-aPf">
-                            <rect key="frame" x="238" y="7" width="33" height="16.5"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <rect key="frame" x="235.5" y="7" width="35.5" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="%" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zF3-gu-smO">
-                            <rect key="frame" x="296" y="7" width="14" height="16.5"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <rect key="frame" x="296" y="7" width="14" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rank" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qtc-iF-BlL">
-                            <rect key="frame" x="15" y="7" width="32.5" height="16.5"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <rect key="frame" x="15" y="7" width="34.5" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="adjustFontToRealIPhoneSize" value="YES"/>
@@ -74,67 +67,23 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="0jH-ft-Cfx"/>
-                        <constraint firstItem="5jl-lz-ekm" firstAttribute="leading" secondItem="Nl7-A2-O1P" secondAttribute="leading" id="6gK-QJ-1Yw"/>
                         <constraint firstItem="H3M-bH-64A" firstAttribute="leading" secondItem="qtc-iF-BlL" secondAttribute="trailing" constant="60" id="7Fg-5e-HKd"/>
                         <constraint firstAttribute="centerY" secondItem="sdc-Gk-aPf" secondAttribute="centerY" id="9fD-hL-Kpo"/>
                         <constraint firstAttribute="centerY" secondItem="qtc-iF-BlL" secondAttribute="centerY" id="G16-BV-PEf"/>
-                        <constraint firstAttribute="bottom" secondItem="5jl-lz-ekm" secondAttribute="bottom" id="ISi-Lq-cCN"/>
                         <constraint firstItem="qtc-iF-BlL" firstAttribute="leading" secondItem="Nl7-A2-O1P" secondAttribute="leading" constant="15" id="MV8-aU-dgU"/>
-                        <constraint firstAttribute="trailing" secondItem="5jl-lz-ekm" secondAttribute="trailing" id="UIl-i2-7KV"/>
                         <constraint firstAttribute="centerY" secondItem="H3M-bH-64A" secondAttribute="centerY" id="Z3x-vP-gNw"/>
                         <constraint firstItem="zF3-gu-smO" firstAttribute="leading" secondItem="sdc-Gk-aPf" secondAttribute="trailing" constant="25" id="ahH-HD-wEc"/>
-                        <constraint firstItem="5jl-lz-ekm" firstAttribute="top" secondItem="Nl7-A2-O1P" secondAttribute="top" id="azx-Sm-I11"/>
                         <constraint firstAttribute="trailing" secondItem="zF3-gu-smO" secondAttribute="trailing" constant="10" id="qe4-mD-5ld"/>
                         <constraint firstAttribute="centerY" secondItem="zF3-gu-smO" secondAttribute="centerY" id="yMp-zU-DUm"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="vbL-ty-vD4" userLabel="userRanksTableView">
-                    <rect key="frame" x="0.0" y="164" width="320" height="404"/>
+                    <rect key="frame" x="0.0" y="104" width="320" height="464"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RdJ-vM-VIN" userLabel="rankTabView">
-                    <rect key="frame" x="0.0" y="15" width="320" height="45"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fBq-oS-qfR" userLabel="friendsRankingButton">
-                            <rect key="frame" x="15" y="0.0" width="145" height="45"/>
-                            <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="dHL-tB-aAF"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <state key="normal" title="My Friends" backgroundImage="challenge_tab_left">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <state key="selected" backgroundImage="challenge_tab_left_selected"/>
-                            <connections>
-                                <action selector="friendsRankAction:" destination="-1" eventType="touchUpInside" id="Yqe-AA-loQ"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IL0-yk-qOE" userLabel="allUsersRankingButton">
-                            <rect key="frame" x="160" y="0.0" width="145" height="45"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <state key="normal" title="All Users" backgroundImage="challenge_tab_right_selected">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <state key="selected" backgroundImage="challenge_tab_right_selected"/>
-                        </button>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="45" id="0Hr-Aa-6lw"/>
-                        <constraint firstItem="IL0-yk-qOE" firstAttribute="top" secondItem="RdJ-vM-VIN" secondAttribute="top" id="WBV-b0-cmy"/>
-                        <constraint firstItem="fBq-oS-qfR" firstAttribute="leading" secondItem="RdJ-vM-VIN" secondAttribute="leading" constant="15" id="eXO-b5-dz9"/>
-                        <constraint firstItem="IL0-yk-qOE" firstAttribute="width" secondItem="fBq-oS-qfR" secondAttribute="width" id="fdV-b8-26R"/>
-                        <constraint firstItem="IL0-yk-qOE" firstAttribute="leading" secondItem="fBq-oS-qfR" secondAttribute="trailing" id="gDd-bV-gAt"/>
-                        <constraint firstAttribute="bottom" secondItem="fBq-oS-qfR" secondAttribute="bottom" id="h3k-MP-7Ak"/>
-                        <constraint firstAttribute="bottom" secondItem="IL0-yk-qOE" secondAttribute="bottom" id="hoa-3m-S2f"/>
-                        <constraint firstAttribute="trailing" secondItem="IL0-yk-qOE" secondAttribute="trailing" constant="15" id="lrh-RH-jes"/>
-                        <constraint firstItem="fBq-oS-qfR" firstAttribute="top" secondItem="RdJ-vM-VIN" secondAttribute="top" id="z3l-7l-Iu6"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUQ-Fs-yxw" userLabel="currentUserView">
-                    <rect key="frame" x="0.0" y="105" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="45" width="320" height="44"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLO-AR-XVW" userLabel="progressLevel">
                             <rect key="frame" x="280" y="15" width="40" height="14.5"/>
@@ -208,31 +157,17 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Nl7-A2-O1P" secondAttribute="trailing" id="4zn-Kw-CDH"/>
+                <constraint firstItem="Nl7-A2-O1P" firstAttribute="top" secondItem="4n6-iz-T6w" secondAttribute="top" constant="10" id="7xU-Bo-Ne2"/>
                 <constraint firstAttribute="trailing" secondItem="OUQ-Fs-yxw" secondAttribute="trailing" id="7yB-gk-Q80"/>
-                <constraint firstItem="RdJ-vM-VIN" firstAttribute="top" secondItem="4n6-iz-T6w" secondAttribute="top" constant="15" id="9NS-5i-2Me"/>
                 <constraint firstItem="OUQ-Fs-yxw" firstAttribute="top" secondItem="Nl7-A2-O1P" secondAttribute="bottom" constant="5" id="CqT-dj-FFN"/>
-                <constraint firstAttribute="trailing" secondItem="RdJ-vM-VIN" secondAttribute="trailing" id="M6E-yd-J8k"/>
                 <constraint firstItem="OUQ-Fs-yxw" firstAttribute="leading" secondItem="4n6-iz-T6w" secondAttribute="leading" id="Oc7-CV-gfH"/>
                 <constraint firstAttribute="trailing" secondItem="vbL-ty-vD4" secondAttribute="trailing" id="QxI-uI-8AN"/>
                 <constraint firstAttribute="bottom" secondItem="vbL-ty-vD4" secondAttribute="bottom" id="RQT-6b-dC3"/>
-                <constraint firstItem="Nl7-A2-O1P" firstAttribute="top" secondItem="RdJ-vM-VIN" secondAttribute="bottom" constant="10" id="WnI-vF-dg2"/>
                 <constraint firstItem="Nl7-A2-O1P" firstAttribute="leading" secondItem="4n6-iz-T6w" secondAttribute="leading" id="dL9-aq-cVH"/>
-                <constraint firstItem="RdJ-vM-VIN" firstAttribute="leading" secondItem="4n6-iz-T6w" secondAttribute="leading" id="pX6-Rj-9E0"/>
                 <constraint firstItem="vbL-ty-vD4" firstAttribute="leading" secondItem="4n6-iz-T6w" secondAttribute="leading" id="svA-Ol-h9Y"/>
                 <constraint firstItem="vbL-ty-vD4" firstAttribute="top" secondItem="OUQ-Fs-yxw" secondAttribute="bottom" constant="15" id="wcy-Ll-RhU"/>
             </constraints>
             <point key="canvasLocation" x="204" y="270"/>
         </view>
     </objects>
-    <resources>
-        <image name="challenge_tab_left" width="160" height="45"/>
-        <image name="challenge_tab_left_selected" width="160" height="45"/>
-        <image name="challenge_tab_right_selected" width="160" height="45"/>
-        <image name="challfie_general_background" width="400" height="700"/>
-    </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

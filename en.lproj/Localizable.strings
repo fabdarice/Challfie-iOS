@@ -181,15 +181,14 @@ skip_link_facebook_step = "Skip this step";
 
 
 // Ranking Page
-ranking_title = "Ranking - My Friends";
-ranking_all_users_title = "Ranking - Top 100";
+ranking_title = "Ranking";
+ranking_all_users_title = "Ranking";
 user = "User";
 rank = "Rank";
 level = "Level";
 progress = "%";
-my_friends = "My Friends";
-all_users = "Top 100";
-
+my_friends = "FRIENDS";
+all_users = "TOP 100";
 
 
 // Admin
@@ -225,6 +224,10 @@ tutorial_five_button = "Let's Get Started!";
 
 first_challfie = "My first Challfie!!";
 
+// Battle
+matchups = "Duels";
+matchups_daily = "DAILY";
+matchups_friends = "FRIENDS";
 
 
 

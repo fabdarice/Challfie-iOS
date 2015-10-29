@@ -1,5 +1,5 @@
 //
-//  RankingVC.swift
+//  MatchupsVC.swift
 //  Challfie
 //
 //  Created by fcheng on 10/28/15.
@@ -8,8 +8,8 @@
 
 import Foundation
 
-class RankingVC: UIViewController {
-    
+
+class MatchupsVC: UIViewController {
     var pageMenu : CAPSPageMenu?
     
     override func viewDidLoad() {
@@ -19,7 +19,7 @@ class RankingVC: UIViewController {
         self.navigationController?.hidesBarsOnSwipe = false
         self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        self.navigationItem.title = NSLocalizedString("ranking_all_users_title", comment: "Ranking - All Users")
+        self.navigationItem.title = NSLocalizedString("matchups", comment: "Duels")
         self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
         
         // Array to keep track of controllers in page menu
@@ -30,15 +30,15 @@ class RankingVC: UIViewController {
         // (Can be any UIViewController subclass)
         // Make sure the title property of all view controllers is set
         // Example:
-        let rankingFriendsController : RankingFriendsVC = RankingFriendsVC(nibName: "RankingFriends", bundle: nil)
-        rankingFriendsController.title = NSLocalizedString("my_friends", comment: "My Friends")
-        rankingFriendsController.parentController = self
-        controllerArray.append(rankingFriendsController)
+        let dailyMatchupsVC : MatchupsDailyVC = MatchupsDailyVC(nibName: "MatchupsDaily", bundle: nil)
+        dailyMatchupsVC.title = NSLocalizedString("matchups_daily", comment: "DAILY")
+        dailyMatchupsVC.parentController = self
+        controllerArray.append(dailyMatchupsVC)
         
-        let rankingAllUsersController : RankingAllUsersVC = RankingAllUsersVC(nibName: "RankingAllUsers", bundle: nil)
-        rankingAllUsersController.title = NSLocalizedString("all_users", comment: "Top 100")
-        rankingAllUsersController.parentController = self
-        controllerArray.append(rankingAllUsersController)
+        let friendsMatchupsVC : MatchupsFriendsVC = MatchupsFriendsVC(nibName: "MatchupsFriends", bundle: nil)
+        friendsMatchupsVC.title = NSLocalizedString("matchups_friends", comment: "FRIENDS")
+        friendsMatchupsVC.parentController = self
+        controllerArray.append(friendsMatchupsVC)
         
         // Customize page menu to your liking (optional) or use default settings by sending nil for 'options' in the init
         // Example:
@@ -62,10 +62,11 @@ class RankingVC: UIViewController {
         ]
         
         // Initialize page menu with controller array, frame, and optional parameters
-        pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRectMake(0.0, 0.0, self.view.frame.width, self.view.frame.height), pageMenuOptions: parameters)
-
+        pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRectMake(0.0, 0.0, self.view.frame.width, self.view.frame.height), pageMenuOptions: parameters)        
+        
         // Lastly add page menu as subview of base view controller view
         // or use pageMenu controller in you view hierachy as desired
         self.view.addSubview(pageMenu!.view)
     }
+    
 }

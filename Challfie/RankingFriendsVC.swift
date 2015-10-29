@@ -1,8 +1,8 @@
 //
-//  RankingAllUsersVC.swift
+//  RankingFriendsVC.swift
 //  Challfie
 //
-//  Created by fcheng on 8/31/15.
+//  Created by fcheng on 4/15/15.
 //  Copyright (c) 2015 Fabrice Cheng. All rights reserved.
 //
 
@@ -11,8 +11,8 @@ import Alamofire
 import SwiftyJSON
 import KeychainAccess
 
-class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataSource  {
-    
+class RankingFriendsVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableHeaderView: UIView!
     @IBOutlet weak var UsernameColumnLabel: UILabel!
@@ -25,9 +25,9 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
     @IBOutlet weak var currentUsernameLabel: UILabel!
     @IBOutlet weak var currentUserRankLabel: UILabel!
     @IBOutlet weak var currentUserProfilPicImageView: UIImageView!
-    @IBOutlet weak var currentUserProgressLabel: UILabel!
+    @IBOutlet weak var currentUserProgressLabel: UILabel!    
     @IBOutlet weak var levelImageView: UIImageView!
-
+    
     
     var page = 1
     var users_array : [User] = []
@@ -46,7 +46,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
         self.rankColumnLabel.text = NSLocalizedString("rank", comment: "Rank")
         self.UsernameColumnLabel.text = NSLocalizedString("user", comment: "User")
         self.LevelColumnLabel.text = NSLocalizedString("level", comment: "Level")
-        self.progressColumnLabel.text = NSLocalizedString("progress", comment: "Progress")
+        self.progressColumnLabel.text = NSLocalizedString("progress", comment: "Progress")        
         
         // Add Bottom the loading Indicator
         self.loadingIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 44)
@@ -55,7 +55,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
+
         // Register the xib for the Custom TableViewCell
         let nib = UINib(nibName: "RankingTVCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "RankingCell")
@@ -71,7 +71,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
         //self.currentUserView.backgroundColor = MP_HEX_RGB("FAE0B1")
         self.currentUserView.layer.borderWidth = 1.0
         self.currentUserView.layer.borderColor = MP_HEX_RGB("000000").CGColor
-        
+
         self.loadData(false)
     }
     
@@ -80,7 +80,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Add Google Tracker for Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "Ranking Top 100 Page")
+        tracker.set(kGAIScreenName, value: "Ranking Friends Page")
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
     }
@@ -110,7 +110,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
             "page": self.page.description
         ]
         
-        Alamofire.request(.POST, ApiLink.users_ranking_global, parameters: parameters, encoding: .JSON)
+        Alamofire.request(.POST, ApiLink.users_ranking, parameters: parameters, encoding: .JSON)
             .responseJSON { _, _, result in
                 // Remove loadingIndicator pop-up
                 if pagination == true {
@@ -127,7 +127,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
                 case .Success(let mydata):
                     //Convert to SwiftJSON
                     var json = JSON(mydata)
-                    
+
                     // Set Current_user row
                     let current_user = User.init(json: json["current_user"][0])
                     self.currentUserRankLabel.text = json["current_rank"].stringValue
@@ -153,6 +153,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
                     self.currentUserProfilPicImageView.clipsToBounds = true
                     self.currentUserProfilPicImageView.layer.borderWidth = 2.0
                     self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("FFFFFF").CGColor
+                    
                     if current_user.book_tier == 1 {
                         self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
                         //self.currentUserLevelLabel.textColor = MP_HEX_RGB("0095AE")
@@ -164,8 +165,8 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
                     if current_user.book_tier == 3 {
                         self.currentUserProfilPicImageView.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
                         //self.currentUserLevelLabel.textColor = MP_HEX_RGB("8258E5")
-                    }
-                    
+                    }                                        
+                   
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
                             let user = User.init(json: json["users"][i])
@@ -176,18 +177,19 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
                     } else {
                         self.loadMoreData = false
                     }
-                    self.tableView.reloadData()
+                    
+                    self.tableView.reloadData()                    
                 }
                 self.tableView.tableFooterView = nil
         }
-        
+
     }
     
     // MARK: - tableView Delegate
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.users_array.count
     }
-    
+ 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("RankingCell") as! RankingTVCell
         cell.user = self.users_array[indexPath.row]
@@ -226,8 +228,8 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
         let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.user
         profilVC.hidesBottomBarWhenPushed = true
-        
         self.parentController.navigationController?.pushViewController(profilVC, animated: true)
     }
     
+
 }

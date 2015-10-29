@@ -37,7 +37,7 @@ class RankingTVCell : UITableViewCell {
 
         // Username        
         self.usernameLabel.text = self.user.username
-        self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
+        self.usernameLabel.textColor = UIColor.blackColor()
         
         // Level
         let levelImageURL:NSURL = NSURL(string: self.user.show_book_image())!

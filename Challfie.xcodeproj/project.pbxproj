@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		017512A85EC274E6E1D66982 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AFB8CA89D289A76211EC510 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		87185BD81BA0106D0047A5D7 /* comment_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 87185BDA1BA0106D0047A5D7 /* comment_button.png */; };
-		8719D23A1ADF84E8002273B4 /* Ranking.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8719D2391ADF84E8002273B4 /* Ranking.xib */; };
-		8719D23C1ADF855C002273B4 /* RankingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8719D23B1ADF855C002273B4 /* RankingVC.swift */; };
+		8719D23A1ADF84E8002273B4 /* RankingFriends.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8719D2391ADF84E8002273B4 /* RankingFriends.xib */; };
+		8719D23C1ADF855C002273B4 /* RankingFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8719D23B1ADF855C002273B4 /* RankingFriendsVC.swift */; };
 		87203E711A19EC8000A168D4 /* TimelineCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87203E701A19EC8000A168D4 /* TimelineCustomCell.xib */; };
 		8721456C1A681A1A00369FB1 /* TakePictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721456B1A681A1A00369FB1 /* TakePictureVC.swift */; };
 		8721456E1A682A7000369FB1 /* SearchUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8721456D1A682A7000369FB1 /* SearchUser.xib */; };
@@ -60,6 +60,7 @@
 		873F1BE71B953572008051EB /* RankingAllUsersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873F1BE61B953572008051EB /* RankingAllUsersVC.swift */; };
 		873FBB4E1A8E03450043E272 /* FacebookUsernameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873FBB4D1A8E03450043E272 /* FacebookUsernameVC.swift */; };
 		874101021ADEFB910096F3E9 /* LinkFacebookVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874101011ADEFB910096F3E9 /* LinkFacebookVC.swift */; };
+		874258DB1BE0A0F00019EA57 /* Matchups.xib in Resources */ = {isa = PBXBuildFile; fileRef = 874258DA1BE0A0F00019EA57 /* Matchups.xib */; settings = {ASSET_TAGS = (); }; };
 		874A15941A9746400050FF5C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 874A15931A9746400050FF5C /* Images.xcassets */; };
 		874A15961A9752410050FF5C /* ENSideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874A15951A9752410050FF5C /* ENSideMenu.swift */; };
 		874A15981A97525B0050FF5C /* ENSideMenuNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874A15971A97525B0050FF5C /* ENSideMenuNavigationController.swift */; };
@@ -73,6 +74,10 @@
 		8757BF901A63C7E10018B16B /* ChallengeTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8757BF8F1A63C7E10018B16B /* ChallengeTVCell.swift */; };
 		8759E7941AE0368800EE3D45 /* RankingTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8759E7931AE0368800EE3D45 /* RankingTVCell.xib */; };
 		8759E7961AE0369A00EE3D45 /* RankingTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8759E7951AE0369A00EE3D45 /* RankingTVCell.swift */; };
+		87687EA81BE1D117004A4EE5 /* MatchupsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87687EA71BE1D117004A4EE5 /* MatchupsVC.swift */; settings = {ASSET_TAGS = (); }; };
+		87687EAF1BE1D200004A4EE5 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87687EAE1BE1D200004A4EE5 /* CAPSPageMenu.swift */; settings = {ASSET_TAGS = (); }; };
+		87687EB51BE1D313004A4EE5 /* RankingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87687EB41BE1D313004A4EE5 /* RankingVC.swift */; settings = {ASSET_TAGS = (); }; };
+		87687EB71BE1D3F5004A4EE5 /* Ranking.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87687EB61BE1D3F5004A4EE5 /* Ranking.xib */; settings = {ASSET_TAGS = (); }; };
 		876E869D1BA2C4C300D5C84C /* PopUpViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E869C1BA2C4C300D5C84C /* PopUpViewControllerSwift.swift */; };
 		876E869F1BA2C4E600D5C84C /* PopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 876E869E1BA2C4E600D5C84C /* PopUpViewController.xib */; };
 		8771D4F31A0F24CF00233DD4 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8771D4F21A0F24CF00233DD4 /* RegisterVC.swift */; };
@@ -106,6 +111,13 @@
 		8793870C1A4D285B00609934 /* ProfilVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793870B1A4D285B00609934 /* ProfilVC.swift */; };
 		879387151A500AFD00609934 /* ProfilSelfieCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879387141A500AFD00609934 /* ProfilSelfieCVCell.swift */; };
 		879387171A500B1200609934 /* ProfilSelfieCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879387161A500B1200609934 /* ProfilSelfieCVCell.xib */; };
+		879FC8EA1BE1F7D7002B7FC3 /* MatchupsDailyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8E91BE1F7D7002B7FC3 /* MatchupsDailyVC.swift */; settings = {ASSET_TAGS = (); }; };
+		879FC8F01BE1F830002B7FC3 /* MatchupsFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8EF1BE1F830002B7FC3 /* MatchupsFriendsVC.swift */; settings = {ASSET_TAGS = (); }; };
+		879FC8F21BE1FB98002B7FC3 /* MatchupsDaily.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F11BE1FB98002B7FC3 /* MatchupsDaily.xib */; settings = {ASSET_TAGS = (); }; };
+		879FC8F41BE1FBAD002B7FC3 /* MatchupsFriends.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F31BE1FBAD002B7FC3 /* MatchupsFriends.xib */; settings = {ASSET_TAGS = (); }; };
+		879FC8F61BE1FD6F002B7FC3 /* MatchupsTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F51BE1FD6F002B7FC3 /* MatchupsTVCell.xib */; settings = {ASSET_TAGS = (); }; };
+		879FC8F81BE1FD8F002B7FC3 /* MatchupsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8F71BE1FD8F002B7FC3 /* MatchupsTVCell.swift */; settings = {ASSET_TAGS = (); }; };
+		879FC8FA1BE20318002B7FC3 /* TermsAndPrivacyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8F91BE20318002B7FC3 /* TermsAndPrivacyVC.swift */; settings = {ASSET_TAGS = (); }; };
 		87A5558C1A25CC99000620BF /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A5558B1A25CC99000620BF /* Comment.swift */; };
 		87A6B4B61B93D6B1002940F6 /* PhotoLibraryPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87A6B4B51B93D6B1002940F6 /* PhotoLibraryPreview.xib */; };
 		87A6B4B81B93D801002940F6 /* PhotoLibraryPreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A6B4B71B93D801002940F6 /* PhotoLibraryPreviewVC.swift */; };
@@ -223,8 +235,8 @@
 		6AFB8CA89D289A76211EC510 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87185BD91BA0106D0047A5D7 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/comment_button.png; sourceTree = "<group>"; };
 		87185BDB1BA010700047A5D7 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/comment_button.png; sourceTree = "<group>"; };
-		8719D2391ADF84E8002273B4 /* Ranking.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Ranking.xib; sourceTree = "<group>"; };
-		8719D23B1ADF855C002273B4 /* RankingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RankingVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		8719D2391ADF84E8002273B4 /* RankingFriends.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RankingFriends.xib; sourceTree = "<group>"; };
+		8719D23B1ADF855C002273B4 /* RankingFriendsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RankingFriendsVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		87203E701A19EC8000A168D4 /* TimelineCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineCustomCell.xib; sourceTree = "<group>"; };
 		8721456B1A681A1A00369FB1 /* TakePictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TakePictureVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8721456D1A682A7000369FB1 /* SearchUser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchUser.xib; sourceTree = "<group>"; };
@@ -288,6 +300,7 @@
 		873F1BE61B953572008051EB /* RankingAllUsersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RankingAllUsersVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		873FBB4D1A8E03450043E272 /* FacebookUsernameVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FacebookUsernameVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		874101011ADEFB910096F3E9 /* LinkFacebookVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LinkFacebookVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		874258DA1BE0A0F00019EA57 /* Matchups.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Matchups.xib; sourceTree = "<group>"; };
 		874A15931A9746400050FF5C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		874A15951A9752410050FF5C /* ENSideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ENSideMenu.swift; sourceTree = "<group>"; };
 		874A15971A97525B0050FF5C /* ENSideMenuNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ENSideMenuNavigationController.swift; sourceTree = "<group>"; };
@@ -301,6 +314,10 @@
 		8757BF8F1A63C7E10018B16B /* ChallengeTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeTVCell.swift; sourceTree = "<group>"; };
 		8759E7931AE0368800EE3D45 /* RankingTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RankingTVCell.xib; sourceTree = "<group>"; };
 		8759E7951AE0369A00EE3D45 /* RankingTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RankingTVCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		87687EA71BE1D117004A4EE5 /* MatchupsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsVC.swift; sourceTree = "<group>"; };
+		87687EAE1BE1D200004A4EE5 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
+		87687EB41BE1D313004A4EE5 /* RankingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingVC.swift; sourceTree = "<group>"; };
+		87687EB61BE1D3F5004A4EE5 /* Ranking.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Ranking.xib; sourceTree = "<group>"; };
 		876E869C1BA2C4C300D5C84C /* PopUpViewControllerSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpViewControllerSwift.swift; sourceTree = "<group>"; };
 		876E869E1BA2C4E600D5C84C /* PopUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpViewController.xib; sourceTree = "<group>"; };
 		8771D4F21A0F24CF00233DD4 /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
@@ -350,6 +367,13 @@
 		8793870B1A4D285B00609934 /* ProfilVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ProfilVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		879387141A500AFD00609934 /* ProfilSelfieCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilSelfieCVCell.swift; sourceTree = "<group>"; };
 		879387161A500B1200609934 /* ProfilSelfieCVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilSelfieCVCell.xib; sourceTree = "<group>"; };
+		879FC8E91BE1F7D7002B7FC3 /* MatchupsDailyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsDailyVC.swift; sourceTree = "<group>"; };
+		879FC8EF1BE1F830002B7FC3 /* MatchupsFriendsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsFriendsVC.swift; sourceTree = "<group>"; };
+		879FC8F11BE1FB98002B7FC3 /* MatchupsDaily.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsDaily.xib; sourceTree = "<group>"; };
+		879FC8F31BE1FBAD002B7FC3 /* MatchupsFriends.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsFriends.xib; sourceTree = "<group>"; };
+		879FC8F51BE1FD6F002B7FC3 /* MatchupsTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsTVCell.xib; sourceTree = "<group>"; };
+		879FC8F71BE1FD8F002B7FC3 /* MatchupsTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsTVCell.swift; sourceTree = "<group>"; };
+		879FC8F91BE20318002B7FC3 /* TermsAndPrivacyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsAndPrivacyVC.swift; sourceTree = "<group>"; };
 		87A5558B1A25CC99000620BF /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		87A6B4B51B93D6B1002940F6 /* PhotoLibraryPreview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoLibraryPreview.xib; sourceTree = "<group>"; };
 		87A6B4B71B93D801002940F6 /* PhotoLibraryPreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPreviewVC.swift; sourceTree = "<group>"; };
@@ -460,6 +484,7 @@
 				87B48B421B3DF11900E088A9 /* FlagContentTVCell.swift */,
 				87DA88561A477FCB008B2BF6 /* FriendRequestTVCell.swift */,
 				87314F741A414CE700D75C4D /* FriendTVCell.swift */,
+				879FC8F71BE1FD8F002B7FC3 /* MatchupsTVCell.swift */,
 				879387141A500AFD00609934 /* ProfilSelfieCVCell.swift */,
 				8759E7951AE0369A00EE3D45 /* RankingTVCell.swift */,
 				877874721A2EFB4C0031718E /* TimelineTableViewCell.swift */,
@@ -477,6 +502,7 @@
 				87B48B401B3B4B6E00E088A9 /* FlagContentTVCell.xib */,
 				8781BEF41A4520CF0055EFBD /* FriendRequestTVCell.xib */,
 				87314F6F1A414C8C00D75C4D /* FriendTVCell.xib */,
+				879FC8F51BE1FD6F002B7FC3 /* MatchupsTVCell.xib */,
 				879387161A500B1200609934 /* ProfilSelfieCVCell.xib */,
 				8759E7931AE0368800EE3D45 /* RankingTVCell.xib */,
 				87203E701A19EC8000A168D4 /* TimelineCustomCell.xib */,
@@ -542,6 +568,7 @@
 		874A159E1A9B2E260050FF5C /* ExtraPages */ = {
 			isa = PBXGroup;
 			children = (
+				879FC8F91BE20318002B7FC3 /* TermsAndPrivacyVC.swift */,
 				874A159F1A9B2E3A0050FF5C /* TermsTableViewController.swift */,
 				877EAB881A9D461400D06ADC /* PrivacyTableViewController.swift */,
 				874A15A31A9B43770050FF5C /* ExtraPagesTVCell.swift */,
@@ -578,11 +605,15 @@
 				87D35A551B87B41C00F41821 /* GuideTakePicture.xib */,
 				87B198C11A8C96E700299627 /* LoadingActivity.xib */,
 				878573C11AC4A6BC00354500 /* LoadingLaunchScreen.xib */,
+				874258DA1BE0A0F00019EA57 /* Matchups.xib */,
+				879FC8F11BE1FB98002B7FC3 /* MatchupsDaily.xib */,
+				879FC8F31BE1FBAD002B7FC3 /* MatchupsFriends.xib */,
 				873681601A3523AE004E6897 /* OneSelfie.xib */,
 				87A6B4B51B93D6B1002940F6 /* PhotoLibraryPreview.xib */,
 				879387031A4BFE2E00609934 /* Profil.xib */,
 				87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */,
-				8719D2391ADF84E8002273B4 /* Ranking.xib */,
+				87687EB61BE1D3F5004A4EE5 /* Ranking.xib */,
+				8719D2391ADF84E8002273B4 /* RankingFriends.xib */,
 				87721E061B953683003032A7 /* RankingAllUsers.xib */,
 				8721456D1A682A7000369FB1 /* SearchUser.xib */,
 				8736815F1A3520AD004E6897 /* Custom Cell */,
@@ -611,11 +642,15 @@
 				874101011ADEFB910096F3E9 /* LinkFacebookVC.swift */,
 				87B198BF1A8C963E00299627 /* LoadingActivityVC.swift */,
 				87904FAC1A0C9FF2004FD75E /* LoginVC.swift */,
+				87687EA71BE1D117004A4EE5 /* MatchupsVC.swift */,
+				879FC8E91BE1F7D7002B7FC3 /* MatchupsDailyVC.swift */,
+				879FC8EF1BE1F830002B7FC3 /* MatchupsFriendsVC.swift */,
 				8728E8691A2FF6D4005EE17D /* OneSelfieVC.swift */,
 				87A6B4B71B93D801002940F6 /* PhotoLibraryPreviewVC.swift */,
 				8793870B1A4D285B00609934 /* ProfilVC.swift */,
+				87687EB41BE1D313004A4EE5 /* RankingVC.swift */,
 				873F1BE61B953572008051EB /* RankingAllUsersVC.swift */,
-				8719D23B1ADF855C002273B4 /* RankingVC.swift */,
+				8719D23B1ADF855C002273B4 /* RankingFriendsVC.swift */,
 				8771D4F21A0F24CF00233DD4 /* RegisterVC.swift */,
 				8721456F1A682D5B00369FB1 /* SearchUserVC.swift */,
 				8721456B1A681A1A00369FB1 /* TakePictureVC.swift */,
@@ -708,6 +743,7 @@
 				87904FD21A0CAD15004FD75E /* MPColorTools.m */,
 				874A15951A9752410050FF5C /* ENSideMenu.swift */,
 				874A15971A97525B0050FF5C /* ENSideMenuNavigationController.swift */,
+				87687EAE1BE1D200004A4EE5 /* CAPSPageMenu.swift */,
 			);
 			name = VendorLib;
 			sourceTree = "<group>";
@@ -903,6 +939,7 @@
 				879387171A500B1200609934 /* ProfilSelfieCVCell.xib in Resources */,
 				87A6B4B61B93D6B1002940F6 /* PhotoLibraryPreview.xib in Resources */,
 				872CAB691BA2D6510062F73F /* level_up_apprentice_3.png in Resources */,
+				879FC8F41BE1FBAD002B7FC3 /* MatchupsFriends.xib in Resources */,
 				877874461A2C0F600031718E /* approve_select_button.png in Resources */,
 				8787EDCF1A9F1D4600A2639D /* Contact.xib in Resources */,
 				877874681A2E98200031718E /* challenge_approve.png in Resources */,
@@ -912,6 +949,7 @@
 				873F1BE11B944516008051EB /* PLCameraSheetButtonPressed@2x.png in Resources */,
 				877874501A2C11050031718E /* reject_button.png in Resources */,
 				872CAB781BA2D6660062F73F /* level_up_newbie_3.png in Resources */,
+				879FC8F61BE1FD6F002B7FC3 /* MatchupsTVCell.xib in Resources */,
 				87904FCC1A0CA8D1004FD75E /* chinrg__.ttf in Resources */,
 				8759E7941AE0368800EE3D45 /* RankingTVCell.xib in Resources */,
 				874A15A21A9B428B0050FF5C /* ExtraPagesTVCell.xib in Resources */,
@@ -924,17 +962,20 @@
 				873F1BE51B944516008051EB /* PLCameraSheetDoneButtonPressed@2x.png in Resources */,
 				87721E071B953683003032A7 /* RankingAllUsers.xib in Resources */,
 				873F1BE01B944516008051EB /* PLCameraSheetButtonPressed.png in Resources */,
+				874258DB1BE0A0F00019EA57 /* Matchups.xib in Resources */,
 				87B48B3D1B3B427000E088A9 /* FlagContent.xib in Resources */,
 				8781BEE81A443D710055EFBD /* follow_button.png in Resources */,
 				873681611A3523AE004E6897 /* OneSelfie.xib in Resources */,
 				872CAB721BA2D65E0062F73F /* level_up_master_3.png in Resources */,
 				872CAB751BA2D6620062F73F /* level_up_newbie_2.png in Resources */,
 				87B0538D1A2B3B34000B5A60 /* Localizable.strings in Resources */,
-				8719D23A1ADF84E8002273B4 /* Ranking.xib in Resources */,
+				8719D23A1ADF84E8002273B4 /* RankingFriends.xib in Resources */,
 				87B48B411B3B4B6E00E088A9 /* FlagContentTVCell.xib in Resources */,
+				87687EB71BE1D3F5004A4EE5 /* Ranking.xib in Resources */,
 				874A15941A9746400050FF5C /* Images.xcassets in Resources */,
 				87D35A561B87B41C00F41821 /* GuideTakePicture.xib in Resources */,
 				8757BF8E1A63C7BC0018B16B /* ChallengeTVCell.xib in Resources */,
+				879FC8F21BE1FB98002B7FC3 /* MatchupsDaily.xib in Resources */,
 				87D35A581B87FC1900F41821 /* GuideApproveSelfie.xib in Resources */,
 				87A6B4BA1B93E83D002940F6 /* Main.storyboard in Resources */,
 				872CAB6F1BA2D65A0062F73F /* level_up_master_2.png in Resources */,
@@ -1034,9 +1075,12 @@
 				87904FAD1A0C9FF2004FD75E /* LoginVC.swift in Sources */,
 				873F1BD91B944516008051EB /* GKImageCropOverlayView.m in Sources */,
 				874A159C1A9768A60050FF5C /* MyMenuTableViewController.swift in Sources */,
+				879FC8F01BE1F830002B7FC3 /* MatchupsFriendsVC.swift in Sources */,
+				87687EB51BE1D313004A4EE5 /* RankingVC.swift in Sources */,
 				872145701A682D5B00369FB1 /* SearchUserVC.swift in Sources */,
 				8728E86A1A2FF6D4005EE17D /* OneSelfieVC.swift in Sources */,
 				87D35A541B87B3B600F41821 /* GuideTakePictureVC.swift in Sources */,
+				879FC8EA1BE1F7D7002B7FC3 /* MatchupsDailyVC.swift in Sources */,
 				872820B01A160FFC0010AB75 /* Book.swift in Sources */,
 				872820AC1A15CD210010AB75 /* Challenge.swift in Sources */,
 				873F1BDC1B944516008051EB /* GKImagePicker.m in Sources */,
@@ -1056,6 +1100,7 @@
 				87DAA1451A89F76A00D7330A /* UILabelExtension.swift in Sources */,
 				872820A11A13548F0010AB75 /* HomeTBC.swift in Sources */,
 				87D35A5A1B87FCC700F41821 /* GuideApproveSelfieVC.swift in Sources */,
+				87687EAF1BE1D200004A4EE5 /* CAPSPageMenu.swift in Sources */,
 				87904FD31A0CAD15004FD75E /* MPColorTools.m in Sources */,
 				872820A71A149B7C0010AB75 /* ForgotPasswordVC.swift in Sources */,
 				877ACDAF1AA52B3F00A6AB9F /* AboutUsTableViewController.swift in Sources */,
@@ -1064,6 +1109,7 @@
 				872DC0041A3AF1CA00806FE9 /* AlertTVCell.swift in Sources */,
 				8788FD6E1B903624002A8D66 /* UserApprovalListVC.swift in Sources */,
 				87B48B3F1B3B433700E088A9 /* FlagContentVC.swift in Sources */,
+				879FC8F81BE1FD8F002B7FC3 /* MatchupsTVCell.swift in Sources */,
 				872820A51A143F110010AB75 /* TimelineVC.swift in Sources */,
 				87A80ED21BACD2A7007D2103 /* UIDeviceExtension.swift in Sources */,
 				87A5558C1A25CC99000620BF /* Comment.swift in Sources */,
@@ -1075,13 +1121,15 @@
 				874A15961A9752410050FF5C /* ENSideMenu.swift in Sources */,
 				873281831A5D10CA00B99429 /* BookPageContentVC.swift in Sources */,
 				87E298741A317BC200DEF385 /* AlertVC.swift in Sources */,
+				879FC8FA1BE20318002B7FC3 /* TermsAndPrivacyVC.swift in Sources */,
 				874101021ADEFB910096F3E9 /* LinkFacebookVC.swift in Sources */,
 				879387151A500AFD00609934 /* ProfilSelfieCVCell.swift in Sources */,
-				8719D23C1ADF855C002273B4 /* RankingVC.swift in Sources */,
+				8719D23C1ADF855C002273B4 /* RankingFriendsVC.swift in Sources */,
 				874A15A41A9B43770050FF5C /* ExtraPagesTVCell.swift in Sources */,
 				873FBB4E1A8E03450043E272 /* FacebookUsernameVC.swift in Sources */,
 				873F1BDD1B944516008051EB /* GKResizeableCropOverlayView.m in Sources */,
 				8787EDCA1A9F14CB00A2639D /* ContactViewController.swift in Sources */,
+				87687EA81BE1D117004A4EE5 /* MatchupsVC.swift in Sources */,
 				872820AA1A15A6A60010AB75 /* Selfie.swift in Sources */,
 				873F1BDB1B944516008051EB /* GKImageCropViewController.m in Sources */,
 				874A159A1A9768790050FF5C /* MyNavigationController.swift in Sources */,
