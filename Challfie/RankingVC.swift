@@ -15,6 +15,9 @@ class RankingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let screenFrame = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
+        self.view.frame = screenFrame
+        
         // Hide on swipe & keboard Appears
         self.navigationController?.hidesBarsOnSwipe = false
         self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -22,23 +25,30 @@ class RankingVC: UIViewController {
         self.navigationItem.title = NSLocalizedString("ranking_all_users_title", comment: "Ranking - All Users")
         self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
         
+        self.addTopMenu()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.tabBarController?.tabBar.hidden = true
+    }
+    
+    // MARK: - Add Top Menu
+    func addTopMenu() {
         // Array to keep track of controllers in page menu
         var controllerArray : [UIViewController] = []
-        
-        // Create variables for all view controllers you want to put in the
-        // page menu, initialize them, and add each to the controller array.
-        // (Can be any UIViewController subclass)
-        // Make sure the title property of all view controllers is set
-        // Example:
+
         let rankingFriendsController : RankingFriendsVC = RankingFriendsVC(nibName: "RankingFriends", bundle: nil)
         rankingFriendsController.title = NSLocalizedString("my_friends", comment: "My Friends")
         rankingFriendsController.parentController = self
+        let _ = rankingFriendsController.view
         controllerArray.append(rankingFriendsController)
-        
+                
         let rankingAllUsersController : RankingAllUsersVC = RankingAllUsersVC(nibName: "RankingAllUsers", bundle: nil)
         rankingAllUsersController.title = NSLocalizedString("all_users", comment: "Top 100")
         rankingAllUsersController.parentController = self
-        controllerArray.append(rankingAllUsersController)
+        controllerArray.append(rankingAllUsersController)        
         
         // Customize page menu to your liking (optional) or use default settings by sending nil for 'options' in the init
         // Example:
@@ -63,7 +73,9 @@ class RankingVC: UIViewController {
         
         // Initialize page menu with controller array, frame, and optional parameters
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRectMake(0.0, 0.0, self.view.frame.width, self.view.frame.height), pageMenuOptions: parameters)
-
+        print("RANKINGVC")
+        print(self.view.frame)
+        
         // Lastly add page menu as subview of base view controller view
         // or use pageMenu controller in you view hierachy as desired
         self.view.addSubview(pageMenu!.view)

@@ -32,24 +32,29 @@ class AlertTVCell : UITableViewCell {
         
         // Test if we display the username or not
         if (alert.type_notification != "selfie_status") && (alert.type_notification != "book_unlock") && (alert.type_notification != "daily_challenge") {
-            // Alert Username
-            self.usernameLabel.hidden = false
-            self.usernameLabel.text = alert.author.username
-            self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
-            self.usernameLabel.sizeToFit() // To update the UILabel frame width to fit it's content
             
-            // Message Style - Indent First Line
-            let message_style = NSMutableParagraphStyle()
-            message_style.firstLineHeadIndent = CGFloat(self.usernameLabel.frame.width + 1.0)
-            message_style.headIndent = 0.0
-            message_style.lineBreakMode = NSLineBreakMode.ByClipping
-
-            let message_style_indent = NSMutableAttributedString(string: alert.message)
-            // Test if Last comment exists or not
-
-            message_style_indent.addAttribute(NSParagraphStyleAttributeName, value: message_style, range: NSMakeRange(0, message_style_indent.length))
-            self.messageLabel.attributedText = message_style_indent
-            
+            if alert.author != nil {
+                // Alert Username
+                self.usernameLabel.hidden = false
+                self.usernameLabel.text = alert.author.username
+                self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
+                self.usernameLabel.sizeToFit() // To update the UILabel frame width to fit it's content
+                
+                // Message Style - Indent First Line
+                let message_style = NSMutableParagraphStyle()
+                message_style.firstLineHeadIndent = CGFloat(self.usernameLabel.frame.width + 1.0)
+                message_style.headIndent = 0.0
+                message_style.lineBreakMode = NSLineBreakMode.ByClipping
+                
+                let message_style_indent = NSMutableAttributedString(string: alert.message)
+                // Test if Last comment exists or not
+                
+                message_style_indent.addAttribute(NSParagraphStyleAttributeName, value: message_style, range: NSMakeRange(0, message_style_indent.length))
+                self.messageLabel.attributedText = message_style_indent
+            } else {
+                self.messageLabel.text = alert.message
+                self.usernameLabel.hidden = true
+            }
         } else {
             self.messageLabel.text = alert.message
             self.usernameLabel.hidden = true

@@ -255,6 +255,11 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         controllerScrollView.alwaysBounceHorizontal = enableHorizontalBounce
         controllerScrollView.bounces = enableHorizontalBounce
         
+        print("---")
+        print("setUpUserInterface USER INTERFACE")
+        print(self.view.frame)
+        print("---")
+        
         controllerScrollView.frame = CGRectMake(0.0, menuHeight, self.view.frame.width, self.view.frame.height)
         
         self.view.addSubview(controllerScrollView)
@@ -832,6 +837,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         newVC.willMoveToParentViewController(self)
         
         newVC.view.frame = CGRectMake(self.view.frame.width * CGFloat(index), menuHeight, self.view.frame.width, self.view.frame.height - menuHeight)
+        newVC.view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         
         self.addChildViewController(newVC)
         self.controllerScrollView.addSubview(newVC.view)

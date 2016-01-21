@@ -29,6 +29,7 @@ class Selfie {
     var flag_count: Int!
     var blocked: Bool!
     var ratio_photo: CGFloat!
+    var matchup: Matchup!
     
     init(id: Int) {
         self.id = id
@@ -51,11 +52,22 @@ class Selfie {
         self.flag_count = json["flag_count"].intValue
         self.blocked = json["blocked"].boolValue
         self.ratio_photo =  CGFloat(json["ratio_photo"].floatValue)
+        
+        let challenge = Challenge.init(json: json["challenge"])
+        let user = User.init(json: json["user"])
+        let last_comment = Comment.init(json: json["last_comment"])
+        if json["matchup"].count > 0 {
+            let matchup = Matchup.init(json: json["matchup"])
+            self.matchup = matchup
+        }
+        
+        self.challenge = challenge
+        self.user = user
+        self.last_comment = last_comment
+
     }
     
-    
-    
-    func show_selfie_pic() -> String {        
+    func show_selfie_pic() -> String {
         return self.photo
     }
 }

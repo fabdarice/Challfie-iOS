@@ -51,6 +51,8 @@ class TimelineTableViewCell : UITableViewCell {
     var image_button_approved_selected: UIImage!
     var image_button_rejected_selected: UIImage!
     
+    var image_button_duel: UIImage!
+    
     var image_difficulty_one: UIImage!
     var image_difficulty_two: UIImage!
     var image_difficulty_three: UIImage!
@@ -58,10 +60,15 @@ class TimelineTableViewCell : UITableViewCell {
     var image_difficulty_five: UIImage!
     var image_daily_challenge: UIImage!
     var image_challfie_logo: UIImage!
+    var image_matchup_challenge: UIImage!
     
     var image_challenge_pending: UIImage!
     var image_challenge_approved: UIImage!
     var image_challenge_rejected: UIImage!
+    
+    var image_matchup_victory: UIImage!
+    var image_matchup_defeat: UIImage!
+    var image_matchup_in_progress: UIImage!
     
     var image_missing_user: UIImage!
     
@@ -92,6 +99,7 @@ class TimelineTableViewCell : UITableViewCell {
         self.image_difficulty_five = UIImage(named: "challenge_difficulty_five_small")
         self.image_daily_challenge = UIImage(named: "challenge_daily_small")
         self.image_challfie_logo = UIImage(named: "challfie_difficulty")
+        self.image_matchup_challenge = UIImage(named: "icon_challenge")
         self.image_challenge_pending = UIImage(named: "challenge_pending.png")
         self.image_challenge_approved = UIImage(named: "challenge_approve.png")
         self.image_challenge_rejected = UIImage(named: "challenge_rejected")
@@ -100,6 +108,10 @@ class TimelineTableViewCell : UITableViewCell {
         self.image_button_approved_selected = UIImage(named: "approve_select_button.png")
         self.image_button_rejected = UIImage(named: "reject_button.png")
         self.image_button_rejected_selected = UIImage(named: "reject_select_button.png")
+        self.image_button_duel = UIImage(named: "duel_button.png")
+        self.image_matchup_victory = UIImage(named: "matchup_victory.png")
+        self.image_matchup_defeat = UIImage(named: "matchup_defeat.png")
+        self.image_matchup_in_progress = UIImage(named: "matchup_in_progress.png")
     
         // Initiate comment Message Style
         self.comment_message_style = NSMutableParagraphStyle()
@@ -235,29 +247,24 @@ class TimelineTableViewCell : UITableViewCell {
         let levelImageURL:NSURL = NSURL(string: selfie.user.show_book_image())!
         self.levelImageView.hnk_setImageFromURL(levelImageURL)
         
-        // Test Daily Challenge
-        if self.selfie.is_daily == true {
-            self.challengeDifficultyImageView.image = self.image_daily_challenge
+        if self.selfie.matchup != nil {
+            self.challengeDifficultyImageView.image = self.image_matchup_challenge
         } else {
-            // Challenge Difficulty
-            switch self.selfie.challenge.difficulty {
-            case -1: self.challengeDifficultyImageView.image = self.image_challfie_logo
-            case 1: self.challengeDifficultyImageView.image = self.image_difficulty_one
-            case 2: self.challengeDifficultyImageView.image = self.image_difficulty_two
-            case 3: self.challengeDifficultyImageView.image = self.image_difficulty_three
-            case 4: self.challengeDifficultyImageView.image = self.image_difficulty_four
-            case 5: self.challengeDifficultyImageView.image = self.image_difficulty_five
-            default : self.challengeDifficultyImageView.image = nil
+            // Test Daily Challenge
+            if self.selfie.is_daily == true {
+                self.challengeDifficultyImageView.image = self.image_daily_challenge
+            } else {
+                // Challenge Difficulty
+                switch self.selfie.challenge.difficulty {
+                case -1: self.challengeDifficultyImageView.image = self.image_challfie_logo
+                case 1: self.challengeDifficultyImageView.image = self.image_difficulty_one
+                case 2: self.challengeDifficultyImageView.image = self.image_difficulty_two
+                case 3: self.challengeDifficultyImageView.image = self.image_difficulty_three
+                case 4: self.challengeDifficultyImageView.image = self.image_difficulty_four
+                case 5: self.challengeDifficultyImageView.image = self.image_difficulty_five
+                default : self.challengeDifficultyImageView.image = nil
+                }
             }
-        }
-        
-        // Set Selfies Challenge Status
-        if selfie.approval_status == 0 {
-            self.challengeStatusImage.image = self.image_challenge_pending
-        } else if selfie.approval_status == 1 {
-            self.challengeStatusImage.image = self.image_challenge_approved
-        } else if selfie.approval_status == 2 {
-            self.challengeStatusImage.image = self.image_challenge_rejected
         }
         
         // set Selfies Image + height constraint to keep ratio
@@ -307,24 +314,59 @@ class TimelineTableViewCell : UITableViewCell {
         }
         
         // Set Approved/Rejected Button
-        if selfie.user.is_current_user == true {
-            // Hide Approve&Disapprove Button because own selfie
+        if selfie.matchup != nil {
+            // Selfie from Matchup
             self.approveButton.hidden = true
-            self.disapproveButton.hidden = true
-        } else {
-            // Hide Approve&Disapprove Button because own selfie
-            self.approveButton.hidden = false
             self.disapproveButton.hidden = false
             // Approve Button && Disapprove Button
-            if selfie.user_vote_status == 1 {
-                self.approveButton.setImage(self.image_button_approved_selected, forState: UIControlState.Normal)
-                self.disapproveButton.setImage(self.image_button_rejected, forState: .Normal)
-            } else if selfie.user_vote_status == 2 {
-                self.approveButton.setImage(self.image_button_approved, forState: .Normal)
-                self.disapproveButton.setImage(self.image_button_rejected_selected, forState: .Normal)
+            self.disapproveButton.setImage(self.image_button_duel, forState: .Normal)
+            
+            // Matchup's STATUS
+            if selfie.matchup.status == MatchupStatus.Accepted.rawValue {
+                self.challengeStatusImage.image = self.image_matchup_in_progress
             } else {
-                self.approveButton.setImage(self.image_button_approved, forState: .Normal)
-                self.disapproveButton.setImage(self.image_button_rejected, forState: .Normal)
+                if selfie.matchup.status == MatchupStatus.Ended.rawValue {
+                    if selfie.matchup.matchup_winner != nil
+                        && selfie.matchup.matchup_winner == selfie.user.username {
+                        self.challengeStatusImage.image = self.image_matchup_victory
+                    } else {
+                        self.challengeStatusImage.image = self.image_matchup_defeat
+                    }
+                } else {
+                    if selfie.matchup.status == MatchupStatus.EndedWithDraw.rawValue {
+                        self.challengeStatusImage.image = self.image_matchup_defeat
+                    }
+                }
+            }
+        } else {
+            // Set Selfies Challenge Status
+            if selfie.approval_status == 0 {
+                self.challengeStatusImage.image = self.image_challenge_pending
+            } else if selfie.approval_status == 1 {
+                self.challengeStatusImage.image = self.image_challenge_approved
+            } else if selfie.approval_status == 2 {
+                self.challengeStatusImage.image = self.image_challenge_rejected
+            }
+            
+            if selfie.user.is_current_user == true {
+                // Hide Approve&Disapprove Button because own selfie
+                self.approveButton.hidden = true
+                self.disapproveButton.hidden = true
+            } else {
+                // Selfie Normal - Not from Matchup
+                self.approveButton.hidden = false
+                self.disapproveButton.hidden = false
+                // Approve Button && Disapprove Button
+                if selfie.user_vote_status == 1 {
+                    self.approveButton.setImage(self.image_button_approved_selected, forState: UIControlState.Normal)
+                    self.disapproveButton.setImage(self.image_button_rejected, forState: .Normal)
+                } else if selfie.user_vote_status == 2 {
+                    self.approveButton.setImage(self.image_button_approved, forState: .Normal)
+                    self.disapproveButton.setImage(self.image_button_rejected_selected, forState: .Normal)
+                } else {
+                    self.approveButton.setImage(self.image_button_approved, forState: .Normal)
+                    self.disapproveButton.setImage(self.image_button_rejected, forState: .Normal)
+                }
             }
         }
     }
@@ -442,6 +484,28 @@ class TimelineTableViewCell : UITableViewCell {
     
     
     @IBAction func disapproveButton(sender: UIButton) {
+        if selfie.matchup != nil {
+            // Go to Selfie Matchup
+            self.goToSelfieMatchup()
+        } else {
+            // Reject Selfie
+            self.disapproveSelfie()
+        }
+    }
+    
+    func goToSelfieMatchup() {
+        self.timelineVC.hidesBottomBarWhenPushed = true
+        // Push to OneMatchupVC of the selected Row
+        let oneMatchUpVC = OneMatchupVC(nibName: "OneMatchup" , bundle: nil)
+        oneMatchUpVC.hidesBottomBarWhenPushed = true
+        oneMatchUpVC.matchup = selfie.matchup
+        
+        self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        self.timelineVC.navigationController!.pushViewController(oneMatchUpVC, animated: true)
+    }
+    
+    func disapproveSelfie() {
         // Perform the action only if the user hasn't rejected yet the Selfie
         if self.selfie.user_vote_status != 2 {
             
@@ -519,19 +583,32 @@ class TimelineTableViewCell : UITableViewCell {
                     }
             }
         }
-    }    
+    }
     
     
     @IBAction func commentButton(sender: UIButton) {
+        
         // Hide TabBar when push to OneSelfie View
         self.timelineVC.hidesBottomBarWhenPushed = true
         
-        // Push to OneSelfieVC
-        let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
-        oneSelfieVC.selfie = self.selfie
-        oneSelfieVC.selfieTimelineCell = self
-        self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("tab_timeline", comment: "Timeline"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        self.timelineVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
+        if selfie.matchup != nil {
+            // Push to OneMatchupVC of the selected Row
+            let oneMatchUpVC = OneMatchupVC(nibName: "OneMatchup" , bundle: nil)
+            oneMatchUpVC.hidesBottomBarWhenPushed = true
+            oneMatchUpVC.matchup = selfie.matchup
+            
+            self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+            
+            self.timelineVC.navigationController!.pushViewController(oneMatchUpVC, animated: true)
+        } else {
+            // Push to OneSelfieVC
+            let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
+            oneSelfieVC.selfie = self.selfie
+            oneSelfieVC.selfieTimelineCell = self
+            self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("tab_timeline", comment: "Timeline"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+            self.timelineVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
+        }
+        
     }
     
     
@@ -599,6 +676,7 @@ class TimelineTableViewCell : UITableViewCell {
         let userApprovalListVC = UserApprovalListVC()
         userApprovalListVC.is_approval_list = true
         userApprovalListVC.selfie_id = self.selfie.id.description
+        userApprovalListVC.hidesBottomBarWhenPushed = true
         self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.timelineVC.navigationController?.pushViewController(userApprovalListVC, animated: true)
     }
@@ -608,6 +686,7 @@ class TimelineTableViewCell : UITableViewCell {
         let userApprovalListVC = UserApprovalListVC()
         userApprovalListVC.is_approval_list = false
         userApprovalListVC.selfie_id = self.selfie.id.description
+        userApprovalListVC.hidesBottomBarWhenPushed = true
         self.timelineVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.timelineVC.navigationController?.pushViewController(userApprovalListVC, animated: true)
 
@@ -672,6 +751,16 @@ class TimelineTableViewCell : UITableViewCell {
                 self.timelineVC.presentViewController(delete_confirmation, animated: true, completion: nil)
             }
 
+        } else {
+            oneAction = UIAlertAction(title: NSLocalizedString("challenge_to_a_duel", comment: "Challenge to a duel"), style: UIAlertActionStyle.Default) { (_) in
+                let createMatchupVC = CreateMatchupVC(nibName: "CreateMatchup", bundle: nil)
+                createMatchupVC.opponent = self.selfie.user
+                createMatchupVC.parentController = self.timelineVC
+                createMatchupVC.hidesBottomBarWhenPushed = true
+                self.timelineVC.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                self.timelineVC.navigationController?.pushViewController(createMatchupVC, animated: true)
+            }
+
         }
         
         
@@ -714,9 +803,8 @@ class TimelineTableViewCell : UITableViewCell {
         }
         let thirdAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
         
-        if self.selfie.user.username == login {
-            alert.addAction(oneAction)
-        }
+        
+        alert.addAction(oneAction)
         alert.addAction(twoAction)
         alert.addAction(thirdAction)
         

@@ -116,10 +116,10 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         super.viewWillDisappear(animated)
         
         let keychain = Keychain(service: "challfie.app.service")
-        let login = keychain["login"]!
-        let auth_token = keychain["auth_token"]!
-        
         if keychain["login"] != nil {
+            
+            let login = keychain["login"]!
+            let auth_token = keychain["auth_token"]!
             
             var last_notification_id : String!
             
@@ -151,7 +151,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 }
             }
             
-        }
+        }        
+        
     }
     
     // MARK: - Refresh and Initial Loading New Data
@@ -206,6 +207,8 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 case .Success(let mydata):
                     //Convert to SwiftJSON
                     var json = JSON(mydata)
+                    
+                    print(json)
 
                     if actionFromInit == false {
                         self.alerts_array.removeAll(keepCapacity: false)
@@ -217,14 +220,12 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                     if json["notifications"].count != 0 {
                         for var i:Int = 0; i < json["notifications"].count; i++ {
                             let alert = Alert.init(json: json["notifications"][i])
-                            let author: User = User.init(json: json["notifications"][i]["author"])
-                            alert.author = author
                             
                             // Display Pop up if alert of unlocking new Level
-                            if alert.type_notification == "book_unlock" && alert.read == false && isDisplayingPopUp == false {
+                            if alert.type_notification == AlertType.LevelUnlock.rawValue && alert.read == false && isDisplayingPopUp == false {
                                 var popUpImage: UIImage!
 
-                                switch author.book_level {
+                                switch alert.author.book_level {
                                 case "Newbie II" : popUpImage = UIImage(named: "level_up_newbie_2")
                                 case "Newbie III" : popUpImage = UIImage(named: "level_up_newbie_3")
                                 case "Apprentice I" : popUpImage = UIImage(named: "level_up_apprentice_1")
@@ -292,11 +293,10 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                     //Convert to SwiftJSON
                     var json = JSON(mydata)
                     
+                    
                     if json["notifications"].count != 0 {
                         for var i:Int = 0; i < json["notifications"].count; i++ {
-                            let alert = Alert.init(json: json["notifications"][i])
-                            let author: User = User.init(json: json["notifications"][i]["author"])
-                            alert.author = author
+                            let alert = Alert.init(json: json["notifications"][i])                            
                             
                             if self.alerts_array_id.contains(alert.id) == false {
                                 self.alerts_array.append(alert)
@@ -383,11 +383,25 @@ class AlertVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         //var cell : FriendTVCell = self.tableView.dataSource?.tableView(tableView, cellForRowAtIndexPath: indexPath) as FriendTVCell
         let alert: Alert = self.alerts_array[indexPath.row]
         
-        
         // load book image
         if alert.book_img != "" {
             // Modal to Challenge Book
             self.tabBarController?.selectedIndex = 1
+        } else if alert.type_notification == AlertType.Matchup.rawValue && alert.matchup != nil {
+            if alert.matchup.status == MatchupStatus.Pending.rawValue {
+                // Push To MatchupVC
+                let matchupsVC = MatchupsVC(nibName: "Matchups" , bundle: nil)
+                matchupsVC.hidesBottomBarWhenPushed = true
+                self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                self.navigationController?.pushViewController(matchupsVC, animated: true)
+            } else {
+                // Push to OneMatchupVC of the selected Row
+                let oneMatchUpVC = OneMatchupVC(nibName: "OneMatchup" , bundle: nil)
+                oneMatchUpVC.matchup = alert.matchup
+                oneMatchUpVC.hidesBottomBarWhenPushed = true
+                self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                self.navigationController?.pushViewController(oneMatchUpVC, animated: true)
+            }
         } else if alert.selfie_img != "" {
             // Push to OneSelfieVC
             let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)

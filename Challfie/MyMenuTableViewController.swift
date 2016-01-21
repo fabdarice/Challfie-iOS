@@ -136,7 +136,7 @@ class MyMenuTableViewController: UITableViewController {
                 imageView.image = UIImage(named: "icon_rank")
             case 2 :
                 textLabel.text = NSLocalizedString("matchups", comment: "Duel")
-                imageView.image = UIImage(named: "icon_rank")
+                imageView.image = UIImage(named: "icon_menu_challenge")
             default:
                 textLabel.text = ""
             }
@@ -216,7 +216,7 @@ class MyMenuTableViewController: UITableViewController {
                         let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
                         profilVC.user = current_user
                         profilVC.hidesBottomBarWhenPushed = true
-                        self.navController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
                         self.navController.pushViewController(profilVC, animated: true)
                         selectedCell.contentView.backgroundColor = UIColor.clearColor()
                     }

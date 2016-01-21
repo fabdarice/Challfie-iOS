@@ -80,4 +80,11 @@ struct ApiLink {
     static var block_user = host + "/api/admin/block_user"
     static var clear_flag_selfie = host + "/api/admin/clear_flag_selfie"
     
+    // MatchupsController
+    static var new_matchup = host + "/api/matchup/new"
+    static var create_matchup = host + "/api/matchup/create"
+    static var accept_reject_matchup = host + "/api/matchup/accept_reject_matchup"
+    static var active_matchups = host + "/api/matchup/active_matchups"
+    static var complete_matchups = host + "/api/matchup/complete_matchups"
+    
 }

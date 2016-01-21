@@ -66,5 +66,38 @@ class GlobalFunctions {
     }
     
     
+    // MARK: - When the user is taking a picture from the device camera
+    func showCamera(imagePicker: UIImagePickerController, parentController: UIViewController) {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
+            imagePicker.sourceType = .Camera
+            imagePicker.cameraDevice = UIImagePickerControllerCameraDevice.Front
+            
+            imagePicker.allowsEditing = false
+            
+            parentController.presentViewController(imagePicker, animated: true, completion: nil)
+        } else {
+            self.displayAlert(title: "No Camera Found", message: " ", controller: parentController)
+        }
+    }
     
+    // MARK: - When the user is selecting a picture from the gallery
+    func showPhotoLibrary(imagePicker: UIImagePickerController, parentController: UIViewController) {
+        // Add Background for status bar
+        let statusBarViewBackground  = UIApplication.sharedApplication().keyWindow?.viewWithTag(22)
+        statusBarViewBackground?.hidden = true
+        
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)){
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .PhotoLibrary
+            
+            parentController.presentViewController(imagePicker, animated: true, completion: nil)
+        } else {
+            self.displayAlert(title: "No access to photo library", message: " ", controller: parentController)
+        }
+    }
+
 }

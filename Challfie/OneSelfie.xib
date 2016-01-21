@@ -47,11 +47,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="g0s-1Z-osj">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="666"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="PFq-wI-n4q">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="626"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZGL-am-1mg" userLabel="contentView">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="628"/>
@@ -152,7 +152,7 @@
                                     </constraints>
                                 </imageView>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9gk-w9-gGX" userLabel="activityIndicator">
-                                    <rect key="frame" x="142" y="185" width="37" height="37"/>
+                                    <rect key="frame" x="141" y="185" width="37" height="37"/>
                                     <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </activityIndicatorView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbG-57-y5X" userLabel="rejectButton">
@@ -342,7 +342,6 @@
                                 <constraint firstAttribute="centerX" secondItem="9gk-w9-gGX" secondAttribute="centerX" id="tYi-Li-DAe"/>
                                 <constraint firstItem="YGw-dl-Mnv" firstAttribute="top" secondItem="ZGL-am-1mg" secondAttribute="top" id="vCM-hv-dHz"/>
                                 <constraint firstItem="Tcr-EA-Lld" firstAttribute="leading" secondItem="ZGL-am-1mg" secondAttribute="leadingMargin" constant="10" id="vYd-6n-UFN"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" placeholder="YES" id="w30-dG-Asm"/>
                                 <constraint firstAttribute="trailing" secondItem="b4l-Db-DeW" secondAttribute="trailing" id="wB4-9U-u4E"/>
                                 <constraint firstAttribute="bottom" secondItem="mbG-57-y5X" secondAttribute="bottom" constant="10" id="xWL-2Q-s8I"/>
                                 <constraint firstItem="TFg-dn-zRc" firstAttribute="top" secondItem="b4l-Db-DeW" secondAttribute="bottom" constant="10" id="y3C-0T-Xeh"/>
@@ -358,7 +357,7 @@
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOi-wA-Efr" userLabel="footerView">
-                    <rect key="frame" x="0.0" y="626" width="320" height="40"/>
+                    <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabBar_background" translatesAutoresizingMaskIntoConstraints="NO" id="T3q-f6-nzU" userLabel="footerBackgroundImage">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -424,13 +423,13 @@
                 <constraint firstItem="ZOi-wA-Efr" firstAttribute="leading" secondItem="g0s-1Z-osj" secondAttribute="leading" id="12F-zH-2Df"/>
                 <constraint firstAttribute="trailing" secondItem="PFq-wI-n4q" secondAttribute="trailing" id="4gb-yH-Q9u"/>
                 <constraint firstAttribute="trailing" secondItem="ZOi-wA-Efr" secondAttribute="trailing" id="IRq-PB-HHO"/>
+                <constraint firstItem="ZGL-am-1mg" firstAttribute="width" secondItem="g0s-1Z-osj" secondAttribute="width" id="MWe-a9-Xke"/>
                 <constraint firstItem="PFq-wI-n4q" firstAttribute="leading" secondItem="g0s-1Z-osj" secondAttribute="leading" id="Noi-hj-XGW"/>
                 <constraint firstItem="ZOi-wA-Efr" firstAttribute="top" secondItem="PFq-wI-n4q" secondAttribute="bottom" id="V4j-J1-UsN"/>
                 <constraint firstAttribute="bottom" secondItem="ZOi-wA-Efr" secondAttribute="bottom" id="Va1-lK-5iG"/>
+                <constraint firstItem="PFq-wI-n4q" firstAttribute="width" secondItem="g0s-1Z-osj" secondAttribute="width" id="eZY-SN-Nl9"/>
                 <constraint firstItem="PFq-wI-n4q" firstAttribute="top" secondItem="g0s-1Z-osj" secondAttribute="top" id="iTR-ou-Zio"/>
             </constraints>
-            <nil key="simulatedBottomBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="214" y="597"/>
         </view>
     </objects>

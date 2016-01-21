@@ -135,10 +135,6 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
                         let login:String! = json["login"].string
                         let auth_token:String! = json["auth_token"].string
                         
-                        // Save login and auth_token to the iOS Keychain
-                        //KeychainInfo.login = login
-                        //KeychainInfo.auth_token = auth_token
-                        
                         let keychain = Keychain(service: "challfie.app.service")
                         // Save login and auth_token to the iOS Keychain
                         keychain["login"] = login
@@ -253,8 +249,8 @@ class LoginVC: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("Authentication_failed", comment: "Authentication Failed"), message: json["message"].stringValue, controller: self)
                             } else {
                                 // SUCCESS RESPONSE FROM HTTP Request
-                                let login:String! = json["login"].string
-                                let auth_token:String! = json["auth_token"].string
+                                let login:String! = json["login"].stringValue
+                                let auth_token:String! = json["auth_token"].stringValue
                                 let username_activated: Bool = json["username_activated"].boolValue
                                 
                                 let keychain = Keychain(service: "challfie.app.service")

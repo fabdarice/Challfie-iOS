@@ -33,12 +33,27 @@ class ProfilSelfieCVCell : UICollectionViewCell {
     
     func selfieTapGesture() {
         self.profilVC.hidesBottomBarWhenPushed = true
-        // Push to OneSelfieVC
-        let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
-        oneSelfieVC.selfie = self.selfie
-        oneSelfieVC.to_bottom = false
-        self.profilVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Profil_tab", comment: "Profile"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        self.profilVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
+        
+        if self.selfie.matchup != nil {
+            print("PUSH ONEDUEL")
+            // Push to OneMatchupVC of the selected Row
+            let oneMatchUpVC = OneMatchupVC(nibName: "OneMatchup" , bundle: nil)
+            oneMatchUpVC.hidesBottomBarWhenPushed = true
+            oneMatchUpVC.matchup = self.selfie.matchup
+            self.profilVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+            
+            self.profilVC.navigationController!.pushViewController(oneMatchUpVC, animated: true)
+
+        } else {
+            print("PSUH ONESELFIE")
+            // Push to OneSelfieVC
+            let oneSelfieVC = OneSelfieVC(nibName: "OneSelfie" , bundle: nil)
+            oneSelfieVC.selfie = self.selfie
+            oneSelfieVC.to_bottom = false
+            self.profilVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Profil_tab", comment: "Profile"), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+            self.profilVC.navigationController?.pushViewController(oneSelfieVC, animated: true)
+        }
+        
         
     }
     

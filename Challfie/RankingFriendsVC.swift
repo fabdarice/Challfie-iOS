@@ -32,7 +32,7 @@ class RankingFriendsVC : UIViewController, UITableViewDelegate, UITableViewDataS
     var page = 1
     var users_array : [User] = []
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-    var parentController: RankingVC!
+    var parentController: UIViewController!
     var loadMoreData: Bool = false
     
     override func viewDidLoad() {
@@ -77,7 +77,7 @@ class RankingFriendsVC : UIViewController, UITableViewDelegate, UITableViewDataS
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         // Add Google Tracker for Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "Ranking Friends Page")
@@ -96,7 +96,7 @@ class RankingFriendsVC : UIViewController, UITableViewDelegate, UITableViewDataS
             // -49 because of the height of the Tabbar ; -40 because of navigationController
             let newframe = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
             loadingActivityVC.view.frame = newframe
-            
+
             self.view.addSubview(loadingActivityVC.view)
         }
         

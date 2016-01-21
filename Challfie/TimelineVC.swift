@@ -152,7 +152,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         super.viewDidAppear(animated)
 
         if self.uploadSelfieView.hidden == false {
-            self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
+            self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
         }
         
         if self.disableBackgroundRefresh == false {
@@ -262,17 +262,8 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
                             let selfie = Selfie.init(json: json["selfies"][i])
-                            let challenge = Challenge.init(json: json["selfies"][i]["challenge"])
-                            let user = User.init(json: json["selfies"][i]["user"])
-                            let last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
-                            
-                            selfie.challenge = challenge
-                            selfie.user = user
-                            selfie.last_comment = last_comment
-                            
                             self.selfies_array.append(selfie)
                             self.itemHeights.append(UITableViewAutomaticDimension)
-
                             
                         }
                         if actionFromInit == true {
@@ -351,13 +342,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     if json["selfies"].count != 0 {
                         for var i:Int = 0; i < json["selfies"].count; i++ {
                             let selfie = Selfie.init(json: json["selfies"][i])
-                            let challenge = Challenge.init(json: json["selfies"][i]["challenge"])
-                            let user = User.init(json: json["selfies"][i]["user"])
-                            let last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
-                            
-                            selfie.challenge = challenge
-                            selfie.user = user
-                            selfie.last_comment = last_comment
                             
                             // Avoid Same Data
                             if (self.selfies_array.contains(selfie)) == false {
@@ -440,14 +424,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                             for var i:Int = 0; i < json["selfies"].count; i++ {
                                 
                                 let selfie = Selfie.init(json: json["selfies"][i])
-                                let challenge = Challenge.init(json: json["selfies"][i]["challenge"])
-                                let user = User.init(json: json["selfies"][i]["user"])
-                                let last_comment = Comment.init(json: json["selfies"][i]["last_comment"])
-                                
-                                selfie.challenge = challenge
-                                selfie.user = user
-                                selfie.last_comment = last_comment
-                                
                                 self.updated_selfie_array.append(selfie)
                                 self.updated_itemHeights.append(UITableViewAutomaticDimension)
                             }

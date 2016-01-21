@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MatchupsFriendsVC" customModule="Challfie" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MatchupsRankingVC" customModule="Challfie" customModuleProvider="target">
             <connections>
                 <outlet property="view" destination="iN0-l3-epB" id="j3S-gr-Ii4"/>
             </connections>

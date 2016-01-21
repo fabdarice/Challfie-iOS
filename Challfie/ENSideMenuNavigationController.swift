@@ -17,6 +17,7 @@ public class ENSideMenuNavigationController: UINavigationController, ENSideMenuP
     // MARK: - Life cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
+
     }
     
     public init( menuViewController: UIViewController, contentViewController: UIViewController?) {

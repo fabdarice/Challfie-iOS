@@ -177,7 +177,6 @@ class FriendTVCell : UITableViewCell {
                         var json = JSON(mydata)
                         if (json["success"].intValue == 1) {
                             // Refresh all 3 tabs
-                            
                             if self.friendVC != nil {
                                 self.friendVC.suggestions_first_time = true
                                 self.friendVC.following_first_time = true

@@ -41,6 +41,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
     var imageToSave: UIImage!
     var isFacebookLinked: Bool = false
     var challenge_selected: String = ""
+    var matchup: Matchup!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,6 +155,13 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         self.tableView.delegate = self
         self.tableView.dataSource = self
 
+        
+        // Hide Challenges's Part if it's for a matchup
+        if self.matchup != nil {
+            self.pickChallengeLabel.hidden = true
+            self.searchBar.hidden = true
+            self.tableView.hidden = true
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -193,7 +201,12 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         
         self.books_array.removeAll(keepCapacity: false)
         self.challenges_array.removeAll(keepCapacity: false)
-        self.loadData()
+        
+        if self.matchup == nil {
+            // Load Challenges List only if it's not for a Matchup
+            self.loadData()
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -223,8 +236,7 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             "auth_token": auth_token
         ]
         
-        self.activityIndicator.startAnimating()
-        
+        self.activityIndicator.startAnimating()        
         
         Alamofire.request(.POST, ApiLink.challenges_list, parameters: parameters, encoding: .JSON)
             .responseJSON { _, _, result in
@@ -439,17 +451,26 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
         }
 
         // Check if a Challenge has been selected
-        let path = self.tableView.indexPathForSelectedRow
-        if (path == nil) {
-            let alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("create_selfie_missing_challenge", comment: "Please select a picture."), preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-            return ;
+        let selected_challenge: Challenge!
+        var matchup_id: String = ""
+        
+        if self.matchup == nil {
+            let path = self.tableView.indexPathForSelectedRow
+            if (path == nil) {
+                let alert = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("create_selfie_missing_challenge", comment: "Please select a picture."), preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Close"), style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+                return ;
+            }
+            
+            // Retrieve selected challenge
+            let selectedIndexPath: NSIndexPath = self.tableView.indexPathForSelectedRow!
+            selected_challenge = self.books_array[selectedIndexPath.section].challenges_array[selectedIndexPath.row]
+        } else {
+            selected_challenge = self.matchup.challenge
+            matchup_id = self.matchup.id.description
         }
         
-        // Retrieve selected challenge
-        let selectedIndexPath: NSIndexPath = self.tableView.indexPathForSelectedRow!
-        let selected_challenge: Challenge = self.books_array[selectedIndexPath.section].challenges_array[selectedIndexPath.row]
         
         let imageData = UIImageJPEGRepresentation(self.imageToSave, 0.9)
 
@@ -482,35 +503,53 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
             "message": message,
             "is_private": is_private,
             "is_shared_fb": is_shared_fb,
-            "challenge_id": selected_challenge.id.description
+            "challenge_id": selected_challenge.id.description,
+            "matchup_id": matchup_id
         ]
-     
-        // Switch to Timeline Tab
-        if let viewControllers = self.tabBarController?.viewControllers,
-        navController = viewControllers[0] as? UINavigationController,
-        timelineVC: TimelineVC = navController.viewControllers[0] as? TimelineVC {
+
+        var timelineVC: TimelineVC!
+        
+        if self.matchup != nil {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let homeTableViewController:HomeTBC = mainStoryboard.instantiateViewControllerWithIdentifier("hometabbar") as! HomeTBC
             
-            if timelineVC.view != nil {
-                timelineVC.uploadSelfieView.hidden = false
-                // Background
-                timelineVC.uploadSelfieView.backgroundColor = MP_HEX_RGB("FFFFFF")
-                // Border color
-                timelineVC.uploadSelfieView.layer.borderColor = MP_HEX_RGB("85BBCC").CGColor
-                timelineVC.uploadSelfieView.layer.borderWidth = 1.0
-                timelineVC.uploadSelfieImage.image = self.imageToSave
-                timelineVC.tableViewTopConstraint.constant = 50.0
-                timelineVC.uploadSelfieLabel.text = NSLocalizedString("uploading_selfie", comment: "Uploading Selfie...")
-                timelineVC.uploadSelfieLabel.textColor = UIColor.blackColor()
-                timelineVC.retryButton.hidden = true
-                timelineVC.progressData = 0.1
-                timelineVC.progressView.progress = 0.1
+            if let viewControllers = homeTableViewController.viewControllers, navController = viewControllers[0] as? UINavigationController {
+                timelineVC = (navController.viewControllers[0] as? TimelineVC)!
+                self.presentViewController(homeTableViewController, animated: true, completion: nil)
             }
+        } else {
+            if let viewControllers = self.tabBarController?.viewControllers, navController = viewControllers[0] as? UINavigationController {
+                timelineVC = (navController.viewControllers[0] as? TimelineVC)!
+                self.tabBarController?.selectedIndex = 0
+            }
+        }
+        
+        if timelineVC != nil && timelineVC.view != nil {
+            timelineVC.disableBackgroundRefresh = true
+            timelineVC.navigationController?.navigationBarHidden = false
             
+            
+            timelineVC.uploadSelfieView.hidden = false
+            // Background
+            timelineVC.uploadSelfieView.backgroundColor = MP_HEX_RGB("FFFFFF")
+            // Border color
+            timelineVC.uploadSelfieView.layer.borderColor = MP_HEX_RGB("85BBCC").CGColor
+            timelineVC.uploadSelfieView.layer.borderWidth = 1.0
+            timelineVC.uploadSelfieImage.image = self.imageToSave
+            timelineVC.tableViewTopConstraint.constant = 50.0
+            timelineVC.uploadSelfieLabel.text = NSLocalizedString("uploading_selfie", comment: "Uploading Selfie...")
+            timelineVC.uploadSelfieLabel.textColor = UIColor.blackColor()
+            timelineVC.retryButton.hidden = true
+            timelineVC.progressData = 0.1
+            timelineVC.progressView.progress = 0.1
+            
+                
             Alamofire.upload(Method.POST, ApiLink.create_selfie,
                 multipartFormData: { multipartFormData in
                     multipartFormData.appendBodyPart(data: parameters["login"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "login")
                     multipartFormData.appendBodyPart(data: parameters["auth_token"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "auth_token")
                     multipartFormData.appendBodyPart(data: parameters["challenge_id"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "challenge_id")
+                    multipartFormData.appendBodyPart(data: parameters["matchup_id"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "matchup_id")
                     multipartFormData.appendBodyPart(data: parameters["message"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "message")
                     multipartFormData.appendBodyPart(data: parameters["is_private"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_private")
                     multipartFormData.appendBodyPart(data: parameters["is_shared_fb"]!.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, name: "is_shared_fb")
@@ -520,6 +559,9 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                     switch encodingResult {
                     case .Success(let upload, _, _):
                         upload.responseJSON { request, response, result in
+                            if let loadingActivityView = self.view.viewWithTag(21) {
+                                loadingActivityView.removeFromSuperview()
+                            }
                             switch result {
                             case .Failure(_, _):
                                 GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
@@ -543,53 +585,50 @@ class TakePictureVC : UIViewController, UITextViewDelegate, UITableViewDelegate,
                                     UIView.transitionWithView(timelineVC.uploadSelfieView, duration: 0.6, options: UIViewAnimationOptions.CurveEaseOut, animations: {
                                         timelineVC.uploadSelfieView.hidden = true
                                         }, completion: { (finished: Bool) -> Void in
-                                            if timelineVC.view != nil {
-                                                timelineVC.tableViewTopConstraint.constant = 0.0
-                                                timelineVC.refresh(false)
-                                                timelineVC.navigationController?.navigationBarHidden = false
-                                                
-                                                if (timelineVC.timelineTableView.numberOfSections > 0) && (timelineVC.timelineTableView.numberOfRowsInSection(0) > 0) {
-                                                    timelineVC.timelineTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
-                                                }
-                                                // Tells Armchair that this is a significant Event
-                                                Armchair.userDidSignificantEvent(true)
+                                            
+                                            timelineVC.tableViewTopConstraint.constant = 0.0
+                                            timelineVC.refresh(false)
+                                            timelineVC.navigationController?.navigationBarHidden = false
+                                            
+                                            if (timelineVC.timelineTableView.numberOfSections > 0) && (timelineVC.timelineTableView.numberOfRowsInSection(0) > 0) {
+                                                timelineVC.timelineTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
                                             }
+                                            // Tells Armchair that this is a significant Event
+                                            Armchair.userDidSignificantEvent(true)
                                     })
                                 } else {
-                                    if timelineVC.view != nil {
-                                        timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
-                                        timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
-                                        timelineVC.retryButton.hidden = false
-                                    }
+                                    timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
+                                    timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
+                                    timelineVC.retryButton.hidden = false
                                 }
                             }
                         }
                     case .Failure( _):
-                        if timelineVC.view != nil {
-                            timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
-                            timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
-                            timelineVC.retryButton.hidden = false
-                        }
+                        timelineVC.uploadSelfieLabel.text = NSLocalizedString("upload_failed", comment: "Upload Failed :(")
+                        timelineVC.uploadSelfieLabel.textColor = UIColor.redColor()
+                        timelineVC.retryButton.hidden = false
                     }
                 }
             )
 
-
-            if timelineVC.view != nil {
-                timelineVC.disableBackgroundRefresh = true
-            }
-            timelineVC.navigationController?.navigationBarHidden = false
-            self.tabBarController?.selectedIndex = 0
+        } else {
+            GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
         }
         
     }
     
     // Cancel taking a selfie
     func cancelTakePicture() {
-        self.tabBarController?.selectedIndex = 0
+        
+        if self.matchup == nil {
+            self.tabBarController?.selectedIndex = 0
+        } else {
+            //self.navigationController?.popViewControllerAnimated(true)
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+        }
+        
     }
-    
-    
 
     // MARK: - UISearchBarDelegate, UISearchDisplayDelegate
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {

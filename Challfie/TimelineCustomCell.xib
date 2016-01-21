@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppU-Gs-lOc" userLabel="oneSelfieView">
-                        <rect key="frame" x="12" y="7" width="417" height="413.5"/>
+                        <rect key="frame" x="12" y="7" width="417" height="414"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVK-I9-Krn" userLabel="profilImage">
                                 <rect key="frame" x="10" y="5" width="40" height="40"/>
@@ -31,7 +31,7 @@
                                 </constraints>
                             </imageView>
                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpW-eK-0j7" userLabel="messageLabel">
-                                <rect key="frame" x="10" y="55" width="397" height="1.5"/>
+                                <rect key="frame" x="10" y="55" width="397" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="YH3-GX-E2u"/>
@@ -44,7 +44,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUE-Uc-2B5" userLabel="usernameLabel">
-                                <rect key="frame" x="60" y="8" width="62" height="16.5"/>
+                                <rect key="frame" x="60" y="8" width="62" height="17"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="110" id="0hJ-oU-EYF"/>
@@ -70,13 +70,13 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tHL-35-V04" userLabel="selfieImage">
-                                <rect key="frame" x="0.0" y="96.5" width="417" height="200"/>
+                                <rect key="frame" x="0.0" y="97" width="417" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="200" id="BgD-Vg-J93"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_comment" translatesAutoresizingMaskIntoConstraints="NO" id="Tcr-EA-Lld" userLabel="commentImage">
-                                <rect key="frame" x="10" y="306.5" width="15" height="15"/>
+                                <rect key="frame" x="10" y="307" width="15" height="15"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="dD0-p7-DmN"/>
@@ -84,7 +84,7 @@
                                 </constraints>
                             </imageView>
                             <button contentMode="scaleToFill" verticalCompressionResistancePriority="745" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LyK-Fp-pCC" userLabel="numberOfCommentsButton">
-                                <rect key="frame" x="30" y="303.5" width="72" height="20"/>
+                                <rect key="frame" x="30" y="304" width="72" height="20"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="5nJ-OR-Hwc"/>
@@ -99,7 +99,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_disapprove" translatesAutoresizingMaskIntoConstraints="NO" id="GUb-Bl-pC7">
-                                <rect key="frame" x="313" y="305.5" width="15" height="15"/>
+                                <rect key="frame" x="313" y="306" width="15" height="15"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="GPU-ft-2uZ"/>
@@ -107,7 +107,7 @@
                                 </constraints>
                             </imageView>
                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="743" text="5 approved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8kb-Ml-Unw">
-                                <rect key="frame" x="244" y="302.5" width="59" height="20"/>
+                                <rect key="frame" x="244" y="303" width="59" height="20"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="CMO-mk-Tpi"/>
@@ -120,7 +120,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_approve" translatesAutoresizingMaskIntoConstraints="NO" id="bOX-3q-4tx" userLabel="approveImage">
-                                <rect key="frame" x="224" y="304.5" width="15" height="15"/>
+                                <rect key="frame" x="224" y="305" width="15" height="15"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="7JL-Ph-PQK"/>
@@ -128,7 +128,7 @@
                                 </constraints>
                             </imageView>
                             <button contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9t-KM-TnB" userLabel="approveButton">
-                                <rect key="frame" x="217" y="369.5" width="90" height="28"/>
+                                <rect key="frame" x="217" y="370" width="90" height="28"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Approve">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -138,7 +138,7 @@
                                 </connections>
                             </button>
                             <button contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HN0-b1-zty" userLabel="disapproveButton">
-                                <rect key="frame" x="317" y="369.5" width="90" height="28"/>
+                                <rect key="frame" x="317" y="370" width="90" height="28"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Button">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -148,7 +148,7 @@
                                 </connections>
                             </button>
                             <button contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GXg-Wp-ldH" userLabel="commentButton">
-                                <rect key="frame" x="10" y="369.5" width="90" height="28"/>
+                                <rect key="frame" x="10" y="370" width="90" height="28"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="oEC-jM-Vc7"/>
@@ -162,10 +162,10 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iHd-2t-eVz" userLabel="bottomContentView">
-                                <rect key="frame" x="0.0" y="329.5" width="417" height="24.5"/>
+                                <rect key="frame" x="0.0" y="330" width="417" height="25"/>
                                 <subviews>
                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="741" text="comment_message" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" adjustsLetterSpacingToFitWidth="YES" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="HOj-Lg-8Vl" userLabel="commentMessageLabel">
-                                        <rect key="frame" x="10" y="5" width="397" height="14.5"/>
+                                        <rect key="frame" x="10" y="5" width="397" height="15"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="wWE-Ki-Pj7"/>
@@ -202,14 +202,14 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qxn-zj-R6p" userLabel="challenge_status_Image">
-                                <rect key="frame" x="357" y="96.5" width="60" height="60"/>
+                                <rect key="frame" x="357" y="97" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="BBE-36-8xH"/>
                                     <constraint firstAttribute="width" constant="60" id="kzo-f7-ard"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bpo-9b-9bS" userLabel="challengeView">
-                                <rect key="frame" x="0.0" y="66.5" width="417" height="30"/>
+                                <rect key="frame" x="0.0" y="67" width="417" height="30"/>
                                 <subviews>
                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="challenge" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="51g-f2-feR" userLabel="challenge">
                                         <rect key="frame" x="35" y="5" width="372" height="17"/>
@@ -258,7 +258,7 @@
                                 </connections>
                             </button>
                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="742" text="0 disapproved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Zv-hg-7x6">
-                                <rect key="frame" x="333" y="302.5" width="74" height="20"/>
+                                <rect key="frame" x="333" y="303" width="74" height="20"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="EKN-Wd-1ql"/>

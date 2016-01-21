@@ -32,7 +32,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
     var page = 1
     var users_array : [User] = []
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-    var parentController: RankingVC!
+    var parentController: UIViewController!
     var loadMoreData: Bool = false
     
     override func viewDidLoad() {
@@ -76,7 +76,7 @@ class RankingAllUsersVC: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        super.viewWillAppear(animated)        
         
         // Add Google Tracker for Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker

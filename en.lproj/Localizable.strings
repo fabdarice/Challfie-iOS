@@ -226,8 +226,26 @@ first_challfie = "My first Challfie!!";
 
 // Battle
 matchups = "Duels";
-matchups_daily = "DAILY";
-matchups_friends = "FRIENDS";
+matchups_active = "ACTIVE";
+matchups_complete = "COMPLETED";
+challenge_to_a_duel = "Challenge to a duel";
+create_a_challenge = "Create a challenge";
+select_from_the_list = "Select from the list";
+view = "View";
+request = "REQUEST";
+in_progress = "IN PROGRESS";
+pending_response = "PENDING RESPONSE";
+remove_matchup = "Remove";
+accept_matchup = "Accept";
+decline_matchup = "Decline";
+winner_matchup = "Winner";
+tie_matchup = "It's a tie";
+matchup_has_ended = "Duel has ended";
+time_left = "Time left";
+no_selfie_duel_yet = "No selfie yet for the duel.";
+no_selfie_duel = "No selfie has been taken for that duel";
+take_selfie_duel = "Take selfie duel";
+
 
 
 

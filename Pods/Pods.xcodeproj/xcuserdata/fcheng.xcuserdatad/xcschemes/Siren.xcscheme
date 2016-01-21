@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "260CB11C6C0AE48C131BAE28"
+               BlueprintIdentifier = "FCE31354F8DFE3E711EDF3B2"
                BuildableName = "Siren.framework"
                BlueprintName = "Siren"
                ReferencedContainer = "container:Pods.xcodeproj">

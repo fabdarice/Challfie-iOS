@@ -19,6 +19,8 @@ class PhotoLibraryPreviewVC: UIViewController {
     var imageToSave: UIImage!
     var imagePicker: UIImagePickerController!
     var challenge_selected: String = ""
+    var matchup : Matchup!
+    var parentController: UIViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()                
@@ -38,7 +40,7 @@ class PhotoLibraryPreviewVC: UIViewController {
     
     @IBAction func cancelAction(sender: AnyObject) {
         self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
-        self.homeTabBarController.showPhotoLibrary()
+        //self.homeTabBarController.showPhotoLibrary()
     }
     
     @IBAction func validateAction(sender: AnyObject) {
@@ -48,8 +50,16 @@ class PhotoLibraryPreviewVC: UIViewController {
             takePictureVC: TakePictureVC = navController.viewControllers[0] as? TakePictureVC {
             takePictureVC.imageToSave = self.imageToSave
             takePictureVC.challenge_selected = self.challenge_selected
-            homeTabBarController.selectedViewController = navController
+            takePictureVC.matchup = self.matchup
+                
+            if self.matchup == nil {
+                homeTabBarController.selectedViewController = navController
+            } else {
+                self.parentController.navigationController?.pushViewController(takePictureVC, animated: true)
+            }
+            
             self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
+            
         }
     }
     

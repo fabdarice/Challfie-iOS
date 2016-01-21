@@ -9,6 +9,9 @@
 import Foundation
 import SwiftyJSON
 
+enum AlertType: String {
+    case CommentMine = "comment_mine", CommentOther = "comment_other", SelfieApproval = "selfie_approval", SelfieStatus = "selfie_status", FriendRequest = "friend_request", LevelUnlock = "book_unlock", DailyChallenge = "daily_challenge", ChallfieMessage = "challfie_message", Matchup = "matchup"
+}
 
 class Alert {
     var id: Int!
@@ -21,6 +24,7 @@ class Alert {
     var time_ago: String!
     var type_notification: String!
     var read: Bool!
+    var matchup: Matchup!
     
     
     init(json: JSON) {
@@ -32,5 +36,8 @@ class Alert {
         self.time_ago = json["time_ago"].stringValue
         self.type_notification = json["type_notification"].stringValue
         self.read = json["read"].boolValue
+        
+        self.author = User.init(json: json["author"])
+        self.matchup = Matchup.init(json: json["matchup"])
     }
 }

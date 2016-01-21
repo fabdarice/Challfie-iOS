@@ -22,6 +22,8 @@ class MyNavigationController: ENSideMenuNavigationController, ENSideMenuDelegate
         sideMenu?.menuWidth = 250.0 // optional, default is 160
         sideMenu?.bouncingEnabled = false
         
+        self.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 17.0)!, NSForegroundColorAttributeName: MP_HEX_RGB("FFFFFF")]
+        
         // make navigation bar showing over side menu
         view.bringSubviewToFront(navigationBar)
 

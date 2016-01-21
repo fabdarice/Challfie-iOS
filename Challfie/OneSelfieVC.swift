@@ -50,13 +50,15 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     var comments_array:[Comment] = []
     var to_bottom: Bool = true
     var is_administrator: Bool = false
+    var isMatchup: Bool = false
+    var parentController: UIViewController!
+    var matchupEnded: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let screenFrame = CGRectMake(0.0, 0.0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height)
-        self.view.frame = screenFrame
-        
+        print("OneSelfieVC - viewDidLoad")
+
         // Show navigationBar
         self.navigationController?.navigationBar.hidden = false
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -86,10 +88,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.listCommentsTableView.dataSource = self
         self.commentTextField.delegate = self
         
-        // ChallengeView Border & Background Color
-        self.challengeView.layer.borderColor = MP_HEX_RGB("2B9ABA").CGColor
-        self.challengeView.layer.borderWidth = 0.5
-        self.challengeView.backgroundColor = MP_HEX_RGB("658D99")
         
         // Register the xib for the Custom TableViewCell
         let nib = UINib(nibName: "CommentTVCell", bundle: nil)
@@ -98,7 +96,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // Set the height of a cell dynamically
         self.listCommentsTableView.rowHeight = UITableViewAutomaticDimension
         self.listCommentsTableView.estimatedRowHeight = 10.0
-        
         
         // Retrive list of comments of the selected Selfie
         self.loadData()
@@ -125,6 +122,14 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         // show navigation and don't hide on swipe & keboard Appears
         self.navigationController?.navigationBarHidden = false
         self.navigationController?.hidesBarsOnSwipe = false
+        
+        print("OneSelfieVC - viewWillAppear")
+        print(self.scrollView.contentSize)
+        
+//                self.scrollView.contentSize = CGSizeMake(320,857.5);
+//        self.scrollView.sizeToFit()
+//        print(self.scrollView.contentSize)
+
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -133,49 +138,121 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 
     }
     
+    
+    // MARK: - Function to initialize selfie's information
     func loadSelfie() {
         
-        // Init Selfie Information
-        // USERNAME STYLE
-        self.usernameLabel.text = selfie.user.username
-        self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
-        let usernametapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        usernametapGesture.addTarget(self, action: "tapGestureToProfil")
-        self.usernameLabel.addGestureRecognizer(usernametapGesture)
-        self.usernameLabel.userInteractionEnabled = true
-        
-        // Level Image
-        let bookImageURL:NSURL = NSURL(string: selfie.user.show_book_image())!
-        self.levelImageView.hnk_setImageFromURL(bookImageURL)
-        
-        // Challenge        
-        self.challengeLabel.text = selfie.challenge.description
-        self.challengeLabel.textColor = MP_HEX_RGB("FFFFFF")
-        
-        // Test Daily Challenge
-        if self.selfie.is_daily == true {
-            self.challengeDifficultyView.image = UIImage(named: "challenge_daily_small")
+        print("loadSelfie()")
+        // Initialize Infomation only if this selfie wasn't used for a Matchup
+        if self.isMatchup == false {
+            
+            // USERNAME STYLE
+            self.usernameLabel.text = selfie.user.username
+            self.usernameLabel.textColor = MP_HEX_RGB("3E9AB5")
+            let usernametapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+            usernametapGesture.addTarget(self, action: "tapGestureToProfil")
+            self.usernameLabel.addGestureRecognizer(usernametapGesture)
+            self.usernameLabel.userInteractionEnabled = true
+            
+            // Level Image
+            let bookImageURL:NSURL = NSURL(string: selfie.user.show_book_image())!
+            self.levelImageView.hnk_setImageFromURL(bookImageURL)
+            
+            // Selfie Creation Date
+            self.dateLabel.text = selfie.creation_date
+            
+            // Profile Picture
+            if self.selfie.user.show_profile_pic() != "missing" {
+                let profilePicURL:NSURL = NSURL(string: selfie.user.show_profile_pic())!
+                self.profilePicImage.hnk_setImageFromURL(profilePicURL)
+            } else {
+                self.profilePicImage.image = UIImage(named: "missing_user")
+            }
+            
+            self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2;
+            self.profilePicImage.clipsToBounds = true
+            self.profilePicImage.layer.borderWidth = 2.0;
+            
+            if self.selfie.user.book_tier == 1 {
+                self.profilePicImage.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
+            }
+            if selfie.user.book_tier == 2 {
+                self.profilePicImage.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
+            }
+            if selfie.user.book_tier == 3 {
+                self.profilePicImage.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
+            }
+            let profilPictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
+            profilPictapGesture.addTarget(self, action: "tapGestureToProfil")
+            self.profilePicImage.addGestureRecognizer(profilPictapGesture)
+            self.profilePicImage.userInteractionEnabled = true
+            
+            // ChallengeView Border & Background Color
+            self.challengeView.layer.borderColor = MP_HEX_RGB("2B9ABA").CGColor
+            self.challengeView.layer.borderWidth = 0.5
+            self.challengeView.backgroundColor = MP_HEX_RGB("658D99")
+            
+            // Challenge
+            self.challengeLabel.text = selfie.challenge.description
+            self.challengeLabel.textColor = MP_HEX_RGB("FFFFFF")
+            self.challengeLabel.numberOfLines = 0         // For Dynamic Auto sizing Cells
+            self.challengeLabel.sizeToFit()
+            
+            // Test Daily Challenge
+            if self.selfie.is_daily == true {
+                self.challengeDifficultyView.image = UIImage(named: "challenge_daily_small")
+            } else {
+                // Challenge Difficulty
+                switch self.selfie.challenge.difficulty {
+                case -1: self.challengeDifficultyView.image = UIImage(named: "challfie_difficulty")
+                case 1: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_one_small")
+                case 2: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_two_small")
+                case 3: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_three_small")
+                case 4: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_four_small")
+                case 5: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_five_small")
+                default : self.challengeDifficultyView.image = nil
+                }
+            }
+            
+            // Set Selfies Challenge Status
+            if self.selfie.approval_status == 0 {
+                self.challengeStatusImage.image = UIImage(named: "challenge_pending.png")
+            } else if selfie.approval_status == 1 {
+                self.challengeStatusImage.image = UIImage(named: "challenge_approve.png")
+            } else if selfie.approval_status == 2 {
+                self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
+            }
+            
         } else {
-            // Challenge Difficulty
-            switch self.selfie.challenge.difficulty {
-            case -1: self.challengeDifficultyView.image = UIImage(named: "challfie_difficulty")
-            case 1: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_one_small")
-            case 2: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_two_small")
-            case 3: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_three_small")
-            case 4: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_four_small")
-            case 5: self.challengeDifficultyView.image = UIImage(named: "challenge_difficulty_five_small")
-            default : self.challengeDifficultyView.image = nil
+            print("isMatchup = true")
+            // Set Approved/Rejected Button
+            if selfie.matchup != nil {
+                print("selfie.matchup != nil")
+                // Matchup's STATUS
+                if selfie.matchup.status == MatchupStatus.Accepted.rawValue {
+                    self.challengeStatusImage.image = UIImage(named: "matchup_in_progress.png")
+                } else {
+                    if selfie.matchup.status == MatchupStatus.Ended.rawValue {
+                        if selfie.matchup.matchup_winner != nil
+                            && selfie.matchup.matchup_winner == selfie.user.username {
+                                self.challengeStatusImage.image = UIImage(named: "matchup_victory.png")
+                        } else {
+                            self.challengeStatusImage.image = UIImage(named: "matchup_defeat.png")
+                        }
+                    } else {
+                        if selfie.matchup.status == MatchupStatus.EndedWithDraw.rawValue {
+                            self.challengeStatusImage.image = UIImage(named: "matchup_defeat.png")
+                        }
+                    }
+                }
             }
         }
         
-        // Selfie Creation Date
-        self.dateLabel.text = selfie.creation_date
         
         // Selfie Message
         self.messageLabel.text = selfie.message
         self.messageLabel.numberOfLines = 0         // For Dynamic Auto sizing Cells
         self.messageLabel.sizeToFit()
-        
         
         // Number of comments
         self.numberCommentsLabel.textColor = MP_HEX_RGB("30768A")
@@ -195,7 +272,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             self.viewAllCommentsButton.hidden = true
             self.viewAllCommentsButtonHeightConstraints.constant = 0.0
         }
-        
         
         // Number of approval
         self.numberApprovalLabel.textColor = MP_HEX_RGB("30768A")
@@ -223,33 +299,6 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.numberRejectLabel.addGestureRecognizer(numberRejecttapGesture)
         self.numberRejectLabel.userInteractionEnabled = true
         
-        // Profile Picture
-        if self.selfie.user.show_profile_pic() != "missing" {
-            let profilePicURL:NSURL = NSURL(string: selfie.user.show_profile_pic())!
-            self.profilePicImage.hnk_setImageFromURL(profilePicURL)
-        } else {
-            self.profilePicImage.image = UIImage(named: "missing_user")
-        }
-        
-        self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2;
-        self.profilePicImage.clipsToBounds = true
-        self.profilePicImage.layer.borderWidth = 2.0;
-        
-        
-        
-        if self.selfie.user.book_tier == 1 {
-            self.profilePicImage.layer.borderColor = MP_HEX_RGB("bfa499").CGColor;
-        }
-        if selfie.user.book_tier == 2 {
-            self.profilePicImage.layer.borderColor = MP_HEX_RGB("89b7b4").CGColor;
-        }
-        if selfie.user.book_tier == 3 {
-            self.profilePicImage.layer.borderColor = MP_HEX_RGB("f1eb6c").CGColor;
-        }
-        let profilPictapGesture : UITapGestureRecognizer = UITapGestureRecognizer()
-        profilPictapGesture.addTarget(self, action: "tapGestureToProfil")
-        self.profilePicImage.addGestureRecognizer(profilPictapGesture)
-        self.profilePicImage.userInteractionEnabled = true
         
         // Selfie Image
         self.selfieImageHeightConstraint.constant = UIScreen.mainScreen().bounds.width / selfie.ratio_photo
@@ -258,14 +307,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.selfieImage.contentMode = UIViewContentMode.ScaleAspectFit
         
         
-        // Set Selfies Challenge Status
-        if self.selfie.approval_status == 0 {
-            self.challengeStatusImage.image = UIImage(named: "challenge_pending.png")
-        } else if selfie.approval_status == 1 {
-            self.challengeStatusImage.image = UIImage(named: "challenge_approve.png")
-        } else if selfie.approval_status == 2 {
-            self.challengeStatusImage.image = UIImage(named: "challenge_rejected")
-        }
+        
         
         let keychain = Keychain(service: "challfie.app.service")
         
@@ -274,9 +316,18 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             self.approveButton.hidden = true
             self.rejectButton.hidden = true
         } else {
-            // Hide Approve&Disapprove Button because own selfie
-            self.approveButton.hidden = false
-            self.rejectButton.hidden = false
+            
+            if self.isMatchup == true && self.matchupEnded == true {
+                // Hide Approve&Disapprove Button the matchup has ended
+                self.approveButton.hidden = true
+                self.rejectButton.hidden = true
+
+            } else {
+                // Show Approve&Disapprove Button because own selfie
+                self.approveButton.hidden = false
+                self.rejectButton.hidden = false
+            }
+            
             // Approve Button && Disapprove Button
             if selfie.user_vote_status == 1 {
                 self.approveButton.setImage(UIImage(named: "approve_select_button.png"), forState: .Normal)
@@ -289,7 +340,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 self.rejectButton.setImage(UIImage(named: "reject_button.png"), forState: .Normal)
             }
         }
-
+        
     }
     
     
@@ -345,22 +396,21 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                         
                         if json["selfie"].count != 0 {
                             selfie = Selfie.init(json: json["selfie"])
-                            let challenge = Challenge.init(json: json["selfie"]["challenge"])
-                            let user = User.init(json: json["selfie"]["user"])
+                            //let challenge = Challenge.init(json: json["selfie"]["challenge"])
+                            //let user = User.init(json: json["selfie"]["user"])
                             
-                            selfie.challenge = challenge
-                            selfie.user = user
+                            //selfie.challenge = challenge
+                            //selfie.user = user
                             self.selfie = selfie
                         }
                         
                         self.loadSelfie()
                         self.loadComments(false)
-
+                        
+                        //print(self.scrollView.contentSize)
                     }
                 }
-        }
-        
-        
+        }                
     }
     
     // MARK: - Load Comments
@@ -417,6 +467,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                         if self.to_bottom == true {
                             let bottomOffset:CGPoint = CGPointMake(0, commentsTableView_newHeight + self.messageLabel.frame.height + self.selfieImageHeightConstraint.constant)
                             self.scrollView.setContentOffset(bottomOffset, animated: false)
+                            
                         }
                     } else {
                         // Set Background Color for commentsList
@@ -437,7 +488,12 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = self.selfie.user
         profilVC.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(profilVC, animated: true)
+        if self.isMatchup == false {
+            self.navigationController?.pushViewController(profilVC, animated: true)
+        } else {
+            self.parentController.navigationController?.pushViewController(profilVC, animated: true)
+        }
+        
     }
     
     func tapGestureToUserApprovalList() {
@@ -445,7 +501,12 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         let userApprovalListVC = UserApprovalListVC()
         userApprovalListVC.is_approval_list = true
         userApprovalListVC.selfie_id = self.selfie.id.description
-        self.navigationController?.pushViewController(userApprovalListVC, animated: true)
+        userApprovalListVC.hidesBottomBarWhenPushed = true
+        if self.isMatchup == false {
+            self.navigationController?.pushViewController(userApprovalListVC, animated: true)
+        } else {
+            self.parentController.navigationController?.pushViewController(userApprovalListVC, animated: true)
+        }
     }
     
     func tapGestureToUserRejectList() {
@@ -453,8 +514,12 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         let userApprovalListVC = UserApprovalListVC()
         userApprovalListVC.is_approval_list = false
         userApprovalListVC.selfie_id = self.selfie.id.description
-        self.navigationController?.pushViewController(userApprovalListVC, animated: true)
-        
+        userApprovalListVC.hidesBottomBarWhenPushed = true
+        if self.isMatchup == false {
+            self.navigationController?.pushViewController(userApprovalListVC, animated: true)
+        } else {
+            self.parentController.navigationController?.pushViewController(userApprovalListVC, animated: true)
+        }
     }
             
     
@@ -778,11 +843,12 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     @IBAction func settingsButton(sender: AnyObject) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let keychain = Keychain(service: "challfie.app.service")
+        let login = keychain["login"]!
+        let auth_token = keychain["auth_token"]!
+        
         if self.is_administrator == true {
             let adminOneAction = UIAlertAction(title: "Block Selfie", style: UIAlertActionStyle.Destructive) { (_) in
-                let keychain = Keychain(service: "challfie.app.service")
-                let login = keychain["login"]!
-                let auth_token = keychain["auth_token"]!
                 
                 let parameters = [
                     "login": login,
@@ -820,11 +886,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 
             }
             let adminTwoAction = UIAlertAction(title: "Block User", style: UIAlertActionStyle.Destructive) { (_) in
-                
-                let keychain = Keychain(service: "challfie.app.service")
-                let login = keychain["login"]!
-                let auth_token = keychain["auth_token"]!
-                
+
                 let parameters = [
                     "login": login,
                     "auth_token": auth_token,
@@ -860,10 +922,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
             }
             let adminThreeAction = UIAlertAction(title: "Clear Flag", style: UIAlertActionStyle.Default) { (_) in
-                let keychain = Keychain(service: "challfie.app.service")
-                let login = keychain["login"]!
-                let auth_token = keychain["auth_token"]!
-                
+
                 let parameters = [
                     "login": login,
                     "auth_token": auth_token,
@@ -903,6 +962,20 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             alert.addAction(adminTwoAction)
             alert.addAction(adminThreeAction)
         }
+
+        if self.selfie.user.username != login {
+            let duelAction = UIAlertAction(title: NSLocalizedString("challenge_to_a_duel", comment: "Challenge to a duel"), style: UIAlertActionStyle.Default) { (_) in
+                let createMatchupVC = CreateMatchupVC(nibName: "CreateMatchup", bundle: nil)
+                createMatchupVC.opponent = self.selfie.user
+                createMatchupVC.parentController = self
+                createMatchupVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+                self.navigationController?.pushViewController(createMatchupVC, animated: true)
+            }
+            alert.addAction(duelAction)
+        }
+        
+        
         let oneAction = UIAlertAction(title: NSLocalizedString("report_inappropriate_content", comment: "Report Inappropriate Content"), style: UIAlertActionStyle.Default) { (_) in
             
             let keychain = Keychain(service: "challfie.app.service")
@@ -944,7 +1017,7 @@ class OneSelfieVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
         }
         let twoAction = UIAlertAction(title: NSLocalizedString("cancel", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (_) in }
-        
+
         alert.addAction(oneAction)
         alert.addAction(twoAction)
         

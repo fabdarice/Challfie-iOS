@@ -748,6 +748,7 @@ class FriendVC : UIViewController, UITableViewDelegate, UITableViewDataSource, E
         // Push to ProfilVC of the selected Row
         let profilVC = ProfilVC(nibName: "Profil" , bundle: nil)
         profilVC.user = cell.friend
+        
         profilVC.hidesBottomBarWhenPushed = true
         
         self.navigationController?.pushViewController(profilVC, animated: true)

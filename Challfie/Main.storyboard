@@ -632,7 +632,7 @@
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VSi-5d-lFd" userLabel="create_account_button">
-                                        <rect key="frame" x="18" y="276.5" width="244" height="40"/>
+                                        <rect key="frame" x="18" y="277" width="244" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="WHs-1T-WIo"/>
                                         </constraints>
@@ -645,7 +645,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by signing up for this account, you agree to the terms and conditions" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="240" translatesAutoresizingMaskIntoConstraints="NO" id="ZRI-d9-NuC" userLabel="eulaLabel">
-                                        <rect key="frame" x="20" y="243" width="240" height="23.5"/>
+                                        <rect key="frame" x="20" y="243" width="240" height="24"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
@@ -1937,9 +1937,9 @@
         <image name="visibility_icon" width="170" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DP1-Dv-bZh"/>
-        <segue reference="0Vj-CH-IvE"/>
+        <segue reference="df4-yw-1Nm"/>
         <segue reference="E3c-vE-c8t"/>
-        <segue reference="K7W-fj-IXG"/>
+        <segue reference="0Vj-CH-IvE"/>
+        <segue reference="PCu-CD-r8C"/>
     </inferredMetricsTieBreakers>
 </document>

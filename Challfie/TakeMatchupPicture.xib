@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TakeMatchupPictureVC" customModule="Challfie" customModuleProvider="target">
+            <connections>
+                <outlet property="noPictureLabel" destination="OY5-zN-EeY" id="fLP-8z-gF2"/>
+                <outlet property="takePictureButton" destination="jxu-VU-krK" id="h5m-p3-a0E"/>
+                <outlet property="view" destination="iN0-l3-epB" id="5e9-Uv-Fj5"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jxu-VU-krK" userLabel="takePictureButton">
+                    <rect key="frame" x="100" y="269" width="120" height="30"/>
+                    <state key="normal" title="Take Duel Picture"/>
+                    <connections>
+                        <action selector="takeMatchupPicture:" destination="-1" eventType="touchUpInside" id="lY7-lu-dVe"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OY5-zN-EeY" userLabel="noPictureLabel">
+                    <rect key="frame" x="139" y="273" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="jxu-VU-krK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="JJJ-qi-YPE"/>
+                <constraint firstItem="OY5-zN-EeY" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Psc-5o-Xxa"/>
+                <constraint firstItem="jxu-VU-krK" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="U0a-r1-nFq"/>
+                <constraint firstItem="OY5-zN-EeY" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="tca-yk-KkK"/>
+            </constraints>
+            <point key="canvasLocation" x="267" y="239"/>
+        </view>
+    </objects>
+</document>

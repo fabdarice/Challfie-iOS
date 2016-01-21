@@ -32,6 +32,7 @@ class User {
     var administrator: Int!
     var blocked: Bool!
     var is_current_user: Bool!
+    var matchups_stats: String!
     
     init(json: JSON) {
         self.id = json["id"].intValue
@@ -54,6 +55,7 @@ class User {
         self.administrator = json["administrator"].intValue
         self.blocked = json["blocked"].boolValue
         self.is_current_user = json["is_current_user"].boolValue
+        self.matchups_stats = json["matchups_stats"].stringValue
     }
     
     func show_profile_pic() -> String {

@@ -30,15 +30,20 @@ class MatchupsVC: UIViewController {
         // (Can be any UIViewController subclass)
         // Make sure the title property of all view controllers is set
         // Example:
-        let dailyMatchupsVC : MatchupsDailyVC = MatchupsDailyVC(nibName: "MatchupsDaily", bundle: nil)
-        dailyMatchupsVC.title = NSLocalizedString("matchups_daily", comment: "DAILY")
-        dailyMatchupsVC.parentController = self
-        controllerArray.append(dailyMatchupsVC)
+        let activeMatchupsVC : MatchupsActiveVC = MatchupsActiveVC(nibName: "MatchupsActive", bundle: nil)
+        activeMatchupsVC.title = NSLocalizedString("matchups_active", comment: "ACTIVE")
+        activeMatchupsVC.parentController = self
+        controllerArray.append(activeMatchupsVC)
         
-        let friendsMatchupsVC : MatchupsFriendsVC = MatchupsFriendsVC(nibName: "MatchupsFriends", bundle: nil)
-        friendsMatchupsVC.title = NSLocalizedString("matchups_friends", comment: "FRIENDS")
-        friendsMatchupsVC.parentController = self
-        controllerArray.append(friendsMatchupsVC)
+        let completeMatchupsVC : MatchupsCompleteVC = MatchupsCompleteVC(nibName: "MatchupsComplete", bundle: nil)
+        completeMatchupsVC.title = NSLocalizedString("matchups_complete", comment: "COMPLETE")
+        completeMatchupsVC.parentController = self
+        controllerArray.append(completeMatchupsVC)
+        
+        //let rankingMatchupsVC : MatchupsRankingVC = MatchupsRankingVC(nibName: "MatchupsRanking", bundle: nil)
+        //rankingMatchupsVC.title = NSLocalizedString("matchups_ranking", comment: "RANKING")
+        //rankingMatchupsVC.parentController = self
+        //controllerArray.append(rankingMatchupsVC)
         
         // Customize page menu to your liking (optional) or use default settings by sending nil for 'options' in the init
         // Example:
@@ -64,9 +69,36 @@ class MatchupsVC: UIViewController {
         // Initialize page menu with controller array, frame, and optional parameters
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRectMake(0.0, 0.0, self.view.frame.width, self.view.frame.height), pageMenuOptions: parameters)        
         
+        self.addChildViewController(pageMenu!)
+        
+        pageMenu!.view.frame = self.view.bounds // modify this line as you like
+        pageMenu!.view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight] // modify this line as you like
+
         // Lastly add page menu as subview of base view controller view
         // or use pageMenu controller in you view hierachy as desired
         self.view.addSubview(pageMenu!.view)
+        
+        pageMenu!.didMoveToParentViewController(self)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+
+        // show navigation and don't hide on swipe & keboard Appears
+        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.hidesBarsOnSwipe = false
+        
+        self.tabBarController?.tabBar.hidden = true
+    }
+    
+    
+    // MARK: - Container View Controller
+    override func shouldAutomaticallyForwardAppearanceMethods() -> Bool {
+        return true
+    }
+
+    override func shouldAutomaticallyForwardRotationMethods() -> Bool {
+        return true
     }
     
 }

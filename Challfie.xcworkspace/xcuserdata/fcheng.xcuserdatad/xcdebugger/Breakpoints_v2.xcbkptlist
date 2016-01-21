@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/OneSelfieVC.swift"
-            timestampString = "465459356.273001"
+            timestampString = "469764847.27667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "693"
-            endingLineNumber = "693"
+            startingLineNumber = "755"
+            endingLineNumber = "755"
             landmarkName = "commentSendButton(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/AlertVC.swift"
-            timestampString = "464872111.567917"
+            timestampString = "469093518.099339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "loadData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -327,13 +327,199 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Challfie/TakePictureVC.swift"
-            timestampString = "465512584.654631"
+            timestampString = "468744598.523562"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "391"
+            endingLineNumber = "391"
             landmarkName = "linkAccWithFacebook()"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Challfie/OneSelfieVC.swift"
+            timestampString = "468748660.093529"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "OneSelfieVC"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.rejectButton.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UIButton&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468490164.857622"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.rejectButton.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UIButton&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468490164.857873"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.rejectButton.materializeForSet : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UIButton&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468490164.858031"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.init (Challfie.OneSelfieVC.Type)(nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;ObjectiveC.NSBundle&gt;) -&gt; Challfie.OneSelfieVC"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468490164.858186"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "1635">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.init (Challfie.OneSelfieVC.Type)(coder : ObjectiveC.NSCoder) -&gt; Swift.Optional&lt;Challfie.OneSelfieVC&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468490164.858335"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "1523">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Challfie/OneSelfieVC.swift"
+            timestampString = "468924300.302391"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "OneSelfieVC"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.challengeDifficultyView.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UIImageView&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468924300.339166"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.challengeDifficultyView.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UIImageView&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468924300.339459"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.challengeDifficultyView.materializeForSet : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UIImageView&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468924300.339595"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.init (Challfie.OneSelfieVC.Type)(nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;ObjectiveC.NSBundle&gt;) -&gt; Challfie.OneSelfieVC"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468924300.339717"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "1895">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Challfie.OneSelfieVC.init (Challfie.OneSelfieVC.Type)(coder : ObjectiveC.NSCoder) -&gt; Swift.Optional&lt;Challfie.OneSelfieVC&gt;"
+                  moduleName = "Challfie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcheng/workspace/mobileapp/Challfie/Challfie/OneSelfieVC.swift"
+                  timestampString = "468924300.339835"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "1783">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

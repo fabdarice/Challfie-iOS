@@ -188,8 +188,13 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                     layout.headerReferenceSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 60.0)
                 } else {
                     // is friend
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_is_friend"), style: UIBarButtonItemStyle.Plain, target: self, action: nil)
-                    self.navigationItem.rightBarButtonItem?.tintColor = MP_HEX_RGB("FFFFFF")
+                    let matchupBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+                    matchupBtn.setImage(UIImage(named: "icon_challenge"), forState: UIControlState.Normal)
+                    matchupBtn.addTarget(self, action: "challenge_duel", forControlEvents:  UIControlEvents.TouchUpInside)
+                    let matchup_item = UIBarButtonItem(customView: matchupBtn)
+                    self.navigationItem.rightBarButtonItem = matchup_item
+                    
+                    //self.navigationItem.rightBarButtonItem?.tintColor = UIColor.clearColor()
                 }
             }
             
@@ -225,7 +230,7 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         // Add Google Tracker for Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "Profil Page")
@@ -264,15 +269,11 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                     GlobalFunctions().displayAlert(title: NSLocalizedString("Error", comment: "Error"), message: NSLocalizedString("Generic_error", comment: "Generic error"), controller: self)
                 case .Success(let mydata):
                     //Convert to SwiftJSON
-                    var json = JSON(mydata)
+                    var json = JSON(mydata)                
                     
                     if json["users"].count != 0 {
                         for var i:Int = 0; i < json["users"].count; i++ {
                             let selfie = Selfie.init(json: json["users"][i])
-                            let user = User.init(json: json["users"][i]["user"])
-                            let challenge = Challenge.init(json: json["users"][i]["challenge"])
-                            selfie.user = user
-                            selfie.challenge = challenge
                             self.selfies_array.append(selfie)
                             
                         }
@@ -357,10 +358,18 @@ class ProfilVC : UIViewController, UICollectionViewDataSource, UICollectionViewD
                     }
                 }
         }
-        
-        
     }
     
+    // MARK: - Defy Someone in Duel Function
+    func challenge_duel() {
+        let createMatchupVC = CreateMatchupVC(nibName: "CreateMatchup", bundle: nil)
+        createMatchupVC.opponent = self.user
+        createMatchupVC.parentController = self
+        createMatchupVC.hidesBottomBarWhenPushed = true
+        self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationController?.pushViewController(createMatchupVC, animated: true)
+    }
+
     // MARK: - Log out Button
     func log_out() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)

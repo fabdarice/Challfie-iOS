@@ -78,6 +78,7 @@
 		87687EAF1BE1D200004A4EE5 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87687EAE1BE1D200004A4EE5 /* CAPSPageMenu.swift */; settings = {ASSET_TAGS = (); }; };
 		87687EB51BE1D313004A4EE5 /* RankingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87687EB41BE1D313004A4EE5 /* RankingVC.swift */; settings = {ASSET_TAGS = (); }; };
 		87687EB71BE1D3F5004A4EE5 /* Ranking.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87687EB61BE1D3F5004A4EE5 /* Ranking.xib */; settings = {ASSET_TAGS = (); }; };
+		876D64961BE59359005E2D1A /* UIAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876D64951BE59359005E2D1A /* UIAutoCompleteTextField.swift */; settings = {ASSET_TAGS = (); }; };
 		876E869D1BA2C4C300D5C84C /* PopUpViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E869C1BA2C4C300D5C84C /* PopUpViewControllerSwift.swift */; };
 		876E869F1BA2C4E600D5C84C /* PopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 876E869E1BA2C4E600D5C84C /* PopUpViewController.xib */; };
 		8771D4F31A0F24CF00233DD4 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8771D4F21A0F24CF00233DD4 /* RegisterVC.swift */; };
@@ -100,6 +101,8 @@
 		8787EDCA1A9F14CB00A2639D /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787EDC91A9F14CB00A2639D /* ContactViewController.swift */; };
 		8787EDCF1A9F1D4600A2639D /* Contact.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8787EDCE1A9F1D4600A2639D /* Contact.xib */; };
 		8788FD6E1B903624002A8D66 /* UserApprovalListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8788FD6D1B903624002A8D66 /* UserApprovalListVC.swift */; };
+		878DC6951BEC05CD001E63D6 /* TakeMatchupPictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878DC6941BEC05CD001E63D6 /* TakeMatchupPictureVC.swift */; settings = {ASSET_TAGS = (); }; };
+		878DC69B1BEC073B001E63D6 /* TakeMatchupPicture.xib in Resources */ = {isa = PBXBuildFile; fileRef = 878DC69A1BEC073B001E63D6 /* TakeMatchupPicture.xib */; settings = {ASSET_TAGS = (); }; };
 		87904FAB1A0C9FF2004FD75E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87904FAA1A0C9FF2004FD75E /* AppDelegate.swift */; };
 		87904FAD1A0C9FF2004FD75E /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87904FAC1A0C9FF2004FD75E /* LoginVC.swift */; };
 		87904FB51A0C9FF2004FD75E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87904FB31A0C9FF2004FD75E /* LaunchScreen.xib */; };
@@ -111,10 +114,13 @@
 		8793870C1A4D285B00609934 /* ProfilVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793870B1A4D285B00609934 /* ProfilVC.swift */; };
 		879387151A500AFD00609934 /* ProfilSelfieCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879387141A500AFD00609934 /* ProfilSelfieCVCell.swift */; };
 		879387171A500B1200609934 /* ProfilSelfieCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879387161A500B1200609934 /* ProfilSelfieCVCell.xib */; };
-		879FC8EA1BE1F7D7002B7FC3 /* MatchupsDailyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8E91BE1F7D7002B7FC3 /* MatchupsDailyVC.swift */; settings = {ASSET_TAGS = (); }; };
-		879FC8F01BE1F830002B7FC3 /* MatchupsFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8EF1BE1F830002B7FC3 /* MatchupsFriendsVC.swift */; settings = {ASSET_TAGS = (); }; };
-		879FC8F21BE1FB98002B7FC3 /* MatchupsDaily.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F11BE1FB98002B7FC3 /* MatchupsDaily.xib */; settings = {ASSET_TAGS = (); }; };
-		879FC8F41BE1FBAD002B7FC3 /* MatchupsFriends.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F31BE1FBAD002B7FC3 /* MatchupsFriends.xib */; settings = {ASSET_TAGS = (); }; };
+		87987ECF1BF44D17003060B1 /* matchup_defeat.png in Resources */ = {isa = PBXBuildFile; fileRef = 87987ED11BF44D17003060B1 /* matchup_defeat.png */; };
+		87987ED31BF44D1F003060B1 /* matchup_victory.png in Resources */ = {isa = PBXBuildFile; fileRef = 87987ED51BF44D1F003060B1 /* matchup_victory.png */; };
+		87987ED71BF44D28003060B1 /* matchup_in_progress.png in Resources */ = {isa = PBXBuildFile; fileRef = 87987ED91BF44D28003060B1 /* matchup_in_progress.png */; };
+		879FC8EA1BE1F7D7002B7FC3 /* MatchupsActiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8E91BE1F7D7002B7FC3 /* MatchupsActiveVC.swift */; settings = {ASSET_TAGS = (); }; };
+		879FC8F01BE1F830002B7FC3 /* MatchupsRankingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8EF1BE1F830002B7FC3 /* MatchupsRankingVC.swift */; settings = {ASSET_TAGS = (); }; };
+		879FC8F21BE1FB98002B7FC3 /* MatchupsActive.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F11BE1FB98002B7FC3 /* MatchupsActive.xib */; settings = {ASSET_TAGS = (); }; };
+		879FC8F41BE1FBAD002B7FC3 /* MatchupsRanking.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F31BE1FBAD002B7FC3 /* MatchupsRanking.xib */; settings = {ASSET_TAGS = (); }; };
 		879FC8F61BE1FD6F002B7FC3 /* MatchupsTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879FC8F51BE1FD6F002B7FC3 /* MatchupsTVCell.xib */; settings = {ASSET_TAGS = (); }; };
 		879FC8F81BE1FD8F002B7FC3 /* MatchupsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8F71BE1FD8F002B7FC3 /* MatchupsTVCell.swift */; settings = {ASSET_TAGS = (); }; };
 		879FC8FA1BE20318002B7FC3 /* TermsAndPrivacyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FC8F91BE20318002B7FC3 /* TermsAndPrivacyVC.swift */; settings = {ASSET_TAGS = (); }; };
@@ -137,6 +143,7 @@
 		87BE4A681BB6256B00C25CDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87BE4A661BB6256800C25CDD /* GoogleService-Info.plist */; settings = {ASSET_TAGS = (); }; };
 		87C87FE41BA8CD6700D69F66 /* challenge_daily_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 87C87FE61BA8CD6700D69F66 /* challenge_daily_small.png */; };
 		87CA93B41A5A2C4F004D72FE /* ProfilHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */; };
+		87CB5F0C1BED591300F81AED /* OneSelfieForMatchup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87CB5F0B1BED591300F81AED /* OneSelfieForMatchup.xib */; settings = {ASSET_TAGS = (); }; };
 		87D35A521B87A7B300F41821 /* GuideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D35A511B87A7B300F41821 /* GuideVC.swift */; };
 		87D35A541B87B3B600F41821 /* GuideTakePictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D35A531B87B3B600F41821 /* GuideTakePictureVC.swift */; };
 		87D35A561B87B41C00F41821 /* GuideTakePicture.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87D35A551B87B41C00F41821 /* GuideTakePicture.xib */; };
@@ -152,6 +159,13 @@
 		87E298741A317BC200DEF385 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E298731A317BC200DEF385 /* AlertVC.swift */; };
 		87E298781A31B02A00DEF385 /* CommentTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87E298771A31B02A00DEF385 /* CommentTVCell.xib */; };
 		87E2987A1A31B04800DEF385 /* CommentTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E298791A31B04800DEF385 /* CommentTVCell.swift */; };
+		87ECA3C61BE416BD00C3DD97 /* CreateMatchupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87ECA3C51BE416BD00C3DD97 /* CreateMatchupVC.swift */; settings = {ASSET_TAGS = (); }; };
+		87ECA3CC1BE4172900C3DD97 /* CreateMatchup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87ECA3CB1BE4172900C3DD97 /* CreateMatchup.xib */; settings = {ASSET_TAGS = (); }; };
+		87F229B91BEAB4FE00900431 /* MatchupsComplete.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87F229B81BEAB4FE00900431 /* MatchupsComplete.xib */; settings = {ASSET_TAGS = (); }; };
+		87F229BB1BEAB53000900431 /* MatchupsCompleteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F229BA1BEAB53000900431 /* MatchupsCompleteVC.swift */; settings = {ASSET_TAGS = (); }; };
+		87F229BD1BEAC4EA00900431 /* Matchup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F229BC1BEAC4EA00900431 /* Matchup.swift */; settings = {ASSET_TAGS = (); }; };
+		87F229BF1BEB34CA00900431 /* OneMatchup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87F229BE1BEB34CA00900431 /* OneMatchup.xib */; settings = {ASSET_TAGS = (); }; };
+		87F229C11BEB34E700900431 /* OneMatchupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F229C01BEB34E700900431 /* OneMatchupVC.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -318,6 +332,7 @@
 		87687EAE1BE1D200004A4EE5 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
 		87687EB41BE1D313004A4EE5 /* RankingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingVC.swift; sourceTree = "<group>"; };
 		87687EB61BE1D3F5004A4EE5 /* Ranking.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Ranking.xib; sourceTree = "<group>"; };
+		876D64951BE59359005E2D1A /* UIAutoCompleteTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		876E869C1BA2C4C300D5C84C /* PopUpViewControllerSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpViewControllerSwift.swift; sourceTree = "<group>"; };
 		876E869E1BA2C4E600D5C84C /* PopUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpViewController.xib; sourceTree = "<group>"; };
 		8771D4F21A0F24CF00233DD4 /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
@@ -350,6 +365,8 @@
 		8787EDC91A9F14CB00A2639D /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8787EDCE1A9F1D4600A2639D /* Contact.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Contact.xib; sourceTree = "<group>"; };
 		8788FD6D1B903624002A8D66 /* UserApprovalListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UserApprovalListVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		878DC6941BEC05CD001E63D6 /* TakeMatchupPictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TakeMatchupPictureVC.swift; sourceTree = "<group>"; };
+		878DC69A1BEC073B001E63D6 /* TakeMatchupPicture.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TakeMatchupPicture.xib; sourceTree = "<group>"; };
 		87904FA51A0C9FF2004FD75E /* Challfie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challfie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87904FA91A0C9FF2004FD75E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87904FAA1A0C9FF2004FD75E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -367,10 +384,16 @@
 		8793870B1A4D285B00609934 /* ProfilVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ProfilVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		879387141A500AFD00609934 /* ProfilSelfieCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilSelfieCVCell.swift; sourceTree = "<group>"; };
 		879387161A500B1200609934 /* ProfilSelfieCVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilSelfieCVCell.xib; sourceTree = "<group>"; };
-		879FC8E91BE1F7D7002B7FC3 /* MatchupsDailyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsDailyVC.swift; sourceTree = "<group>"; };
-		879FC8EF1BE1F830002B7FC3 /* MatchupsFriendsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsFriendsVC.swift; sourceTree = "<group>"; };
-		879FC8F11BE1FB98002B7FC3 /* MatchupsDaily.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsDaily.xib; sourceTree = "<group>"; };
-		879FC8F31BE1FBAD002B7FC3 /* MatchupsFriends.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsFriends.xib; sourceTree = "<group>"; };
+		87987ED01BF44D17003060B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/matchup_defeat.png; sourceTree = "<group>"; };
+		87987ED21BF44D19003060B1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/matchup_defeat.png; sourceTree = "<group>"; };
+		87987ED41BF44D1F003060B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/matchup_victory.png; sourceTree = "<group>"; };
+		87987ED61BF44D21003060B1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/matchup_victory.png; sourceTree = "<group>"; };
+		87987ED81BF44D28003060B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/matchup_in_progress.png; sourceTree = "<group>"; };
+		87987EDA1BF44D2A003060B1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/matchup_in_progress.png; sourceTree = "<group>"; };
+		879FC8E91BE1F7D7002B7FC3 /* MatchupsActiveVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsActiveVC.swift; sourceTree = "<group>"; };
+		879FC8EF1BE1F830002B7FC3 /* MatchupsRankingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsRankingVC.swift; sourceTree = "<group>"; };
+		879FC8F11BE1FB98002B7FC3 /* MatchupsActive.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsActive.xib; sourceTree = "<group>"; };
+		879FC8F31BE1FBAD002B7FC3 /* MatchupsRanking.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsRanking.xib; sourceTree = "<group>"; };
 		879FC8F51BE1FD6F002B7FC3 /* MatchupsTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsTVCell.xib; sourceTree = "<group>"; };
 		879FC8F71BE1FD8F002B7FC3 /* MatchupsTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsTVCell.swift; sourceTree = "<group>"; };
 		879FC8F91BE20318002B7FC3 /* TermsAndPrivacyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsAndPrivacyVC.swift; sourceTree = "<group>"; };
@@ -397,6 +420,7 @@
 		87C87FE51BA8CD6700D69F66 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/challenge_daily_small.png; sourceTree = "<group>"; };
 		87C87FE71BA8CD6800D69F66 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fr; path = fr.lproj/challenge_daily_small.png; sourceTree = "<group>"; };
 		87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilHeader.xib; sourceTree = "<group>"; };
+		87CB5F0B1BED591300F81AED /* OneSelfieForMatchup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OneSelfieForMatchup.xib; sourceTree = "<group>"; };
 		87D35A511B87A7B300F41821 /* GuideVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GuideVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		87D35A531B87B3B600F41821 /* GuideTakePictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuideTakePictureVC.swift; sourceTree = "<group>"; };
 		87D35A551B87B41C00F41821 /* GuideTakePicture.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GuideTakePicture.xib; sourceTree = "<group>"; };
@@ -413,6 +437,13 @@
 		87E298771A31B02A00DEF385 /* CommentTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTVCell.xib; sourceTree = "<group>"; };
 		87E298791A31B04800DEF385 /* CommentTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CommentTVCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		87E798E01BB3B03F00F845A5 /* Challfie.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Challfie.entitlements; sourceTree = "<group>"; };
+		87ECA3C51BE416BD00C3DD97 /* CreateMatchupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMatchupVC.swift; sourceTree = "<group>"; };
+		87ECA3CB1BE4172900C3DD97 /* CreateMatchup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateMatchup.xib; sourceTree = "<group>"; };
+		87F229B81BEAB4FE00900431 /* MatchupsComplete.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchupsComplete.xib; sourceTree = "<group>"; };
+		87F229BA1BEAB53000900431 /* MatchupsCompleteVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchupsCompleteVC.swift; sourceTree = "<group>"; };
+		87F229BC1BEAC4EA00900431 /* Matchup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matchup.swift; sourceTree = "<group>"; };
+		87F229BE1BEB34CA00900431 /* OneMatchup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OneMatchup.xib; sourceTree = "<group>"; };
+		87F229C01BEB34E700900431 /* OneMatchupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneMatchupVC.swift; sourceTree = "<group>"; };
 		8E2A5632A55B6B4CF073AD9B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -471,6 +502,7 @@
 				87A5558B1A25CC99000620BF /* Comment.swift */,
 				872DC0061A3B0BA500806FE9 /* Alert.swift */,
 				87314F7B1A42B37700D75C4D /* Friend.swift */,
+				87F229BC1BEAC4EA00900431 /* Matchup.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -597,6 +629,7 @@
 			isa = PBXGroup;
 			children = (
 				873281861A5D123300B99429 /* BookPageContent.xib */,
+				87ECA3CB1BE4172900C3DD97 /* CreateMatchup.xib */,
 				8787EDCE1A9F1D4600A2639D /* Contact.xib */,
 				87B48B3C1B3B427000E088A9 /* FlagContent.xib */,
 				87D35A571B87FC1900F41821 /* GuideApproveSelfie.xib */,
@@ -606,9 +639,12 @@
 				87B198C11A8C96E700299627 /* LoadingActivity.xib */,
 				878573C11AC4A6BC00354500 /* LoadingLaunchScreen.xib */,
 				874258DA1BE0A0F00019EA57 /* Matchups.xib */,
-				879FC8F11BE1FB98002B7FC3 /* MatchupsDaily.xib */,
-				879FC8F31BE1FBAD002B7FC3 /* MatchupsFriends.xib */,
+				879FC8F11BE1FB98002B7FC3 /* MatchupsActive.xib */,
+				87F229B81BEAB4FE00900431 /* MatchupsComplete.xib */,
+				879FC8F31BE1FBAD002B7FC3 /* MatchupsRanking.xib */,
 				873681601A3523AE004E6897 /* OneSelfie.xib */,
+				87CB5F0B1BED591300F81AED /* OneSelfieForMatchup.xib */,
+				87F229BE1BEB34CA00900431 /* OneMatchup.xib */,
 				87A6B4B51B93D6B1002940F6 /* PhotoLibraryPreview.xib */,
 				879387031A4BFE2E00609934 /* Profil.xib */,
 				87CA93B31A5A2C4F004D72FE /* ProfilHeader.xib */,
@@ -616,6 +652,7 @@
 				8719D2391ADF84E8002273B4 /* RankingFriends.xib */,
 				87721E061B953683003032A7 /* RankingAllUsers.xib */,
 				8721456D1A682A7000369FB1 /* SearchUser.xib */,
+				878DC69A1BEC073B001E63D6 /* TakeMatchupPicture.xib */,
 				8736815F1A3520AD004E6897 /* Custom Cell */,
 			);
 			name = View;
@@ -629,6 +666,7 @@
 				873281821A5D10CA00B99429 /* BookPageContentVC.swift */,
 				8757BF881A6346BE0018B16B /* BookVC.swift */,
 				87E298711A3173FE00DEF385 /* ChallengeVC.swift */,
+				87ECA3C51BE416BD00C3DD97 /* CreateMatchupVC.swift */,
 				873FBB4D1A8E03450043E272 /* FacebookUsernameVC.swift */,
 				87B48B3E1B3B433700E088A9 /* FlagContentVC.swift */,
 				872820A61A149B7C0010AB75 /* ForgotPasswordVC.swift */,
@@ -643,9 +681,11 @@
 				87B198BF1A8C963E00299627 /* LoadingActivityVC.swift */,
 				87904FAC1A0C9FF2004FD75E /* LoginVC.swift */,
 				87687EA71BE1D117004A4EE5 /* MatchupsVC.swift */,
-				879FC8E91BE1F7D7002B7FC3 /* MatchupsDailyVC.swift */,
-				879FC8EF1BE1F830002B7FC3 /* MatchupsFriendsVC.swift */,
+				879FC8E91BE1F7D7002B7FC3 /* MatchupsActiveVC.swift */,
+				87F229BA1BEAB53000900431 /* MatchupsCompleteVC.swift */,
+				879FC8EF1BE1F830002B7FC3 /* MatchupsRankingVC.swift */,
 				8728E8691A2FF6D4005EE17D /* OneSelfieVC.swift */,
+				87F229C01BEB34E700900431 /* OneMatchupVC.swift */,
 				87A6B4B71B93D801002940F6 /* PhotoLibraryPreviewVC.swift */,
 				8793870B1A4D285B00609934 /* ProfilVC.swift */,
 				87687EB41BE1D313004A4EE5 /* RankingVC.swift */,
@@ -654,6 +694,7 @@
 				8771D4F21A0F24CF00233DD4 /* RegisterVC.swift */,
 				8721456F1A682D5B00369FB1 /* SearchUserVC.swift */,
 				8721456B1A681A1A00369FB1 /* TakePictureVC.swift */,
+				878DC6941BEC05CD001E63D6 /* TakeMatchupPictureVC.swift */,
 				872820A41A143F110010AB75 /* TimelineVC.swift */,
 				8788FD6D1B903624002A8D66 /* UserApprovalListVC.swift */,
 				874A159E1A9B2E260050FF5C /* ExtraPages */,
@@ -744,6 +785,7 @@
 				874A15951A9752410050FF5C /* ENSideMenu.swift */,
 				874A15971A97525B0050FF5C /* ENSideMenuNavigationController.swift */,
 				87687EAE1BE1D200004A4EE5 /* CAPSPageMenu.swift */,
+				876D64951BE59359005E2D1A /* UIAutoCompleteTextField.swift */,
 			);
 			name = VendorLib;
 			sourceTree = "<group>";
@@ -760,6 +802,9 @@
 		87B053771A2B24A7000B5A60 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				87987ED11BF44D17003060B1 /* matchup_defeat.png */,
+				87987ED51BF44D1F003060B1 /* matchup_victory.png */,
+				87987ED91BF44D28003060B1 /* matchup_in_progress.png */,
 				87C87FE61BA8CD6700D69F66 /* challenge_daily_small.png */,
 				876E86A21BA2D0F900D5C84C /* Level Up Images */,
 				87185BDA1BA0106D0047A5D7 /* comment_button.png */,
@@ -939,7 +984,7 @@
 				879387171A500B1200609934 /* ProfilSelfieCVCell.xib in Resources */,
 				87A6B4B61B93D6B1002940F6 /* PhotoLibraryPreview.xib in Resources */,
 				872CAB691BA2D6510062F73F /* level_up_apprentice_3.png in Resources */,
-				879FC8F41BE1FBAD002B7FC3 /* MatchupsFriends.xib in Resources */,
+				879FC8F41BE1FBAD002B7FC3 /* MatchupsRanking.xib in Resources */,
 				877874461A2C0F600031718E /* approve_select_button.png in Resources */,
 				8787EDCF1A9F1D4600A2639D /* Contact.xib in Resources */,
 				877874681A2E98200031718E /* challenge_approve.png in Resources */,
@@ -947,10 +992,12 @@
 				87C87FE41BA8CD6700D69F66 /* challenge_daily_small.png in Resources */,
 				876E869F1BA2C4E600D5C84C /* PopUpViewController.xib in Resources */,
 				873F1BE11B944516008051EB /* PLCameraSheetButtonPressed@2x.png in Resources */,
+				878DC69B1BEC073B001E63D6 /* TakeMatchupPicture.xib in Resources */,
 				877874501A2C11050031718E /* reject_button.png in Resources */,
 				872CAB781BA2D6660062F73F /* level_up_newbie_3.png in Resources */,
 				879FC8F61BE1FD6F002B7FC3 /* MatchupsTVCell.xib in Resources */,
 				87904FCC1A0CA8D1004FD75E /* chinrg__.ttf in Resources */,
+				87F229B91BEAB4FE00900431 /* MatchupsComplete.xib in Resources */,
 				8759E7941AE0368800EE3D45 /* RankingTVCell.xib in Resources */,
 				874A15A21A9B428B0050FF5C /* ExtraPagesTVCell.xib in Resources */,
 				873F1BE31B944516008051EB /* PLCameraSheetDoneButton@2x.png in Resources */,
@@ -960,6 +1007,7 @@
 				873F1BE41B944516008051EB /* PLCameraSheetDoneButtonPressed.png in Resources */,
 				87BE4A671BB6256800C25CDD /* GoogleService-Info.plist in Resources */,
 				873F1BE51B944516008051EB /* PLCameraSheetDoneButtonPressed@2x.png in Resources */,
+				87987ED31BF44D1F003060B1 /* matchup_victory.png in Resources */,
 				87721E071B953683003032A7 /* RankingAllUsers.xib in Resources */,
 				873F1BE01B944516008051EB /* PLCameraSheetButtonPressed.png in Resources */,
 				874258DB1BE0A0F00019EA57 /* Matchups.xib in Resources */,
@@ -968,6 +1016,7 @@
 				873681611A3523AE004E6897 /* OneSelfie.xib in Resources */,
 				872CAB721BA2D65E0062F73F /* level_up_master_3.png in Resources */,
 				872CAB751BA2D6620062F73F /* level_up_newbie_2.png in Resources */,
+				87CB5F0C1BED591300F81AED /* OneSelfieForMatchup.xib in Resources */,
 				87B0538D1A2B3B34000B5A60 /* Localizable.strings in Resources */,
 				8719D23A1ADF84E8002273B4 /* RankingFriends.xib in Resources */,
 				87B48B411B3B4B6E00E088A9 /* FlagContentTVCell.xib in Resources */,
@@ -975,19 +1024,23 @@
 				874A15941A9746400050FF5C /* Images.xcassets in Resources */,
 				87D35A561B87B41C00F41821 /* GuideTakePicture.xib in Resources */,
 				8757BF8E1A63C7BC0018B16B /* ChallengeTVCell.xib in Resources */,
-				879FC8F21BE1FB98002B7FC3 /* MatchupsDaily.xib in Resources */,
+				879FC8F21BE1FB98002B7FC3 /* MatchupsActive.xib in Resources */,
 				87D35A581B87FC1900F41821 /* GuideApproveSelfie.xib in Resources */,
+				87987ED71BF44D28003060B1 /* matchup_in_progress.png in Resources */,
 				87A6B4BA1B93E83D002940F6 /* Main.storyboard in Resources */,
+				87987ECF1BF44D17003060B1 /* matchup_defeat.png in Resources */,
 				872CAB6F1BA2D65A0062F73F /* level_up_master_2.png in Resources */,
 				873281871A5D123300B99429 /* BookPageContent.xib in Resources */,
 				877874621A2E97E70031718E /* challenge_pending.png in Resources */,
 				8778744A1A2C0FF10031718E /* reject_select_button.png in Resources */,
 				8721456E1A682A7000369FB1 /* SearchUser.xib in Resources */,
+				87ECA3CC1BE4172900C3DD97 /* CreateMatchup.xib in Resources */,
 				872DBFFF1A3AF14E00806FE9 /* AlertTVCell.xib in Resources */,
 				8781BED61A440DC70055EFBD /* following_button.png in Resources */,
 				878573C21AC4A6BC00354500 /* LoadingLaunchScreen.xib in Resources */,
 				87D35A621B8842D400F41821 /* GuideBook.xib in Resources */,
 				879387041A4BFE2E00609934 /* Profil.xib in Resources */,
+				87F229BF1BEB34CA00900431 /* OneMatchup.xib in Resources */,
 				873F1BDE1B944516008051EB /* PLCameraSheetButton.png in Resources */,
 				877874561A2C11B80031718E /* approve_button.png in Resources */,
 				872CAB631BA2D6480062F73F /* level_up_apprentice_1.png in Resources */,
@@ -1075,19 +1128,23 @@
 				87904FAD1A0C9FF2004FD75E /* LoginVC.swift in Sources */,
 				873F1BD91B944516008051EB /* GKImageCropOverlayView.m in Sources */,
 				874A159C1A9768A60050FF5C /* MyMenuTableViewController.swift in Sources */,
-				879FC8F01BE1F830002B7FC3 /* MatchupsFriendsVC.swift in Sources */,
+				879FC8F01BE1F830002B7FC3 /* MatchupsRankingVC.swift in Sources */,
 				87687EB51BE1D313004A4EE5 /* RankingVC.swift in Sources */,
+				878DC6951BEC05CD001E63D6 /* TakeMatchupPictureVC.swift in Sources */,
+				876D64961BE59359005E2D1A /* UIAutoCompleteTextField.swift in Sources */,
 				872145701A682D5B00369FB1 /* SearchUserVC.swift in Sources */,
 				8728E86A1A2FF6D4005EE17D /* OneSelfieVC.swift in Sources */,
 				87D35A541B87B3B600F41821 /* GuideTakePictureVC.swift in Sources */,
-				879FC8EA1BE1F7D7002B7FC3 /* MatchupsDailyVC.swift in Sources */,
+				879FC8EA1BE1F7D7002B7FC3 /* MatchupsActiveVC.swift in Sources */,
 				872820B01A160FFC0010AB75 /* Book.swift in Sources */,
 				872820AC1A15CD210010AB75 /* Challenge.swift in Sources */,
 				873F1BDC1B944516008051EB /* GKImagePicker.m in Sources */,
 				8771D4F31A0F24CF00233DD4 /* RegisterVC.swift in Sources */,
 				876E869D1BA2C4C300D5C84C /* PopUpViewControllerSwift.swift in Sources */,
 				873F1BDA1B944516008051EB /* GKImageCropView.m in Sources */,
+				87F229BD1BEAC4EA00900431 /* Matchup.swift in Sources */,
 				8721456C1A681A1A00369FB1 /* TakePictureVC.swift in Sources */,
+				87ECA3C61BE416BD00C3DD97 /* CreateMatchupVC.swift in Sources */,
 				877874731A2EFB4C0031718E /* TimelineTableViewCell.swift in Sources */,
 				87314F751A414CE700D75C4D /* FriendTVCell.swift in Sources */,
 				8793870C1A4D285B00609934 /* ProfilVC.swift in Sources */,
@@ -1121,6 +1178,7 @@
 				874A15961A9752410050FF5C /* ENSideMenu.swift in Sources */,
 				873281831A5D10CA00B99429 /* BookPageContentVC.swift in Sources */,
 				87E298741A317BC200DEF385 /* AlertVC.swift in Sources */,
+				87F229C11BEB34E700900431 /* OneMatchupVC.swift in Sources */,
 				879FC8FA1BE20318002B7FC3 /* TermsAndPrivacyVC.swift in Sources */,
 				874101021ADEFB910096F3E9 /* LinkFacebookVC.swift in Sources */,
 				879387151A500AFD00609934 /* ProfilSelfieCVCell.swift in Sources */,
@@ -1137,6 +1195,7 @@
 				87E2987A1A31B04800DEF385 /* CommentTVCell.swift in Sources */,
 				877EAB891A9D461400D06ADC /* PrivacyTableViewController.swift in Sources */,
 				874A15981A97525B0050FF5C /* ENSideMenuNavigationController.swift in Sources */,
+				87F229BB1BEAB53000900431 /* MatchupsCompleteVC.swift in Sources */,
 				87D35A521B87A7B300F41821 /* GuideVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1343,6 +1402,33 @@
 				87B053651A2AE7FC000B5A60 /* fr */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		87987ED11BF44D17003060B1 /* matchup_defeat.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87987ED01BF44D17003060B1 /* en */,
+				87987ED21BF44D19003060B1 /* fr */,
+			);
+			name = matchup_defeat.png;
+			sourceTree = "<group>";
+		};
+		87987ED51BF44D1F003060B1 /* matchup_victory.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87987ED41BF44D1F003060B1 /* en */,
+				87987ED61BF44D21003060B1 /* fr */,
+			);
+			name = matchup_victory.png;
+			sourceTree = "<group>";
+		};
+		87987ED91BF44D28003060B1 /* matchup_in_progress.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87987ED81BF44D28003060B1 /* en */,
+				87987EDA1BF44D2A003060B1 /* fr */,
+			);
+			name = matchup_in_progress.png;
 			sourceTree = "<group>";
 		};
 		87B053831A2B251D000B5A60 /* facebook_sign_in.png */ = {

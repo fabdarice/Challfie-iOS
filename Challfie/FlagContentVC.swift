@@ -110,8 +110,8 @@ class FlagContentVC: UIViewController, UITableViewDataSource, UITableViewDelegat
                     if json["administrators"].count != 0 {
                         for var i:Int = 0; i < json["administrators"].count; i++ {
                             let selfie = Selfie.init(json: json["administrators"][i])
-                            let user: User = User.init(json: json["administrators"][i]["user"])
-                            selfie.user = user
+                            //let user: User = User.init(json: json["administrators"][i]["user"])
+                            //selfie.user = user
                             self.flag_selfie_array.append(selfie)
                         }
                         self.page += 1
